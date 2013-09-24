@@ -1,0 +1,19 @@
+\section{Hardware}
+In this section the hardware choices of this project will be talked about and analyzed. First the choice of hardware platform will be discussed, then the choice of hardware identification needed for the system. Followed will be a conclusion stating the hardware platform and identification chosen.
+
+\subsection{Hardware Platform}
+In order to control the power to other devices(i.e. Television or Computer), some analog power control is needed. Typically this is controlled by an embedded microcontroller, therefore the choice of hardware platform is to pick the best microcontroller for the project. During development a development board is usually used. A development board is a single printed circuit board with a microcontroller and everything needed to get the microcontroller running. Every I/O\footnote{Input/Output}(generally General-purpose I/O) of the microcontroller is also made easily available using group pins. Picking a hardware platform is then condensed into picking a development board. Following is a comparison of a few different development boards.
+
+\subsubsection{Arduino}
+Arduino development boards come in a few variations, but common among all but one of them is that they are based on Atmel microcontrollers. Along with the development boards, Arduino also comes with its own software library \texttt{Wiring} which simplifies common I/O tasks. The Arduino development boards also implement a standard called \texttt{shields}, which are expansion circuit boards with pin headers that fit onto development boards, with additional pins so that shields can be stacked. This makes the hardware platform easily extendable and flexible using this stacking system. Examples of shields could be GPS, ethernet, LCD displays or breadboards.
+
+
+\subsubsection{Teensy}
+Teensy, like Arduino is based on a Atmel microcontroller, but unlike Arduino is made to be as small as possible. Teensy also supplies a add-on library that makes Arduino programs compatible. Power is also supplied via USB instead of a dedicated power input on the Arduino, which also makes it cheaper. Teensy also does not have an equivalent of shields.
+
+
+\subsubsection{Raspberry Pi}
+Raspberry Pi, unlike Arduino and Teensy uses a ``full-sized'' ARM processor, which makes it more like a regular computer then a microcontroller. Despite that it has GPI/O pins just like Arduino and Teensy, which means that it has the capabilities needed for the project. Being ARM based means that the Raspberry Pi can also install computer operating systems such as Linux based operating systems. The ARM processor is also many times more powerful than the Atmel microcontrollers. This however comes with negatives such as more power consumption, unused modules(GPU, sound or SD card storage) resulting in a larger board and a higher cost. 
+
+
+\subsection{Hardware Identification}
