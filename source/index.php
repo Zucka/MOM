@@ -30,26 +30,28 @@
     </ul>
   </div><!-- /.navbar-collapse -->
 </nav>
-<div class="row" id="lowerWrapper">
-	<div class="col-md-2">
-		<ul class="nav nav-pills nav-stacked">
-		  <li class="active"><a href="#">Dashboard</a></li>
-		  <li><a href="#">Devices</a></li>
-		  <li class="dropdown">
-			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-			  Users <span class="caret"></span>
-			</a>
-			<ul class="dropdown-menu">
-			  <li><a href="#">Chores</a></li>
-			  <li><a href="#">Rules</a></li>
-			  <li><a href="#">Permissions</a></li>
+<div id="wrapper">
+	<div class="row" id="lowerWrapper">
+		<div class="col-md-2" id="leftMenu">
+			<ul class="nav nav-pills nav-stacked">
+			  <li class="active"><a href="#">Dashboard</a></li>
+			  <li><a href="#">Devices</a></li>
+			  <li class="dropdown">
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				  Users <span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu">
+				  <li><a href="#">Chores</a></li>
+				  <li><a href="#">Rules</a></li>
+				  <li><a href="#">Permissions</a></li>
+				</ul>
+			  </li>
+			  <li><a href="#">Graf</a></li>
+			  <li><a href="#">Calendar</a></li>
 			</ul>
-		  </li>
-		  <li><a href="#">Graf</a></li>
-		  <li><a href="#">Calendar</a></li>
-		</ul>
-	</div>
-	<div class="col-md-10">
-		index.php
+		</div>
+		<div class="col-md-10" id="content">
+			index.php
+		</div>
 	</div>
 </div>
