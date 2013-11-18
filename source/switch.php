@@ -61,6 +61,11 @@ function setMenuActive(menuId){
 			?><script>setMenuActive("users");</script><?php
 			?><script>setMenuActive("permissions");</script><?php
 			break;
+
+		case "createUser":
+			include "sites/createUser.php";
+			?><script>setMenuActive("users");setMenuActive("createUser");</script><?php
+			break;
 		
 		case "graf":
 			include "";
