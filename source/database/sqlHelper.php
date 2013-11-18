@@ -1,18 +1,19 @@
 <?php
-include 'configDB.php'; 
+include "SH_configDB.php";
+
 class MySQLHelper
 {
 	private $con;
 	
-	function __construct($server, $username, $password, $database= null) 
+	function __construct() 
 	{
-	
-		$this->con = mysqli_connect($server, $username, $password, $database);
+		
+		$this->con = mysqli_connect($GLOBALS['server'], $GLOBALS['username'], $GLOBALS['password'], $GLOBALS['database']);
 
 		//check connection
 		if(mysqli_connect_errno($this->con))
 		{
-			echo "failed to connect to mysql: " . mysqli_connect_error();
+			return mysqli_connect_error();
 		}
 	}
 	
@@ -40,7 +41,7 @@ class MySQLHelper
 			$sql.= " " . $column;
 		}
 		$sql.= " VALUES " . $values;
-		//mysqli_query($this->con, $sql);
+
 		
 		return self::executeSQL($sql);
    }

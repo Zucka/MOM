@@ -6,7 +6,6 @@ også kør det følgende
 CREATE TABLE control_system
 (
     CSId BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-    email VARCHAR(30) NOT NULL,
     username VARCHAR(30) NOT NULL UNIQUE,
     password  VARCHAR(50) NOT NULL,
     PRIMARY KEY(CSId)    
@@ -16,36 +15,34 @@ CREATE TABLE control_system
 CREATE TABLE profile
 (
     PId BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	CSId BIGINT UNSIGNED NOT NULL,
 	name VARCHAR(30),
 	points DOUBLE DEFAULT 0,
-	mobil_number VARCHAR(10),
-	CSId BIGINT UNSIGNED NOT NULL,
 	PRIMARY KEY(PId),
 	FOREIGN KEY (CSId) REFERENCES control_system(CSId)	
 );
 
-CREATE TABLE device
+CREATE TABLE controller
 (
-    DSerieNo BIGINT UNSIGNED NOT NULL UNIQUE,
+    CSerieNo BIGINT UNSIGNED NOT NULL UNIQUE,
+	CSId BIGINT UNSIGNED NOT NULL,
 	name VARCHAR(30) NOT NULL,
 	location VARCHAR(30),
-	status  ENUM('!', 'GREEN', 'RED') DEFAULT '!' ,
-	CSId BIGINT UNSIGNED NOT NULL,
-	PRIMARY KEY(DSerieNo),
+	status  ENUM('!', 'GREEN', 'RED') DEFAULT '!',
+	PRIMARY KEY(CSerieNo),
 	FOREIGN KEY (CSId) REFERENCES control_system(CSId)	
 );
 
 CREATE TABLE tag
 (
     TSerieNo BIGINT UNSIGNED NOT NULL UNIQUE,
-	name VARCHAR(30) NOT NULL,
-	active BOOLEAN DEFAULT FALSE,
 	CSId BIGINT UNSIGNED NOT NULL,
-	profileId BIGINT UNSIGNED,
-	
+	profileId BIGINT UNSIGNED NOT NULL,
+	name VARCHAR(30),
+	active BOOLEAN DEFAULT TRUE,
 	PRIMARY KEY(TSerieNo),
 	FOREIGN KEY (CSId) REFERENCES control_system(CSId),
-	FOREIGN KEY (profileId) REFERENCES profile(PId) 
+	FOREIGN KEY (profileId) REFERENCES profile(PId) ON DELETE CASCADE
 );
 
 
@@ -53,32 +50,21 @@ CREATE TABLE tag
 CREATE TABLE chores
 (
 	CId BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	CSId BIGINT UNSIGNED NOT NULL,
     name VARCHAR(30) NOT NULL,
 	description VARCHAR(50),
 	defaultPoints DOUBLE UNSIGNED DEFAULT 0,
-	CSId BIGINT UNSIGNED NOT NULL,
 	PRIMARY KEY(CId),
 	FOREIGN KEY (CSId) REFERENCES control_system(CSId)
-);
-CREATE TABLE permission
-(
-	PerId BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-	name VARCHAR(30) NOT NULL,
-	CSId BIGINT UNSIGNED NOT NULL,
-	profileId BIGINT UNSIGNED,
-	PRIMARY KEY (PerId),
-	FOREIGN KEY (CSId) REFERENCES control_system(CSId),
-	FOREIGN KEY (profileId) REFERENCES profile(PId)
-
-
 );
 
 CREATE TABLE rules
 (
 	RId BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	CSId BIGINT UNSIGNED NOT NULL,
 	name VARCHAR(30) NOT NULL,
 	profileId BIGINT UNSIGNED,
-	CSId BIGINT UNSIGNED NOT NULL,
+	isPermission BOOLEAN DEFAULT FALSE,
 	PRIMARY KEY(RId),
 	FOREIGN KEY (CSId) REFERENCES control_system(CSId),
 	FOREIGN KEY (profileId) REFERENCES profile(PId)	
@@ -89,23 +75,23 @@ CREATE TABLE action
 	AId BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	name VARCHAR(30) NOT NULL,
 	points DOUBLE,
-	deviceId BIGINT UNSIGNED,
+	controllerId BIGINT UNSIGNED,
 	PRIMARY KEY(AId),
-	FOREIGN KEY (deviceId) REFERENCES device(DSerieNo)
+	FOREIGN KEY (controllerId) REFERENCES controller(CSerieNo)
 );
 CREATE TABLE rCondition
 (
 	condId BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	name VARCHAR(30) NOT NULL,
+	controllerId BIGINT UNSIGNED NOT NULL,
+	FOREIGN KEY (controllerId) REFERENCES controller(CSerieNo),
 	PRIMARY KEY(condId)
 );
 
-/* This cond_timeperiode is ugly, it is linked both to condition and permission so condId  or PerId may be null but not both*/
 CREATE TABLE cond_timeperiod
 (
 	condTimepId BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	condId BIGINT UNSIGNED,  
-	PerId BIGINT UNSIGNED,
 	timeFrom DATETIME NOT NULL,
 	timeTo DATETIME NOT NULL,
 	weekdays SET ('monday','tuesday','wednesday','thursday','friday','saturday','sunday'),
@@ -116,18 +102,16 @@ CREATE TABLE cond_timeperiod
 	lastInMonth BOOLEAN DEFAULT FALSE,
 	weekNumber TINYINT,
 	PRIMARY KEY(condTimepId),
-	FOREIGN KEY (condId) REFERENCES rCondition(condId),
-	FOREIGN KEY (PerId) REFERENCES permission(PerId)
+	FOREIGN KEY (condId) REFERENCES rCondition(condId)
 );
 
-CREATE TABLE cond_device_on_off
+CREATE TABLE cond_controller_on_off
 (
 	condDevId BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	condId BIGINT UNSIGNED NOT NULL,
-	deviceId BIGINT UNSIGNED NOT NULL,
 	PRIMARY KEY(condDevId),
-	FOREIGN KEY (condId) REFERENCES rCondition(condId),
-	FOREIGN KEY (deviceId) REFERENCES device(DSerieNo)
+	FOREIGN KEY (condId) REFERENCES rCondition(condId)
+	
 );
 
 CREATE TABLE cond_timestamp
@@ -139,15 +123,15 @@ CREATE TABLE cond_timestamp
 	FOREIGN KEY (condId) REFERENCES rCondition(condId)
 );
 
-CREATE TABLE device_used_by_tag
+CREATE TABLE controller_used_by_tag
 (
     TSerieNo BIGINT UNSIGNED NOT NULL,
-	DSerieNo BIGINT UNSIGNED NOT NULL,
+	CSerieNo BIGINT UNSIGNED NOT NULL,
 	starttime TIMESTAMP, 
 	endtime TIMESTAMP, 
 	FOREIGN KEY(TSerieNo) REFERENCES tag(TSerieNo),	
-	FOREIGN KEY(DSerieNo) REFERENCES device(DSerieNo),
-	PRIMARY KEY(TSerieNo, DSerieNo, starttime)
+	FOREIGN KEY(CSerieNo) REFERENCES controller(CSerieNo),
+	PRIMARY KEY(TSerieNo, CSerieNo, starttime)
 );
 
 CREATE TABLE profile_has_rules
