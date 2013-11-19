@@ -1,7 +1,7 @@
 <?php
-	include_once 'SH_configDB.php';
+	include_once 'configDB.php';
 	include_once "classes.php";
-	include_once "SH_sqlHelper.php";
+	include_once "sqlHelper.php";
 	
 	/*adding into database in the tables Control_system,Profile, Tag, Controller and Chores*/
 	function simpleInsertIntoDB($object)
