@@ -5,7 +5,8 @@
 		$database = 'smartparentalcontrol';
 		
 		//tables
-		$theTables = array('Chores'=>'Chores',
+		$theTables = array( 'Action' => 'Action',
+							'Chores'=>'Chores',
 							'Cond_controller_on_off' =>'Cond_controller_on_off',
 							'Cond_timeperiod' =>'Cond_timeperiod',
 							'Cond_timestamp' => 'Cond_timestamp',
@@ -21,17 +22,18 @@
 							);
 		
 		$theColumns = array(
+						'Action' => array('AId', 'RId',	'name', 'points','controllerId'),
 						'Chores' =>array('CId', 'CSId', 'name', 'description', 'defaultPoints'), 
 						'Cond_controller_on_off' => array('condDevId','condId'),
 						'Cond_timeperiod' => array('condTimepId','condId','PerId','timeFrom','timeTo','weekdays','weekly','ndWeekly','rdWeekly','firstInMonth','lastInMonth','weekNumber'),
 						'Cond_timestamp' => array('condTimesId','condId','timestamp'),
-						'Control_system' =>array('CSId', 'username', 'password'), 
+						'Control_system' =>array('CSId', 'username', 'password', 'email', 'phoneNo'), 
 						'Controller' =>array('CSerieNo','CSId', 'name' ,'location', 'status' ),
 						'Controller_used_by_tag' =>array('TSerieNo', 'CSerieNo', 'starttime', 'endtime'),
 						'Profile' =>array('PId', 'CSId', 'name', 'points'),
 						'Profile_did_chores' =>array('PId', 'CId', 'actualPoints', 'timeOfCreation'),
 						'Profile_has_rules' =>array('PId', 'RId', 'validFromTime'),
-						'Rcondition' => array('condId','name','controllerId'),
+						'Rcondition' => array('condId','RId','name','controllerId'),
 						'Rules' =>array('RId','CSId', 'name', 'profileId',  'isPermission'),
 						'Tag' =>array('TSerieNo','CSId', 'profileId', 'name', 'active')
 		);

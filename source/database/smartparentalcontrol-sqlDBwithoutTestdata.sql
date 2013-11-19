@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 18, 2013 at 02:52 PM
+-- Generation Time: Nov 19, 2013 at 03:10 PM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.16
 
@@ -30,12 +30,14 @@ USE `smartparentalcontrol`;
 
 CREATE TABLE IF NOT EXISTS `action` (
   `AId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `RId` bigint(20) unsigned NOT NULL,
   `name` varchar(30) NOT NULL,
   `points` double DEFAULT NULL,
   `controllerId` bigint(20) unsigned DEFAULT NULL,
   PRIMARY KEY (`AId`),
   UNIQUE KEY `AId` (`AId`),
-  KEY `controllerId` (`controllerId`)
+  KEY `controllerId` (`controllerId`),
+  KEY `RId` (`RId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -149,6 +151,8 @@ CREATE TABLE IF NOT EXISTS `control_system` (
   `CSId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(30) NOT NULL,
   `password` varchar(50) NOT NULL,
+  `email` varchar(30) DEFAULT NULL,
+  `phoneNo` int(11) DEFAULT NULL,
   PRIMARY KEY (`CSId`),
   UNIQUE KEY `CSId` (`CSId`),
   UNIQUE KEY `username` (`username`)
@@ -207,11 +211,13 @@ CREATE TABLE IF NOT EXISTS `profile_has_rules` (
 
 CREATE TABLE IF NOT EXISTS `rcondition` (
   `condId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `RId` bigint(20) unsigned NOT NULL,
   `name` varchar(30) NOT NULL,
   `controllerId` bigint(20) unsigned NOT NULL,
   PRIMARY KEY (`condId`),
   UNIQUE KEY `condId` (`condId`),
-  KEY `controllerId` (`controllerId`)
+  KEY `controllerId` (`controllerId`),
+  KEY `RId` (`RId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -241,7 +247,7 @@ CREATE TABLE IF NOT EXISTS `rules` (
 CREATE TABLE IF NOT EXISTS `tag` (
   `TSerieNo` bigint(20) unsigned NOT NULL,
   `CSId` bigint(20) unsigned NOT NULL,
-  `profileId` bigint(20) unsigned NOT NULL,
+  `profileId` bigint(20) unsigned DEFAULT NULL,
   `name` varchar(30) DEFAULT NULL,
   `active` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`TSerieNo`),
@@ -258,7 +264,8 @@ CREATE TABLE IF NOT EXISTS `tag` (
 -- Constraints for table `action`
 --
 ALTER TABLE `action`
-  ADD CONSTRAINT `action_ibfk_1` FOREIGN KEY (`controllerId`) REFERENCES `controller` (`CSerieNo`);
+  ADD CONSTRAINT `action_ibfk_1` FOREIGN KEY (`controllerId`) REFERENCES `controller` (`CSerieNo`),
+  ADD CONSTRAINT `action_ibfk_2` FOREIGN KEY (`RId`) REFERENCES `rules` (`RId`);
 
 --
 -- Constraints for table `chores`
@@ -321,7 +328,8 @@ ALTER TABLE `profile_has_rules`
 -- Constraints for table `rcondition`
 --
 ALTER TABLE `rcondition`
-  ADD CONSTRAINT `rcondition_ibfk_1` FOREIGN KEY (`controllerId`) REFERENCES `controller` (`CSerieNo`);
+  ADD CONSTRAINT `rcondition_ibfk_1` FOREIGN KEY (`controllerId`) REFERENCES `controller` (`CSerieNo`),
+  ADD CONSTRAINT `rcondition_ibfk_2` FOREIGN KEY (`RId`) REFERENCES `rules` (`RId`);
 
 --
 -- Constraints for table `rules`

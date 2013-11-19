@@ -67,10 +67,10 @@ class MySQLHelper
    */
    function delete($table, $where=null)
    {
-		$sql="DELETE FROM " . $table;
+		$sql="DELETE FROM " . $table . " ";
 		if($where != null)
 		{
-			$sql.= " " . $where;
+			$sql.= "WHERE " . $where;
 		}
 		/*"DELETE FROM table_name
 		WHERE some_column = some_value"*/

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 18, 2013 at 02:50 PM
+-- Generation Time: Nov 19, 2013 at 03:14 PM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.16
 
@@ -30,12 +30,14 @@ USE `smartparentalcontrol`;
 
 CREATE TABLE IF NOT EXISTS `action` (
   `AId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `RId` bigint(20) unsigned NOT NULL,
   `name` varchar(30) NOT NULL,
   `points` double DEFAULT NULL,
   `controllerId` bigint(20) unsigned DEFAULT NULL,
   PRIMARY KEY (`AId`),
   UNIQUE KEY `AId` (`AId`),
-  KEY `controllerId` (`controllerId`)
+  KEY `controllerId` (`controllerId`),
+  KEY `RId` (`RId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -60,10 +62,10 @@ CREATE TABLE IF NOT EXISTS `chores` (
 --
 
 INSERT INTO `chores` (`CId`, `CSId`, `name`, `description`, `defaultPoints`) VALUES
-(1, 1, 'dishwashing', NULL, 0),
-(2, 1, 'vacuum room', 'vacuum the living room', 5),
-(3, 1, 'garbage', NULL, 5),
-(4, 1, 'clean own room', 'dust, vacuum,windows', 0);
+(1, 1, 'dishwashing', NULL, 3),
+(2, 1, 'vacuum room', 'the living room', 7),
+(3, 1, 'garbage', NULL, 6),
+(4, 1, 'clean own room', 'dust, vacuum,windows', 3);
 
 -- --------------------------------------------------------
 
@@ -157,6 +159,16 @@ CREATE TABLE IF NOT EXISTS `controller_used_by_tag` (
   KEY `CSerieNo` (`CSerieNo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `controller_used_by_tag`
+--
+
+INSERT INTO `controller_used_by_tag` (`TSerieNo`, `CSerieNo`, `starttime`, `endtime`) VALUES
+(234, 123, '2013-11-05 06:26:32', '2013-11-05 11:00:00'),
+(234, 124, '2013-11-19 15:12:45', '2013-11-19 17:00:00'),
+(235, 123, '2013-11-19 08:22:39', '2013-11-19 10:00:00'),
+(235, 124, '2013-11-13 09:00:00', '2013-11-13 11:00:00');
+
 -- --------------------------------------------------------
 
 --
@@ -167,6 +179,8 @@ CREATE TABLE IF NOT EXISTS `control_system` (
   `CSId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(30) NOT NULL,
   `password` varchar(50) NOT NULL,
+  `email` varchar(30) DEFAULT NULL,
+  `phoneNo` int(11) DEFAULT NULL,
   PRIMARY KEY (`CSId`),
   UNIQUE KEY `CSId` (`CSId`),
   UNIQUE KEY `username` (`username`)
@@ -176,8 +190,8 @@ CREATE TABLE IF NOT EXISTS `control_system` (
 -- Dumping data for table `control_system`
 --
 
-INSERT INTO `control_system` (`CSId`, `username`, `password`) VALUES
-(1, 'user1', '5f4dcc3b5aa765d61d8327deb882cf99');
+INSERT INTO `control_system` (`CSId`, `username`, `password`, `email`, `phoneNo`) VALUES
+(1, 'user1', '5f4dcc3b5aa765d61d8327deb882cf99', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -193,14 +207,15 @@ CREATE TABLE IF NOT EXISTS `profile` (
   PRIMARY KEY (`PId`),
   UNIQUE KEY `PId` (`PId`),
   KEY `CSId` (`CSId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `profile`
 --
 
 INSERT INTO `profile` (`PId`, `CSId`, `name`, `points`) VALUES
-(1, 1, 'allan', 0);
+(1, 1, 'allan1', 0),
+(2, 1, 'Hermann', 0);
 
 -- --------------------------------------------------------
 
@@ -239,11 +254,13 @@ CREATE TABLE IF NOT EXISTS `profile_has_rules` (
 
 CREATE TABLE IF NOT EXISTS `rcondition` (
   `condId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `RId` bigint(20) unsigned NOT NULL,
   `name` varchar(30) NOT NULL,
   `controllerId` bigint(20) unsigned NOT NULL,
   PRIMARY KEY (`condId`),
   UNIQUE KEY `condId` (`condId`),
-  KEY `controllerId` (`controllerId`)
+  KEY `controllerId` (`controllerId`),
+  KEY `RId` (`RId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -273,7 +290,7 @@ CREATE TABLE IF NOT EXISTS `rules` (
 CREATE TABLE IF NOT EXISTS `tag` (
   `TSerieNo` bigint(20) unsigned NOT NULL,
   `CSId` bigint(20) unsigned NOT NULL,
-  `profileId` bigint(20) unsigned NOT NULL,
+  `profileId` bigint(20) unsigned DEFAULT NULL,
   `name` varchar(30) DEFAULT NULL,
   `active` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`TSerieNo`),
@@ -288,7 +305,7 @@ CREATE TABLE IF NOT EXISTS `tag` (
 
 INSERT INTO `tag` (`TSerieNo`, `CSId`, `profileId`, `name`, `active`) VALUES
 (234, 1, 1, 'ring', 1),
-(235, 1, 1, NULL, 1);
+(235, 1, 2, NULL, 1);
 
 --
 -- Constraints for dumped tables
@@ -298,7 +315,8 @@ INSERT INTO `tag` (`TSerieNo`, `CSId`, `profileId`, `name`, `active`) VALUES
 -- Constraints for table `action`
 --
 ALTER TABLE `action`
-  ADD CONSTRAINT `action_ibfk_1` FOREIGN KEY (`controllerId`) REFERENCES `controller` (`CSerieNo`);
+  ADD CONSTRAINT `action_ibfk_1` FOREIGN KEY (`controllerId`) REFERENCES `controller` (`CSerieNo`),
+  ADD CONSTRAINT `action_ibfk_2` FOREIGN KEY (`RId`) REFERENCES `rules` (`RId`);
 
 --
 -- Constraints for table `chores`
@@ -361,7 +379,8 @@ ALTER TABLE `profile_has_rules`
 -- Constraints for table `rcondition`
 --
 ALTER TABLE `rcondition`
-  ADD CONSTRAINT `rcondition_ibfk_1` FOREIGN KEY (`controllerId`) REFERENCES `controller` (`CSerieNo`);
+  ADD CONSTRAINT `rcondition_ibfk_1` FOREIGN KEY (`controllerId`) REFERENCES `controller` (`CSerieNo`),
+  ADD CONSTRAINT `rcondition_ibfk_2` FOREIGN KEY (`RId`) REFERENCES `rules` (`RId`);
 
 --
 -- Constraints for table `rules`
