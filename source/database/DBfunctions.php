@@ -253,7 +253,8 @@
 		  
 	}
 	
-	/*function validateLogin($username, $password)
+	/*dette er den gamle version
+	function validateLogin($username, $password)
 	{
 		$db= new MySQLHelper();
 		
