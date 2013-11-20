@@ -44,7 +44,7 @@ CREATE TABLE tag
 	active BOOLEAN DEFAULT TRUE,
 	PRIMARY KEY(TSerieNo),
 	FOREIGN KEY (CSId) REFERENCES control_system(CSId),
-	FOREIGN KEY (profileId) REFERENCES profile(PId) ON DELETE CASCADE
+	FOREIGN KEY (profileId) REFERENCES profile(PId)
 );
 
 
