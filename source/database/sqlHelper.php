@@ -108,6 +108,10 @@ class MySQLHelper
 		ORDER BY column_name(s) ASC|DESC" */
    
 		return self::executeSQL($sql);
+   }
+   function real_escape_string($string)
+   {
+   		return $this->con->real_escape_string($string);
    }  
 }
 ?>
