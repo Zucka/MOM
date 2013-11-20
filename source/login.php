@@ -2,7 +2,8 @@
 	error_reporting(E_ALL);
 	ini_set('display_errors', 1);
 
-	include "include/headInclude.php";
+	//DB includes
+	include_once "database/DBfunctions.php";
 	
 	session_start();
 	if (isset($_GET['action'])) {$action = $_GET['action'];} else {$action = '';}
@@ -33,6 +34,22 @@
 							<title>Login</title>
 							<meta name="viewport" content="width=device-width, initial-scale=1.0">
 							 <meta http-equiv="X-UA-Compatible" content="IE=Edge"> <!-- Force document mode to IE9 standards -->
+							 <!-- JQuery from Google -->
+							<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+							<!-- JQueryUI from Google -->
+							<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script> 
+							<!-- Bootstrap -->
+							<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+
+							<script src="assets/js/bootstrap.min.js"></script>
+
+							<!-- Tablesorter -->
+							<script type="text/javascript" src="assets/tablesorter/jquery-latest.js"></script> 
+							<script type="text/javascript" src="assets/tablesorter/jquery.tablesorter.js"></script> 
+							<link href="assets/tablesorter/themes/blue/style.css" rel="stylesheet">
+
+							<!-- Our CSS -->
+							<link href="assets/css/style.css" rel="stylesheet">
 						</head>
 						<body>
 						<div class="container">
