@@ -1,11 +1,7 @@
 <?php
-	error_reporting(E_ALL);
-	ini_set('display_errors', '1');
-
 	include "include/headInclude.php";
 	
 	session_start();
-	//require_once('db/db.php');
 	if (isset($_GET['action'])) {$action = $_GET['action'];} else {$action = '';}
 
 	if ($action == '')
@@ -59,7 +55,7 @@
 			if (isset($_POST['username'])) {$username = $_POST['username'];} else {header('location:login.php');}
 			if (isset($_POST['password'])) {$password = $_POST['password'];} else {header('location:login.php');}
 
-			//$result = db_getSession($username,$password);
+			$result = validateLogin($_POST['username'],$_POST['password']);
 			if ($result == false) {
 					header('location:login.php?error=1');
 					exit();
@@ -67,6 +63,7 @@
 			else {
 					$_SESSION['session_id'] = session_id();
 					$_SESSION['username'] = $username;
+					$_SESSION['CSId'] = $result;
 
 					session_write_close();
 					header('location:/');
