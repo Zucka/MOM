@@ -7,7 +7,6 @@
 		//tables
 		$theTables = array( 'Action' => 'Action',
 							'Chores'=>'Chores',
-							'Cond_controller_on_off' =>'Cond_controller_on_off',
 							'Cond_timeperiod' =>'Cond_timeperiod',
 							'Cond_timestamp' => 'Cond_timestamp',
 							'Control_system' => 'Control_system',
@@ -24,7 +23,6 @@
 		$theColumns = array(
 						'Action' => array('AId', 'RId',	'name', 'points','controllerId'),
 						'Chores' =>array('CId', 'CSId', 'name', 'description', 'defaultPoints'), 
-						'Cond_controller_on_off' => array('condDevId','condId'),
 						'Cond_timeperiod' => array('condTimepId','condId','PerId','timeFrom','timeTo','weekdays','weekly','ndWeekly','rdWeekly','firstInMonth','lastInMonth','weekNumber'),
 						'Cond_timestamp' => array('condTimesId','condId','timestamp'),
 						'Control_system' =>array('CSId', 'username', 'password', 'email', 'phoneNo'), 

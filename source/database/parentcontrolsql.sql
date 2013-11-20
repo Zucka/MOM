@@ -112,14 +112,6 @@ CREATE TABLE cond_timeperiod
 	FOREIGN KEY (condId) REFERENCES rCondition(condId)
 );
 
-CREATE TABLE cond_controller_on_off
-(
-	condDevId BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-	condId BIGINT UNSIGNED NOT NULL,
-	PRIMARY KEY(condDevId),
-	FOREIGN KEY (condId) REFERENCES rCondition(condId)
-	
-);
 
 CREATE TABLE cond_timestamp
 (
