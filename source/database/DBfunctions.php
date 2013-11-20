@@ -242,7 +242,33 @@
 		global $theColumns;
 		$columntemp = $theColumns['Control_system'];
 		$table = $theTables['Control_system'];
-		$whereClause = $columntemp[1] . " = '" . $username . "' AND " . $columntemp[2] . " = MD5('" . $password . "')";
+		$whereClause =  $columntemp[1] . " = '" . $username . "' AND " . $columntemp[2] . " = MD5('" . $password . "')";
+		$result = $db->query('*', $table, $whereClause );
+		if($row = mysqli_fetch_assoc($result))
+		{
+			return $row['CSId']; 
+		}
+
+		return false;
+		  
+	}
+	
+	/*function validateLogin($username, $password)
+	{
+		$db= new MySQLHelper();
+		
+		global $theTables;
+		global $theColumns;
+		$columntemp = $theColumns['Control_system'];
+		$table = $theTables['Control_system'];
+		
+		$whereClause =  $columntemp[1] . " = '" . $username . "' AND " . $columntemp[2] . " = MD5('" . $password . "')";
+		$result = $db->query('*', $table, $whereClause );
+		if($row = mysqli_fetch_assoc($result))
+		{
+			return $row['CSId']; 
+		}
+		/*$whereClause = $columntemp[1] . " = '" . $username . "' AND " . $columntemp[2] . " = MD5('" . $password . "')";
 		$result = $db->query('*', $table, $whereClause );
 		$row = mysqli_fetch_array($result);
 		if($row == null)
@@ -252,10 +278,8 @@
 		else
 		{
 			return $row['CSId'];
-		}
-		
-		  
-	}
+		}*/  
+	}*/
 
 	function profilesBySystemId($systemID)
 	{
