@@ -1,5 +1,5 @@
 <?php
-	include_once 'configDB.php';
+	include_once "configDB.php";
 	include_once "classes.php";
 	include_once "sqlHelper.php";
 	
@@ -18,8 +18,20 @@
 		case 'Control_system':  
 			$table=  $theTables['Control_system'];
 			$columstemp= $theColumns['Control_system'];
-			$colums="("  .  $columstemp[1] . ", " . $columstemp[2] . ", " . $columstemp[3] . ", " . $columstemp[4] ." )";
-			$values= "( '"  . $object->username . "' , MD5('" .  $object->password ."'), '" . $object->email ."', " . $object->phoneNo. " )" ;
+			$colums="("  .  $columstemp[1] . ", " . $columstemp[2];
+			$values= "( '"  . $object->username . "' , MD5('" .  $object->password ."')" ;
+			if($object->email != null)
+			{
+				$colums .= ", " .  $columstemp[3] ;
+				$values .= ", '" .   $object->email . "'";
+			}
+			if($object->phoneNo != null)
+			{
+				$colums .= ", " .  $columstemp[4] ;
+				$values .= ", " .   $object->phoneNo . "";
+			}
+			$colums.=")";
+			$values.=")";
 			break;
 		case 'Profile':
 			$table=  $theTables['Profile'];
@@ -74,9 +86,15 @@
 			$values .= ")";
 		break;
 		default:
-		return;
+		return null;
 		}
-		$db->insertInto($table , $values, $colums);
+		$resultValue = $db->insertInto($table, $values, $colums);
+		if($resultValue == null)
+		{ 
+		echo $resultValue = false;
+		}
+
+		return $resultValue;
 	}
 
 	/*edit data in database in the tables Control_system,Profile, Tag, Controller and Chores*/
@@ -94,7 +112,7 @@
 		case 'Control_system': //change password, email, phoneNo'
 			$table=  $theTables['Control_system'];
 			$columstemp= $theColumns['Control_system'];
-			$columnValue = $columstemp[2] . " = MD5('" .  $object->password . "'" ;
+			$columnValue = $columstemp[2] . " = MD5('" .  $object->password . "')" ;
 			if($object->email != null)
 			{
 				$columnValue .=  ", " . $columstemp[3] . " = '" . $object->email . "'";
@@ -157,8 +175,13 @@
 		default:
 		return;
 		}
+		$resultValue = $db->update( $table, $columnValue, $where);
+		if($resultValue == null)
+		{
+			$resultValue =  false;
+		}
 		
-		$db->update( $table, $columnValue, $where);
+		return $resultValue;
 		
 	}
 	
@@ -202,7 +225,12 @@
 		default:
 		return;
 		}
-		$db->delete($table, $where);
+		$resultvalue = $db->delete($table, $where);
+		if($resultvalue == null)
+		{
+			$resultvalue= false;
+		}
+		return $resultvalue;
 	}
 	
 	/* validate a username and password. Return false if it does not match a login and it returns the systemId if it does find a result.*/

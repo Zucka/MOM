@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 19, 2013 at 03:14 PM
+-- Generation Time: Nov 20, 2013 at 10:48 AM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.16
 
@@ -70,20 +70,6 @@ INSERT INTO `chores` (`CId`, `CSId`, `name`, `description`, `defaultPoints`) VAL
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cond_controller_on_off`
---
-
-CREATE TABLE IF NOT EXISTS `cond_controller_on_off` (
-  `condDevId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `condId` bigint(20) unsigned NOT NULL,
-  PRIMARY KEY (`condDevId`),
-  UNIQUE KEY `condDevId` (`condDevId`),
-  KEY `condId` (`condId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `cond_timeperiod`
 --
 
@@ -141,8 +127,8 @@ CREATE TABLE IF NOT EXISTS `controller` (
 --
 
 INSERT INTO `controller` (`CSerieNo`, `CSId`, `name`, `location`, `status`) VALUES
-(123, 1, 'TV', 'livingroom', '!'),
-(124, 1, 'playstation', NULL, '!');
+(123, 1, 'TV', 'livingroom', 'GREEN'),
+(124, 1, 'playstation', NULL, 'GREEN');
 
 -- --------------------------------------------------------
 
@@ -158,16 +144,6 @@ CREATE TABLE IF NOT EXISTS `controller_used_by_tag` (
   PRIMARY KEY (`TSerieNo`,`CSerieNo`,`starttime`),
   KEY `CSerieNo` (`CSerieNo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `controller_used_by_tag`
---
-
-INSERT INTO `controller_used_by_tag` (`TSerieNo`, `CSerieNo`, `starttime`, `endtime`) VALUES
-(234, 123, '2013-11-05 06:26:32', '2013-11-05 11:00:00'),
-(234, 124, '2013-11-19 15:12:45', '2013-11-19 17:00:00'),
-(235, 123, '2013-11-19 08:22:39', '2013-11-19 10:00:00'),
-(235, 124, '2013-11-13 09:00:00', '2013-11-13 11:00:00');
 
 -- --------------------------------------------------------
 
@@ -214,7 +190,7 @@ CREATE TABLE IF NOT EXISTS `profile` (
 --
 
 INSERT INTO `profile` (`PId`, `CSId`, `name`, `points`) VALUES
-(1, 1, 'allan1', 0),
+(1, 1, 'allan1', 12),
 (2, 1, 'Hermann', 0);
 
 -- --------------------------------------------------------
@@ -323,12 +299,6 @@ ALTER TABLE `action`
 --
 ALTER TABLE `chores`
   ADD CONSTRAINT `chores_ibfk_1` FOREIGN KEY (`CSId`) REFERENCES `control_system` (`CSId`);
-
---
--- Constraints for table `cond_controller_on_off`
---
-ALTER TABLE `cond_controller_on_off`
-  ADD CONSTRAINT `cond_controller_on_off_ibfk_1` FOREIGN KEY (`condId`) REFERENCES `rcondition` (`condId`);
 
 --
 -- Constraints for table `cond_timeperiod`

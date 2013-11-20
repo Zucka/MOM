@@ -44,6 +44,8 @@
 							
 		$conditionNames = array('time',	'controller on', 'controller off',
 								'Timeperiode', 'true',	'false');
+								
+		
 		
 
 

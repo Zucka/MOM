@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 19, 2013 at 03:10 PM
+-- Generation Time: Nov 20, 2013 at 09:53 AM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.16
 
@@ -55,20 +55,6 @@ CREATE TABLE IF NOT EXISTS `chores` (
   PRIMARY KEY (`CId`),
   UNIQUE KEY `CId` (`CId`),
   KEY `CSId` (`CSId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `cond_controller_on_off`
---
-
-CREATE TABLE IF NOT EXISTS `cond_controller_on_off` (
-  `condDevId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `condId` bigint(20) unsigned NOT NULL,
-  PRIMARY KEY (`condDevId`),
-  UNIQUE KEY `condDevId` (`condDevId`),
-  KEY `condId` (`condId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -272,12 +258,6 @@ ALTER TABLE `action`
 --
 ALTER TABLE `chores`
   ADD CONSTRAINT `chores_ibfk_1` FOREIGN KEY (`CSId`) REFERENCES `control_system` (`CSId`);
-
---
--- Constraints for table `cond_controller_on_off`
---
-ALTER TABLE `cond_controller_on_off`
-  ADD CONSTRAINT `cond_controller_on_off_ibfk_1` FOREIGN KEY (`condId`) REFERENCES `rcondition` (`condId`);
 
 --
 -- Constraints for table `cond_timeperiod`

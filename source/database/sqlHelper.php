@@ -1,5 +1,5 @@
 <?php
-include "SH_configDB.php";
+include_once "configDB.php";
 
 class MySQLHelper
 {
