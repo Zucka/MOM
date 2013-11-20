@@ -1,7 +1,7 @@
-<?
-require_once('db/db.php');
+<?php
+require_once($_SERVER['DOCUMENT_ROOT'].'/database/sqlHelper.php');
 require 'vendor/autoload.php';
-
+$db = new MySQLHelper();
 $app = new \Slim\Slim();
 
 
@@ -15,7 +15,7 @@ $app->get('/', function() {
 //	dId = Id of the device wanting status
 $app->get('/status/:cId', function($cId) {
 	$dId = $db->real_escape_string($cId);
-    $row = $db->query("SELECT status FROM controller WHERE CSerieNo='$cId' LIMIT 1")->fetch_assoc();
+    $row = $db->executeSQL("SELECT status FROM controller WHERE CSerieNo='$cId' LIMIT 1")->fetch_assoc();
     $data = array('status' => $row['status']);
     echo json_encode($data);
 });
@@ -27,10 +27,10 @@ $app->get('/status/:cId', function($cId) {
 $app->get('/turnOn/:cId/:tId', function($cId,$tId) {
 	$dId = $db->real_escape_string($cId);
 	$uId = $db->real_escape_string($tId);
-	$row = $db->query("SELECT status,action.points FROM controller,action WHERE id='$cId' AND controller.CSerieNo = action.controllerId LIMIT 1")->fetch_assoc();
+	$row = $db->executeSQL("SELECT status,action.points FROM controller,action WHERE id='$cId' AND controller.CSerieNo = action.controllerId LIMIT 1")->fetch_assoc();
 	$cost = $row['cost']; //cost is points per minute
 
-	$points = $db->query("SELECT points FROM profile,tag WHERE tag.TSerieNo='$tId' AND tag.profileId=profile.PId LIMIT 1")->fetch_assoc()['points'];
+	$points = $db->executeSQL("SELECT points FROM profile,tag WHERE tag.TSerieNo='$tId' AND tag.profileId=profile.PId LIMIT 1")->fetch_assoc()['points'];
 	$timeRemaining = $points/$cost; //time remaining in minutes
 	$status = '';
 	$error = '';
@@ -80,7 +80,7 @@ $app->get('/turnOff/:cId/:tId', function($cId,$tId) {
 	$dId = $db->real_escape_string($cId);
 	$uId = $db->real_escape_string($tId);
 
-	$row = $db->query("SELECT controller.status,action.points,controller_used_by_tag.TSerieNo FROM controller,controller_used_by_tag,action WHERE controller_used_by_tag.CSerieNo=controller.CSerieNo AND action.controllerId=controller.CSerieNo AND controller.CSerieNo='$cId' AND controller_used_by_tag.endtime IS NULL LIMIT 1")->fetch_assoc(); //time is when the device was turned on, user is who turned the device on
+	$row = $db->executeSQL("SELECT controller.status,action.points,controller_used_by_tag.TSerieNo FROM controller,controller_used_by_tag,action WHERE controller_used_by_tag.CSerieNo=controller.CSerieNo AND action.controllerId=controller.CSerieNo AND controller.CSerieNo='$cId' AND controller_used_by_tag.endtime IS NULL LIMIT 1")->fetch_assoc(); //time is when the device was turned on, user is who turned the device on
 	$status = '';
 	$error = '';
 	switch ($row['status']) {
