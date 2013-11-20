@@ -1,29 +1,31 @@
 <?
 require_once('db.php');
 
-function db_points_remove($uId,$points)
+function db_points_remove($tId,$points)
 {
 	$db->autocommit(FALSE);
-	$currentPoints = $db->query("SELECT points FROM users WHERE id='$uId'")->fetch_assoc()['points'];
-	$currentPoints = $currentPoints-$points;
+	$row = $db->query("SELECT points,PId FROM profile,tag WHERE tag.TSerieNo='$tId' AND tag.profileId=profile.PId")->fetch_assoc();
+	$pId = $row['PId'];
+	$currentPoints = $row['points']-$points;
 	if ($currentPoints < 0) 
 	{
 		//something wrong, this should not happen!
 	}
 	else
 	{
-		$db->query("UPDATE users SET points='$currentPoints' WHERE id='$uId'");
+		$db->query("UPDATE profile SET points='$currentPoints' WHERE PId='$pId'");
 	}
 	$db->commit();
 	$db->autocommit(TRUE);
 }
 
-function db_points_add($uId,$points)
+function db_points_add($tId,$points)
 {
 	$db->autocommit(FALSE);
-	$currentPoints = $db->query("SELECT points FROM users WHERE id='$uId'")->fetch_assoc()['points'];
-	$currentPoints = $currentPoints+$points;
-	$db->query("UPDATE users SET points='$currentPoints' WHERE id='$uId'"); //need to change to take point ceiling into account
+	$row = $db->query("SELECT points,PId FROM profile,tag WHERE tag.TSerieNo='$tId' AND tag.profileId=profile.PId")->fetch_assoc();
+	$currentPoints = $row['points']+$points;
+	$pId = $row['PId'];
+	$db->query("UPDATE profile SET points='$currentPoints' WHERE PId='$pId'"); //need to change to take point ceiling into account
 	$db->commit();
 	$db->autocommit(TRUE);
 }

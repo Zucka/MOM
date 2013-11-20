@@ -13,9 +13,9 @@ $app->get('/', function() {
 //Get status for a device
 //Inputs:
 //	dId = Id of the device wanting status
-$app->get('/status/:dId', function($dId) {
-	$dId = $db->real_escape_string($dId);
-    $row = $db->query("SELECT * FROM devices WHERE id='$dId' LIMIT 1")->fetch_assoc();
+$app->get('/status/:cId', function($cId) {
+	$dId = $db->real_escape_string($cId);
+    $row = $db->query("SELECT status FROM controller WHERE CSerieNo='$cId' LIMIT 1")->fetch_assoc();
     $data = array('status' => $row['status']);
     echo json_encode($data);
 });
@@ -24,13 +24,13 @@ $app->get('/status/:dId', function($dId) {
 //Inputs:
 //	dId = Id of the device wanting to turn on
 //	uId = Id of the user wanting to turn on the device
-$app->get('/turnOn/:dId/:uId', function($dId,$uId) {
-	$dId = $db->real_escape_string($dId);
-	$uId = $db->real_escape_string($uId);
-	$row = $db->query("SELECT status,cost FROM devices WHERE id='$dId' LIMIT 1")->fetch_assoc();
+$app->get('/turnOn/:cId/:tId', function($cId,$tId) {
+	$dId = $db->real_escape_string($cId);
+	$uId = $db->real_escape_string($tId);
+	$row = $db->query("SELECT status,action.points FROM controller,action WHERE id='$cId' AND controller.CSerieNo = action.controllerId LIMIT 1")->fetch_assoc();
 	$cost = $row['cost']; //cost is points per minute
 
-	$points = $db->query("SELECT points FROM users WHERE id='$uId'")->fetch_assoc()['points'];
+	$points = $db->query("SELECT points FROM profile,tag WHERE tag.TSerieNo='$tId' AND tag.profileId=profile.PId LIMIT 1")->fetch_assoc()['points'];
 	$timeRemaining = $points/$cost; //time remaining in minutes
 	$status = '';
 	$error = '';
@@ -76,11 +76,11 @@ $app->get('/turnOn/:dId/:uId', function($dId,$uId) {
 //Inputs:
 //	dId = Id of the device to turn off
 //	uId = Id of the user that want's to turn off device (might not be needed? have that info already?)
-$app->get('/turnOff/:dId/:uId', function($dId,$uId) {
-	$dId = $db->real_escape_string($dId);
-	$uId = $db->real_escape_string($uId);
+$app->get('/turnOff/:cId/:tId', function($cId,$tId) {
+	$dId = $db->real_escape_string($cId);
+	$uId = $db->real_escape_string($tId);
 
-	$row = $db->query("SELECT status,cost,time,user FROM devices WHERE id='$dId' LIMIT 1")->fetch_assoc(); //time is when the device was turned on, user is who turned the device on
+	$row = $db->query("SELECT controller.status,action.points,controller_used_by_tag.TSerieNo FROM controller,controller_used_by_tag,action WHERE controller_used_by_tag.CSerieNo=controller.CSerieNo AND action.controllerId=controller.CSerieNo AND controller.CSerieNo='$cId' AND controller_used_by_tag.endtime IS NULL LIMIT 1")->fetch_assoc(); //time is when the device was turned on, user is who turned the device on
 	$status = '';
 	$error = '';
 	switch ($row['status']) {
@@ -89,7 +89,7 @@ $app->get('/turnOff/:dId/:uId', function($dId,$uId) {
 			$error = 'Device is already off!';
 			break;
 		case 'value on': //device is currently on
-			if ($uId == $row['user']) //same user has to turn the device off
+			if ($tId == $row['TSerieNo']) //same user has to turn the device off
 			{
 				$status = 'OK';
 			}
@@ -108,13 +108,13 @@ $app->get('/turnOff/:dId/:uId', function($dId,$uId) {
 			$error = 'Status value not recognized, something is very wrong!';
 			break;
 	}
-	$cost = $row['cost'];
+	$cost = $row['points'];
 	$data = array('status' => $status);
 	if ($status == 'OK')
 	{
-		$timeSpent = db_device_turn_off($dId,$uId); //turn off device and get time spent
+		$timeSpent = db_device_turn_off($cId,$tId); //turn off device and get time spent
 		$points = $timeSpent*$cost;
-		db_points_remove($uId,$points);
+		db_points_remove($tId,$points);
 		//$data['timeSpent'] = $timeSpent //return time spent?
 	}
 	else
