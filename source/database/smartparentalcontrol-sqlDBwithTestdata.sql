@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 20, 2013 at 10:48 AM
+-- Generation Time: Nov 20, 2013 at 04:54 PM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.16
 
@@ -127,8 +127,8 @@ CREATE TABLE IF NOT EXISTS `controller` (
 --
 
 INSERT INTO `controller` (`CSerieNo`, `CSId`, `name`, `location`, `status`) VALUES
-(123, 1, 'TV', 'livingroom', 'GREEN'),
-(124, 1, 'playstation', NULL, 'GREEN');
+(123, 1, 'TV', 'livingroom', '!'),
+(124, 1, 'playstation', NULL, '!');
 
 -- --------------------------------------------------------
 
@@ -160,14 +160,15 @@ CREATE TABLE IF NOT EXISTS `control_system` (
   PRIMARY KEY (`CSId`),
   UNIQUE KEY `CSId` (`CSId`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `control_system`
 --
 
 INSERT INTO `control_system` (`CSId`, `username`, `password`, `email`, `phoneNo`) VALUES
-(1, 'user1', '5f4dcc3b5aa765d61d8327deb882cf99', NULL, NULL);
+(1, 'user1', '5f4dcc3b5aa765d61d8327deb882cf99', NULL, NULL),
+(2, 'user2', '5f4dcc3b5aa765d61d8327deb882cf99', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -190,7 +191,7 @@ CREATE TABLE IF NOT EXISTS `profile` (
 --
 
 INSERT INTO `profile` (`PId`, `CSId`, `name`, `points`) VALUES
-(1, 1, 'allan1', 12),
+(1, 1, 'allan1', 0),
 (2, 1, 'Hermann', 0);
 
 -- --------------------------------------------------------
@@ -249,12 +250,10 @@ CREATE TABLE IF NOT EXISTS `rules` (
   `RId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `CSId` bigint(20) unsigned NOT NULL,
   `name` varchar(30) NOT NULL,
-  `profileId` bigint(20) unsigned DEFAULT NULL,
   `isPermission` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`RId`),
   UNIQUE KEY `RId` (`RId`),
-  KEY `CSId` (`CSId`),
-  KEY `profileId` (`profileId`)
+  KEY `CSId` (`CSId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -356,8 +355,7 @@ ALTER TABLE `rcondition`
 -- Constraints for table `rules`
 --
 ALTER TABLE `rules`
-  ADD CONSTRAINT `rules_ibfk_1` FOREIGN KEY (`CSId`) REFERENCES `control_system` (`CSId`),
-  ADD CONSTRAINT `rules_ibfk_2` FOREIGN KEY (`profileId`) REFERENCES `profile` (`PId`);
+  ADD CONSTRAINT `rules_ibfk_1` FOREIGN KEY (`CSId`) REFERENCES `control_system` (`CSId`);
 
 --
 -- Constraints for table `tag`

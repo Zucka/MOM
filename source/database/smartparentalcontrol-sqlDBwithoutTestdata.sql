@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 20, 2013 at 09:53 AM
+-- Generation Time: Nov 20, 2013 at 04:39 PM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.16
 
@@ -216,12 +216,10 @@ CREATE TABLE IF NOT EXISTS `rules` (
   `RId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `CSId` bigint(20) unsigned NOT NULL,
   `name` varchar(30) NOT NULL,
-  `profileId` bigint(20) unsigned DEFAULT NULL,
   `isPermission` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`RId`),
   UNIQUE KEY `RId` (`RId`),
-  KEY `CSId` (`CSId`),
-  KEY `profileId` (`profileId`)
+  KEY `CSId` (`CSId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -315,8 +313,7 @@ ALTER TABLE `rcondition`
 -- Constraints for table `rules`
 --
 ALTER TABLE `rules`
-  ADD CONSTRAINT `rules_ibfk_1` FOREIGN KEY (`CSId`) REFERENCES `control_system` (`CSId`),
-  ADD CONSTRAINT `rules_ibfk_2` FOREIGN KEY (`profileId`) REFERENCES `profile` (`PId`);
+  ADD CONSTRAINT `rules_ibfk_1` FOREIGN KEY (`CSId`) REFERENCES `control_system` (`CSId`);
 
 --
 -- Constraints for table `tag`
