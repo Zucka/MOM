@@ -80,7 +80,7 @@
 
 			$result = validateLogin($username,$password);
 			if ($result == false) {
-					header('location:login.php?error=2');
+					header('location:login.php?error=1');
 					exit();
 			}
 			else {
