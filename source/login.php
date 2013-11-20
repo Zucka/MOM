@@ -79,9 +79,8 @@
 			if (isset($_POST['passwordLogin'])) {$password = $_POST['passwordLogin'];} else {header('location:login.php');}
 
 			$result = validateLogin($username,$password);
-			echo $result;
 			if ($result == false) {
-					//header('location:login.php?error=2');
+					header('location:login.php?error=2');
 					exit();
 			}
 			else {

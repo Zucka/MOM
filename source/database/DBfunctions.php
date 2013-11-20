@@ -242,7 +242,7 @@
 		global $theColumns;
 		$columntemp = $theColumns['Control_system'];
 		$table = $theTables['Control_system'];
-		$whereClause = $columntemp[1] . " = '" . $username . "' AND " . $columntemp[2] . "= MD5('" . $password . "')";
+		$whereClause = $columntemp[1] . " = '" . $username . "' AND " . $columntemp[2] . " = MD5('" . $password . "')";
 		$result = $db->query('*', $table, $whereClause );
 		$row = mysqli_fetch_array($result);
 		if($row == null)

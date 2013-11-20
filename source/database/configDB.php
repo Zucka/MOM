@@ -9,19 +9,19 @@
 		$db_password = 'tts37ent';
 		$db_database = 'smartparentalcontrol';		
 		//tables
-		$theTables = array( 'Action' => 'Action',
-							'Chores'=>'Chores',
-							'Cond_timeperiod' =>'Cond_timeperiod',
-							'Cond_timestamp' => 'Cond_timestamp',
-							'Control_system' => 'Control_system',
-							'Controller' => 'Controller',
-							'Controller_used_by_tag' => 'Controller_used_by_tag',
-							'Profile' => 'Profile',
-							'Profile_did_chores' => 'Profile_did_chores',
-							'Profile_has_rules' => 'Profile_has_rules',
-							'Rcondition' => 'Rcondition',
-							'Rules' => 'Rules',
-							'Tag' =>'Tag'
+		$theTables = array( 'Action' => 'action',
+							'Chores'=>'chores',
+							'Cond_timeperiod' =>'cond_timeperiod',
+							'Cond_timestamp' => 'cond_timestamp',
+							'Control_system' => 'control_system',
+							'Controller' => 'controller',
+							'Controller_used_by_tag' => 'controller_used_by_tag',
+							'Profile' => 'profile',
+							'Profile_did_chores' => 'profile_did_chores',
+							'Profile_has_rules' => 'profile_has_rules',
+							'Rcondition' => 'rcondition',
+							'Rules' => 'rules',
+							'Tag' =>'tag'
 							);
 		
 		$theColumns = array(

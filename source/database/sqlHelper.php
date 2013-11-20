@@ -8,8 +8,7 @@ class MySQLHelper
 	function __construct() 
 	{
 
-		$this->con = mysqli_connect($GLOBALS['db_server'], $GLOBALS['db_username'], $GLOBALS['db_password'], $GLOBALS['db_database']);
-
+		$this->con = new mysqli($GLOBALS['db_server'], $GLOBALS['db_username'], $GLOBALS['db_password'], $GLOBALS['db_database']);
 		//check connection
 		if(mysqli_connect_errno($this->con))
 		{
@@ -19,16 +18,15 @@ class MySQLHelper
 	
 
 	function __destruct() {
+
+		mysqli_close($this->con);
+
+	}
 	
-       mysqli_close($this->con);
-	   
-    }
-	
-	   function executeSQL($sql)
-   {
+	function executeSQL($sql)
+	{
 		return mysqli_query($this->con, $sql);
-		
-   }
+	}
    /**
    All input as a string, please
    */
@@ -106,7 +104,6 @@ class MySQLHelper
 		FROM table_name
 		WHERE column_name operator value
 		ORDER BY column_name(s) ASC|DESC" */
-   
 		return self::executeSQL($sql);
    }
    function real_escape_string($string)
