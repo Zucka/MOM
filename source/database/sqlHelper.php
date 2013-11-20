@@ -7,8 +7,8 @@ class MySQLHelper
 	
 	function __construct() 
 	{
-		
-		$this->con = mysqli_connect($GLOBALS['server'], $GLOBALS['username'], $GLOBALS['password'], $GLOBALS['database']);
+
+		$this->con = mysqli_connect($GLOBALS['db_server'], $GLOBALS['db_username'], $GLOBALS['db_password'], $GLOBALS['db_database']);
 
 		//check connection
 		if(mysqli_connect_errno($this->con))

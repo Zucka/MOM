@@ -27,6 +27,9 @@
 													</div> <!-- controls -->
 												</div> <!-- control-group error -->';
 			}
+			elseif($error == '2'){
+				echo "Error2";
+			}
 			/*Print Form*/?>
 				<html lang="en">
 						<head>
@@ -58,10 +61,10 @@
 												<img height="90%" src="assets/image/loginImage.jpg">
 										</div>
 										<?php echo $errorStartUsername; ?>
-										<input type="text" name="username" class="input-block-level" placeholder="Username">
+										<input type="text" name="usernameLogin" class="input-block-level" placeholder="Username">
 										<?php echo $errorEndUsername; ?>
 										<?php echo $errorStartPassword; ?>
-										<input type="password" name="password" class="input-block-level" placeholder="Password">
+										<input type="password" name="passwordLogin" class="input-block-level" placeholder="Password">
 										<?php echo $errorEndPassword; ?>
 										<button class="btn btn-large btn-primary" type="submit">Log In</button>
 								</form>
@@ -72,17 +75,18 @@
 	}
 	elseif ($action == 'login')
 	{
-			if (isset($_POST['username'])) {$username = $_POST['username'];} else {header('location:login.php');}
-			if (isset($_POST['password'])) {$password = $_POST['password'];} else {header('location:login.php');}
+			if (isset($_POST['usernameLogin'])) {$username = $_POST['usernameLogin'];} else {header('location:login.php');}
+			if (isset($_POST['passwordLogin'])) {$password = $_POST['passwordLogin'];} else {header('location:login.php');}
 
 			$result = validateLogin($username,$password);
+			echo $result;
 			if ($result == false) {
-					header('location:login.php?error=1');
+					//header('location:login.php?error=2');
 					exit();
 			}
 			else {
 					$_SESSION['session_id'] = session_id();
-					$_SESSION['username'] = $username;
+					$_SESSION['usernameLogin'] = $username;
 					$_SESSION['CSId'] = $result;
 
 					session_write_close();

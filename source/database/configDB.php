@@ -4,10 +4,10 @@
 		// $password = 'pcontrol';
 		// $database = 'smartparentalcontrol';
 		
-		$server= 'blade3.s-et.aau.dk';
-		$username = 'spc';
-		$password = 'tts37ent';
-		$database = 'smartparentalcontrol';		
+		$db_server= 'blade3.s-et.aau.dk';
+		$db_username = 'spc';
+		$db_password = 'tts37ent';
+		$db_database = 'smartparentalcontrol';		
 		//tables
 		$theTables = array( 'Action' => 'Action',
 							'Chores'=>'Chores',
