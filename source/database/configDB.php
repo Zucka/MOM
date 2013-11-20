@@ -1,9 +1,13 @@
 <?php
-		$server= 'localhost';
-		$username = 'root';
-		$password = 'pcontrol';
-		$database = 'smartparentalcontrol';
+		// $server= 'localhost';
+		// $username = 'root';
+		// $password = 'pcontrol';
+		// $database = 'smartparentalcontrol';
 		
+		$server= 'blade3.s-et.aau.dk';
+		$username = 'spc';
+		$password = 'tts37ent';
+		$database = 'smartparentalcontrol';		
 		//tables
 		$theTables = array( 'Action' => 'Action',
 							'Chores'=>'Chores',
