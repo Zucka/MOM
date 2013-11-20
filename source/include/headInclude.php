@@ -14,3 +14,8 @@
 
 <!-- Our CSS -->
 <link href="assets/css/style.css" rel="stylesheet">
+
+<?php
+	//DB includes
+	include_once "database/DBfunctions.php";
+?>
