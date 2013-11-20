@@ -262,14 +262,7 @@
 		global $theColumns;
 		$columntemp = $theColumns['Control_system'];
 		$table = $theTables['Control_system'];
-		
-		$whereClause =  $columntemp[1] . " = '" . $username . "' AND " . $columntemp[2] . " = MD5('" . $password . "')";
-		$result = $db->query('*', $table, $whereClause );
-		if($row = mysqli_fetch_assoc($result))
-		{
-			return $row['CSId']; 
-		}
-		/*$whereClause = $columntemp[1] . " = '" . $username . "' AND " . $columntemp[2] . " = MD5('" . $password . "')";
+	    $whereClause = $columntemp[1] . " = '" . $username . "' AND " . $columntemp[2] . " = MD5('" . $password . "')";
 		$result = $db->query('*', $table, $whereClause );
 		$row = mysqli_fetch_array($result);
 		if($row == null)
@@ -279,7 +272,7 @@
 		else
 		{
 			return $row['CSId'];
-		}*/  
+		}  
 	}*/
 
 	function profilesBySystemId($systemID)
@@ -385,6 +378,21 @@
 		$result = $db->query( $selectValues , $table, $whereClause, $ordering , $otherSQL);
 	
 		return mysqli_fetch_assoc($result);
+	}
+	
+	/* This will add a rule to a control system*/
+	function addNewRuleToDB($ruleData, $arrayOfCondition, $arrayOfCondition)
+	{
+	}
+	
+	/* This will connect a rule to a Profile*/
+	function addRuleToProfile($ruleId, $profileId)
+	{
+	}
+	
+	/* This will connect a Chore to a Profile*/
+	function addChoreToProfile($choreId, $profileId)
+	{
 	}
 	
 ?>
