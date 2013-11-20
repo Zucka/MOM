@@ -1,4 +1,4 @@
-<?
+<?php
 require_once($_SERVER['DOCUMENT_ROOT'].'/database/sqlHelper.php');
 require 'vendor/autoload.php';
 $db = new MySQLHelper();
