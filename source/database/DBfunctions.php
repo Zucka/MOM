@@ -265,7 +265,6 @@
 		}
 		elseif(is_array($resultValue))
 		{
-		echo 'error ' . $resultValue[1]. '<br>';
 			$errorMessage = null;
 			switch($resultValue[1])
 			{
@@ -329,12 +328,10 @@
 		$resultValue = $db->delete($table, $where);
 		if(is_bool($resultValue))
 		{ 
-			echo 'is bool' . '<br>';
 			return $resultValue;
 		}
 		elseif(is_array($resultValue))
 		{
-			echo 'is array' .$resultValue[1] . '<br>';
 			$errorMessage = null;
 			switch($resultValue[1])
 			{
