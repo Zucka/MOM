@@ -5,7 +5,7 @@ function setMenuActive(menuId){
 </script>
 
 <?php
-	$page = $_GET['page'];
+	if (isset($_GET['page'])) {$page = $_GET['page'];} else {$page = 'dashboard';}
 	
 	switch($page){
 		case "":

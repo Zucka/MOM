@@ -3,10 +3,46 @@
 
 require_once('db.php');
 
-	function createUser($postData) {
+	$connectionNewBD = new mysqli('localhost','root','root','smartparentalcontrol');
+	if (mysqli_connect_errno()) {
+	    die('Could not connect: ' . mysqli_connect_error());
+	}
+	
+	function queryNew($q) {
+		global $connectionNewBD;
+		$R = $connectionNewBD->query($q);
+		return $R;
+	}
 
-		$hashedPass = hashPassword($postData['password']);
-
+	function validateLogin($username, $password) {
+		global $connectionNewBD;
+		$username = $connectionNewBD->real_escape_string($username);
+		$password = $connectionNewBD->real_escape_string($password);
+		$Q = "SELECT Pid, password FROM profile WHERE username = '".$username."' LIMIT 1";
+		$R = queryNew($Q);
+		$D = $R->fetch_assoc();
+		// if (isset($_GET['action'])) {$action = $_GET['action'];} else {$action = '';}
+		$_SESSION['Pid'] = $D['Pid'];
+		// Hashing the password with its hash as the salt returns the same hash
+		if ( crypt($password, $D['password']) == $D['password'] ) {
+		  // Ok!
+				$Q = "SELECT Pid, CSid, name, username, email, phone, role FROM profile WHERE Pid = ".$_SESSION['Pid']." LIMIT 1";
+				$R = queryNew($Q);
+				$D = $R->fetch_assoc();
+				$_SESSION['CSid'] = $D['CSid'];
+				$_SESSION['name'] = $D['name'];
+				$_SESSION['username'] = $D['username'];
+				$_SESSION['phone'] = $D['phone'];
+				$_SESSION['email'] = $D['email'];
+				$_SESSION['role'] = $D['role'];
+				$_SESSION['session_id'] = session_id();
+				session_write_close();
+				header("Location:/");
+		}
+		else  {
+			// Wrong Password OR no such user
+			header('location:login.php?error=1');
+		}
 	}
 
 	function hashPassword($password) {
@@ -31,4 +67,24 @@ require_once('db.php');
 
 	}
 
+												// '".$_SESSION['CSid']."',)"))
+
+	function createUser($postData) {
+		global $connectionNewBD;
+		$hashedPassword = hashPassword($postData['password']);
+		if (mysqli_query($connectionNewBD,"INSERT INTO profile (name, username, email, phone, role, password, CSid)
+										VALUES ('".$postData['name']."',
+												'".$postData['userName']."',
+												'".$postData['email']."',
+												'".$postData['phone']."',
+												'".$postData['userRole']."',
+												'".$hashedPassword."',
+												1)"))
+		{
+			return true;
+		}
+		else {
+			echo "ERROR: " . mysqli_error($connectionNewBD);
+		}
+	}
 ?>

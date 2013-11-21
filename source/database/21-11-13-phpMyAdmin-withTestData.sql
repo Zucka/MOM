@@ -10,9 +10,17 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
 --
 -- Database: `smartparentalcontrol`
 --
+CREATE DATABASE IF NOT EXISTS `smartparentalcontrol` DEFAULT CHARACTER SET utf8;
+USE `smartparentalcontrol`;
 
 -- --------------------------------------------------------
 
@@ -47,7 +55,17 @@ CREATE TABLE `chores` (
   PRIMARY KEY (`CId`),
   UNIQUE KEY `CId` (`CId`),
   KEY `CSId` (`CSId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `chores`
+--
+
+INSERT INTO `chores` (`CId`, `CSId`, `name`, `description`, `defaultPoints`) VALUES
+(1, 1, 'dishwashing', NULL, 3),
+(2, 1, 'vacuum room', 'the living room', 7),
+(3, 1, 'garbage', NULL, 6),
+(4, 1, 'clean own room', 'dust, vacuum,windows', 3);
 
 -- --------------------------------------------------------
 
@@ -104,6 +122,14 @@ CREATE TABLE `controller` (
   KEY `CSId` (`CSId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `controller`
+--
+
+INSERT INTO `controller` (`CSerieNo`, `CSId`, `name`, `location`, `status`) VALUES
+(123, 1, 'TV', 'livingroom', '!'),
+(124, 1, 'playstation', NULL, '!');
+
 -- --------------------------------------------------------
 
 --
@@ -130,11 +156,19 @@ CREATE TABLE `control_system` (
   `name` varchar(30) NOT NULL,
   `street` varchar(50) DEFAULT NULL,
   `postcode` varchar(30) DEFAULT NULL,
-  `phoneNo` int(11) DEFAULT NULL,
+  `phoneNo` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`CSId`),
   UNIQUE KEY `CSId` (`CSId`),
   UNIQUE KEY `username` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `control_system`
+--
+
+INSERT INTO `control_system` (`CSId`, `name`, `street`, `postcode`, `phoneNo`) VALUES
+(1, 'sys1', NULL, NULL, NULL),
+(2, 'sys2', 'bakerstreet', '9000', '12345678');
 
 -- --------------------------------------------------------
 
@@ -156,7 +190,17 @@ CREATE TABLE `profile` (
   UNIQUE KEY `PId` (`PId`),
   UNIQUE KEY `username_UNIQUE` (`username`),
   KEY `CSId` (`CSId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `profile`
+--
+
+INSERT INTO `profile` (`PId`, `CSId`, `name`, `points`, `username`, `password`, `email`, `phone`, `role`) VALUES
+(1, 1, 'Johan Sørensen', 0, 'johans', '$2a$10$i7eknel51kJMbofxMeagce5AxId6GNgiQej55stomKshOdxHWe22W', 'johan.soerensen6@gmail.com', '26136946', 'manager'),
+(2, 1, 'Allan Hansen', 0, 'allan', '$2a$10$nW4o5dFai5wuv0uRKgWdoehYWyU/UPBCnidg5rPxrdef4HKfejgEy', 'allan@smartparentalcontrol.com', '12345678', 'user'),
+(3, 1, 'Hermann Hansen', 0, 'hermann', '$2a$10$osOBcuybeXxjzhJVrjkpjuqbNpc4jDQUXWZkk0rr8LgUSuqlaDKeG', 'hermann@smartparentalcontrol.com', '87654321', 'manager');
+
 
 -- --------------------------------------------------------
 
@@ -239,6 +283,14 @@ CREATE TABLE `tag` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
+-- Dumping data for table `tag`
+--
+
+INSERT INTO `tag` (`TSerieNo`, `CSId`, `profileId`, `name`, `active`) VALUES
+(234, 1, 1, 'ring', 1),
+(235, 1, 2, NULL, 1);
+
+--
 -- Constraints for dumped tables
 --
 
@@ -319,3 +371,7 @@ ALTER TABLE `rules`
 ALTER TABLE `tag`
   ADD CONSTRAINT `tag_ibfk_1` FOREIGN KEY (`CSId`) REFERENCES `control_system` (`CSId`),
   ADD CONSTRAINT `tag_ibfk_2` FOREIGN KEY (`profileId`) REFERENCES `profile` (`PId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

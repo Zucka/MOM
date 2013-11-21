@@ -1,5 +1,8 @@
 <?php
-	// require_once "../include/headInclude.php";
+	error_reporting(E_ALL);
+	ini_set('display_errors', 1);
+
+	require_once "db/db_user.php";
 
 	if (isset($_GET['action'])) {$action = $_GET['action'];} else {$action = '';}
 
@@ -8,39 +11,31 @@
 			isset($_POST['userName']) && 
 			isset($_POST['email']) && 
 			isset($_POST['phone']) && 
+			isset($_POST['userRole']) && 
 			isset($_POST['password']) && 
 			$_POST['password'] == $_POST['repeatPassword']) {
-			// if (createUser($_POST)) {
+			 if (createUser($_POST)) {
 				// echo (DEVELOPER ? "Accepted" : "" );
-				echo '<script type="text/javascript">alert("Ok.");</script>';
-			// }
+				echo '<script type="text/javascript">alert("User created.");</script>';
+			 }
+			 else{echo "wrong";}
 		}
-		// else {echo '<script type="text/javascript">alert("Not all are set.");</script>';}
+		else {echo '<script type="text/javascript">alert("You are missing something..");</script>';}
 	}
 ?>
 
 <!DOCTYPE html>
 <head>
 	<title>Create User</title>
-	<!-- JQuery from Google -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<!-- JQueryUI from Google -->
-<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-<!-- Bootstrap -->
-<link href="../assets/css/bootstrap.min.css" rel="stylesheet">
-<script src="../assets/js/bootstrap.min.js"></script>
 
-<!-- Our CSS -->
-<link href="../assets/css/style.css" rel="stylesheet">
-
-<!-- SITE SPECIFIC CSS -->
-<style type="text/css">
-	/* all */
-::-webkit-input-placeholder { font-style:italic; }
-::-moz-placeholder { font-style:italic; } /* firefox 19+ */
-:-ms-input-placeholder { font-style:italic; } /* ie */
-input:-moz-placeholder { font-style:italic; }
-</style>
+	<!-- SITE SPECIFIC CSS -->
+	<style type="text/css">
+		/* all */
+		::-webkit-input-placeholder { font-style:italic; }
+		::-moz-placeholder { font-style:italic; } /* firefox 19+ */
+		:-ms-input-placeholder { font-style:italic; } /* ie */
+		input:-moz-placeholder { font-style:italic; }
+	</style>
 </head>
 <body>
 	<div class="container">
@@ -48,7 +43,7 @@ input:-moz-placeholder { font-style:italic; }
 			<div class="col-sm-10">
 				<h1>Create a new User</h1>
 				</br>
-				<form class="form-createUser form-horizontal" role="form" id="createUser" action="?p=createUser&action=create" method="post">
+				<form class="form-createUser form-horizontal" role="form" id="createUser" action="?page=createUser&action=create" method="post">
 					<div class="form-group">
 						<label for="name" class="col-sm-3 control-label">Name: </label>
 						<div class="col-sm-8">
@@ -83,6 +78,15 @@ input:-moz-placeholder { font-style:italic; }
 						<label for="repeatPassword" class="col-sm-3 control-label">Repaet Password: </label>
 						<div class="col-sm-8">
 							<input type="password" class="form-control" name="repeatPassword" id="repeatPassword" placeholder="0-9, a-z, A-Z" required>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="userRole" class="col-sm-3 control-label">User Role: </label>
+						<div class="col-sm-8">
+							<select name="userRole" id="userRole" class="form-control" required>
+								<option value="user" selected>User</option>
+								<option value="manager">Manager</option>
+							</select>
 						</div>
 					</div>
 			        </br>
