@@ -353,20 +353,18 @@
 	function validateLogin($username, $password)
 	{
 		$db= new MySQLHelper();
-		
+		//'Profile' =>array('PId', 'CSId', 'name', 'points', 'username', 'password', 'email','phone', 'role'),
 		global $theTables;
 		global $theColumns;
-		$columntemp = $theColumns['Control_system'];
-		$table = $theTables['Control_system'];
-		$whereClause =  $columntemp[1] . " = '" . $username . "' AND " . $columntemp[2] . " = MD5('" . $password . "')";
+		$columntemp = $theColumns['Profile'];
+		$table = $theTables['Profile'];
+		$whereClause =  $columntemp[4] . " = '" . $username . "' AND " . $columntemp[5] . " = '" . $password . "'";
 		$result = $db->query('*', $table, $whereClause );
 		if($row = mysqli_fetch_assoc($result))
 		{
 			return $row['CSId']; 
 		}
-
-		return false;
-		  
+		return false;	  
 	}
 	
 	/*dette er den gamle version
