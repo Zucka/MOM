@@ -38,7 +38,7 @@
 						'Profile_did_chores' =>array('PId', 'CId', 'actualPoints', 'timeOfCreation'),
 						'Profile_has_rules' =>array('PId', 'RId', 'validFromTime'),
 						'Rcondition' => array('condId','RId','name','controllerId'),
-						'Rules' =>array('RId','CSId', 'name', 'profileId',  'isPermission'),
+						'Rules' =>array('RId','CSId', 'name', 'isPermission'),
 						'Tag' =>array('TSerieNo','CSId', 'profileId', 'name', 'active')
 		);
 		$actionNames= array('Block user', 'Activate user', 'Add points',  

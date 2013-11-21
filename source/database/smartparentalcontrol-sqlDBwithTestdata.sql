@@ -238,7 +238,7 @@ CREATE TABLE IF NOT EXISTS `rcondition` (
   `condId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `RId` bigint(20) unsigned NOT NULL,
   `name` varchar(30) NOT NULL,
-  `controllerId` bigint(20) unsigned NOT NULL,
+  `controllerId` bigint(20) unsigned,
   PRIMARY KEY (`condId`),
   UNIQUE KEY `condId` (`condId`),
   KEY `controllerId` (`controllerId`),
