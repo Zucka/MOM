@@ -25,7 +25,11 @@ class MySQLHelper
 	
 	function executeSQL($sql)
 	{
-		return mysqli_query($this->con, $sql);
+		$message = mysqli_query($this->con, $sql);
+		if (!$message) {
+			 return array("SQLERROR: " , mysqli_errno($this->con));
+		 }
+		return $message;
 	}
    /**
    All input as a string, please

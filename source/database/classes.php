@@ -1,48 +1,58 @@
 <?php
 class Control_system
 {
-	public $username; 
-	public $password; 
-	public $systemId;
-	public $email;
+	public $name;
+	public $CSId;
+	public $street;
 	public $phoneNo;
-	function __construct($username, $password, $systemId = null, $email = null, $phoneNo = null) 
+	public $postcode;
+	function __construct($name ,$CSId = null, $street = null,$postcode = null , $phoneNo = null) 
 		{
-			$this->username= $username;
-			$this->password= $password;
-			$this->systemId= $systemId;
-			$this->email= $email;
+			$this->name = $name;
+			$this->CSId= $CSId;
+			$this->street= $street;
+			$this->postcode= $postcode;
 			$this->phoneNo= $phoneNo;
 		}
 }
 class Profile
 {
-	public $systemId; 
+	public $CSId; 
 	public $name; 
 	public $profileId;
 	public $points;
+	public $username;
+	public $password;
+	public $email;
+	public $phoneNo;
+	public $role; //(user OR manager)
+
 	
-	
-	function __construct($systemId, $name, $profileId = null , $points = null) 
+	function __construct($CSId, $name , $username, $password, $email, $points = null, $profileId = null, $role= null, $phoneNo = null) 
 	{
-		$this->systemId= $systemId;
-		$this->name= $name;
-		$this->points= $points;
-		$this->profileId= $profileId;
+		$this->CSId = $CSId;
+		$this->name = $name;
+		$this->points = $points;
+		$this->profileId = $profileId;
+		$this->username = $username;
+		$this->password = $password;
+		$this->email = $email;
+		$this->phoneNo = $phoneNo;
+		$this->role = $role;
 	}
 }
 
 class Tag
 {
-	public $systemId; 
+	public $CSId; 
 	public $name; 
 	public $TSerieNo;
 	public $active;
 	public $profileId;
 	 
-	function __construct($systemId, $profileId, $TSerieNo = null ,   $name= null, $active = null ) 
+	function __construct($CSId, $profileId, $TSerieNo = null ,   $name= null, $active = 0 ) 
 	{
-		$this->systemId = $systemId;
+		$this->CSId = $CSId;
 		$this->name = $name;
 		$this->TSerieNo = $TSerieNo;
 		$this->active = $active;
@@ -51,15 +61,15 @@ class Tag
 }
 class Controller
 {
-	public $systemId; 
+	public $CSId; 
 	public $name; 
 	public $CSerieNo;
 	public $location;
 	public $status;
 	 
-	function __construct($systemId, $name, $CSerieNo , $location = null, $status = null ) 
+	function __construct($CSId, $name, $CSerieNo , $location = null, $status = null ) 
 	{
-		$this->systemId = $systemId;
+		$this->CSId = $CSId;
 		$this->name = $name;
 		$this->CSerieNo = $CSerieNo;
 		$this->location = $location;
@@ -69,15 +79,15 @@ class Controller
 
 class Chores 
 {
-	public $systemId; 
+	public $CSId; 
 	public $name; 
 	public $CId;
 	public $description;
 	public $defaultPoints;
 	 
-	function __construct($systemId, $name, $CId =null , $description = null, $defaultPoints = null ) 
+	function __construct($CSId, $name, $CId =null , $description = null, $defaultPoints = null ) 
 	{
-		$this->systemId = $systemId; 
+		$this->CSId = $CSId; 
 		$this->name = $name; 
 		$this->CId = $CId;
 		$this->description = $description;
@@ -85,36 +95,59 @@ class Chores
 	}
 }
 
-class Permissions
-{//'PerId','name','CSId','profileId'
-	public $systemId; 
-	public $name; 
-	public $PerId;
-	public $profileId; 
-
-	 
-	function __construct($systemId, $name, $PerId =null , $profileId = null) 
-	{
-		$this->systemId = $systemId; 
-		$this->name = $name; 
-		$this->PerId = $PerId;
-		$this->profileId = $profileId; 
-	}
-}
 class Rules
 {//'RId', 'name', 'profileId', 'CSId'
-	public $systemId; 
+	public $CSId; 
 	public $name; 
 	public $RId;
-	public $profileId;
+	public $isPermission;
 
 	 
-	function __construct($systemId, $name, $RId = null , $profileId = null ) 
+	function __construct($CSId, $name, $isPermission= false, $RId = null ) 
 	{
-		$this->systemId = $systemId; 
+		$this->CSId = $CSId; 
 		$this->name = $name; 
 		$this->RId = $RId;
-		$this->profileId = $profileId;
+		$this->isPermission = $isPermission;
+	}
+}
+class Condition
+{//'condId','RId','name','controllerId'
+	public $CSId; 
+	public $name; 
+	public $condId;
+	public $controllerId;
+	public $arrayOfRestAttributes;
+
+	 
+	function __construct($CSId, $name, $condId=null, $controllerId = null, $arrayOfRestAttributes= null ) 
+	{
+		$this->CSId = $CSId; 
+		$this->name = $name; 
+		$this->condId = $condId;
+		$this->controllerId = $controllerId;
+		$this->arrayOfRestAttributes = $arrayOfRestAttributes;
+	}
+}
+
+class Action
+{//'AId', 'RId','name', 'points','controllerId'),
+	public $CSId; 
+	public $RId;
+	public $name; 
+	public $AId;
+	public $controllerId;
+	public $points;
+
+
+	function __construct($CSId, $RId, $name, $AId=null, $controllerId = null, $points= null ) 
+	{
+		$this->CSId = $CSId; 
+		$this->RId = $RId; 
+		$this->name = $name; 
+		$this->AId = $AId;
+		$this->controllerId = $controllerId;
+		$this->points = $points;
 	}
 }
 

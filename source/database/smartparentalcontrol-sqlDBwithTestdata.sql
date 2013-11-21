@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 20, 2013 at 04:54 PM
+-- Generation Time: Nov 21, 2013 at 03:02 PM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.16
 
@@ -153,22 +153,22 @@ CREATE TABLE IF NOT EXISTS `controller_used_by_tag` (
 
 CREATE TABLE IF NOT EXISTS `control_system` (
   `CSId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(30) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `email` varchar(30) DEFAULT NULL,
-  `phoneNo` int(11) DEFAULT NULL,
+  `name` varchar(30) NOT NULL,
+  `street` varchar(50) NOT NULL,
+  `postcode` varchar(30) DEFAULT NULL,
+  `phoneNo` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`CSId`),
   UNIQUE KEY `CSId` (`CSId`),
-  UNIQUE KEY `username` (`username`)
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `control_system`
 --
 
-INSERT INTO `control_system` (`CSId`, `username`, `password`, `email`, `phoneNo`) VALUES
-(1, 'user1', '5f4dcc3b5aa765d61d8327deb882cf99', NULL, NULL),
-(2, 'user2', '5f4dcc3b5aa765d61d8327deb882cf99', NULL, NULL);
+INSERT INTO `control_system` (`CSId`, `name`, `street`, `postcode`, `phoneNo`) VALUES
+(1, 'sys1', '', NULL, NULL),
+(2, 'sys2', 'bakerstreet', '9000', '12345678');
 
 -- --------------------------------------------------------
 
@@ -181,6 +181,11 @@ CREATE TABLE IF NOT EXISTS `profile` (
   `CSId` bigint(20) unsigned NOT NULL,
   `name` varchar(30) DEFAULT NULL,
   `points` double DEFAULT '0',
+  `username` varchar(45) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `phone` varchar(15) DEFAULT NULL,
+  `role` enum('user','manager') NOT NULL DEFAULT 'user',
   PRIMARY KEY (`PId`),
   UNIQUE KEY `PId` (`PId`),
   KEY `CSId` (`CSId`)
@@ -190,9 +195,9 @@ CREATE TABLE IF NOT EXISTS `profile` (
 -- Dumping data for table `profile`
 --
 
-INSERT INTO `profile` (`PId`, `CSId`, `name`, `points`) VALUES
-(1, 1, 'allan1', 0),
-(2, 1, 'Hermann', 0);
+INSERT INTO `profile` (`PId`, `CSId`, `name`, `points`, `username`, `password`, `email`, `phone`, `role`) VALUES
+(1, 1, 'Allan', 10, 'user1', 'password', 'email1', NULL, 'user'),
+(2, 1, 'Hermann', 20, 'user2', 'password', 'email2', '12654578', 'manager');
 
 -- --------------------------------------------------------
 

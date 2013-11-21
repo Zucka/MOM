@@ -1,13 +1,13 @@
 <?php
-		// $server= 'localhost';
-		// $username = 'root';
-		// $password = 'pcontrol';
-		// $database = 'smartparentalcontrol';
+		/* $db_server= 'localhost';
+		 $db_username = 'root';
+		 $db_password = 'pcontrol';
+		 $db_database = 'smartparentalcontrol';*/
 		
 		$db_server= 'blade3.s-et.aau.dk';
 		$db_username = 'spc';
 		$db_password = 'tts37ent';
-		$db_database = 'smartparentalcontrol';		
+		$db_database = 'smartparentalcontrol';	
 		//tables
 		$theTables = array( 'Action' => 'action',
 							'Chores'=>'chores',
@@ -23,16 +23,18 @@
 							'Rules' => 'rules',
 							'Tag' =>'tag'
 							);
+							
+
 		
 		$theColumns = array(
 						'Action' => array('AId', 'RId',	'name', 'points','controllerId'),
 						'Chores' =>array('CId', 'CSId', 'name', 'description', 'defaultPoints'), 
 						'Cond_timeperiod' => array('condTimepId','condId','PerId','timeFrom','timeTo','weekdays','weekly','ndWeekly','rdWeekly','firstInMonth','lastInMonth','weekNumber'),
 						'Cond_timestamp' => array('condTimesId','condId','timestamp'),
-						'Control_system' =>array('CSId', 'username', 'password', 'email', 'phoneNo'), 
+						'Control_system' =>array('CSId', 'name' , 'street', 'postcode', 'phoneNo'), 
 						'Controller' =>array('CSerieNo','CSId', 'name' ,'location', 'status' ),
 						'Controller_used_by_tag' =>array('TSerieNo', 'CSerieNo', 'starttime', 'endtime'),
-						'Profile' =>array('PId', 'CSId', 'name', 'points'),
+						'Profile' =>array('PId', 'CSId', 'name', 'points', 'username', 'password', 'email','phone', 'role'),
 						'Profile_did_chores' =>array('PId', 'CId', 'actualPoints', 'timeOfCreation'),
 						'Profile_has_rules' =>array('PId', 'RId', 'validFromTime'),
 						'Rcondition' => array('condId','RId','name','controllerId'),

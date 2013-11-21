@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 20, 2013 at 04:39 PM
+-- Generation Time: Nov 21, 2013 at 02:59 PM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.16
 
@@ -135,13 +135,13 @@ CREATE TABLE IF NOT EXISTS `controller_used_by_tag` (
 
 CREATE TABLE IF NOT EXISTS `control_system` (
   `CSId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(30) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `email` varchar(30) DEFAULT NULL,
-  `phoneNo` int(11) DEFAULT NULL,
+  `name` varchar(30) NOT NULL,
+  `street` varchar(50) NOT NULL,
+  `postcode` varchar(30) DEFAULT NULL,
+  `phoneNo` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`CSId`),
   UNIQUE KEY `CSId` (`CSId`),
-  UNIQUE KEY `username` (`username`)
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -155,6 +155,11 @@ CREATE TABLE IF NOT EXISTS `profile` (
   `CSId` bigint(20) unsigned NOT NULL,
   `name` varchar(30) DEFAULT NULL,
   `points` double DEFAULT '0',
+  `username` varchar(45) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `phone` varchar(15) DEFAULT NULL,
+  `role` enum('user','manager') NOT NULL DEFAULT 'user',
   PRIMARY KEY (`PId`),
   UNIQUE KEY `PId` (`PId`),
   KEY `CSId` (`CSId`)
