@@ -4,6 +4,7 @@
 
 	//DB includes
 	include_once "database/DBfunctions.php";
+	// require_once "db/db_user.php";
 	
 	session_start();
 	if (isset($_GET['action'])) {$action = $_GET['action'];} else {$action = '';}
@@ -28,7 +29,7 @@
 												</div> <!-- control-group error -->';
 			}
 			elseif($error == '2'){
-				echo "Error2";
+				echo "Somthing not set";
 			}
 			/*Print Form*/?>
 				<html lang="en">
@@ -75,21 +76,26 @@
 	}
 	elseif ($action == 'login')
 	{
-			if (isset($_POST['usernameLogin'])) {$username = $_POST['usernameLogin'];} else {header('location:login.php');}
-			if (isset($_POST['passwordLogin'])) {$password = $_POST['passwordLogin'];} else {header('location:login.php');}
+		if (isset($_POST['usernameLogin'])) {$username = $_POST['usernameLogin'];} else {header('location:login.php?error=2');}
+		if (isset($_POST['passwordLogin'])) {$password = $_POST['passwordLogin'];} else {header('location:login.php?error=2');}
 
-			$result = validateLogin($username,$password);
-			if ($result == false) {
-					header('location:login.php?error=1');
-					exit();
-			}
-			else {
-					$_SESSION['session_id'] = session_id();
-					$_SESSION['usernameLogin'] = $username;
-					$_SESSION['CSId'] = $result;
-
-					session_write_close();
-					header('location:/');
-			}
+		$result = validateLogin($username,$password);
+		if ($result == false) {
+				header('location:login.php?error=1');
+				die();
+		}
+		else {
+				// Store user info in Session varieble
+				$_SESSION['Pid'] = $result['Pid'];
+				$_SESSION['CSid'] = $result['CSid'];
+				$_SESSION['name'] = $result['name'];
+				$_SESSION['username'] = $result['username'];
+				$_SESSION['phone'] = $result['phone'];
+				$_SESSION['email'] = $result['email'];
+				$_SESSION['role'] = $result['role'];
+				$_SESSION['session_id'] = session_id();
+				session_write_close();
+				header("Location:/?login=ok");
+		}
 	}
 ?>

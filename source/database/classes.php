@@ -35,7 +35,7 @@ class Profile
 		$this->points = $points;
 		$this->profileId = $profileId;
 		$this->username = $username;
-		$this->password = $password;
+		$this->password = hashPassword($password);
 		$this->email = $email;
 		$this->phoneNo = $phoneNo;
 		$this->role = $role;

@@ -2,7 +2,7 @@
 	error_reporting(E_ALL);
 	ini_set('display_errors', 1);
 
-	require_once "db/db_user.php";
+	// require_once "db/db_user.php";
 
 	if (isset($_GET['action'])) {$action = $_GET['action'];} else {$action = '';}
 
@@ -14,11 +14,12 @@
 			isset($_POST['userRole']) && 
 			isset($_POST['password']) && 
 			$_POST['password'] == $_POST['repeatPassword']) {
-			 if (createUser($_POST)) {
+			 $newUser = new Profile($_SESSION['CSId'],$_POST['name'],$_POST['userName'],$_POST['password'],$_POST['email'],NULL,NULL,$_POST['userRole'],$_POST['phone']);
+			 if (simpleInsertIntoDB($newUser)) {
 				// echo (DEVELOPER ? "Accepted" : "" );
 				echo '<script type="text/javascript">alert("User created.");</script>';
 			 }
-			 else{echo "wrong";}
+			 else{echo '<script type="text/javascript">alert("Something went wrong in the DB.");</script>';}
 		}
 		else {echo '<script type="text/javascript">alert("You are missing something..");</script>';}
 	}

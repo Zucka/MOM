@@ -1,10 +1,10 @@
 <?php
-	/*session_start();
+	session_start();
 	
 	if ($_SESSION['session_id'] != session_id())
 	{
         header('location:login.php');
-	} */
+	} 
 ?>
 <head>
 	<?php include "include/headInclude.php"; ?>
@@ -28,7 +28,7 @@
 		<ul class="nav navbar-nav navbar-right">
 		  <li><a href="#">Help</a></li>
 		  <li><a href="#">Web-Shop</a></li>
-		  <li><a href="#">Log Out</a></li>
+		  <li><a href="/logout.php">Log Out</a></li>
 		</ul>
 	  </div><!-- /.navbar-collapse -->
 	</nav>
