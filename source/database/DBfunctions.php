@@ -487,30 +487,6 @@
 		return mysqli_fetch_assoc($result);
 	}
 	
-	/* This will add a rule to a control system*/
-	function addNewRuleToDB($ruleData, $arrayOfCondition, $arrayOfCondition)
-	{
-		if(get_class($ruleData)=='Rules')
-		{
-		}
-		elseif(is_array($ruleData))
-		{
-		}
-		else
-		{
-		return false;
-		}
-	}
-	
-	/* This will connect a rule to a Profile*/
-	function addRuleToProfile($ruleId, $profileId)
-	{
-	}
-	
-	/* This will connect a Chore to a Profile*/
-	function addChoreToProfile($choreId, $profileId)
-	{
-	}
 	
 	function hashPassword($password) {
 
@@ -532,6 +508,298 @@
 
 		return $hash;
 
+	}
+	
+	
+			/* This will connect a rule to a Profile*/
+	function addRuleToProfile($profileId ,$ruleId)
+	{
+		$db= new MySQLHelper();
+		global $theTables;
+		global $theColumns;
+		
+		$tempcol = $theColumns['Profile_has_rules'];
+		$table = $theTables['Profile_has_rules'];
+		$column = "( " . $tempcol[0] . ", " . $tempcol[1] . ")";
+		$values = "( ". $profileId . ", ". $ruleId . ")";
+		$resultValue = $db->insertInto($table, $values, $column);
+		if(is_bool($resultValue))
+		{
+			return $resultValue;
+		}
+		elseif(is_array($resultValue))
+		{
+			return sqlErrorMessage($resultValue[1]);
+		}
+
+	}
+	
+	/* This will connect a Chore to a Profile*/
+	function addChoreToProfile($choreId, $profileId, $points= null)
+	{
+		$db= new MySQLHelper();
+		global $theTables;
+		global $theColumns;
+		
+		$tempcol = $theColumns['Profile_did_chores'];
+		$table = $theTables['Profile_did_chores'];
+		$column = "( " . $tempcol[0] . ", " . $tempcol[1] . ", ". $tempcol[2] .")";
+		$values = "( ". $profileId . ", ". $choreId;
+		if($points == null)
+		{
+			$result = $db->query($theColumns['Chores'][4] , $theTables['Chores'], $tempcol[1] . "= ". $choreId);
+			if($row = mysqli_fetch_assoc($result))
+			{
+				$values .= ", " . $row['defaultPoints'] . ")"; 
+			}
+			else
+			{
+				echo 'error in addChoreToProfile:getting the default points';
+			}
+		}
+		else
+		{
+			$values .= ", " . $points . ")";
+		}
+		
+		$resultValue = $db->insertInto($table, $values, $column);
+		if(is_bool($resultValue))
+		{
+			return $resultValue;
+		}
+		elseif(is_array($resultValue))
+		{
+			return sqlErrorMessage($resultValue[1]);
+		}
+
+	}
+	
+		
+	/* This will add a rule with its conditions and actions to a control system*/
+	function addNewRuleToDB($ruleData, $arrayOfCondition, $arrayOfAction)
+	{
+		$db= new MySQLHelper();
+		global $theTables;
+		global $theColumns;
+		$ruleID;
+		if(get_class($ruleData)=='Rules')
+		{ //'RId','CSId', 'name',  'isPermission'),
+			$tempcol = $theColumns['Rules'];
+			$table = $theTables['Rules'];
+			$column = "( " . $tempcol[1] . ", " . $tempcol[2] . ")";
+			$values = "( ". $ruleData->CSId . ", '". $ruleData->name . "')";
+			if($ruleData->isPermission != null)
+			{
+				$column .= ", " . $tempcol[3]. ")"; 
+				$values .= ", " . false . ")";
+			}
+
+			$resultValue = $db->insertInto($table, $values, $column);
+			if($resultValue)
+			{
+				$qResult = $db->executeSQL("SELECT LAST_INSERT_ID() AS id FROM " . $table);
+				$row = mysqli_fetch_assoc($qResult);
+				$ruleID = $row['id'];
+				
+				foreach($arrayOfCondition as $cond)
+				{
+					addCondition($ruleID, $cond);
+				}
+				foreach($arrayOfAction as $action)
+				{
+					addAction($ruleID, $action);
+				}
+				return $ruleID;
+			}
+			elseif(is_array($resultValue))
+			{
+				return sqlErrorMessage($resultValue[1]);
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+		return false;
+		}
+	}
+	/*helper function to addNewRuleToDB*/
+	function addAction($ruleID, $action)
+	{
+		$db= new MySQLHelper();
+		global $theTables;
+		global $theColumns;
+		//'AId', 'RId',	'name', 'points','controllerId'
+		$tempcol = $theColumns['Action'];
+		$table = $theTables['Action'];
+		$column = "( " . $tempcol[1] . ", " . $tempcol[2];
+		$values = "( ". $ruleID . ", '". $action->name . "'";
+		if( $action->points != null)
+		{
+			$column .= ", " . $tempcol[3];
+			$values .= ", " . $action->points;
+		}
+		if( $action->controllerId != null)
+		{
+			$column .= ", " . $tempcol[4];
+			$values .= ", " . $action->controllerId;
+		}
+		$column .= ")";
+		$values .= ")";
+		$resultValue = $db->insertInto($table, $values, $column);
+		if(is_bool($resultValue))
+		{
+			return $resultValue;
+		}
+		elseif(is_array($resultValue))
+		{
+			return sqlErrorMessage($resultValue[1]);
+		}
+		
+	}
+	
+	/*helper function to addNewRuleToDB*/
+	function addCondition($ruleID, $cond)
+	{
+		$db= new MySQLHelper();
+		global $theTables;
+		global $theColumns;
+		
+		if(get_class($cond)=='Condition')
+		{
+			$tempcol = $theColumns['Rcondition'];
+			$table = $theTables['Rcondition'];
+			$condID;
+			
+			
+			$column = "( " . $tempcol[1] . ", " . $tempcol[2];
+			$values = "( ". $ruleID . ", '". $cond->name . "'";
+			if($cond->controllerId != null)
+			{
+				$column .= ", " . $tempcol[3];
+				$values .= ", ". $cond->controllerId;
+			}
+			$column .= " )";
+			$values .= " )";
+			
+			$resultValue = $db->insertInto($table, $values, $column);
+			if($resultValue)
+			{
+				$qResult = $db->executeSQL("SELECT LAST_INSERT_ID() AS id FROM " . $table);
+				$row = mysqli_fetch_assoc($qResult);
+				$condID = $row['id'];
+
+					/*specialist Condition handling*/
+				/*$arrayOfRestAttributes contains (timestamp) or ( 'timeFrom','timeTo','weekdays','weekly','ndWeekly','rdWeekly','firstInMonth','lastInMonth','weekNumber')*/
+				if($cond->arrayOfRestAttributes != null)
+				{
+					$extras = $cond->arrayOfRestAttributes;
+					if(count($extras)<2)
+					{
+						$tempcol = $theColumns['Cond_timestamp'];
+						$table = $theTables['Cond_timestamp'];	
+						$column = "( " . $tempcol[1] ;
+						$values = "( " . $condID ;		
+						if($extras[$tempcol[2]]!=null)
+						{
+							$column .= ", ". $tempcol[2];
+							$values .= ", " . $extras[$tempcol[2]];
+						}
+						$column .= ")" ;
+						$values .= ")" ;		
+					}
+					else
+					{ 
+						$tempcol = $theColumns['Cond_timeperiod'];
+						$table = $theTables['Cond_timeperiod'];		
+						$column = "(" . $tempcol[1] . ", ".$tempcol[2] . ", ". $tempcol[3] . ", " . $tempcol[4];
+						$values = "(" . $condID . ", " . $extras[$tempcol[2]] . ", " . $extras[$tempcol[3]] . ", '" . $extras[$tempcol[4]]. "'";
+						if($extras['weekly'] != null)
+						{
+							$column .= ", " . $tempcol[5];
+							$values .= ", " . $extras[$tempcol[5]];
+						}
+						if($extras['ndWeekly']!= null)
+						{
+							$column .= ", ". $tempcol[6];
+							$values .= ", ". $extras[$tempcol[6]];
+						}
+						if($extras['rdWeekly']!= null)
+						{
+							$column .= ", ". $tempcol[7];
+							$values .= ", ". $extras[$tempcol[7]];
+						}
+						if($extras['firstInMonth']!= null)
+						{
+							$column .= ", ". $tempcol[8];
+							$values .= ", ". $extras[$tempcol[8]];
+						}
+						if($extras['lastInMonth']!= null)
+						{
+							$column .= ", ". $tempcol[9];
+							$values .= ", ". $extras[$tempcol[9]];
+						}
+						if($extras['weekNumber']!= null)
+						{
+							$column .= ", ". $tempcol[10];
+							$values .= ", ". $extras[$tempcol[10]];
+						}
+						else
+						{
+							$column .= ", ". $tempcol[10];
+							$values .= ", WEEK()";
+						}
+						$column .= ")";
+						$values .= ")";
+					}
+					
+					$resultValue = $db->insertInto($table, $values, $column);
+					if(is_bool($resultValue))
+					{
+						return $resultValue;
+					}
+					elseif(is_array($resultValue))
+					{
+						return sqlErrorMessage($resultValue[1]);
+					}
+				}
+			}
+			else
+			{
+				return $resultValue;
+			}
+		}
+		elseif(is_array($resultValue))
+		{
+			return sqlErrorMessage($resultValue[1]);
+		}
+			
+			
+	}
+	
+	function sqlErrorMessage($errorValue)
+	{
+		$errorMessage = null;
+		switch($errorValue)
+		{
+		case 1054:
+				$errorMessage = $GLOBALS['SQL_ERROR_BAD_INPUT'];
+				break;
+		case 1062:
+			$errorMessage = $GLOBALS['SQL_ERROR_VALUE_ERROR'];
+			break;
+		case 1064:
+			$errorMessage = $GLOBALS['SQL_ERROR_WEIRD_FALSE'];
+			break;
+		case 1451:
+			$errorMessage = $GLOBALS['SQL_ERROR_DELETE_FAILED'];
+			break;
+		default:
+			$errorMessage = $GLOBALS['SQL_ERROR_OTHER'];
+		}
+		return $errorMessage;
 	}
 	
 ?>

@@ -29,8 +29,8 @@
 		$theColumns = array(
 						'Action' => array('AId', 'RId',	'name', 'points','controllerId'),
 						'Chores' =>array('CId', 'CSId', 'name', 'description', 'defaultPoints'), 
-						'Cond_timeperiod' => array('condTimepId','condId','PerId','timeFrom','timeTo','weekdays','weekly','ndWeekly','rdWeekly','firstInMonth','lastInMonth','weekNumber'),
-						'Cond_timestamp' => array('condTimesId','condId','timestamp'),
+						'Cond_timeperiod' => array('condTimepId','condId','timeFrom','timeTo','weekdays','weekly','ndWeekly','rdWeekly','firstInMonth','lastInMonth','weekNumber'),
+						'Cond_timestamp' => array('condTimesId','condId','onTimestamp'),
 						'Control_system' =>array('CSId', 'name' , 'street', 'postcode', 'phoneNo'), 
 						'Controller' =>array('CSerieNo','CSId', 'name' ,'location', 'status' ),
 						'Controller_used_by_tag' =>array('TSerieNo', 'CSerieNo', 'starttime', 'endtime'),
@@ -38,9 +38,10 @@
 						'Profile_did_chores' =>array('PId', 'CId', 'actualPoints', 'timeOfCreation'),
 						'Profile_has_rules' =>array('PId', 'RId', 'validFromTime'),
 						'Rcondition' => array('condId','RId','name','controllerId'),
-						'Rules' =>array('RId','CSId', 'name', 'isPermission'),
+						'Rules' =>array('RId','CSId', 'name',  'isPermission'),
 						'Tag' =>array('TSerieNo','CSId', 'profileId', 'name', 'active')
 		);
+
 		$actionNames= array('Block user', 'Activate user', 'Add points',  
 							'Set limit of point', 'Unlimited points',
 							'Access unlimited',	//permission all

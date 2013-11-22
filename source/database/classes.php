@@ -113,16 +113,15 @@ class Rules
 }
 class Condition
 {//'condId','RId','name','controllerId'
-	public $CSId; 
+	public $RId;
 	public $name; 
 	public $condId;
 	public $controllerId;
 	public $arrayOfRestAttributes;
 
-	 
-	function __construct($CSId, $name, $condId=null, $controllerId = null, $arrayOfRestAttributes= null ) 
+	function __construct($RId ,$name, $condId=null, $controllerId = null, $arrayOfRestAttributes= null ) 
 	{
-		$this->CSId = $CSId; 
+		$this->RId = $RId; 
 		$this->name = $name; 
 		$this->condId = $condId;
 		$this->controllerId = $controllerId;
@@ -132,7 +131,7 @@ class Condition
 
 class Action
 {//'AId', 'RId','name', 'points','controllerId'),
-	public $CSId; 
+
 	public $RId;
 	public $name; 
 	public $AId;
@@ -140,9 +139,8 @@ class Action
 	public $points;
 
 
-	function __construct($CSId, $RId, $name, $AId=null, $controllerId = null, $points= null ) 
+	function __construct( $RId, $name, $AId=null, $controllerId = null, $points= null ) 
 	{
-		$this->CSId = $CSId; 
 		$this->RId = $RId; 
 		$this->name = $name; 
 		$this->AId = $AId;
@@ -150,6 +148,7 @@ class Action
 		$this->points = $points;
 	}
 }
+
 
 
 ?>
