@@ -10,7 +10,7 @@ class MySQLHelper
 
 		$this->con = new mysqli($GLOBALS['db_server'], $GLOBALS['db_username'], $GLOBALS['db_password'], $GLOBALS['db_database']);
 		//check connection
-		if(mysqli_connect_errno($this->con))
+		if(mysqli_connect_errno())
 		{
 			return mysqli_connect_error();
 		}
@@ -19,15 +19,15 @@ class MySQLHelper
 
 	function __destruct() {
 
-		mysqli_close($this->con);
+		$this->con->close();
 
 	}
 	
 	function executeSQL($sql)
 	{
-		$message = mysqli_query($this->con, $sql);
+		$message = $this->con->query($sql);
 		if (!$message) {
-			 return array("SQLERROR: " , mysqli_errno($this->con));
+			 return array("SQLERROR: " , mysqli_errno());
 		 }
 		return $message;
 	}
@@ -113,6 +113,14 @@ class MySQLHelper
    function real_escape_string($string)
    {
    		return $this->con->real_escape_string($string);
-   }  
+   } 
+   function autocommit($bool)
+   {
+   		return $this->con->autocommit($bool);
+   } 
+   function commit()
+   {
+   		return $this->con->commit();
+   }
 }
 ?>
