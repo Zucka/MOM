@@ -1,5 +1,7 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'].'/database/sqlHelper.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/database/db_device.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/database/db_points.php');
 require 'vendor/autoload.php';
 $db = new MySQLHelper();
 $app = new \Slim\Slim();
@@ -15,8 +17,18 @@ $app->get('/', function() {
 //	dId = Id of the device wanting status
 $app->get('/status/:cId', function($cId) {
 	$dId = $db->real_escape_string($cId);
-    $row = $db->executeSQL("SELECT status FROM controller WHERE CSerieNo='$cId' LIMIT 1")->fetch_assoc();
-    $data = array('status' => $row['status']);
+    $row = $db->executeSQL("SELECT status FROM controller WHERE CSerieNo='$cId' LIMIT 1")->fetch_assoc(); //change to get cost from controller
+    $status = $row['status'];
+    $cost = 1; //temporary until cost is in DB
+    //Check rules if controller should shut off
+    $action = 'none';
+
+    //calculate timeRemaining and return it
+    $points = $db->executeSQL("SELECT points FROM profile,tag,controller_used_by_tag WHERE controller_used_by_tag.CSerieNo='$cId' AND controller_used_by_tag.endtime IS NULL AND controller_used_by_tag.TSerieNo=tag.TSerieNo AND tag.profileId=profile.PId LIMIT 1")->fetch_assoc()['points'];
+    $timeRemaining = $points/$cost;
+
+    //encode json and print it
+    $data = array('status' => $status, 'action' => $action, 'timeRemaining' => $timeRemaining); 
     echo json_encode($data);
 });
 
@@ -27,6 +39,10 @@ $app->get('/status/:cId', function($cId) {
 $app->get('/turnOn/:cId/:tId', function($cId,$tId) {
 	$dId = $db->real_escape_string($cId);
 	$uId = $db->real_escape_string($tId);
+	if (!db_device_verify_cId($cId,$tId))
+	{
+		return;
+	}
 	$row = $db->executeSQL("SELECT status,action.points FROM controller,action WHERE id='$cId' AND controller.CSerieNo = action.controllerId LIMIT 1")->fetch_assoc();
 	$cost = $row['cost']; //cost is points per minute
 
@@ -79,6 +95,10 @@ $app->get('/turnOn/:cId/:tId', function($cId,$tId) {
 $app->get('/turnOff/:cId/:tId', function($cId,$tId) {
 	$dId = $db->real_escape_string($cId);
 	$uId = $db->real_escape_string($tId);
+	if (!db_device_verify_cId($cId,$tId))
+	{
+		return;
+	}
 
 	$row = $db->executeSQL("SELECT controller.status,action.points,controller_used_by_tag.TSerieNo FROM controller,controller_used_by_tag,action WHERE controller_used_by_tag.CSerieNo=controller.CSerieNo AND action.controllerId=controller.CSerieNo AND controller.CSerieNo='$cId' AND controller_used_by_tag.endtime IS NULL LIMIT 1")->fetch_assoc(); //time is when the device was turned on, user is who turned the device on
 	$status = '';
