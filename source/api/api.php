@@ -1,7 +1,7 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'].'/spc/database/sqlHelper.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/spc/database/db_device.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/spc/database/db_points.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/sqlHelper.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/db_device.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/db_points.php');
 require 'vendor/autoload.php';
 $db = new MySQLHelper();
 $app = new \Slim\Slim();
