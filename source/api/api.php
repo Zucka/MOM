@@ -3,7 +3,6 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/sqlHelper.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/db_device.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/db_points.php');
 require 'vendor/autoload.php';
-$db = new MySQLHelper();
 $app = new \Slim\Slim();
 
 
@@ -16,6 +15,7 @@ $app->get('/', function() {
 //Inputs:
 //	dId = Id of the device wanting status
 $app->get('/status/:cId', function($cId) {
+	$db = new MySQLHelper();
 	$dId = $db->real_escape_string($cId);
     $row = $db->executeSQL("SELECT status FROM controller WHERE CSerieNo='$cId' LIMIT 1")->fetch_assoc(); //change to get cost from controller
     $status = $row['status'];
@@ -37,6 +37,7 @@ $app->get('/status/:cId', function($cId) {
 //	dId = Id of the device wanting to turn on
 //	uId = Id of the user wanting to turn on the device
 $app->get('/turnOn/:cId/:tId', function($cId,$tId) {
+	$db = new MySQLHelper();
 	$dId = $db->real_escape_string($cId);
 	$uId = $db->real_escape_string($tId);
 	if (!db_device_verify_cId($cId,$tId))
@@ -93,6 +94,7 @@ $app->get('/turnOn/:cId/:tId', function($cId,$tId) {
 //	dId = Id of the device to turn off
 //	uId = Id of the user that want's to turn off device (might not be needed? have that info already?)
 $app->get('/turnOff/:cId/:tId', function($cId,$tId) {
+	$db = new MySQLHelper();
 	$dId = $db->real_escape_string($cId);
 	$uId = $db->real_escape_string($tId);
 	if (!db_device_verify_cId($cId,$tId))
