@@ -27,7 +27,7 @@ class MySQLHelper
 	{
 		$message = $this->con->query($sql);
 		if (!$message) {
-			 return array("SQLERROR: " , $this->con->errno;
+			 return array("SQLERROR: " , $this->con->errno);
 		 }
 		return $message;
 	}
