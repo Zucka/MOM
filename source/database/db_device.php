@@ -1,6 +1,6 @@
-<?
-require_once($_SERVER['DOCUMENT_ROOT'].'/database/sqlHelper.php');
-
+<?php
+require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/sqlHelper.php');
+$db = new MySQLHelper();
 function db_device_turn_on($cId,$tId) {
 	$db->autocommit(false);
 	$db->executeSQL("INSERT INTO controller_used_by_tag VALUES ('$tId','$cId',NOW(),)"); //time=time when device was turned on, user=the user who turned the device on

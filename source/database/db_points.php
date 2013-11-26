@@ -1,6 +1,6 @@
-<?
-require_once($_SERVER['DOCUMENT_ROOT'].'/database/sqlHelper.php');
-
+<?php
+require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/sqlHelper.php');
+$db = new MySQLHelper();
 function db_points_remove($tId,$points)
 {
 	$db->autocommit(FALSE);
