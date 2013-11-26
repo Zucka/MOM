@@ -78,7 +78,7 @@ $app->get('/turnOn/:cId/:tId', function($cId,$tId) {
 	$data = array('status' => $status);
 	if ($status == 'OK')
 	{
-		db_device_turn_on($dId,$uId) //update db to indicate device is on
+		db_device_turn_on($dId,$uId); //update db to indicate device is on
 		$data['timeRemaining'] = $timeRemaining;
 	}
 	else
