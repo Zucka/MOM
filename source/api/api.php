@@ -139,7 +139,8 @@ $app->get('/turnOff/:cId/:tId', function($cId,$tId) {
 		$timeSpent = db_device_turn_off($cId,$tId); //turn off device and get time spent
 		$points = $timeSpent*$cost;
 		db_points_remove($tId,$points);
-		//$data['timeSpent'] = $timeSpent //return time spent?
+		$data['timeSpent'] = $timeSpent; //return time spent?
+		$data['pointsRemoved'] = $points;
 	}
 	else
 	{
