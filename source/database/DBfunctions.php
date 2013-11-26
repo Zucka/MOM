@@ -285,7 +285,7 @@
 	}
 	
 	/*delete in database Profile, Tag, Controller and Chores*/
-	function removeSimpleObjectFromDB($object)
+	function removeObjectFromDB($object)
 	{
 		$db= new MySQLHelper();
 		global $theColumns;
@@ -321,6 +321,21 @@
 			$columntemp = $theColumns['Chores'];
 			$where = $columntemp[0] . " = " . $object->CId;
 			break;
+	/*	case 'Rules':
+			$table=  $theTables['Rules'];
+			$columntemp = $theColumns['Rules'];
+			$where = $columntemp[0] . " = " . $object->RId;
+			break;
+		case 'Condition':
+			$table=  $theTables['Rcondition'];
+			$columntemp = $theColumns['Rcondition'];
+			$where = $columntemp[0] . " = " . $object->condId;
+			break;
+		case 'Action':
+			$table=  $theTables['Action'];
+			$columntemp = $theColumns['Action'];
+			$where = $columntemp[0] . " = " . $object->AId;
+			break;*/
 		default:
 		return;
 		}
@@ -498,13 +513,21 @@
 				
 				foreach($arrayOfCondition as $cond)
 				{
-					addCondition($ruleID, $cond);
+					$tempresults = editCondition($cond);
+					if(is_Array($tempresults))
+					{
+						return sqlErrorMessage($tempresults[1]);
+					}
 				}
 				foreach($arrayOfAction as $action)
 				{
-					addAction($ruleID, $action);
+					$tempresults = editAction($action);
+					if(is_Array($tempresults))
+					{
+						return sqlErrorMessage($tempresults[1]);
+					}
 				}
-				return $ruleID;
+				return $resultValue;
 			}
 			elseif(is_array($resultValue))
 			{
@@ -699,12 +722,23 @@
 			{
 				foreach($arrayOfCondition as $cond)
 				{
-					editCondition($cond);
+					//if a new condition should be added then make condition here
+					$tempresults = editCondition($cond);
+					if(is_Array($tempresults))
+					{
+						return sqlErrorMessage($tempresults[1]);
+					}
 				}
 				foreach($arrayOfAction as $action)
 				{
-					editAction($action);
+					//if a new condition should be added then make condition here
+					$tempresults = editAction($action);
+					if(is_Array($tempresults))
+					{
+						return sqlErrorMessage($tempresults[1]);
+					}
 				}
+				
 				return true;
 			}
 			elseif(is_array($resultValue))
