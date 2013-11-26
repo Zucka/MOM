@@ -131,7 +131,8 @@ $app->get('/turnOff/:cId/:tId', function($cId,$tId) {
 			$error = 'Status value not recognized, something is very wrong!';
 			break;
 	}
-	$cost = $row['points'];
+	//$cost = $row['points'];
+	$cost = 1; //TEMP
 	$data = array('status' => $status);
 	if ($status == 'OK')
 	{
