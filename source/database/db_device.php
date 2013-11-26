@@ -14,7 +14,7 @@ function db_device_turn_off($cId,$tId) {
 	$db = new MySQLHelper();
 	$db->autocommit(false);
 	$time = $db->executeSQL("SELECT UNIX_TIMESTAMP(starttime) as starttime FROM controller_used_by_tag WHERE CSerieNo='$cId' AND TSerieNo='$tId' AND endtime IS NULL")->fetch_assoc()['starttime'];
-	$db->executeSQL("UPDATE controller_used_by_tag SET endtime='"time()"'' WHERE CSerieNo='$cId' AND TSerieNo='$tId' AND endtime IS NULL");
+	$db->executeSQL("UPDATE controller_used_by_tag SET endtime='".time()."'' WHERE CSerieNo='$cId' AND TSerieNo='$tId' AND endtime IS NULL");
 	$timeSpent = floor((time()-$time)/60);
 	$db->executeSQL("UPDATE controller SET status='RED' WHERE CSerieNo='$cId'");
 	$db->commit();
