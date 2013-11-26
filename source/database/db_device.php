@@ -4,7 +4,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/sqlHelper.php');
 function db_device_turn_on($cId,$tId) {
 	$db = new MySQLHelper();
 	$db->autocommit(false);
-	$db->executeSQL("INSERT INTO controller_used_by_tag VALUES ('$tId','$cId',NOW(),)"); //time=time when device was turned on, user=the user who turned the device on
+	$db->executeSQL("INSERT INTO controller_used_by_tag VALUES ('$tId','$cId',NULL,NULL)"); //time=time when device was turned on, user=the user who turned the device on
 	$db->executeSQL("UPDATE controller SET status='GREEN' WHERE CSerieNo='$cId'");
 	$db->commit();
 	$db->autocommit(true);
