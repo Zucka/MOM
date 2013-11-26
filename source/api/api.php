@@ -44,7 +44,7 @@ $app->get('/turnOn/:cId/:tId', function($cId,$tId) {
 	{
 		return;
 	}
-	$row = $db->executeSQL("SELECT status,action.points FROM controller,action WHERE id='$cId' AND controller.CSerieNo = action.controllerId LIMIT 1")->fetch_assoc();
+	$row = $db->executeSQL("SELECT status,action.points FROM controller,action WHERE controller.CSerieNo='$cId' AND controller.CSerieNo = action.controllerId LIMIT 1")->fetch_assoc();
 	$cost = $row['cost']; //cost is points per minute
 
 	$points = $db->executeSQL("SELECT points FROM profile,tag WHERE tag.TSerieNo='$tId' AND tag.profileId=profile.PId LIMIT 1")->fetch_assoc()['points'];
