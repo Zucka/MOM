@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.4
+-- version 3.4.10.1deb1
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Nov 27, 2013 at 01:48 PM
--- Server version: 5.6.12-log
--- PHP Version: 5.4.16
+-- Vært: localhost
+-- Genereringstid: 27. 11 2013 kl. 15:41:06
+-- Serverversion: 5.5.32
+-- PHP-version: 5.3.10-1ubuntu3.8
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -19,13 +19,11 @@ SET time_zone = "+00:00";
 --
 -- Database: `smartparentalcontrol`
 --
-CREATE DATABASE IF NOT EXISTS `smartparentalcontrol` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `smartparentalcontrol`;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `action`
+-- Struktur-dump for tabellen `action`
 --
 
 CREATE TABLE IF NOT EXISTS `action` (
@@ -42,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `action` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `chores`
+-- Struktur-dump for tabellen `chores`
 --
 
 CREATE TABLE IF NOT EXISTS `chores` (
@@ -56,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `chores` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
--- Dumping data for table `chores`
+-- Data dump for tabellen `chores`
 --
 
 INSERT INTO `chores` (`CId`, `CSId`, `name`, `description`, `defaultPoints`) VALUES
@@ -68,12 +66,11 @@ INSERT INTO `chores` (`CId`, `CSId`, `name`, `description`, `defaultPoints`) VAL
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cond_timeperiod`
+-- Struktur-dump for tabellen `cond_timeperiod`
 --
 
 CREATE TABLE IF NOT EXISTS `cond_timeperiod` (
-  `condTimepId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `condId` bigint(20) unsigned DEFAULT NULL,
+  `condId` bigint(20) unsigned NOT NULL DEFAULT '0',
   `timeFrom` datetime NOT NULL,
   `timeTo` datetime NOT NULL,
   `weekdays` set('monday','tuesday','wednesday','thursday','friday','saturday','sunday') DEFAULT NULL,
@@ -83,28 +80,25 @@ CREATE TABLE IF NOT EXISTS `cond_timeperiod` (
   `firstInMonth` tinyint(1) DEFAULT '0',
   `lastInMonth` tinyint(1) DEFAULT '0',
   `weekNumber` tinyint(4) DEFAULT NULL,
-  PRIMARY KEY (`condTimepId`),
-  KEY `condId` (`condId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`condId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cond_timestamp`
+-- Struktur-dump for tabellen `cond_timestamp`
 --
 
 CREATE TABLE IF NOT EXISTS `cond_timestamp` (
-  `condTimesId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `condId` bigint(20) unsigned NOT NULL,
   `onTimestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`condTimesId`),
-  KEY `condId` (`condId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`condId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `controller`
+-- Struktur-dump for tabellen `controller`
 --
 
 CREATE TABLE IF NOT EXISTS `controller` (
@@ -119,7 +113,7 @@ CREATE TABLE IF NOT EXISTS `controller` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `controller`
+-- Data dump for tabellen `controller`
 --
 
 INSERT INTO `controller` (`CSerieNo`, `CSId`, `name`, `location`, `status`, `cost`) VALUES
@@ -129,7 +123,7 @@ INSERT INTO `controller` (`CSerieNo`, `CSId`, `name`, `location`, `status`, `cos
 -- --------------------------------------------------------
 
 --
--- Table structure for table `controller_used_by_tag`
+-- Struktur-dump for tabellen `controller_used_by_tag`
 --
 
 CREATE TABLE IF NOT EXISTS `controller_used_by_tag` (
@@ -142,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `controller_used_by_tag` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `controller_used_by_tag`
+-- Data dump for tabellen `controller_used_by_tag`
 --
 
 INSERT INTO `controller_used_by_tag` (`TSerieNo`, `CSerieNo`, `starttime`, `endtime`) VALUES
@@ -155,7 +149,7 @@ INSERT INTO `controller_used_by_tag` (`TSerieNo`, `CSerieNo`, `starttime`, `endt
 -- --------------------------------------------------------
 
 --
--- Table structure for table `control_system`
+-- Struktur-dump for tabellen `control_system`
 --
 
 CREATE TABLE IF NOT EXISTS `control_system` (
@@ -169,7 +163,7 @@ CREATE TABLE IF NOT EXISTS `control_system` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
--- Dumping data for table `control_system`
+-- Data dump for tabellen `control_system`
 --
 
 INSERT INTO `control_system` (`CSId`, `name`, `street`, `postcode`, `phoneNo`) VALUES
@@ -179,7 +173,7 @@ INSERT INTO `control_system` (`CSId`, `name`, `street`, `postcode`, `phoneNo`) V
 -- --------------------------------------------------------
 
 --
--- Table structure for table `profile`
+-- Struktur-dump for tabellen `profile`
 --
 
 CREATE TABLE IF NOT EXISTS `profile` (
@@ -198,7 +192,7 @@ CREATE TABLE IF NOT EXISTS `profile` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
--- Dumping data for table `profile`
+-- Data dump for tabellen `profile`
 --
 
 INSERT INTO `profile` (`PId`, `CSId`, `name`, `points`, `username`, `password`, `email`, `phone`, `role`) VALUES
@@ -211,7 +205,7 @@ INSERT INTO `profile` (`PId`, `CSId`, `name`, `points`, `username`, `password`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `profile_did_chores`
+-- Struktur-dump for tabellen `profile_did_chores`
 --
 
 CREATE TABLE IF NOT EXISTS `profile_did_chores` (
@@ -226,7 +220,7 @@ CREATE TABLE IF NOT EXISTS `profile_did_chores` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `profile_has_rules`
+-- Struktur-dump for tabellen `profile_has_rules`
 --
 
 CREATE TABLE IF NOT EXISTS `profile_has_rules` (
@@ -240,7 +234,7 @@ CREATE TABLE IF NOT EXISTS `profile_has_rules` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `rcondition`
+-- Struktur-dump for tabellen `rcondition`
 --
 
 CREATE TABLE IF NOT EXISTS `rcondition` (
@@ -256,7 +250,7 @@ CREATE TABLE IF NOT EXISTS `rcondition` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `rules`
+-- Struktur-dump for tabellen `rules`
 --
 
 CREATE TABLE IF NOT EXISTS `rules` (
@@ -271,7 +265,7 @@ CREATE TABLE IF NOT EXISTS `rules` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tag`
+-- Struktur-dump for tabellen `tag`
 --
 
 CREATE TABLE IF NOT EXISTS `tag` (
@@ -286,7 +280,7 @@ CREATE TABLE IF NOT EXISTS `tag` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `tag`
+-- Data dump for tabellen `tag`
 --
 
 INSERT INTO `tag` (`TSerieNo`, `CSId`, `profileId`, `name`, `active`) VALUES
@@ -294,82 +288,82 @@ INSERT INTO `tag` (`TSerieNo`, `CSId`, `profileId`, `name`, `active`) VALUES
 (235, 1, 2, NULL, 1);
 
 --
--- Constraints for dumped tables
+-- Begrænsninger for dumpede tabeller
 --
 
 --
--- Constraints for table `action`
+-- Begrænsninger for tabel `action`
 --
 ALTER TABLE `action`
   ADD CONSTRAINT `action_ibfk_1` FOREIGN KEY (`controllerId`) REFERENCES `controller` (`CSerieNo`) ON DELETE CASCADE,
   ADD CONSTRAINT `action_ibfk_2` FOREIGN KEY (`RId`) REFERENCES `rules` (`RId`) ON DELETE CASCADE;
 
 --
--- Constraints for table `chores`
+-- Begrænsninger for tabel `chores`
 --
 ALTER TABLE `chores`
   ADD CONSTRAINT `chores_ibfk_1` FOREIGN KEY (`CSId`) REFERENCES `control_system` (`CSId`) ON DELETE CASCADE;
 
 --
--- Constraints for table `cond_timeperiod`
+-- Begrænsninger for tabel `cond_timeperiod`
 --
 ALTER TABLE `cond_timeperiod`
   ADD CONSTRAINT `cond_timeperiod_ibfk_1` FOREIGN KEY (`condId`) REFERENCES `rcondition` (`condId`) ON DELETE CASCADE;
 
 --
--- Constraints for table `cond_timestamp`
+-- Begrænsninger for tabel `cond_timestamp`
 --
 ALTER TABLE `cond_timestamp`
   ADD CONSTRAINT `cond_timestamp_ibfk_1` FOREIGN KEY (`condId`) REFERENCES `rcondition` (`condId`) ON DELETE CASCADE;
 
 --
--- Constraints for table `controller`
+-- Begrænsninger for tabel `controller`
 --
 ALTER TABLE `controller`
   ADD CONSTRAINT `controller_ibfk_1` FOREIGN KEY (`CSId`) REFERENCES `control_system` (`CSId`) ON DELETE CASCADE;
 
 --
--- Constraints for table `controller_used_by_tag`
+-- Begrænsninger for tabel `controller_used_by_tag`
 --
 ALTER TABLE `controller_used_by_tag`
   ADD CONSTRAINT `controller_used_by_tag_ibfk_1` FOREIGN KEY (`TSerieNo`) REFERENCES `tag` (`TSerieNo`) ON DELETE CASCADE,
   ADD CONSTRAINT `controller_used_by_tag_ibfk_2` FOREIGN KEY (`CSerieNo`) REFERENCES `controller` (`CSerieNo`) ON DELETE CASCADE;
 
 --
--- Constraints for table `profile`
+-- Begrænsninger for tabel `profile`
 --
 ALTER TABLE `profile`
   ADD CONSTRAINT `profile_ibfk_1` FOREIGN KEY (`CSId`) REFERENCES `control_system` (`CSId`) ON DELETE CASCADE;
 
 --
--- Constraints for table `profile_did_chores`
+-- Begrænsninger for tabel `profile_did_chores`
 --
 ALTER TABLE `profile_did_chores`
   ADD CONSTRAINT `profile_did_chores_ibfk_2` FOREIGN KEY (`CId`) REFERENCES `chores` (`CId`) ON DELETE CASCADE,
   ADD CONSTRAINT `profile_did_chores_ibfk_1` FOREIGN KEY (`PId`) REFERENCES `profile` (`PId`) ON DELETE CASCADE;
 
 --
--- Constraints for table `profile_has_rules`
+-- Begrænsninger for tabel `profile_has_rules`
 --
 ALTER TABLE `profile_has_rules`
   ADD CONSTRAINT `profile_has_rules_ibfk_2` FOREIGN KEY (`RId`) REFERENCES `rules` (`RId`) ON DELETE CASCADE,
   ADD CONSTRAINT `profile_has_rules_ibfk_1` FOREIGN KEY (`PId`) REFERENCES `profile` (`PId`) ON DELETE CASCADE;
 
 --
--- Constraints for table `rcondition`
+-- Begrænsninger for tabel `rcondition`
 --
 ALTER TABLE `rcondition`
   ADD CONSTRAINT `rcondition_ibfk_1` FOREIGN KEY (`controllerId`) REFERENCES `controller` (`CSerieNo`) ON DELETE CASCADE,
   ADD CONSTRAINT `rcondition_ibfk_2` FOREIGN KEY (`RId`) REFERENCES `rules` (`RId`) ON DELETE CASCADE;
 
 --
--- Constraints for table `rules`
+-- Begrænsninger for tabel `rules`
 --
 ALTER TABLE `rules`
   ADD CONSTRAINT `rules_ibfk_1` FOREIGN KEY (`CSId`) REFERENCES `control_system` (`CSId`) ON DELETE CASCADE;
 
 --
--- Constraints for table `tag`
+-- Begrænsninger for tabel `tag`
 --
 ALTER TABLE `tag`
   ADD CONSTRAINT `tag_ibfk_1` FOREIGN KEY (`CSId`) REFERENCES `control_system` (`CSId`) ON DELETE CASCADE,
