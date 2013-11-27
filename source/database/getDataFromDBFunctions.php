@@ -104,9 +104,27 @@
 	
 		return mysqli_fetch_assoc($result);
 	}
-	
+
 	/* get rules and permission from a personID*/	
-	//Kan finde permissions men ikke rules
+	/* (Permission returns)An array with the following key=>value:
+PId: 1
+RId: 1
+validFromTime: 2013-11-27 16:06:59
+CSId: 1
+name: timeperiode
+isPermission: 1
+condId: 1
+controllerId: 123
+timeFrom: 2013-11-14 09:00:00
+timeTo: 2013-11-14 11:00:00
+weekdays: monday,tuesday,wednesday,thursday,friday
+weekly: 1
+ndWeekly: 0
+rdWeekly: 0
+firstInMonth: 0
+lastInMonth: 0
+weekNumber: 23
+	*/
 	function getRulesFromPId($personId, $isPermission = false)
 	{//($selectValues, $tables, $whereClause = NULL, $ordering = NULL, $otherSQL = NULL, $distinctResults = false)
 		$db= new MySQLHelper();
@@ -126,7 +144,7 @@
 		if($isPermission)
 		{
 			$tables .= ',' . $theTables['Rcondition'] . ' cond,' . $theTables['Cond_timeperiod'] . ' condTP';
-			$whereClause .= ' AND r.'. $columnRules[3] .'='. $isPermission . ' AND cond.' . $columnCond[1] . "= r.". $columnRules[0].  ' AND condTP.' . $columnCondTP[1] . "= cond.". $columnCond[0]; 
+			$whereClause .= ' AND r.'. $columnRules[3] .'='. $isPermission . ' AND cond.' . $columnCond[1] . "= r.". $columnRules[0].  ' AND condTP.' . $columnCondTP[0] . "= cond.". $columnCond[0]; 
 		
 			$result = $db->query($selectValues, $tables, $whereClause );
 			$returnArray = null;
