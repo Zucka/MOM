@@ -1,3 +1,11 @@
+<?php
+	$controllerArray = controllersByCSId($_SESSION['CSid']);
+	$tagArray = tagsByCSId($_SESSION['CSid']);
+	
+	echo $controllerArray[1]['name'];
+	echo $tagArray;
+?>
+
 <h1>Devices</h1>
 
 <h3 class="headder-devices">Controller</h3><a href="?page=addController"><button type="button" class="btn btn-devices"><span class="glyphicon glyphicon-plus"></span> Add Controller</button></a>
@@ -8,12 +16,17 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr>
-			<td>1</td><td>2</td><td>1</td><td>2</td><td>1</td>
-		</tr>
-		<tr>
-			<td>2</td><td>1</td><td>2</td><td>1</td><td>2</td>
-		</tr>
+			<?php 
+				foreach($controllerArray as $controller){
+					echo "<tr>
+							<td>".$controller['status']."</td>
+							<td>".$controller['name']."</td>
+							<td>".$controller['location']."</td>
+							<td>".$controller['lastUsedByProfile'].": ".$controller['lastTimeUsedFrom']." - ".$controller['lastTimeUsedTo']."</td>
+							<td>".$controller['CSerieNo']."</td>
+						</tr>";
+				}
+			?>
 	</tbody>	
 </table>
 
@@ -25,12 +38,20 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr>
-			<td>1</td><td>1</td><td>1</td><td>1</td><td>1</td>
-		</tr>
-		<tr>
-			<td>2</td><td>1</td><td>2</td><td>1</td><td>2</td>
-		</tr>
+			<?php 
+			
+			
+				foreach($tagArray as $tag){
+					echo "<tr>
+							<td>".$tag['active']."</td>
+							<td>".$tag['username']."</td>
+							<td>".$tag['name']."</td>
+							<td>".$tag['lastUsedController'].": ".$tag['lastTimeUsedFrom']." - ".$tag['lastTimeUsedTo']."</td>
+							<td>".$tag['TSerieNo']."</td>
+						</tr>";
+				}
+			?>
+		
 	</tbody>
 </table>
 

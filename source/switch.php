@@ -10,7 +10,7 @@ function setMenuActive(menuId){
 	switch($page){
 		case "":
 		case "dashboard":
-			include "";
+			//include "";
 			?><script>setMenuActive("dashboard");</script><?php
 			break;
 		
@@ -40,24 +40,24 @@ function setMenuActive(menuId){
 			break;
 		
 		case "users":
-			include "";
+			//include "";
 			?><script>setMenuActive("users");</script><?php
 			break;
 		
 		case "chores":
-			include "";
+			//include "";
 			?><script>setMenuActive("users");</script><?php
 			?><script>setMenuActive("chores");</script><?php
 			break;
 		
 		case "rules":
-			include "";
+			//include "";
 			?><script>setMenuActive("users");</script><?php
 			?><script>setMenuActive("rules");</script><?php
 			break;
 		
 		case "permissions":
-			include "";
+			//include "";
 			?><script>setMenuActive("users");</script><?php
 			?><script>setMenuActive("permissions");</script><?php
 			break;
@@ -68,12 +68,12 @@ function setMenuActive(menuId){
 			break;
 		
 		case "graf":
-			include "";
+			//include "";
 			?><script>setMenuActive("graf");</script><?php
 			break;
 		
 		case "calendar":
-			include "";
+			//include "";
 			?><script>setMenuActive("calendar");</script><?php
 			break;
 			

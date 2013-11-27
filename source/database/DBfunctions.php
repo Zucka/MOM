@@ -3,6 +3,7 @@
 	include_once "classes.php";
 	include_once "sqlHelper.php";
 	include_once "errorMessageSQL.php";
+	include_once "getDataFromDBFunctions.php";
 	
 	/*adding into database in the tables Control_system,Profile, Tag, Controller and Chores*/
 	function simpleInsertIntoDB($object)
