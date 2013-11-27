@@ -105,11 +105,12 @@
 		return mysqli_fetch_assoc($result);
 	}
 	
-	/* get rules and permission from a personID*/
-	/*this is in progress
+	/* get rules and permission from a personID*/	
+	//Kan finde permissions men ikke rules
 	function getRulesFromPId($personId, $isPermission = false)
 	{//($selectValues, $tables, $whereClause = NULL, $ordering = NULL, $otherSQL = NULL, $distinctResults = false)
 		$db= new MySQLHelper();
+		$db->autocommit(true);
 		global $theTables;
 		global $theColumns;
 		$columnCond =  $theColumns['Rcondition'];
@@ -119,26 +120,25 @@
 		$columnRules = $theColumns['Rules'];
 		$columnPHR = $theColumns['Profile_has_rules'];
 		
-		
 		$selectValues='*';
-		$tables = $theTables['Profile_has_rules']. ',' . $theTables['Rules'];
-		$whereClause = $columnPHR[0] . ' = '. $personId . ' AND ' . $columnPHR[1] . '=' $columnRules[0]. 
+		$tables = $theTables['Profile_has_rules']. ' phr,' . $theTables['Rules'] . ' r';
+		$whereClause = 'phr.'. $columnPHR[0] . ' = '. $personId . ' AND phr.' . $columnPHR[1] . '= r.'. $columnRules[0]; 
 		if($isPermission)
 		{
-			$tables .= ',' . $theTables['Rcondition'] . ',' . $theTables['Cond_timeperiod'];
-			$whereClause .= ' AND '. $columnRules[3] .'='. $isPermission . ' AND ' . $columnCond[1] . "=". $columnRules[0].  ' AND ' . $columnCondTP[1] . "=". $columnCond[0]; 
+			$tables .= ',' . $theTables['Rcondition'] . ' cond,' . $theTables['Cond_timeperiod'] . ' condTP';
+			$whereClause .= ' AND r.'. $columnRules[3] .'='. $isPermission . ' AND cond.' . $columnCond[1] . "= r.". $columnRules[0].  ' AND condTP.' . $columnCondTP[1] . "= cond.". $columnCond[0]; 
 		
+			$result = $db->query($selectValues, $tables, $whereClause );
+			$returnArray = null;
+			while($row = mysqli_fetch_assoc($result))
+			{	
+				$returnArray[] = $row; 
+			}
+			return $returnArray;
 		}
 		else
 		{
 		
 		}
-		$result = $db->query($selectValues, $table, $whereClause );
-		$returnArray = null;
-		while($row = mysqli_fetch_assoc($result))
-		{	
-			$returnArray[] = $row; 
-		}
-		return $returnArray;
-	}*/
+	}
 ?>

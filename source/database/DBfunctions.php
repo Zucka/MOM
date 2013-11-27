@@ -17,9 +17,6 @@
 		switch (get_class($object))
 		{
 		case 'Control_system':  
-		
-		//db => 'CSId', 'name' , 'street', 'postcode', 'phoneNo'
-		//class => $CSId = null, $street = null,$postcode = null , $phoneNo = null
 			$table=  $theTables['Control_system'];
 			$columstemp= $theColumns['Control_system'];
 			$colums="("  .  $columstemp[1];
@@ -43,14 +40,6 @@
 			$values.=")";
 			break;
 		case 'Profile':
-		/*
-		  `PId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-
-
-  `role` enum('user','manager') NOT NULL DEFAULT 'user',*/
-		
-		//db =>'PId', 'CSId', 'name', 'points', 'username', 'password', 'email','phone', 'role'
-		//class=> $CSId, $name , $username, $password, $email, $points = null, $profileId = null, $role= null, $phoneNo = null
 			$table=  $theTables['Profile'];
 			$columstemp= $theColumns['Profile'];
 			$colums="(" . $columstemp[1] . ", " . $columstemp[2] ;
