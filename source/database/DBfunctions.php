@@ -581,12 +581,12 @@
 					{
 						$tempcol = $theColumns['Cond_timestamp'];
 						$table = $theTables['Cond_timestamp'];	
-						$column = "( " . $tempcol[1] ;
+						$column = "( " . $tempcol[0] ;
 						$values = "( " . $condID ;		
 						if($extras[$tempcol[2]]!=null)
 						{
-							$column .= ", ". $tempcol[2];
-							$values .= ", " . $extras[$tempcol[2]];
+							$column .= ", ". $tempcol[1];
+							$values .= ", " . $extras[$tempcol[1]];
 						}
 						$column .= ")" ;
 						$values .= ")" ;		
@@ -596,41 +596,41 @@
 						$tempcol = $theColumns['Cond_timeperiod'];
 						$table = $theTables['Cond_timeperiod'];		
 						//               'condId'         'timeFrom',         'timeTo',             'weekdays'
-						$column = "(" . $tempcol[1] . ", ".$tempcol[2] . ", ". $tempcol[3] . ", " . $tempcol[4];
-						$values = "(" . $condID . ", " . $extras[$tempcol[2]] . ", " . $extras[$tempcol[3]] . ", '" . $extras[$tempcol[4]]. "'";
+						$column = "(" . $tempcol[0] . ", ".$tempcol[1] . ", ". $tempcol[2] . ", " . $tempcol[3];
+						$values = "(" . $condID . ", " . $extras[$tempcol[1]] . ", " . $extras[$tempcol[2]] . ", '" . $extras[$tempcol[3]]. "'";
 						if($extras['weekly'] != null)
 						{
-							$column .= ", " . $tempcol[5];
-							$values .= ", " . $extras[$tempcol[5]];
+							$column .= ", " . $tempcol[4];
+							$values .= ", " . $extras[$tempcol[4]];
 						}
 						if($extras['ndWeekly']!= null)
+						{
+							$column .= ", ". $tempcol[5];
+							$values .= ", ". $extras[$tempcol[5]];
+						}
+						if($extras['rdWeekly']!= null)
 						{
 							$column .= ", ". $tempcol[6];
 							$values .= ", ". $extras[$tempcol[6]];
 						}
-						if($extras['rdWeekly']!= null)
+						if($extras['firstInMonth']!= null)
 						{
 							$column .= ", ". $tempcol[7];
 							$values .= ", ". $extras[$tempcol[7]];
 						}
-						if($extras['firstInMonth']!= null)
+						if($extras['lastInMonth']!= null)
 						{
 							$column .= ", ". $tempcol[8];
 							$values .= ", ". $extras[$tempcol[8]];
 						}
-						if($extras['lastInMonth']!= null)
+						if($extras['weekNumber']!= null)
 						{
 							$column .= ", ". $tempcol[9];
 							$values .= ", ". $extras[$tempcol[9]];
 						}
-						if($extras['weekNumber']!= null)
-						{
-							$column .= ", ". $tempcol[10];
-							$values .= ", ". $extras[$tempcol[10]];
-						}
 						else
 						{
-							$column .= ", ". $tempcol[10];
+							$column .= ", ". $tempcol[9];
 							$values .= ", WEEK()";
 						}
 						$column .= ")";
@@ -779,39 +779,39 @@
 					{
 						$tempcol = $theColumns['Cond_timestamp'];
 						$table = $theTables['Cond_timestamp'];		
-						$columnValue =  $tempcol[2] ."=". $extras[$tempcol[2]];
-						$where = $tempcol[1] ."=".  $cond->condId;		
+						$columnValue =  $tempcol[1] ."=". $extras[$tempcol[1]];
+						$where = $tempcol[0] ."=".  $cond->condId;		
 					}
 					else
 					{ 
 						$tempcol = $theColumns['Cond_timeperiod'];
 						$table = $theTables['Cond_timeperiod'];		
-						$where = $tempcol[1] . "=". $cond->condId;
+						$where = $tempcol[0] . "=". $cond->condId;
 						//               'timeFrom'                                ,'timeTo',                                       'weekdays'
-						$columnValue = $tempcol[2] ."=". $extras[$tempcol[2]]. ", ". $tempcol[3] ."=". $extras[$tempcol[3]]. ", " . $tempcol[4]."='". $extras[$tempcol[4]]."'";
+						$columnValue = $tempcol[1] ."=". $extras[$tempcol[1]]. ", ". $tempcol[2] ."=". $extras[$tempcol[2]]. ", " . $tempcol[3]."='". $extras[$tempcol[3]]."'";
 						if($extras['weekly'] != null)
 						{
-							$columnValue .= ", " . $tempcol[5]. "=". $extras[$tempcol[5]];
+							$columnValue .= ", " . $tempcol[4]. "=". $extras[$tempcol[4]];
 						}
 						if($extras['ndWeekly']!= null)
 						{
-							$columnValue .= ", ". $tempcol[6]. "=". $extras[$tempcol[6]];
+							$columnValue .= ", ". $tempcol[5]. "=". $extras[$tempcol[5]];
 						}
 						if($extras['rdWeekly']!= null)
 						{
-							$columnValue .= ", ". $tempcol[7]. "=". $extras[$tempcol[7]];
+							$columnValue .= ", ". $tempcol[6]. "=". $extras[$tempcol[6]];
 						}
 						if($extras['firstInMonth']!= null)
 						{
-							$columnValue .= ", ". $tempcol[8]. "=". $extras[$tempcol[8]];
+							$columnValue .= ", ". $tempcol[7]. "=". $extras[$tempcol[7]];
 						}
 						if($extras['lastInMonth']!= null)
 						{
-							$columnValue .= ", ". $tempcol[9]. "=". $extras[$tempcol[9]];
+							$columnValue .= ", ". $tempcol[8]. "=". $extras[$tempcol[8]];
 						}
 						if($extras['weekNumber']!= null)
 						{
-							$columnValue .= ", ". $tempcol[10]. "=". $extras[$tempcol[10]];
+							$columnValue .= ", ". $tempcol[9]. "=". $extras[$tempcol[9]];
 						}
 					}
 					

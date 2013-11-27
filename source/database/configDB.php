@@ -29,8 +29,8 @@
 		$theColumns = array(
 						'Action' => array('AId', 'RId',	'name', 'points','controllerId'),
 						'Chores' =>array('CId', 'CSId', 'name', 'description', 'defaultPoints'), 
-						'Cond_timeperiod' => array('condTimepId','condId','timeFrom','timeTo','weekdays','weekly','ndWeekly','rdWeekly','firstInMonth','lastInMonth','weekNumber'),
-						'Cond_timestamp' => array('condTimesId','condId','onTimestamp'),
+						'Cond_timeperiod' => array('condId','timeFrom','timeTo','weekdays','weekly','ndWeekly','rdWeekly','firstInMonth','lastInMonth','weekNumber'),
+						'Cond_timestamp' => array('condId','onTimestamp'),
 						'Control_system' =>array('CSId', 'name' , 'street', 'postcode', 'phoneNo'), 
 						'Controller' =>array('CSerieNo','CSId', 'name' ,'location', 'status', 'cost' ),
 						'Controller_used_by_tag' =>array('TSerieNo', 'CSerieNo', 'starttime', 'endtime'),
