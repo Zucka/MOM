@@ -32,7 +32,7 @@
 						'Cond_timeperiod' => array('condTimepId','condId','timeFrom','timeTo','weekdays','weekly','ndWeekly','rdWeekly','firstInMonth','lastInMonth','weekNumber'),
 						'Cond_timestamp' => array('condTimesId','condId','onTimestamp'),
 						'Control_system' =>array('CSId', 'name' , 'street', 'postcode', 'phoneNo'), 
-						'Controller' =>array('CSerieNo','CSId', 'name' ,'location', 'status' ),
+						'Controller' =>array('CSerieNo','CSId', 'name' ,'location', 'status', 'cost' ),
 						'Controller_used_by_tag' =>array('TSerieNo', 'CSerieNo', 'starttime', 'endtime'),
 						'Profile' =>array('PId', 'CSId', 'name', 'points', 'username', 'password', 'email','phone', 'role'),
 						'Profile_did_chores' =>array('PId', 'CId', 'actualPoints', 'timeOfCreation'),

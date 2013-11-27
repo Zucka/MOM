@@ -66,14 +66,16 @@ class Controller
 	public $CSerieNo;
 	public $location;
 	public $status;
+	public $cost;
 	 
-	function __construct($CSId, $name, $CSerieNo , $location = null, $status = null ) 
+	function __construct($CSId, $name, $CSerieNo , $location = null, $cost=null , $status = null ) 
 	{
 		$this->CSId = $CSId;
 		$this->name = $name;
 		$this->CSerieNo = $CSerieNo;
 		$this->location = $location;
 		$this->status = $status;
+		$this->cost = $cost;
 	}
 }
 

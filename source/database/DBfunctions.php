@@ -3,7 +3,6 @@
 	include_once "classes.php";
 	include_once "sqlHelper.php";
 	include_once "errorMessageSQL.php";
-	include_once "getDataFromDBFunctions.php";
 	
 	/*adding into database in the tables Control_system,Profile, Tag, Controller and Chores*/
 	function simpleInsertIntoDB($object)
@@ -18,6 +17,9 @@
 		switch (get_class($object))
 		{
 		case 'Control_system':  
+		
+		//db => 'CSId', 'name' , 'street', 'postcode', 'phoneNo'
+		//class => $CSId = null, $street = null,$postcode = null , $phoneNo = null
 			$table=  $theTables['Control_system'];
 			$columstemp= $theColumns['Control_system'];
 			$colums="("  .  $columstemp[1];
@@ -101,6 +103,11 @@
 				$colums .= "," . $columstemp[3];
 				$values .= ", '". $object->location . "'";
 			}
+			if($object->cost != null)
+			{
+				$colums .= "," . $columstemp[5];
+				$values .= ", ". $object->cost;
+			}
 			$colums .= ")";
 			$values .= ")";
 			
@@ -133,18 +140,7 @@
 		}
 		elseif(is_array($resultValue))
 		{
-			$errorMessage = null;
-			switch($resultValue[1])
-			{
-			case 1062:
-				$errorMessage = $GLOBALS['SQL_ERROR_VALUE_ERROR'];
-				break;
-			default:
-				$errorMessage = $GLOBALS['SQL_ERROR_OTHER'];
-			}
-			return $errorMessage;
-		
-			
+			return sqlErrorMessage($resultValue[1]);
 		}
 		return null;
 	}
@@ -160,8 +156,7 @@
 		$where;
 
 		switch (get_class($object))
-		{ 		//db => 'CSId', 'name' , 'street', 'postcode', 'phoneNo'
-				//class => $name,$CSId = null, $street = null,$postcode = null , $phoneNo = null
+		{ 		
 		case 'Control_system': //'name' , 'street', 'postcode', 'phoneNo'
 			$table=  $theTables['Control_system'];
 			$columstemp= $theColumns['Control_system'];
@@ -228,8 +223,10 @@
 			{
 			$columnValue .=  ", " .$columstemp[3] . " = '" . $object->location . "'";
 			}
-			//('CSerieNo','CSId',) 'name' ,'location', 'status' 
-			//($CSId,) $name, ($CSerieNo) , $location = null, $status = null
+			if($object->cost != null)
+			{
+				$columnValue .=  ", " .$columstemp[5] . " = " . $object->cost;
+			}
 			break;
 			
 		case 'Chores': 
@@ -254,22 +251,7 @@
 		}
 		elseif(is_array($resultValue))
 		{
-			$errorMessage = null;
-			switch($resultValue[1])
-			{
-			case 1054:
-				$errorMessage = $GLOBALS['SQL_ERROR_BAD_INPUT'];
-				break;
-			case 1062:
-				$errorMessage = $GLOBALS['SQL_ERROR_VALUE_ERROR'];
-				break;
-			case 1064:
-				$errorMessage = $GLOBALS['SQL_ERROR_WEIRD_FALSE'];
-				break;
-			default:
-				$errorMessage = $GLOBALS['SQL_ERROR_OTHER'];
-			}
-			return $errorMessage;
+			return sqlErrorMessage($resultValue[1]);
 		}
 		return null;
 	}
@@ -285,12 +267,11 @@
 		
 		switch (get_class($object))
 		{
-	/*don't use this one yet
 		case 'Control_system':
 			$table=  $theTables['Control_system'];
 			$columntemp = $theColumns['Control_system'];
 			$where = $columntemp[0] . " = " . $object->CSId;
-			break;*/
+			break;
 		case 'Profile':
 			$table=  $theTables['Profile'];
 			$columntemp = $theColumns['Profile'];
@@ -311,7 +292,7 @@
 			$columntemp = $theColumns['Chores'];
 			$where = $columntemp[0] . " = " . $object->CId;
 			break;
-	/*	case 'Rules':
+		case 'Rules':
 			$table=  $theTables['Rules'];
 			$columntemp = $theColumns['Rules'];
 			$where = $columntemp[0] . " = " . $object->RId;
@@ -325,7 +306,7 @@
 			$table=  $theTables['Action'];
 			$columntemp = $theColumns['Action'];
 			$where = $columntemp[0] . " = " . $object->AId;
-			break;*/
+			break;
 		default:
 		return;
 		}
@@ -335,17 +316,8 @@
 			return $resultValue;
 		}
 		elseif(is_array($resultValue))
-		{
-			$errorMessage = null;
-			switch($resultValue[1])
-			{
-			case 1451:
-				$errorMessage = $GLOBALS['SQL_ERROR_DELETE_FAILED'];
-				break;
-			default:
-				$errorMessage = $GLOBALS['SQL_ERROR_OTHER'];
-			}
-			return $errorMessage;
+		{			
+			return sqlErrorMessage($resultValue[1]);
 		}
 		return null;
 	}
@@ -872,8 +844,8 @@
 		switch($errorValue)
 		{
 		case 1054:
-				$errorMessage = $GLOBALS['SQL_ERROR_BAD_INPUT'];
-				break;
+			$errorMessage = $GLOBALS['SQL_ERROR_BAD_INPUT'];
+			break;
 		case 1062:
 			$errorMessage = $GLOBALS['SQL_ERROR_VALUE_ERROR'];
 			break;
