@@ -1,14 +1,26 @@
 <?php
 	/*get all profiles from a system id*/
+	/*returns an array eg:
+		PId: 1
+		CSId: 1
+		name: Johan Sørensen
+		points: 4
+		username: johans
+		email: johan.soerensen6@gmail.com
+		phone: 26136946
+		role: manager*/
 	function profilesByCSId($CSId)
 	{
 		$db= new MySQLHelper();
 		global $theTables;
 		global $theColumns;
-		$columntemp = $theColumns['Profile'];
+		$tempColumn = $theColumns['Profile'];
+		$selectValue =  $tempColumn[0]. ", ". $tempColumn[1]. ", ". $tempColumn[2]. ", ". $tempColumn[3]. ", ". $tempColumn[4]. ", ".$tempColumn[6]. 
+			", ". $tempColumn[7]. ", ". $tempColumn[8] ;		
+
 		$table = $theTables['Profile'];
-		$whereClause = $columntemp[1] . " = " . $CSId ;
-		$result = $db->query('*', $table, $whereClause );
+		$whereClause = $tempColumn[1] . " = " . $CSId ;
+		$result = $db->query($selectValue, $table, $whereClause );
 		$returnArray = null;
 		while($row = mysqli_fetch_assoc($result))
 		{
@@ -16,7 +28,19 @@
 		}
 		return $returnArray;
 	}
+	
 	/* get all controller from a system id */
+	/*return array where value is an array with:
+		CSerieNo: 123
+		CSId: 1
+		name: TV
+		location: livingroom
+		status: GREEN
+		cost: 1
+		lastTimeUsedFrom: 2013-11-27 13:15:17(only if exist)
+		lastTimeUsedTo: (only if exist)
+		lastUsedByProfile: Johan Sørensen(only if exist)
+	*/
 	function controllersByCSId($CSId)
 	{
 		$db= new MySQLHelper();
@@ -30,16 +54,31 @@
 		$returnArray = null;
 		while($row = mysqli_fetch_assoc($result))
 		{
-			$partresult = controllersLastUsedHelpFunc($row['CSerieNo']);
-			foreach($partresult as $key => $value)
+			if($partresult = controllersLastUsedHelpFunc($row['CSerieNo']))
 			{
-				$row[$key]= $value;
+				foreach($partresult[0] as $key => $value)
+				{
+					$row[$key]= $value;
+				}
 			}
 			$returnArray[] = $row; 
 		}
 		return $returnArray;
 	}
+	
+
     /* get all tags from a system id */
+	/*return array where value is an array with:
+	TSerieNo: 234
+	CSId: 1
+	tagname: 1
+	name: ring
+	active: 1
+	profilename: Johan Sørensen
+	lastTimeUsedFrom: 2013-11-27 13:15:17 (only if exist)
+	lastTimeUsedTo:  (only if exist)
+	lastUsedController: TV (only if exist)
+	*/
 	function tagsByCSId($CSId)
 	{
 		$db= new MySQLHelper();
@@ -47,21 +86,27 @@
 		global $theColumns;
 		$columnTag = $theColumns['Tag'];
 		$columnProfile = $theColumns['Profile'];
+		//Tag' =>array('TSerieNo','CSId', 'profileId', 'name', 'active')
+		$selectValue = "tag.". $columnTag[0] . ", tag." . $columnTag[1]. ", tag." . $columnTag[2]. " AS tagname, tag." . $columnTag[3]. ", tag." . $columnTag[4].
+			", profile.". $columnProfile[2]. " AS profilename";
 		$table = $theTables['Tag'] . " tag , " . $theTables['Profile'] . " profile";
 		$whereClause =  "tag." . $columnTag[1] . " = " . $CSId . " AND " . "tag." . $columnTag[2] . " = profile." . $columnProfile[0];
-		$result = $db->query('*', $table, $whereClause );
+		$result = $db->query($selectValue, $table, $whereClause );
 		$returnArray = null;
 		while($row = mysqli_fetch_assoc($result))
 		{
-			$partresult = tagLastUsed($row['TSerieNo']);
-			foreach($partresult as $key => $value)
+			if($partresult = tagLastUsed($row['TSerieNo']))
 			{
-				$row[$key]= $value;
+				foreach($partresult[0] as $key => $value)
+				{
+					$row[$key]= $value;
+				}
 			}
-			$returnArray[] = $row; 
+			$returnArray[] = $row;
 		}
 		return $returnArray;
 	}
+	
 	/* get the x latest users who have used the controller. This is used by controllersByCSId*/
 	function controllersLastUsedHelpFunc($controllerID, $limitFrom=0, $limitTo=1)
 	{
@@ -82,8 +127,14 @@
 		$selectValues= $columnCUBT[2] . " AS lastTimeUsedFrom , ". $columnCUBT[3] . " AS lastTimeUsedTo, pro.". $columnUser[2] . " AS lastUsedByProfile";
 		
 		$result = $db->query( $selectValues , $table, $whereClause, $ordering , $otherSQL);
-		return  mysqli_fetch_assoc($result);
+		$returnArray = null;
+		while($row = mysqli_fetch_assoc($result))
+		{
+			$returnArray[] = $row;
+		}
+		return $returnArray;
 	}
+	
 	/* get the x latest controller which this tagId have activated. This is used by tagsByCSId */
 	function tagLastUsed($tagID, $limitFrom = 0, $limitTo = 1)
 	{
@@ -101,12 +152,16 @@
 		$otherSQL = 'LIMIT '. $limitFrom . ', '. $limitTo ;
 		$selectValues= $columnCUBT[2] . " AS lastTimeUsedFrom , ". $columnCUBT[3] . " AS lastTimeUsedTo, con.". $columnCon[2] . " AS lastUsedController";
 		$result = $db->query( $selectValues , $table, $whereClause, $ordering , $otherSQL);
-	
-		return mysqli_fetch_assoc($result);
+		$returnArray = null;
+		while($row = mysqli_fetch_assoc($result))
+		{
+			$returnArray[] = $row;
+		}
+		return $returnArray;
 	}
 
 	/* get rules and permission from a personID*/	
-	/* (Permission returns)An array with the following key=>value:
+	/* (Permission returns an array where value is an array with the following key=>value:
 PId: 1
 RId: 1
 validFromTime: 2013-11-27 16:06:59
@@ -125,10 +180,20 @@ firstInMonth: 0
 lastInMonth: 0
 weekNumber: 23
 	*/
+	/* (rules returns)- an array that contain rules:so array(rule1, rule2 ....)
+			rule1 is an array =>  array(rulesVariable, conditions, actions)
+			rulesVariable is an array with => array(PId=> value,RId=>value,validFromTime=>value,CSId=>value,name=>value,isPermission=>value) 
+			conditions is an array => array(cond1, cond2 ....)
+			cond1 is an array with => array(condId=>value,RId=>value,name=>value,controllerId=>value, ekstra_attribute=>ArrayValue)
+			ekstra_attribute is an array with => array(condId=>value,timeFrom=>value,timeTo=>value,weekdays=>value,weekly=>value,ndWeekly=>value,rdWeekly=>value,firstInMonth=>value,lastInMonth=>value,weekNumber=>value)
+										OR with =>array(condId=>value, onTimestamp=>value)
+										OR it is null
+			actions is an array => array(action1, action2 ....)
+			action1 is an array with => array(AId=>value,RId=>value,name=>value,points=>value)
+	*/
 	function getRulesFromPId($personId, $isPermission = false)
-	{//($selectValues, $tables, $whereClause = NULL, $ordering = NULL, $otherSQL = NULL, $distinctResults = false)
+	{
 		$db= new MySQLHelper();
-		$db->autocommit(true);
 		global $theTables;
 		global $theColumns;
 		$columnCond =  $theColumns['Rcondition'];
@@ -139,12 +204,12 @@ weekNumber: 23
 		$columnPHR = $theColumns['Profile_has_rules'];
 		
 		$selectValues='*';
-		$tables = $theTables['Profile_has_rules']. ' phr,' . $theTables['Rules'] . ' r';
-		$whereClause = 'phr.'. $columnPHR[0] . ' = '. $personId . ' AND phr.' . $columnPHR[1] . '= r.'. $columnRules[0]; 
+		$tables = $theTables['Profile_has_rules']. ' phr, ' . $theTables['Rules'] . " r" ;
+		$whereClause = "phr.". $columnPHR[0] . ' = '. $personId . ' AND r.'. $columnRules[3] . '= 0' . /* $isPermission .*/ " AND phr.". $columnPHR[1] . '= r.'. $columnRules[0]; 
 		if($isPermission)
 		{
 			$tables .= ',' . $theTables['Rcondition'] . ' cond,' . $theTables['Cond_timeperiod'] . ' condTP';
-			$whereClause .= ' AND r.'. $columnRules[3] .'='. $isPermission . ' AND cond.' . $columnCond[1] . "= r.". $columnRules[0].  ' AND condTP.' . $columnCondTP[0] . "= cond.". $columnCond[0]; 
+			$whereClause .= ' AND cond.' . $columnCond[1] . "= r.". $columnRules[0].  ' AND condTP.' . $columnCondTP[0] . "= cond.". $columnCond[0]; 
 		
 			$result = $db->query($selectValues, $tables, $whereClause );
 			$returnArray = null;
@@ -156,7 +221,63 @@ weekNumber: 23
 		}
 		else
 		{
-		
+			$result = $db->query($selectValues, $tables, $whereClause );//find all rules
+			$returnArray = null;
+			while($row = mysqli_fetch_assoc($result))
+			{				
+				/*get all conditions for the rule*/
+				$ruleArray['rulesVariable'] = $row;
+				$tables = $theTables['Rcondition'] ;
+				$whereClause = $row['RId'] . " = " . $columnCond[1] ;
+				
+				$tempresult = $db->query($selectValues, $tables, $whereClause );//find all conditions to the rules
+				$conditionsArray;
+				while($condition = mysqli_fetch_assoc($tempresult))
+				{	
+					if($condition['name'] == "Timeperiode")
+					{
+						$tables = $theTables['Cond_timeperiod'] ; 
+						$whereClause = $columnCondTP[0] . "=" . $condition['condId'] ;
+
+						$timeResult = $db->query($selectValues, $tables, $whereClause ); //find timeperiode to this condition
+						if($timeResult)
+						{
+							$condition['ekstra_attribute'] = mysqli_fetch_assoc($timeResult);
+						}				
+					}
+					elseif($condition['name'] == "Timestamp")
+					{
+						$tables = $theTables['Cond_timestamp'] ; 
+						$whereClause = $condition['condId'] . "=" . $columnCondTS[0] ;
+						$timeResult = $db->query($selectValues, $tables, $whereClause );//find timestamp to this condition
+						if($timeResult)
+						{
+							$condition['ekstra_attribute'] = mysqli_fetch_assoc($timeResult);
+						}
+					}
+					else
+					{
+						$condition['ekstra_attribute'] = null;
+					}
+					$conditionsArray[] = $condition;
+				}				
+				$ruleArray['conditions'] = $conditionsArray;
+				
+				/* get all actions for the rule*/
+				$tables = $theTables['Action'] ;
+				$whereClause = $row['RId'] . " = " . $columnAction[1] ;
+				$tempresult = $db->query($selectValues, $tables, $whereClause );
+				$actionArray;
+				while($tempRow = mysqli_fetch_assoc($tempresult))
+				{
+					$actionArray[] = $tempRow;
+				}
+				$ruleArray['actions'] = $actionArray;
+				
+				$returnArray[] = $ruleArray; 
+			}
+			
+			return $returnArray;
 		}
 	}
 ?>
