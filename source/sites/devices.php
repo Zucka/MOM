@@ -1,9 +1,39 @@
+<script>
+	globalCSId = <?php echo $_SESSION['CSid'];?>;
+</script>
+
 <?php
+	function printStatus($status){
+		switch($status){
+			case "GREEN":
+				return '<img src="/assets/icon/green.ico" class="statusSymbol">';
+			break;
+			
+			case "RED":
+				return '<img src="/assets/icon/red.ico" class="statusSymbol">';
+			break;
+			
+			case "!":
+				return '<img src="/assets/icon/warning.ico" class="statusSymbol">';
+			break;
+			
+			default:
+				return "DB Error";
+			break;
+		}
+	}
+	
+	function printActiveTag($status , $profileId){
+		if($status == '1')
+			$statusPrint = 'checked';
+		else
+			$statusPrint = '';
+		
+		return '<input type="checkbox" name="tagId" class="activeToggler" value="'.$profileId.'" '.$statusPrint.'>';
+	}
+
 	$controllerArray = controllersByCSId($_SESSION['CSid']);
 	$tagArray = tagsByCSId($_SESSION['CSid']);
-	
-	echo $controllerArray[1]['name'];
-	echo $tagArray;
 ?>
 
 <h1>Devices</h1>
@@ -19,12 +49,22 @@
 			<?php 
 				foreach($controllerArray as $controller){
 					echo "<tr>
-							<td>".$controller['status']."</td>
+							<td>".printStatus($controller['status'])."</td>
 							<td>".$controller['name']."</td>
 							<td>".$controller['location']."</td>
-							<td>".$controller['lastUsedByProfile'].": ".$controller['lastTimeUsedFrom']." - ".$controller['lastTimeUsedTo']."</td>
-							<td>".$controller['CSerieNo']."</td>
-						</tr>";
+							<td>";	
+							if(isset($controller['lastUsedByProfile'])){
+								echo $controller['lastUsedByProfile'].": ".$controller['lastTimeUsedFrom']." - ";
+								if(isset($controller['lastTimeUsedTo']))
+									echo $controller['lastTimeUsedTo'];
+								else
+									echo "In Use";
+							}
+							else
+								echo "Has not been used yet";
+							echo'</td>
+							<td><a href="?page=detailsController&controller='.$controller['CSerieNo'].'"><button type="button" class="btn btn-default btn-xs">Details</button></a></td>
+						</tr>';
 				}
 			?>
 	</tbody>	
@@ -39,27 +79,66 @@
 	</thead>
 	<tbody>
 			<?php 
-			
-			
 				foreach($tagArray as $tag){
 					echo "<tr>
-							<td>".$tag['active']."</td>
+							<td>".printActiveTag($tag['active'],$tag['profileId'])."</td>
 							<td>".$tag['username']."</td>
 							<td>".$tag['name']."</td>
-							<td>".$tag['lastUsedController'].": ".$tag['lastTimeUsedFrom']." - ".$tag['lastTimeUsedTo']."</td>
-							<td>".$tag['TSerieNo']."</td>
-						</tr>";
+							<td>";
+							if(isset($tag['lastUsedController'])){
+								echo $tag['lastUsedController'].": ".$tag['lastTimeUsedFrom']." - "; 
+								if(isset($tag['lastTimeUsedTo']))
+									echo $tag['lastTimeUsedTo'];
+								else
+									echo "In Use";
+							}
+							else
+								echo "Has not been used yet";
+							echo'</td>
+							<td><a href="?page=detailsTag&tag='.$tag['TSerieNo'].'"><button type="button" class="btn btn-default btn-xs">Details</button></a></td>
+						</tr>';
 				}
 			?>
 		
 	</tbody>
 </table>
+<div id="warningContainer">
+</div>
 
 <script>
-$(document).ready(function() 
-    { 
+$(document).ready(function(){ 
         $("#controller").tablesorter(); 
 		$("#tag").tablesorter(); 
     } 
 ); 
+
+$(document).ready(function(){
+		$("input.activeToggler").click(function() {
+			if($(this).is(':checked')) //See if Active or false
+				var isChecked = "1";
+			else
+				var isChecked = "0";
+				
+			var profileId = $(this).val();
+			
+			$.ajax({
+				type: "POST",
+				url: "ajax/setActiveTag.php",
+				data: { CSId: globalCSId, profileId: profileId, active: isChecked }
+			}).done(function( msg ) {
+				alert( "Data Saved: " + msg );
+			});
+			
+			(function (el) {
+				setTimeout(function () {
+					el.children().remove('div');
+				}, 2500);
+			}($("#warningContainer").append(getAlertString('info','Testing Msg'))));
+		});
+	}
+);
+
+function getAlertString(alertType,alertMsg){
+	return '<div class="alert alert-'+alertType+' fade in informationDevices"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+alertMsg+'</div>';
+}
 </script>

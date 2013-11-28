@@ -78,4 +78,9 @@ body {
 	text-align:center;
 }
 
+.statusSymbol{
+	width:20px;
+	height:20px;
+}
+
 /* End of Devices */
