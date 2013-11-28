@@ -4,16 +4,15 @@
 #include <SoftwareSerial.h>
 
 //Setting up the Arduino
-char devID[7] = "HW-001"; //Device ID. Limited to 7.
+char devID[4] = "123"; //Device ID. Limited to 3 bytes.
 char useID[5] = "";  //ID of logged in User, Limited to 5.
-unsigned int authKey[] = { 1, 2, 3, 4, 5, 6};
 
 //Setting up the Shield's addresses.
 byte mac[] = { 0x90, 0xA2, 0xDA, 0x0E, 0xC5, 0x94 };
-IPAddress ip(172,25,11,177); //For Backup, unlikely to be used.
+//IPAddress ip(172,25,11,177); For Backup, unlikely to be used.
 
 //The Server we are connecting to. (DNS)
-char server[] = "www.google.com"; //TODO: Correct this.
+char server[] = "spcadmin.tk"; //TODO: Correct this.
 
 // Initialize the Ethernet client library
 EthernetClient client;
@@ -86,6 +85,10 @@ void setup()
 
 void loop()
 {
+  getStatus();
+  while(true);
+  
+  /*
   seek();
   delay(10);
   parse_responce(seek_responce, seek_length);
@@ -125,36 +128,77 @@ void loop()
     Serial.println("Wait for it");  
     delay(10000);
   }
+  */
 }
 
+/* Start: Status Methods */
+
+
+/* Start: Calls to Website */
+
 void getStatus(void)
-{
-  char json[255] = "";
-  
+{  
   if(client.connect(server, 80))
   {
-    char get[25] = "GET /"; //Assigning the Get code for the HTML Request. 
-    strcat(get, devID); //Limited so that the Device ID's cannot surpoass 7 char length.
+    char get[25] = "GET /api/api.php/status/"; //Assigning the Get code for the HTML Request. 
+    strcat(get, devID); //Limited so that the Device ID's cannot surpoass 3 char length.
     strcat(get, " HTTP/1.1");
      
     Serial.println("Connected"); 
     client.println(get);
-    client.println("Host: www.test.com/api/turnOn"); //TODO: Correct this.
+    client.println("Host: spcadmin.tk"); //TODO: Correct this.
     client.println("Connection: close");
     client.println();
     
+    free(get);
+    
+    Serial.println(F("Message Sent"));
+    
     delay(1000);
     
+    Serial.println(F("Delay"));
+    
+    boolean toggle = false;
+    char o[50] = ""; 
+    char i[1] = "";
+    
     while(client.available())
-    {
-      char io[1] = "";
-      io[0] = client.read();
-      strcat(json, io);
+    { 
+      i[0] = client.read();
+      Serial.print(i);
+      if( i[0] == '{')
+      {
+        toggle = !toggle;
+        strcat(o, i);
+      }
+      else if(i[0] == '}')
+      {
+        toggle = !toggle;
+        strcat(o, i);
+      }
+      else if(toggle)
+      {
+        strcat(o, i);
+      }     
     }
+    Serial.println();
+    Serial.println(F("Message recieved"));
+    Serial.println(o);
+    free(i);
     
     token_list_t *token_list = NULL;
     token_list = create_token_list(25); // Create the Token List. ((Potential Memory Waste)
-    json_to_token_list(json, token_list); // Convert JSON String to a Hashmap of Key/Value Pairs
+    json_to_token_list(o, token_list); // Convert JSON String to a Hashmap of Key/Value Pairs
+    
+    free(o);
+    
+    Serial.println(F("Tokens Baby"));
+    
+    char* output = json_get_value(token_list, "status");
+    
+    Serial.println(output);
+    
+    free(output);
 
     
   }
@@ -163,7 +207,7 @@ void getStatus(void)
     Serial.println("Connection Failed");
   }
 }
-
+/*
 void turnOn(void)
 {
   char json[255] = "";
@@ -242,6 +286,8 @@ void turnOff(void)
   }
 }
 
+/* End: Calls to Website */
+
 /* Begin: Commands for RFID*/
  
 
@@ -313,3 +359,4 @@ void parse_responce(char PH[], int length)
     }
   }
 }
+
