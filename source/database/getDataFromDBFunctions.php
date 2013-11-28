@@ -74,6 +74,7 @@
 	tagname: 1
 	name: ring
 	active: 1
+	PId: 1
 	profilename: Johan Sørensen
 	lastTimeUsedFrom: 2013-11-27 13:15:17 (only if exist)
 	lastTimeUsedTo:  (only if exist)
@@ -88,7 +89,7 @@
 		$columnProfile = $theColumns['Profile'];
 		//Tag' =>array('TSerieNo','CSId', 'profileId', 'name', 'active')
 		$selectValue = "tag.". $columnTag[0] . ", tag." . $columnTag[1]. ", tag." . $columnTag[2]. " AS tagname, tag." . $columnTag[3]. ", tag." . $columnTag[4].
-			", profile.". $columnProfile[2]. " AS profilename";
+			", profile.". $columnProfile[0]. ", profile.". $columnProfile[2]. " AS profilename";
 		$table = $theTables['Tag'] . " tag , " . $theTables['Profile'] . " profile";
 		$whereClause =  "tag." . $columnTag[1] . " = " . $CSId . " AND " . "tag." . $columnTag[2] . " = profile." . $columnProfile[0];
 		$result = $db->query($selectValue, $table, $whereClause );

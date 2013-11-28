@@ -146,6 +146,8 @@
 	}
 
 	/*edit data in database in the tables Control_system,Profile, Tag, Controller and Chores*/
+	/*in the classes the variables that not should be change must be null, 
+	but I always need the Id, e.g. if you want to change attributes in Tag then TSerieNo must not be null */
 	function simpleUpdateDB($object)
 	{
 	$db= new MySQLHelper();
@@ -160,18 +162,34 @@
 		case 'Control_system': //'name' , 'street', 'postcode', 'phoneNo'
 			$table=  $theTables['Control_system'];
 			$columstemp= $theColumns['Control_system'];
-			$columnValue = $columstemp[1] . " ='" .  $object->name . "'" ;
+			$columnValue = "" ;
+			if($object->name != null)
+			{
+				$columnValue .= $columstemp[1] . " ='" .  $object->name . "'";
+			}
 			if($object->street != null)
 			{
-				$columnValue .=  ", " . $columstemp[2] . " = '" . $object->street . "'";
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .=  $columstemp[2] . " = '" . $object->street . "'";
 			}
 			if($object->postcode != null)
 			{
-				$columnValue .=  ", " . $columstemp[3] . " = '" . $object->postcode . "'";
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .=  $columstemp[3] . " = '" . $object->postcode . "'";
 			}
 			if($object->phoneNo != null)
 			{
-				$columnValue .=  ", " . $columstemp[4] . " = '" . $object->phoneNo. "'";
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .= $columstemp[4] . " = '" . $object->phoneNo. "'";
 			}
 			
 			$where = $columstemp[0] . " = " . $object->CSId;
@@ -181,22 +199,58 @@
 		case 'Profile':
 			$table=  $theTables['Profile'];
 			$columstemp= $theColumns['Profile'];
-			$columnValue = $columstemp[2] . " = '" . $object->name . "' , " . $columstemp[3] . " = " . $object->points;
-			
+			$columnValue = "" ;
+			if($object->name != null)
+			{
+				$columnValue .= $columstemp[2] . " = '" . $object->name ;
+			}
 			if($object->points != null)
 			{
-				$columnValue .=  ", " . $columstemp[3] . " = " .$object->points;
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .= $columstemp[3] . " = " .$object->points;
 			}
-			$columnValue .=  ", " . $columstemp[4] . " = '" . $object->username . "', " . $columstemp[5] . " = '" . $object->password . 
-							"', " . $columstemp[6] . " = '" . $object->email . "'";
-	
+			if($object->username != null)
+			{
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .= $columstemp[4] . " = '" . $object->username . "'";
+			}
+			if($object->password != null)
+			{
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .= $columstemp[5] . " = '" . $object->password . "'";
+			}
+			if($object->email != null)
+			{
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .=   $columstemp[6] . " = '" . $object->email . "'";
+			}
 			if($object->phoneNo != null)
 			{
-				$columnValue .=  ", " . $columstemp[7] . " = '" .$object->phoneNo . "'";
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .=   $columstemp[7] . " = '" .$object->phoneNo . "'";
 			}
 			if($object->role != null)
 			{
-				$columnValue .=  ", " . $columstemp[8] . " = '" .$object->role . "'";
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .=  $columstemp[8] . " = '" .$object->role . "'";
 			}
 			
 			$where = $columstemp[0] . " = " . $object->profileId;
@@ -205,12 +259,29 @@
 			$table=  $theTables['Tag'];
 			$columstemp= $theColumns['Tag'];
 			$where = $columstemp[0] . " = " . $object->TSerieNo;
-			$columnValue = $columstemp[2] . " = " . $object->profileId ;
+			$columnValue = "";
+			if($object->profileId != null)
+			{
+			
+				$columnValue = $columstemp[2] . " = " . $object->profileId ;
+			}
 			if($object->name != null)
 			{
-				$columnValue .=  ", " . $columstemp[3] . " = '" . $object->name . "'";
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .=   $columstemp[3] . " = '" . $object->name . "'";
 			}
-			$columnValue .= ", " .$columstemp[4] . " = " . $object->active;
+			if($object->active != null)
+			{
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .= $columstemp[4] . " = " . $object->active;
+			
+			}
 			//('TSerieNo','CSId',) 'profileId', 'name', 'active'
 			//$(CSId,) $profileId, ($TSerieNo = null ),   $name= null, $active = null 
 			break;
@@ -218,14 +289,36 @@
 			$table=  $theTables['Controller'];
 			$columstemp= $theColumns['Controller'];
 			$where = $columstemp[0] . " = " . $object->CSerieNo;
-			$columnValue = $columstemp[2] . " = '" . $object->name . "', " .$columstemp[4] . " = '" . $object->status . "'";
+			$columnValue = "" ;
+			if($object->name != null)
+			{
+				$columnValue .= $columstemp[2] . " = '" . $object->name . "'";
+			}
 			if($object->location != null)
 			{
-			$columnValue .=  ", " .$columstemp[3] . " = '" . $object->location . "'";
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .=  $columstemp[3] . " = '" . $object->location . "'";
 			}
+			/*I don't really intent this to be here but if anyone need to set it then its here
+			,"... SET status = 'RED' "
+			if($object->status != null)
+			{
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .=  $columstemp[4] . " = '" . $object->status . "'";
+			}*/
 			if($object->cost != null)
 			{
-				$columnValue .=  ", " .$columstemp[5] . " = " . $object->cost;
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .=  $columstemp[5] . " = " . $object->cost;
 			}
 			break;
 			
@@ -233,10 +326,26 @@
 			$table=  $theTables['Chores'];
 			$columstemp= $theColumns['Chores'];
 			$where = $columstemp[0] . " = " . $object->CId;
-			$columnValue = $columstemp[2] . " = '" . $object->name . "', " .$columstemp[4] . " = " . $object->defaultPoints;
+			$columnValue = "";
+			if($object->name != null)
+			{
+				$columnValue .= $columstemp[2] . " = '" . $object->name . "'";
+			}
+			if($object->defaultPoints != null)
+			{
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .= $columstemp[4] . " = " . $object->defaultPoints;
+			}
 			if($object->description != null)
 			{
-			$columnValue .=  ", " .$columstemp[3] . " = '" . $object->description . "'";
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .=  $columstemp[3] . " = '" . $object->description . "'";
 			}
 			//('CId', 'CSId'), 'name', 'description', 'defaultPoints'
 			//($CSId,) $name, ($CId =null) , $description = null, $defaultPoints = null 
