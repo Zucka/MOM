@@ -205,11 +205,11 @@ weekNumber: 23
 		
 		$selectValues='*';
 		$tables = $theTables['Profile_has_rules']. ' phr, ' . $theTables['Rules'] . " r" ;
-		$whereClause = "phr.". $columnPHR[0] . ' = '. $personId . ' AND r.'. $columnRules[3] . '= 0' . /* $isPermission .*/ " AND phr.". $columnPHR[1] . '= r.'. $columnRules[0]; 
+		$whereClause = "phr.". $columnPHR[0] . ' = '. $personId ." AND phr.". $columnPHR[1] . '= r.'. $columnRules[0] ; 
 		if($isPermission)
 		{
 			$tables .= ',' . $theTables['Rcondition'] . ' cond,' . $theTables['Cond_timeperiod'] . ' condTP';
-			$whereClause .= ' AND cond.' . $columnCond[1] . "= r.". $columnRules[0].  ' AND condTP.' . $columnCondTP[0] . "= cond.". $columnCond[0]; 
+			$whereClause .= ' AND r.'. $columnRules[3] . '= '. $isPermission .' AND cond.' . $columnCond[1] . "= r.". $columnRules[0].  ' AND condTP.' . $columnCondTP[0] . "= cond.". $columnCond[0]; 
 		
 			$result = $db->query($selectValues, $tables, $whereClause );
 			$returnArray = null;
@@ -221,6 +221,7 @@ weekNumber: 23
 		}
 		else
 		{
+			$whereClause .= ' AND r.'. $columnRules[3] . '= false';
 			$result = $db->query($selectValues, $tables, $whereClause );//find all rules
 			$returnArray = null;
 			while($row = mysqli_fetch_assoc($result))
