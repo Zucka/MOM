@@ -36,7 +36,7 @@ int block_length = 23;
  * Slot 5 Contains the Checksum. 
  */
  
-char seek_responce[11] = "";
+//char seek_responce[11] = "";
 int seek_length = 11;
 /* The RFID output in UART for seeking for tag: On 'Tag Found'. (The length would be 0x06.)
  * Slot Slot 0-3 contains the message "Header", "Reserved", "Length" and "Command".
@@ -52,7 +52,7 @@ int seek_length = 11;
  * Slot 5 Contains the Checksum.
  */
  
-char authenticate_responce[7] = "";
+//char authenticate_responce[7] = "";
 int authenticate_length = 7;
 /* The RFID output in UART for Authenticating a Data block.
  * Slot Slot 0-3 contains the message "Header", "Reserved", "Length" and "Command".
@@ -86,6 +86,7 @@ void setup()
 void loop()
 {
   getStatus();
+  Serial.println(F("Exit"));
   while(true);
   
   /*
@@ -131,8 +132,18 @@ void loop()
   */
 }
 
-/* Start: Status Methods */
+/* Start: On Device Calls */
 
+void getJSON(char input[])
+{  
+    char* output;
+    token_list_t *token_list = NULL;
+    token_list = create_token_list(25); // Create the Token List. (Potential Memory Waste)
+    json_to_token_list(input, token_list); // Convert JSON String to a Hashmap of Key/Value Pairs
+    output = json_get_value(token_list, "status");
+    release_token_list(token_list);
+    Serial.println(output);  
+}
 
 /* Start: Calls to Website */
 
@@ -144,10 +155,10 @@ void getStatus(void)
     strcat(get, devID); //Limited so that the Device ID's cannot surpoass 3 char length.
     strcat(get, " HTTP/1.1");
      
-    Serial.println("Connected"); 
+    Serial.println(F("Connected")); 
     client.println(get);
-    client.println("Host: spcadmin.tk"); //TODO: Correct this.
-    client.println("Connection: close");
+    client.println(F("Host: spcadmin.tk")); //TODO: Correct this.
+    client.println(F("Connection: close"));
     client.println();
     
     free(get);
@@ -156,16 +167,13 @@ void getStatus(void)
     
     delay(1000);
     
-    Serial.println(F("Delay"));
-    
     boolean toggle = false;
-    char o[50] = ""; 
+    char o[75] = ""; 
     char i[1] = "";
     
     while(client.available())
     { 
       i[0] = client.read();
-      Serial.print(i);
       if( i[0] == '{')
       {
         toggle = !toggle;
@@ -178,29 +186,36 @@ void getStatus(void)
       }
       else if(toggle)
       {
+        /*
+        if(i[0] == '"')
+        {
+          strcat(o, "\"");
+        }
+        else
+        {
+          strcat(o, i);
+        }*/
         strcat(o, i);
       }     
     }
-    Serial.println();
-    Serial.println(F("Message recieved"));
-    Serial.println(o);
     free(i);
     
-    token_list_t *token_list = NULL;
-    token_list = create_token_list(25); // Create the Token List. ((Potential Memory Waste)
-    json_to_token_list(o, token_list); // Convert JSON String to a Hashmap of Key/Value Pairs
+    Serial.println();
+    Serial.println(o);
+    //TODO: why doesn't JSON work without this unrelated array and print?
+    char o2[75] = "{\"status\":\"RED\",\"action\":\"none\",\"timeRemaining\":0}";
     
-    free(o);
+    
+    if( o2 == o)
+    {
+      Serial.println(F("banal"));
+    }
+    Serial.println(o2);
+    
+    getJSON(o);
+  
     
     Serial.println(F("Tokens Baby"));
-    
-    char* output = json_get_value(token_list, "status");
-    
-    Serial.println(output);
-    
-    free(output);
-
-    
   }
   else
   {
