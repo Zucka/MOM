@@ -1,5 +1,24 @@
 <?php
-	printDetailTagForm($_GET['tag'],"2","test","");
+	if(isset($_POST['cancel'])){
+		header('location:?page=devices');
+	}
+	elseif(isset($_POST['save'])){	//Currently it is only viewing, not saving.
+		printDetailTagForm($_GET['tag'],"2","test","");
+	}
+	elseif(isset($_POST['delete'])){  
+		$deletionTag = new Tag($_SESSION['CSid'],$_POST['id']);
+		$result = removeObjectFromDB($deletionTag);
+		
+		if($result == true){
+			echo "Tag have been deleted.";
+		}
+		else{
+			echo "An error has occurred, please try again later.";
+		}
+	}
+	else{
+		printDetailTagForm($_GET['tag'],"2","test","");
+	}
 
 	function printDetailTagForm($id,$user,$name,$errorMsg,$hidden = false){
 		echo '
@@ -9,7 +28,7 @@
 				<div class="outer-center">
 					<div class="product inner-center">
 						'.$errorMsg.'
-						<form action="?page=addTag" method="post" class="addForm">
+						<form action="?page=detailsTag" onsubmit="return validate(this);" method="post" class="addForm">
 							<table>
 								<tr>
 									<td>Id:</td> <td><input type="text" name="placeHolder" value="'.$id.'" disabled > <input type="hidden" name="id" value="'.$id.'"> *</td>
@@ -43,3 +62,22 @@
 			';
 	}
 ?>
+
+<script>
+	function validate(form){
+		clicked = $("button[clicked=true]").val();
+		if(clicked == "deleteTag"){
+			return confirm('Do you really want to delete this tag?');
+		}
+		else{
+			return true;
+		}
+	}
+	$(document).ready(function() {
+		
+		$("form button").click(function() {
+			$("input button", $(this).parents("form")).removeAttr("clicked");
+			$(this).attr("clicked", "true");
+		});
+	});
+</script>
