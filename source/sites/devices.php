@@ -79,10 +79,12 @@
 	</thead>
 	<tbody>
 			<?php 
+				print_r($tagArray);
+			
 				foreach($tagArray as $tag){
 					echo "<tr>
 							<td>".printActiveTag($tag['active'],$tag['profileId'])."</td>
-							<td>".$tag['username']."</td>
+							<td>".$tag['profilename']."</td>
 							<td>".$tag['name']."</td>
 							<td>";
 							if(isset($tag['lastUsedController'])){
