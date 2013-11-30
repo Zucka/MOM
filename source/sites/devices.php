@@ -23,13 +23,13 @@
 		}
 	}
 	
-	function printActiveTag($status , $profileId){
+	function printActiveTag($status , $tagId){
 		if($status == '1')
 			$statusPrint = 'checked';
 		else
 			$statusPrint = '';
 		
-		return '<input type="checkbox" name="tagId" class="activeToggler" value="'.$profileId.'" '.$statusPrint.'>';
+		return '<input type="checkbox" name="tagId" class="activeToggler" value="'.$tagId.'" '.$statusPrint.'>';
 	}
 
 	$controllerArray = controllersByCSId($_SESSION['CSid']);
@@ -78,12 +78,10 @@
 		</tr>
 	</thead>
 	<tbody>
-			<?php 
-				print_r($tagArray);
-			
-				foreach($tagArray as $tag){
+			<?php 			
+				foreach($tagArray as $tag){ //Add a link to profilename with the use of array entry 'PId'
 					echo "<tr>
-							<td>".printActiveTag($tag['active'],$tag['profileId'])."</td>
+							<td>".printActiveTag($tag['active'],$tag['TSerieNo'])."</td>
 							<td>".$tag['profilename']."</td>
 							<td>".$tag['name']."</td>
 							<td>";
@@ -121,24 +119,38 @@ $(document).ready(function(){
 			else
 				var isChecked = "0";
 				
-			var profileId = $(this).val();
+			var tagId = $(this).val();
 			
 			$.ajax({
 				type: "POST",
 				url: "ajax/setActiveTag.php",
-				data: { CSId: globalCSId, profileId: profileId, active: isChecked }
-			}).done(function( msg ) {
-				alert( "Data Saved: " + msg );
+				data: { CSId: globalCSId, tagId: tagId, active: isChecked },
+				success: function(msg) { // msg is the content that the php file 'ECHO's.
+					if(msg == 'OK'){
+						if(isChecked == '1'){
+							showUpdate('#warningContainer','info','Tag is now Active');
+						}
+						else{
+							showUpdate('#warningContainer','info','Tag is no longer Active');
+						}
+					}
+					else{
+						showUpdate('#warningContainer','danger','An error has occured, please try again later.');
+					}
+				
+				}
 			});
-			
-			(function (el) {
-				setTimeout(function () {
-					el.children().remove('div');
-				}, 2500);
-			}($("#warningContainer").append(getAlertString('info','Testing Msg'))));
 		});
 	}
 );
+
+function showUpdate(containerName,updateType,msg){
+	(function (el) {
+		setTimeout(function () {
+			$(el.children().first()).remove();
+		}, 2500);
+	}($(containerName).append(getAlertString(updateType,msg))));
+}
 
 function getAlertString(alertType,alertMsg){
 	return '<div class="alert alert-'+alertType+' fade in informationDevices"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+alertMsg+'</div>';

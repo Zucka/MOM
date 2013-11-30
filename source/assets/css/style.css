@@ -83,4 +83,15 @@ body {
 	height:20px;
 }
 
+#warningContainer{
+	position: absolute;
+	top:0px;
+	
+	width:75%;
+	
+	margin-top:20px;
+	margin-left:12.5%;
+	margin-right:12.5%;
+}
+
 /* End of Devices */
