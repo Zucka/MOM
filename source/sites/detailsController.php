@@ -3,7 +3,30 @@
 		header('location:?page=devices');
 	}
 	elseif(isset($_POST['save'])){ //Currently it is only viewing, not saving.
-		printDetailsControllerForm($_GET['controller'],'test','','1');
+		if(isset($_POST['name']) && $_POST['name'] != "" ) //Should also check if user is part of CSId
+			$name = $_POST['name'];
+		else
+			$name = null;
+		
+		if(isset($_POST['location']))
+			$location = $_POST['location'];
+		else
+			$location = "";
+			
+		if(isset($_POST['cost']) && is_numeric($_POST['cost']))
+			$cost = $_POST['cost'];
+		else
+			$cost = null;
+
+		$updateController = new Controller($_SESSION['CSid'],$_POST['id'],$name,$location,$cost);
+		$result = simpleUpdateDB($updateController);
+		
+		if($result == true)
+			echo "Success, your controller have now been updated.";
+		else
+			echo "ERROR: An error has occurred, please try again later.";
+		
+		printDetailsControllerForm($_POST['id'],$name,$location,$cost);
 	}
 	elseif(isset($_POST['delete'])){
 		$deletionController = new Controller($_SESSION['CSid'],$_POST['id']);

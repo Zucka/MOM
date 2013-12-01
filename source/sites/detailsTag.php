@@ -2,8 +2,26 @@
 	if(isset($_POST['cancel'])){
 		header('location:?page=devices');
 	}
-	elseif(isset($_POST['save'])){	//Currently it is only viewing, not saving.
-		printDetailTagForm($_GET['tag'],"2","test","");
+	elseif(isset($_POST['save'])){
+		if(isset($_POST['user']) && $_POST['user'] != "" ) //Should also check if user is part of CSId
+			$user = $_POST['user'];
+		else
+			$user = null;
+		
+		if(isset($_POST['name']))
+			$name = $_POST['name'];
+		else
+			$name = "";
+		
+		$updateTag = new Tag($_SESSION['CSid'],$_POST['id'],$user,$name);
+		$result = simpleUpdateDB($updateTag);
+		
+		if($result == true)
+			echo "Success, your tag have now been updated.";
+		else
+			echo "ERROR: An error has occurred, please try again later.";
+		
+		printDetailTagForm($_POST['id'],$user,$name,"");
 	}
 	elseif(isset($_POST['delete'])){  
 		$deletionTag = new Tag($_SESSION['CSid'],$_POST['id']);
