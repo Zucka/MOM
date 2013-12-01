@@ -469,7 +469,6 @@
 		return false;	  
 	}
 
-	
 	function hashPassword($password) {
 
 		// Taken from: http://alias.io/2010/01/store-passwords-safely-with-php-and-mysql/
@@ -491,7 +490,6 @@
 		return $hash;
 
 	}
-	
 	
 	/* This will connect a rule to a Profile*/
 	function addRuleToProfile($profileId ,$ruleId)
@@ -556,7 +554,7 @@
 
 	}
 	
-	/* This will add a rule with its conditions and actions to a control system*/
+	/* This will add a rule with its conditions and actions to a control system and returns its id if successful*/
 	function addNewRuleToDB($ruleData, $arrayOfCondition, $arrayOfAction)
 	{
 		$db= new MySQLHelper();
@@ -585,21 +583,24 @@
 				
 				foreach($arrayOfCondition as $cond)
 				{
-					$tempresults = editCondition($cond);
-					if(is_Array($tempresults))
+					$tempresults = addCondition($ruleID, $cond);
+					if(is_string($tempresults))
 					{
-						return sqlErrorMessage($tempresults[1]);
+						echo 'error';
+						//if not bool then it is an error message
+						return $tempresults;
 					}
 				}
 				foreach($arrayOfAction as $action)
 				{
-					$tempresults = editAction($action);
-					if(is_Array($tempresults))
+					$tempresults = addAction($ruleID, $action);
+					if(is_string($tempresults))
 					{
-						return sqlErrorMessage($tempresults[1]);
+						//if not bool then it is an error message
+						return $tempresults;
 					}
 				}
-				return $resultValue;
+				return $ruleID;
 			}
 			elseif(is_array($resultValue))
 			{
@@ -693,7 +694,7 @@
 						$table = $theTables['Cond_timestamp'];	
 						$column = "( " . $tempcol[0] ;
 						$values = "( " . $condID ;		
-						if($extras[$tempcol[2]]!=null)
+						if($extras[$tempcol[1]]!=null)
 						{
 							$column .= ", ". $tempcol[1];
 							$values .= ", " . $extras[$tempcol[1]];
@@ -769,7 +770,9 @@
 		}	
 	}
 	
-	/* This will edit an existing rule with its conditions and actions*/
+	/* This will edit an existing rule with its conditions and actions.
+	When a rule are to be updated all data is required. All values are updated except for the ids.
+	When action name or condition name is not null a new condition will be made and previous will be deleted. */
 	function editRule($ruleData, $arrayOfCondition, $arrayOfAction)
 	{
 	$db= new MySQLHelper();
@@ -782,35 +785,100 @@
 		
 			$tempcol = $theColumns['Rules'];
 			$table = $theTables['Rules'];
-			$columnValue =  $tempcol[2] . " = '" . $ruleData->name . "'";
+			$columnValue = ""; 
 			$where = $tempcol[0] . ' = ' . $ruleData->RId;
-			if($ruleData->isPermission != null)
+			
+			if($ruleData->name != null)
 			{
-				$columnValue .= ", " . $tempcol[3] ." = ". $ruleData->isPermission.""; 
+				$columnValue .= $tempcol[2] . " = '" . $ruleData->name . "'";
 			}
+			//must not set permission after a rule is created therefore it is leftout
 
 			$resultValue = $db->update($table, $columnValue, $where);
 			if($resultValue)
 			{
-				foreach($arrayOfCondition as $cond)
-				{
-					//if a new condition should be added then make condition here
-					$tempresults = editCondition($cond);
-					if(is_Array($tempresults))
-					{
-						return sqlErrorMessage($tempresults[1]);
-					}
-				}
-				foreach($arrayOfAction as $action)
-				{
-					//if a new condition should be added then make condition here
-					$tempresults = editAction($action);
-					if(is_Array($tempresults))
-					{
-						return sqlErrorMessage($tempresults[1]);
-					}
-				}
+											//SELECT condId AS id FROM rcondition WHERE RId = ($ruleData->RId)
+				$CondIdResult = $db->query($theColumns['Rcondition'][0].' AS id', $theTables['Rcondition'], $theColumns['Rcondition'][1] . " = " . $ruleData->RId );
 				
+				while($row = mysqli_fetch_assoc($CondIdResult))
+				{
+					$StillExists = false;
+					foreach($arrayOfCondition as $key => $cond)
+					{
+						if($row['id'] == $cond->condId && $cond->name == null)
+						{
+
+							$StillExists = true;
+							//edit the condition in db
+							$tempresults = editCondition($cond);
+							unset($arrayOfCondition[$key]);
+							if(is_string($tempresults))
+							{
+							//if not bool then it is an error message
+								return $tempresults;
+							}
+						}	
+					}
+					//row id is not among the updated condition so delete
+					if(!$StillExists)
+					{
+						$db->delete($theTables['Rcondition'], $theColumns['Rcondition'][0] . " = " .$row['id']);
+					}
+				}
+				//add the remaining condition to db
+				if($arrayOfCondition != null && !(empty ($arrayOfCondition)))
+				{
+					foreach($arrayOfCondition as $cond)
+					{
+						//if a new condition should be added then make condition here
+						$tempresults = addCondition($ruleData->RId, $cond);
+						if(is_string($tempresults))
+						{
+						//if not bool then it is an error message
+							return $tempresults;
+						}
+					}
+				}
+				$AIdResult = $db->query($theColumns['Action'][0].' AS id', $theTables['Action'], $theColumns['Action'][1] . " = " . $ruleData->RId );
+				while($row = mysqli_fetch_assoc($AIdResult))
+				{
+					$StillExists = false;
+					foreach($arrayOfAction as $key => $act)
+					{
+						if($row['id'] == $act->AId && $cond->name == null)
+						{
+							$StillExists = true;
+							//edit the action in db
+							$tempresults = editAction($act);
+							unset($arrayOfAction[$key]);
+							if(is_string($tempresults))
+							{
+								//if not bool then it is an error message
+								return $tempresults;
+							}
+						}	
+					}
+					//row id is not among the updated condition so delete
+					if(!$StillExists)
+					{
+						$db->delete($theTables['Action'], $theColumns['Action'][0] . " = " .$row['id']);
+					}
+					
+				}
+				//add the remaining action to db
+				if($arrayOfAction != null && !(empty ($arrayOfAction)))
+				{
+					foreach($arrayOfAction as $action)
+					{
+						//if a new condition should be added then make condition here
+						$tempresults = addAction($ruleData->RId,$action);
+						if(is_string($tempresults))
+						{
+							//if not bool then it is an error message
+							return $tempresults;
+						}
+					}
+				}
 				return true;
 			}
 			elseif(is_array($resultValue))
@@ -838,31 +906,47 @@
 		$tempcol = $theColumns['Action'];
 		$table = $theTables['Action'];
 		$where = $tempcol[0] . "=" . $action->AId;
-		$columnValue =  $tempcol[2] . "='" . $action->name. "'";
-
+		$columnValue =  "";
+		/*if( $action->name != null)
+		{
+			$columnValue .= $tempcol[2] . "='" . $action->name. "'";
+		}*/
 		if( $action->points != null)
 		{
-			$columnValue .= ", " . $tempcol[3] . "=". $action->points;
+			if($columnValue != "")
+			{
+				$columnValue .=  ", ";
+			}
+			$columnValue .=  $tempcol[3] . "=". $action->points;
 		}
 		if( $action->controllerId != null)
 		{
-			$columnValue .= ", " . $tempcol[4] . "=" . $action->controllerId;
+			if($columnValue != "")
+			{
+				$columnValue .=  ", ";
+			}
+			$columnValue .=  $tempcol[4] . "=" . $action->controllerId;
 		}
-		$resultValue = $db->update( $table, $columnValue, $where);
-		if(is_bool($resultValue))
+		if($columnValue != "")
 		{
-			return $resultValue;
+			$resultValue = $db->update( $table, $columnValue, $where);
+			if(is_bool($resultValue))
+			{
+				return $resultValue;
+			}
+			elseif(is_array($resultValue))
+			{
+				return sqlErrorMessage($resultValue[1]);
+			}
 		}
-		elseif(is_array($resultValue))
-		{
-			return sqlErrorMessage($resultValue[1]);
-		}
+		else
+		{return true;}
 	}
+	
 	
 	/*helper function to editRule*/
 	function editCondition($cond)
 	{
-	
 		$db= new MySQLHelper();
 		global $theTables;
 		global $theColumns;
@@ -871,61 +955,131 @@
 		{
 			$tempcol = $theColumns['Rcondition'];
 			$table = $theTables['Rcondition'];
-			$columnValue =  $tempcol[2] . "='" . $cond->name. "'";
+			$columnValue = "";
 			$where =  $tempcol[0] ."=". $cond->condId;
+		/*	if($cond->name != null)
+			{
+				$columnValue =  $tempcol[2] . "='" . $cond->name. "'";
+			}*/
 			if($cond->controllerId != null)
 			{
-				$columnValue .= ", " . $tempcol[3] . "=". $cond->controllerId;
+				$columnValue .=  $tempcol[3] . "=". $cond->controllerId;
 			}
-			$resultValue = $db->update( $table, $columnValue, $where);
-			if($resultValue)
+			if($columnValue != "")
 			{
-				/*specialist Condition handling*/
-				/*$arrayOfRestAttributes contains (timestamp) or ( 'timeFrom','timeTo','weekdays','weekly','ndWeekly','rdWeekly','firstInMonth','lastInMonth','weekNumber')*/
-				if($cond->arrayOfRestAttributes != null)
+				$resultValue = $db->update( $table, $columnValue, $where);
+				if(is_array($resultValue))
 				{
-					$extras = $cond->arrayOfRestAttributes;
-					if(count($extras)<2)
-					{
-						$tempcol = $theColumns['Cond_timestamp'];
-						$table = $theTables['Cond_timestamp'];		
+					return sqlErrorMessage($resultValue[1]);
+				}
+			}
+			/*specialist Condition handling*/
+			/*$arrayOfRestAttributes contains (timestamp) or ( 'timeFrom','timeTo','weekdays','weekly','ndWeekly','rdWeekly','firstInMonth','lastInMonth','weekNumber')*/
+			if($cond->arrayOfRestAttributes != null)
+			{
+				$extras = $cond->arrayOfRestAttributes;
+				if(count($extras)<2)
+				{
+					$tempcol = $theColumns['Cond_timestamp'];
+					$table = $theTables['Cond_timestamp'];	
+					if($extras[$tempcol[1]] != null)
+					{						
 						$columnValue =  $tempcol[1] ."=". $extras[$tempcol[1]];
-						$where = $tempcol[0] ."=".  $cond->condId;		
 					}
-					else
-					{ 
-						$tempcol = $theColumns['Cond_timeperiod'];
-						$table = $theTables['Cond_timeperiod'];		
-						$where = $tempcol[0] . "=". $cond->condId;
-						//               'timeFrom'                                ,'timeTo',                                       'weekdays'
-						$columnValue = $tempcol[1] ."=". $extras[$tempcol[1]]. ", ". $tempcol[2] ."=". $extras[$tempcol[2]]. ", " . $tempcol[3]."='". $extras[$tempcol[3]]."'";
-						if($extras['weekly'] != null)
-						{
-							$columnValue .= ", " . $tempcol[4]. "=". $extras[$tempcol[4]];
-						}
-						if($extras['ndWeekly']!= null)
-						{
-							$columnValue .= ", ". $tempcol[5]. "=". $extras[$tempcol[5]];
-						}
-						if($extras['rdWeekly']!= null)
-						{
-							$columnValue .= ", ". $tempcol[6]. "=". $extras[$tempcol[6]];
-						}
-						if($extras['firstInMonth']!= null)
-						{
-							$columnValue .= ", ". $tempcol[7]. "=". $extras[$tempcol[7]];
-						}
-						if($extras['lastInMonth']!= null)
-						{
-							$columnValue .= ", ". $tempcol[8]. "=". $extras[$tempcol[8]];
-						}
-						if($extras['weekNumber']!= null)
-						{
-							$columnValue .= ", ". $tempcol[9]. "=". $extras[$tempcol[9]];
-						}
+					$where = $tempcol[0] ."=".  $cond->condId;		
+				}
+				else
+				{ 
+					$tempcol = $theColumns['Cond_timeperiod'];
+					$table = $theTables['Cond_timeperiod'];		
+					$where = $tempcol[0] . "=". $cond->condId;
+					//  'timeFrom' 
+					if($extras[$tempcol[1]] != null)
+					{						
+						$columnValue = $tempcol[1] ."=". $extras[$tempcol[1]] ;
 					}
-					
+					//'timeTo'
+					if($extras[$tempcol[2]] != null)
+					{
+						if($columnValue != "")
+						{
+							$columnValue .=  ", ";
+						}
+						$columnValue .=  $tempcol[2] ."=". $extras[$tempcol[2]];
+					}
+					//'weekdays'
+					if($extras[$tempcol[3]] != null)
+					{
+						if($columnValue != "")
+						{
+							$columnValue .=  ", ";
+						}
+						$columnValue .=  $tempcol[3]."='". $extras[$tempcol[3]]."'";
+					}
+					//weekly
+					if($extras[$tempcol[4]] != null)
+					{
+						if($columnValue != "")
+						{
+							$columnValue .=  ", ";
+						}
+						$columnValue .=  $tempcol[4]. "=". $extras[$tempcol[4]];
+					}
+					//2nd weekly
+					if($extras[$tempcol[5]]!= null)
+					{
+						if($columnValue != "")
+						{
+							$columnValue .=  ", ";
+						}
+
+						$columnValue .=  $tempcol[5]. "=". $extras[$tempcol[5]];
+					}
+					//3rdWeekly
+					if($extras[$tempcol[6]]!= null)
+					{
+						if($columnValue != "")
+						{
+							$columnValue .=  ", ";
+						}
+
+						$columnValue .= $tempcol[6]. "=". $extras[$tempcol[6]];
+					}
+					//'firstInMonth'
+					if($extras[$tempcol[7]]!= null)
+					{
+						if($columnValue != "")
+						{
+							$columnValue .=  ", ";
+						}
+
+						$columnValue .= $tempcol[7]. "=". $extras[$tempcol[7]];
+					}
+					//'lastInMonth'
+					if($extras[$tempcol[8]]!= null)
+					{
+						if($columnValue != "")
+						{
+							$columnValue .=  ", ";
+						}
+
+						$columnValue .=  $tempcol[8]. "=". $extras[$tempcol[8]];
+					}
+					//'weekNumber'
+					if($extras[$tempcol[9]]!= null)
+					{
+						if($columnValue != "")
+						{
+							$columnValue .=  ", ";
+						}
+
+						$columnValue .=  $tempcol[9]. "=". $extras[$tempcol[9]];
+					}
+				}
+				if($resultValue != "")
+				{				
 					$resultValue = $db->update( $table, $columnValue, $where);
+				
 					if(is_bool($resultValue))
 					{
 						return $resultValue;
@@ -935,15 +1089,9 @@
 						return sqlErrorMessage($resultValue[1]);
 					}
 				}
+				else
+				{return true;}
 			}
-			else
-			{
-				return $resultValue;
-			}
-		}
-		elseif(is_array($resultValue))
-		{
-			return sqlErrorMessage($resultValue[1]);
 		}
 	}
 	
