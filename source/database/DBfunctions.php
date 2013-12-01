@@ -295,7 +295,7 @@
 			{
 				$columnValue .= $columstemp[2] . " = '" . $object->name . "'";
 			}
-			if($object->location !== null)
+			if($object->location !== null) //Need to be strictly null, so we can overwrite a name to become the empty string
 			{
 				if($columnValue != "")
 				{

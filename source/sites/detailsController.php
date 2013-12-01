@@ -2,8 +2,8 @@
 	if(isset($_POST['cancel'])){
 		header('location:?page=devices');
 	}
-	elseif(isset($_POST['save'])){ //Currently it is only viewing, not saving.
-		if(isset($_POST['name']) && $_POST['name'] != "" ) //Should also check if user is part of CSId
+	elseif(isset($_POST['save'])){ 
+		if(isset($_POST['name']) && $_POST['name'] != "" )
 			$name = $_POST['name'];
 		else
 			$name = null;
