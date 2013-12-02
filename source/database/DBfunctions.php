@@ -772,7 +772,13 @@
 	
 	/* This will edit an existing rule with its conditions and actions.
 	When a rule are to be updated all data is required. All values are updated except for the ids.
-	When action name or condition name is not null a new condition will be made and previous will be deleted. */
+	 */
+	/*HOW TO USE IT
+	this should be used like addNewRule but if an attribute should not be change then it should be null in the array, e.g. $ruleData->name = null
+	But ids must not be null except for controllerId and if the condition or action is new then its id should be null.
+	If a condition or action should be deleted then it should not be represented in the $arrayOfCondition or $arrayOfAction,
+	if a condition or action should be changed or added then it must be in the $arrayOfCondition or $arrayOfAction.
+	When action name or condition name is not null a new condition will be made and previous one will be deleted.*/
 	function editRule($ruleData, $arrayOfCondition, $arrayOfAction)
 	{
 	$db= new MySQLHelper();
