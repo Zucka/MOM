@@ -5,7 +5,7 @@
 
 //Setting up the Arduino
 char devID[4] = "123"; //Device ID. Limited to 3 bytes.
-char useID[5] = "";  //ID of logged in User, Limited to 5.
+char useID[5] = "234";  //ID of logged in User, Limited to 5.
 
 //Setting up the Shield's addresses.
 byte mac[] = { 0x90, 0xA2, 0xDA, 0x0E, 0xC5, 0x94 };
@@ -73,7 +73,7 @@ void setup()
   //Starting up the Ethernet.
   if (Ethernet.begin(mac) == 0) 
   {
-    Serial.println("Failed to configure Ethernet using DHCP");
+    Serial.println(F("Failed to configure Ethernet using DHCP"));
     while(true);
   }
   delay(1000);
@@ -85,7 +85,24 @@ void setup()
 
 void loop()
 {
+  turnOff();
+  
+  /*
+  Serial.print(F("Turn On:  "));
+  Serial.println(freeRam());
+  turnOn();
+  
+  delay(10000);
+
+  Serial.print(F("Status:  "));
+  Serial.println(freeRam());  
   getStatus();
+  
+  delay(10000);
+  
+  Serial.print(F("Turn Off:  "));
+  Serial.println(freeRam());  
+  turnOff();*/
   Serial.println(F("Exit"));
   while(true);
   
@@ -133,22 +150,30 @@ void loop()
 }
 
 /* Start: On Device Calls */
+int freeRam () 
+{
+  extern int __heap_start, *__brkval; 
+  int v; 
+  return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval); 
+}
+
 
 void getJSON(char input[])
 {  
-    char* output;
-    token_list_t *token_list = NULL;
-    token_list = create_token_list(25); // Create the Token List. (Potential Memory Waste)
-    json_to_token_list(input, token_list); // Convert JSON String to a Hashmap of Key/Value Pairs
-    output = json_get_value(token_list, "status");
-    release_token_list(token_list);
-    Serial.println(output);  
+  char* output;
+  token_list_t *token_list = NULL;
+  token_list = create_token_list(25); // Create the Token List. (Potential Memory Waste)
+  json_to_token_list(input, token_list); // Convert JSON String to a Hashmap of Key/Value Pairs
+  output = json_get_value(token_list, "status");
+  release_token_list(token_list);
+  Serial.println(output);  
 }
+/* End: On device calls */
 
 /* Start: Calls to Website */
 
 void getStatus(void)
-{  
+{
   if(client.connect(server, 80))
   {
     char get[25] = "GET /api/api.php/status/"; //Assigning the Get code for the HTML Request. 
@@ -162,13 +187,13 @@ void getStatus(void)
     client.println();
     
     free(get);
-    
+        
     Serial.println(F("Message Sent"));
     
-    delay(1000);
+    while(!client.available());
     
     boolean toggle = false;
-    char o[75] = ""; 
+    char o[75] = "" ;
     char i[1] = "";
     
     while(client.available())
@@ -186,118 +211,142 @@ void getStatus(void)
       }
       else if(toggle)
       {
-        /*
-        if(i[0] == '"')
-        {
-          strcat(o, "\"");
-        }
-        else
-        {
-          strcat(o, i);
-        }*/
         strcat(o, i);
       }     
     }
-    free(i);
+    delay(10);
     
-    Serial.println();
+    Serial.print(F("Status: "));
     Serial.println(o);
-    //TODO: why doesn't JSON work without this unrelated array and print?
-    char o2[75] = "{\"status\":\"RED\",\"action\":\"none\",\"timeRemaining\":0}";
-    
-    
-    if( o2 == o)
-    {
-      Serial.println(F("banal"));
-    }
-    Serial.println(o2);
-    
-    getJSON(o);
-  
+        
+    getJSON(o);  
     
     Serial.println(F("Tokens Baby"));
+    //client.stop();
   }
   else
   {
     Serial.println("Connection Failed");
   }
 }
-/*
+
 void turnOn(void)
 {
-  char json[255] = "";
-  
   if(client.connect(server, 80))
   {
-    char get[20] = "GET /"; //Assigning the Get code for the HTML Request. 
-    strcat(get, devID); //Limited so that the Device ID's cannot surpoass 7 char length.
-    strcat(get, "/");
-    strcat(get, useID); //Currently limited to 5 chars.
-    strcat(get, " HTTP/1.1");
+    char getOn[50] = "GET /api/api.php/turnOn/"; //Assigning the Get code for the HTML Request. 
+    strcat(getOn, devID);
+    strcat(getOn, "/");
+    strcat(getOn, useID);
+    strcat(getOn, " HTTP/1.1");
        
-    Serial.println("Connected"); 
-    client.println(get);
-    client.println("Host: www.test.com/api/turnOn"); //TODO: Correct this.
-    client.println("Connection: close");
+    Serial.println(F("Connected")); 
+    client.println(getOn);
+    client.println(F("Host: spcadmin.tk")); //TODO: Correct this.
+    client.println(F("Connection: close"));
     client.println();
     
-    delay(1000);
+    free(getOn);
+    
+    Serial.println(F("Message Sent"));
+    
+    while(!client.available());
+    
+    boolean toggle = false;
+    char on[75] = "" ;
+    char i[1] = "";
     
     while(client.available())
-    {
-      char io[1] = "";
-      io[0] = client.read();
-      strcat(json, io);
+    { 
+      i[0] = client.read();
+      if( i[0] == '{')
+      {
+        toggle = !toggle;
+        strcat(on, i);
+      }
+      else if(i[0] == '}')
+      {
+        toggle = !toggle;
+        strcat(on, i);
+      }
+      else if(toggle)
+      {
+        strcat(on, i);
+      }     
     }
+    delay(10);
     
-    token_list_t *token_list = NULL;
-    token_list = create_token_list(25); // Create the Token List. ((Potential Memory Waste)
-    json_to_token_list(json, token_list); // Convert JSON String to a Hashmap of Key/Value Pairs
-
+    Serial.print(F("On: "));
+    Serial.println(on);
+        
+    getJSON(on);  
     
+    Serial.println(F("Tokens Baby"));
+    //client.stop();   
   }
   else
   {
-    Serial.println("Connection Failed");
+    Serial.println(F("Connection Failed"));
   }
 }
 
 void turnOff(void)
-{
-  char json[255] = "";
-  
+{  
   if(client.connect(server, 80))
   {
-    char get[20] = "GET /"; //Assigning the Get code for the HTML Request. 
-    strcat(get, devID); //Limited so that the Device ID's cannot surpoass 7 char length.
-    strcat(get, "/");
-    strcat(get, useID); //Currently limited to 5 chars.
-    strcat(get, " HTTP/1.1");
+    char getOff[50] = "GET /api/api.php/turnOff/"; //Assigning the Get code for the HTML Request. 
+    strcat(getOff, devID); 
+    strcat(getOff, "/");
+    strcat(getOff, useID); 
+    strcat(getOff, " HTTP/1.1");
        
-    Serial.println("Connected"); 
-    client.println(get);
-    client.println("Host: www.test.com/api/turnOff"); //TODO: Correct this.
-    client.println("Connection: close");
+    Serial.println(F("Connected")); 
+    client.println(getOff);
+    client.println(F("Host: spcadmin.tk")); //TODO: Correct this.
+    client.println(F("Connection: close"));
     client.println();
     
-    delay(1000);
+    free(getOff);
+    
+    Serial.println(F("Message Sent"));
+    
+    while(!client.available());
+    
+    boolean toggle = false;
+    char off[75] = "" ;
+    char i[1] = "";
     
     while(client.available())
-    {
-      char io[1] = "";
-      io[0] = client.read();
-      strcat(json, io);
+    { 
+      i[0] = client.read();
+      if( i[0] == '{')
+      {
+        toggle = !toggle;
+        strcat(off, i);
+      }
+      else if(i[0] == '}')
+      {
+        toggle = !toggle;
+        strcat(off, i);
+      }
+      else if(toggle)
+      {
+        strcat(off, i);
+      }     
     }
+    delay(10);
     
-    token_list_t *token_list = NULL;
-    token_list = create_token_list(25); // Create the Token List. ((Potential Memory Waste)
-    json_to_token_list(json, token_list); // Convert JSON String to a Hashmap of Key/Value Pairs
-
+    Serial.print(F("Off: "));
+    Serial.println(off);
+        
+    getJSON(off);  
     
+    Serial.println(F("Tokens Baby"));
+    //client.stop();   
   }
   else
   {
-    Serial.println("Connection Failed");
+    Serial.println(F("Connection Failed"));
   }
 }
 
@@ -305,7 +354,7 @@ void turnOff(void)
 
 /* Begin: Commands for RFID*/
  
-
+/*
 void seek(void)
 {
   //search for RFID tag, sent in UART.
