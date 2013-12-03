@@ -10,17 +10,17 @@
 		$db_database = 'smartparentalcontrol';	
 		//tables
 		$theTables = array( 'Action' => 'action',
-							'Chores'=>'chores',
+							'Chores'=>'chore',
 							'Cond_timeperiod' =>'cond_timeperiod',
 							'Cond_timestamp' => 'cond_timestamp',
 							'Control_system' => 'control_system',
 							'Controller' => 'controller',
 							'Controller_used_by_tag' => 'controller_used_by_tag',
 							'Profile' => 'profile',
-							'Profile_did_chores' => 'profile_did_chores',
-							'Profile_has_rules' => 'profile_has_rules',
+							'Profile_did_chores' => 'profile_did_chore',
+							'Profile_has_rules' => 'profile_has_rule',
 							'Rcondition' => 'rcondition',
-							'Rules' => 'rules',
+							'Rules' => 'rule',
 							'Tag' =>'tag'
 							);
 							
