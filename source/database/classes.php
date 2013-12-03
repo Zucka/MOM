@@ -6,7 +6,7 @@ class Control_system
 	public $street;
 	public $phoneNo;
 	public $postcode;
-	function __construct($name ,$CSId = null, $street = null,$postcode = null , $phoneNo = null) 
+	function __construct($CSId = null,$name= nul , $street = null,$postcode = null , $phoneNo = null) 
 		{
 			$this->name = $name;
 			$this->CSId= $CSId;
@@ -28,7 +28,7 @@ class Profile
 	public $role; //(user OR manager)
 
 	
-	function __construct($CSId, $name , $username, $password, $email, $points = null, $profileId = null, $role= null, $phoneNo = null) 
+	function __construct($CSId, $profileId = null, $name =null , $username = null, $password= null, $email=null, $points = null,  $role= null, $phoneNo = null) 
 	{
 		$this->CSId = $CSId;
 		$this->name = $name;
@@ -49,14 +49,15 @@ class Tag
 	public $TSerieNo;
 	public $active;
 	public $profileId;
-	 
-	function __construct($CSId, $profileId, $TSerieNo = null ,   $name= null, $active = 0 ) 
+						//active must be '0' or 'false' when expressing the boolean false because false or 0 just disappears 
+	function __construct($CSId, $TSerieNo ,$profileId = null,  $name= null, $active = null ) 
 	{
 		$this->CSId = $CSId;
 		$this->name = $name;
 		$this->TSerieNo = $TSerieNo;
 		$this->active = $active;
 		$this->profileId = $profileId;
+
 	}
 }
 class Controller
@@ -66,14 +67,16 @@ class Controller
 	public $CSerieNo;
 	public $location;
 	public $status;
+	public $cost;
 	 
-	function __construct($CSId, $name, $CSerieNo , $location = null, $status = null ) 
+	function __construct($CSId, $CSerieNo, $name= null , $location = null, $cost=null , $status = null ) 
 	{
 		$this->CSId = $CSId;
 		$this->name = $name;
 		$this->CSerieNo = $CSerieNo;
 		$this->location = $location;
 		$this->status = $status;
+		$this->cost = $cost;
 	}
 }
 
@@ -85,7 +88,7 @@ class Chores
 	public $description;
 	public $defaultPoints;
 	 
-	function __construct($CSId, $name, $CId =null , $description = null, $defaultPoints = null ) 
+	function __construct($CSId, $CId =null ,$name = null, $description = null, $defaultPoints = null ) 
 	{
 		$this->CSId = $CSId; 
 		$this->name = $name; 
@@ -103,7 +106,7 @@ class Rules
 	public $isPermission;
 
 	 
-	function __construct($CSId, $name, $isPermission= false, $RId = null ) 
+	function __construct($CSId, $name=null, $isPermission= null, $RId = null ) 
 	{
 		$this->CSId = $CSId; 
 		$this->name = $name; 
@@ -119,7 +122,7 @@ class Condition
 	public $controllerId;
 	public $arrayOfRestAttributes;
 
-	function __construct($RId ,$name, $condId=null, $controllerId = null, $arrayOfRestAttributes= null ) 
+	function __construct($RId ,$name=null, $condId=null, $controllerId = null, $arrayOfRestAttributes= null ) 
 	{
 		$this->RId = $RId; 
 		$this->name = $name; 
@@ -139,7 +142,7 @@ class Action
 	public $points;
 
 
-	function __construct( $RId, $name, $AId=null, $controllerId = null, $points= null ) 
+	function __construct( $RId, $name=null, $AId=null, $controllerId = null, $points= null ) 
 	{
 		$this->RId = $RId; 
 		$this->name = $name; 

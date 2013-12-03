@@ -3,6 +3,7 @@
 	include_once "classes.php";
 	include_once "sqlHelper.php";
 	include_once "errorMessageSQL.php";
+	include_once "getDataFromDBFunctions.php";
 	
 	/*adding into database in the tables Control_system,Profile, Tag, Controller and Chores*/
 	function simpleInsertIntoDB($object)
@@ -43,14 +44,6 @@
 			$values.=")";
 			break;
 		case 'Profile':
-		/*
-		  `PId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-
-
-  `role` enum('user','manager') NOT NULL DEFAULT 'user',*/
-		
-		//db =>'PId', 'CSId', 'name', 'points', 'username', 'password', 'email','phone', 'role'
-		//class=> $CSId, $name , $username, $password, $email, $points = null, $profileId = null, $role= null, $phoneNo = null
 			$table=  $theTables['Profile'];
 			$columstemp= $theColumns['Profile'];
 			$colums="(" . $columstemp[1] . ", " . $columstemp[2] ;
@@ -111,6 +104,11 @@
 				$colums .= "," . $columstemp[3];
 				$values .= ", '". $object->location . "'";
 			}
+			if($object->cost != null)
+			{
+				$colums .= "," . $columstemp[5];
+				$values .= ", ". $object->cost;
+			}
 			$colums .= ")";
 			$values .= ")";
 			
@@ -143,23 +141,14 @@
 		}
 		elseif(is_array($resultValue))
 		{
-			$errorMessage = null;
-			switch($resultValue[1])
-			{
-			case 1062:
-				$errorMessage = $GLOBALS['SQL_ERROR_VALUE_ERROR'];
-				break;
-			default:
-				$errorMessage = $GLOBALS['SQL_ERROR_OTHER'];
-			}
-			return $errorMessage;
-		
-			
+			return sqlErrorMessage($resultValue[1]);
 		}
 		return null;
 	}
 
 	/*edit data in database in the tables Control_system,Profile, Tag, Controller and Chores*/
+	/*in the classes the variables that not should be change must be null, 
+	but I always need the Id, e.g. if you want to change attributes in Tag then TSerieNo must not be null */
 	function simpleUpdateDB($object)
 	{
 	$db= new MySQLHelper();
@@ -170,23 +159,38 @@
 		$where;
 
 		switch (get_class($object))
-		{ 		//db => 'CSId', 'name' , 'street', 'postcode', 'phoneNo'
-				//class => $name,$CSId = null, $street = null,$postcode = null , $phoneNo = null
+		{ 		
 		case 'Control_system': //'name' , 'street', 'postcode', 'phoneNo'
 			$table=  $theTables['Control_system'];
 			$columstemp= $theColumns['Control_system'];
-			$columnValue = $columstemp[1] . " ='" .  $object->name . "'" ;
+			$columnValue = "" ;
+			if($object->name != null)
+			{
+				$columnValue .= $columstemp[1] . " ='" .  $object->name . "'";
+			}
 			if($object->street != null)
 			{
-				$columnValue .=  ", " . $columstemp[2] . " = '" . $object->street . "'";
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .=  $columstemp[2] . " = '" . $object->street . "'";
 			}
 			if($object->postcode != null)
 			{
-				$columnValue .=  ", " . $columstemp[3] . " = '" . $object->postcode . "'";
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .=  $columstemp[3] . " = '" . $object->postcode . "'";
 			}
 			if($object->phoneNo != null)
 			{
-				$columnValue .=  ", " . $columstemp[4] . " = '" . $object->phoneNo. "'";
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .= $columstemp[4] . " = '" . $object->phoneNo. "'";
 			}
 			
 			$where = $columstemp[0] . " = " . $object->CSId;
@@ -196,22 +200,58 @@
 		case 'Profile':
 			$table=  $theTables['Profile'];
 			$columstemp= $theColumns['Profile'];
-			$columnValue = $columstemp[2] . " = '" . $object->name . "' , " . $columstemp[3] . " = " . $object->points;
-			
+			$columnValue = "" ;
+			if($object->name != null)
+			{
+				$columnValue .= $columstemp[2] . " = '" . $object->name ;
+			}
 			if($object->points != null)
 			{
-				$columnValue .=  ", " . $columstemp[3] . " = " .$object->points;
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .= $columstemp[3] . " = " .$object->points;
 			}
-			$columnValue .=  ", " . $columstemp[4] . " = '" . $object->username . "', " . $columstemp[5] . " = '" . $object->password . 
-							"', " . $columstemp[6] . " = '" . $object->email . "'";
-	
+			if($object->username != null)
+			{
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .= $columstemp[4] . " = '" . $object->username . "'";
+			}
+			if($object->password != null)
+			{
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .= $columstemp[5] . " = '" . $object->password . "'";
+			}
+			if($object->email != null)
+			{
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .=   $columstemp[6] . " = '" . $object->email . "'";
+			}
 			if($object->phoneNo != null)
 			{
-				$columnValue .=  ", " . $columstemp[7] . " = '" .$object->phoneNo . "'";
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .=   $columstemp[7] . " = '" .$object->phoneNo . "'";
 			}
 			if($object->role != null)
 			{
-				$columnValue .=  ", " . $columstemp[8] . " = '" .$object->role . "'";
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .=  $columstemp[8] . " = '" .$object->role . "'";
 			}
 			
 			$where = $columstemp[0] . " = " . $object->profileId;
@@ -220,12 +260,29 @@
 			$table=  $theTables['Tag'];
 			$columstemp= $theColumns['Tag'];
 			$where = $columstemp[0] . " = " . $object->TSerieNo;
-			$columnValue = $columstemp[2] . " = " . $object->profileId ;
+			$columnValue = "";
+			if($object->profileId != null)
+			{
+			
+				$columnValue = $columstemp[2] . " = " . $object->profileId ;
+			}
 			if($object->name != null)
 			{
-				$columnValue .=  ", " . $columstemp[3] . " = '" . $object->name . "'";
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .=   $columstemp[3] . " = '" . $object->name . "'";
 			}
-			$columnValue .= ", " .$columstemp[4] . " = " . $object->active;
+			if($object->active != null)
+			{
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .= $columstemp[4] . " = " . $object->active;
+			
+			}
 			//('TSerieNo','CSId',) 'profileId', 'name', 'active'
 			//$(CSId,) $profileId, ($TSerieNo = null ),   $name= null, $active = null 
 			break;
@@ -233,23 +290,63 @@
 			$table=  $theTables['Controller'];
 			$columstemp= $theColumns['Controller'];
 			$where = $columstemp[0] . " = " . $object->CSerieNo;
-			$columnValue = $columstemp[2] . " = '" . $object->name . "', " .$columstemp[4] . " = '" . $object->status . "'";
-			if($object->location != null)
+			$columnValue = "" ;
+			if($object->name != null)
 			{
-			$columnValue .=  ", " .$columstemp[3] . " = '" . $object->location . "'";
+				$columnValue .= $columstemp[2] . " = '" . $object->name . "'";
 			}
-			//('CSerieNo','CSId',) 'name' ,'location', 'status' 
-			//($CSId,) $name, ($CSerieNo) , $location = null, $status = null
+			if($object->location !== null) //Need to be strictly null, so we can overwrite a name to become the empty string
+			{
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .=  $columstemp[3] . " = '" . $object->location . "'";
+			}
+			/*I don't really intent this to be here but if anyone need to set it then its here
+			,"... SET status = 'RED' "
+			if($object->status != null)
+			{
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .=  $columstemp[4] . " = '" . $object->status . "'";
+			}*/
+			if($object->cost != null)
+			{
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .=  $columstemp[5] . " = " . $object->cost;
+			}
 			break;
 			
 		case 'Chores': 
 			$table=  $theTables['Chores'];
 			$columstemp= $theColumns['Chores'];
 			$where = $columstemp[0] . " = " . $object->CId;
-			$columnValue = $columstemp[2] . " = '" . $object->name . "', " .$columstemp[4] . " = " . $object->defaultPoints;
+			$columnValue = "";
+			if($object->name != null)
+			{
+				$columnValue .= $columstemp[2] . " = '" . $object->name . "'";
+			}
+			if($object->defaultPoints != null)
+			{
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .= $columstemp[4] . " = " . $object->defaultPoints;
+			}
 			if($object->description != null)
 			{
-			$columnValue .=  ", " .$columstemp[3] . " = '" . $object->description . "'";
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .=  $columstemp[3] . " = '" . $object->description . "'";
 			}
 			//('CId', 'CSId'), 'name', 'description', 'defaultPoints'
 			//($CSId,) $name, ($CId =null) , $description = null, $defaultPoints = null 
@@ -264,28 +361,13 @@
 		}
 		elseif(is_array($resultValue))
 		{
-			$errorMessage = null;
-			switch($resultValue[1])
-			{
-			case 1054:
-				$errorMessage = $GLOBALS['SQL_ERROR_BAD_INPUT'];
-				break;
-			case 1062:
-				$errorMessage = $GLOBALS['SQL_ERROR_VALUE_ERROR'];
-				break;
-			case 1064:
-				$errorMessage = $GLOBALS['SQL_ERROR_WEIRD_FALSE'];
-				break;
-			default:
-				$errorMessage = $GLOBALS['SQL_ERROR_OTHER'];
-			}
-			return $errorMessage;
+			return sqlErrorMessage($resultValue[1]);
 		}
 		return null;
 	}
 	
 	/*delete in database Profile, Tag, Controller and Chores*/
-	function removeSimpleObjectFromDB($object)
+	function removeObjectFromDB($object)
 	{
 		$db= new MySQLHelper();
 		global $theColumns;
@@ -295,12 +377,11 @@
 		
 		switch (get_class($object))
 		{
-	/*don't use this one yet
 		case 'Control_system':
 			$table=  $theTables['Control_system'];
 			$columntemp = $theColumns['Control_system'];
 			$where = $columntemp[0] . " = " . $object->CSId;
-			break;*/
+			break;
 		case 'Profile':
 			$table=  $theTables['Profile'];
 			$columntemp = $theColumns['Profile'];
@@ -321,6 +402,21 @@
 			$columntemp = $theColumns['Chores'];
 			$where = $columntemp[0] . " = " . $object->CId;
 			break;
+		case 'Rules':
+			$table=  $theTables['Rules'];
+			$columntemp = $theColumns['Rules'];
+			$where = $columntemp[0] . " = " . $object->RId;
+			break;
+		case 'Condition':
+			$table=  $theTables['Rcondition'];
+			$columntemp = $theColumns['Rcondition'];
+			$where = $columntemp[0] . " = " . $object->condId;
+			break;
+		case 'Action':
+			$table=  $theTables['Action'];
+			$columntemp = $theColumns['Action'];
+			$where = $columntemp[0] . " = " . $object->AId;
+			break;
 		default:
 		return;
 		}
@@ -330,17 +426,8 @@
 			return $resultValue;
 		}
 		elseif(is_array($resultValue))
-		{
-			$errorMessage = null;
-			switch($resultValue[1])
-			{
-			case 1451:
-				$errorMessage = $GLOBALS['SQL_ERROR_DELETE_FAILED'];
-				break;
-			default:
-				$errorMessage = $GLOBALS['SQL_ERROR_OTHER'];
-			}
-			return $errorMessage;
+		{			
+			return sqlErrorMessage($resultValue[1]);
 		}
 		return null;
 	}
@@ -382,112 +469,6 @@
 		return false;	  
 	}
 
-	function profilesByCSId($CSId)
-	{
-		$db= new MySQLHelper();
-		global $theTables;
-		global $theColumns;
-		$columntemp = $theColumns['Profile'];
-		$table = $theTables['Profile'];
-		$whereClause = $columntemp[1] . " = " . $CSId ;
-		$result = $db->query('*', $table, $whereClause );
-		$returnArray = null;
-		while($row = mysqli_fetch_assoc($result))
-		{
-			$returnArray[] = $row; 
-		}
-		return $returnArray;
-	}
-	
-	function controllersByCSId($CSId)
-	{
-		$db= new MySQLHelper();
-		global $theTables;
-		global $theColumns;
-		$columnController = $theColumns['Controller'];
-		$table = $theTables['Controller'];
-		$whereClause = $columnController[1] . " = " . $CSId;
-		$result = $db->query( ' * ', $table, $whereClause );
-		
-		$returnArray = null;
-		while($row = mysqli_fetch_assoc($result))
-		{
-			$partresult = controllersLastUsedHelpFunc($row['CSerieNo']);
-			foreach($partresult as $key => $value)
-			{
-				$row[$key]= $value;
-			}
-			$returnArray[] = $row; 
-		}
-		return $returnArray;
-	}
-
-	function tagsByCSId($CSId)
-	{
-		$db= new MySQLHelper();
-		global $theTables;
-		global $theColumns;
-		$columnTag = $theColumns['Tag'];
-		$columnProfile = $theColumns['Profile'];
-		$table = $theTables['Tag'] . " tag , " . $theTables['Profile'] . " profile";
-		$whereClause =  "tag." . $columnTag[1] . " = " . $CSId . " AND " . "tag." . $columnTag[2] . " = profile." . $columnProfile[0];
-		$result = $db->query('*', $table, $whereClause );
-		$returnArray = null;
-		while($row = mysqli_fetch_assoc($result))
-		{
-			$partresult = tagLastUsed($row['TSerieNo']);
-			foreach($partresult as $key => $value)
-			{
-				$row[$key]= $value;
-			}
-			$returnArray[] = $row; 
-		}
-		return $returnArray;
-	}
-
-	function controllersLastUsedHelpFunc($controllerID, $limitFrom=0, $limitTo=1)
-	{
-		$db= new MySQLHelper();
-		global $theTables;
-		global $theColumns;
-		$columnCUBT = $theColumns['Controller_used_by_tag'];
-		$columnTag = $theColumns['Tag'];
-		$columnUser = $theColumns['Profile'];
-
-		$table = $theTables['Controller_used_by_tag'] . " cubt, " . $theTables['Tag'] . " tag," . $theTables['Profile']. " pro";
-		$tagDeviceClause = " tag." . $columnTag[0] . " = cubt." . $columnCUBT[0];
-		$tagUserClause = "tag." . $columnTag[2] . " = pro." . $columnUser[0];  
-		$controller = "cubt." . $columnCUBT[1] . " = " . $controllerID;
-		$whereClause = $controller . " AND " . $tagDeviceClause ." AND " . $tagUserClause;
-		$ordering = 'lastTimeUsedFrom DESC';
-		$otherSQL = 'LIMIT '. $limitFrom . ', '. $limitTo ;
-		$selectValues= $columnCUBT[2] . " AS lastTimeUsedFrom , ". $columnCUBT[3] . " AS lastTimeUsedTo, pro.". $columnUser[2] . " AS lastUsedByProfile";
-		
-		$result = $db->query( $selectValues , $table, $whereClause, $ordering , $otherSQL);
-		return  mysqli_fetch_assoc($result);
-	}
-	
-	function tagLastUsed($tagID, $limitFrom = 0, $limitTo = 1)
-	{
-		$db= new MySQLHelper();
-		global $theTables;
-		global $theColumns;
-		$columnCon =  $theColumns['Controller'];
-		$columnCUBT = $theColumns['Controller_used_by_tag'];
-
-		$table = $theTables['Controller_used_by_tag'] . " cubt, "  . $theTables['Controller']. " con";
-		$tagControllerClause =   "cubt." . $columnCUBT[1] . " = con." .  $columnCon[0]; 
-		$tag = "cubt." . $columnCUBT[0] . " = " . $tagID;
-		$whereClause = $tag . " AND " . $tagControllerClause ;
-		$ordering = 'lastTimeUsedFrom DESC';
-		$otherSQL = 'LIMIT '. $limitFrom . ', '. $limitTo ;
-		$selectValues= $columnCUBT[2] . " AS lastTimeUsedFrom , ". $columnCUBT[3] . " AS lastTimeUsedTo, con.". $columnCon[2] . " AS lastUsedController";
-		$result = $db->query( $selectValues , $table, $whereClause, $ordering , $otherSQL);
-	
-		return mysqli_fetch_assoc($result);
-	}
-	
-	
 	function hashPassword($password) {
 
 		// Taken from: http://alias.io/2010/01/store-passwords-safely-with-php-and-mysql/
@@ -510,8 +491,7 @@
 
 	}
 	
-	
-			/* This will connect a rule to a Profile*/
+	/* This will connect a rule to a Profile*/
 	function addRuleToProfile($profileId ,$ruleId)
 	{
 		$db= new MySQLHelper();
@@ -574,8 +554,7 @@
 
 	}
 	
-		
-	/* This will add a rule with its conditions and actions to a control system*/
+	/* This will add a rule with its conditions and actions to a control system and returns its id if successful*/
 	function addNewRuleToDB($ruleData, $arrayOfCondition, $arrayOfAction)
 	{
 		$db= new MySQLHelper();
@@ -586,14 +565,15 @@
 		{ //'RId','CSId', 'name',  'isPermission'),
 			$tempcol = $theColumns['Rules'];
 			$table = $theTables['Rules'];
-			$column = "( " . $tempcol[1] . ", " . $tempcol[2] . ")";
-			$values = "( ". $ruleData->CSId . ", '". $ruleData->name . "')";
+			$column = "( " . $tempcol[1] . ", " . $tempcol[2] ;
+			$values = "( ". $ruleData->CSId . ", '". $ruleData->name . "'";
 			if($ruleData->isPermission != null)
 			{
-				$column .= ", " . $tempcol[3]. ")"; 
-				$values .= ", " . false . ")";
+				$column .= ", " . $tempcol[3]; 
+				$values .= ", " . $ruleData->isPermission ;
 			}
-
+			$column .= ")"; 
+			$values .= ")";
 			$resultValue = $db->insertInto($table, $values, $column);
 			if($resultValue)
 			{
@@ -603,11 +583,22 @@
 				
 				foreach($arrayOfCondition as $cond)
 				{
-					addCondition($ruleID, $cond);
+					$tempresults = addCondition($ruleID, $cond);
+					if(is_string($tempresults))
+					{
+						echo 'error';
+						//if not bool then it is an error message
+						return $tempresults;
+					}
 				}
 				foreach($arrayOfAction as $action)
 				{
-					addAction($ruleID, $action);
+					$tempresults = addAction($ruleID, $action);
+					if(is_string($tempresults))
+					{
+						//if not bool then it is an error message
+						return $tempresults;
+					}
 				}
 				return $ruleID;
 			}
@@ -664,6 +655,7 @@
 	function addCondition($ruleID, $cond)
 	{
 		$db= new MySQLHelper();
+		
 		global $theTables;
 		global $theColumns;
 		
@@ -700,12 +692,12 @@
 					{
 						$tempcol = $theColumns['Cond_timestamp'];
 						$table = $theTables['Cond_timestamp'];	
-						$column = "( " . $tempcol[1] ;
+						$column = "( " . $tempcol[0] ;
 						$values = "( " . $condID ;		
-						if($extras[$tempcol[2]]!=null)
+						if($extras[$tempcol[1]]!=null)
 						{
-							$column .= ", ". $tempcol[2];
-							$values .= ", " . $extras[$tempcol[2]];
+							$column .= ", ". $tempcol[1];
+							$values .= ", " . $extras[$tempcol[1]];
 						}
 						$column .= ")" ;
 						$values .= ")" ;		
@@ -714,41 +706,42 @@
 					{ 
 						$tempcol = $theColumns['Cond_timeperiod'];
 						$table = $theTables['Cond_timeperiod'];		
-						$column = "(" . $tempcol[1] . ", ".$tempcol[2] . ", ". $tempcol[3] . ", " . $tempcol[4];
-						$values = "(" . $condID . ", " . $extras[$tempcol[2]] . ", " . $extras[$tempcol[3]] . ", '" . $extras[$tempcol[4]]. "'";
+						//               'condId'         'timeFrom',         'timeTo',             'weekdays'
+						$column = "(" . $tempcol[0] . ", ".$tempcol[1] . ", ". $tempcol[2] . ", " . $tempcol[3];
+						$values = "(" . $condID . ", " . $extras[$tempcol[1]] . ", " . $extras[$tempcol[2]] . ", '" . $extras[$tempcol[3]]. "'";
 						if($extras['weekly'] != null)
 						{
-							$column .= ", " . $tempcol[5];
-							$values .= ", " . $extras[$tempcol[5]];
+							$column .= ", " . $tempcol[4];
+							$values .= ", " . $extras[$tempcol[4]];
 						}
 						if($extras['ndWeekly']!= null)
+						{
+							$column .= ", ". $tempcol[5];
+							$values .= ", ". $extras[$tempcol[5]];
+						}
+						if($extras['rdWeekly']!= null)
 						{
 							$column .= ", ". $tempcol[6];
 							$values .= ", ". $extras[$tempcol[6]];
 						}
-						if($extras['rdWeekly']!= null)
+						if($extras['firstInMonth']!= null)
 						{
 							$column .= ", ". $tempcol[7];
 							$values .= ", ". $extras[$tempcol[7]];
 						}
-						if($extras['firstInMonth']!= null)
+						if($extras['lastInMonth']!= null)
 						{
 							$column .= ", ". $tempcol[8];
 							$values .= ", ". $extras[$tempcol[8]];
 						}
-						if($extras['lastInMonth']!= null)
+						if($extras['weekNumber']!= null)
 						{
 							$column .= ", ". $tempcol[9];
 							$values .= ", ". $extras[$tempcol[9]];
 						}
-						if($extras['weekNumber']!= null)
-						{
-							$column .= ", ". $tempcol[10];
-							$values .= ", ". $extras[$tempcol[10]];
-						}
 						else
 						{
-							$column .= ", ". $tempcol[10];
+							$column .= ", ". $tempcol[9];
 							$values .= ", WEEK()";
 						}
 						$column .= ")";
@@ -774,19 +767,349 @@
 		elseif(is_array($resultValue))
 		{
 			return sqlErrorMessage($resultValue[1]);
-		}
-			
-			
+		}	
 	}
 	
+	/* This will edit an existing rule with its conditions and actions.
+	When a rule are to be updated all data is required. All values are updated except for the ids.
+	 */
+	/*HOW TO USE IT
+	this should be used like addNewRule but if an attribute should not be change then it should be null in the array, e.g. $ruleData->name = null
+	But ids must not be null except for controllerId and if the condition or action is new then its id should be null.
+	If a condition or action should be deleted then it should not be represented in the $arrayOfCondition or $arrayOfAction,
+	if a condition or action should be changed or added then it must be in the $arrayOfCondition or $arrayOfAction.
+	When action name or condition name is not null a new condition will be made and previous one will be deleted.*/
+	function editRule($ruleData, $arrayOfCondition, $arrayOfAction)
+	{
+	$db= new MySQLHelper();
+
+		global $theTables;
+		global $theColumns;
+		$ruleID;
+		if(get_class($ruleData)=='Rules')
+		{ //'RId','CSId', 'name',  'isPermission'),
+		
+			$tempcol = $theColumns['Rules'];
+			$table = $theTables['Rules'];
+			$columnValue = ""; 
+			$where = $tempcol[0] . ' = ' . $ruleData->RId;
+			
+			if($ruleData->name != null)
+			{
+				$columnValue .= $tempcol[2] . " = '" . $ruleData->name . "'";
+			}
+			//must not set permission after a rule is created therefore it is leftout
+
+			$resultValue = $db->update($table, $columnValue, $where);
+			if($resultValue)
+			{
+											//SELECT condId AS id FROM rcondition WHERE RId = ($ruleData->RId)
+				$CondIdResult = $db->query($theColumns['Rcondition'][0].' AS id', $theTables['Rcondition'], $theColumns['Rcondition'][1] . " = " . $ruleData->RId );
+				
+				while($row = mysqli_fetch_assoc($CondIdResult))
+				{
+					$StillExists = false;
+					foreach($arrayOfCondition as $key => $cond)
+					{
+						if($row['id'] == $cond->condId && $cond->name == null)
+						{
+
+							$StillExists = true;
+							//edit the condition in db
+							$tempresults = editCondition($cond);
+							unset($arrayOfCondition[$key]);
+							if(is_string($tempresults))
+							{
+							//if not bool then it is an error message
+								return $tempresults;
+							}
+						}	
+					}
+					//row id is not among the updated condition so delete
+					if(!$StillExists)
+					{
+						$db->delete($theTables['Rcondition'], $theColumns['Rcondition'][0] . " = " .$row['id']);
+					}
+				}
+				//add the remaining condition to db
+				if($arrayOfCondition != null && !(empty ($arrayOfCondition)))
+				{
+					foreach($arrayOfCondition as $cond)
+					{
+						//if a new condition should be added then make condition here
+						$tempresults = addCondition($ruleData->RId, $cond);
+						if(is_string($tempresults))
+						{
+						//if not bool then it is an error message
+							return $tempresults;
+						}
+					}
+				}
+				$AIdResult = $db->query($theColumns['Action'][0].' AS id', $theTables['Action'], $theColumns['Action'][1] . " = " . $ruleData->RId );
+				while($row = mysqli_fetch_assoc($AIdResult))
+				{
+					$StillExists = false;
+					foreach($arrayOfAction as $key => $act)
+					{
+						if($row['id'] == $act->AId && $cond->name == null)
+						{
+							$StillExists = true;
+							//edit the action in db
+							$tempresults = editAction($act);
+							unset($arrayOfAction[$key]);
+							if(is_string($tempresults))
+							{
+								//if not bool then it is an error message
+								return $tempresults;
+							}
+						}	
+					}
+					//row id is not among the updated condition so delete
+					if(!$StillExists)
+					{
+						$db->delete($theTables['Action'], $theColumns['Action'][0] . " = " .$row['id']);
+					}
+					
+				}
+				//add the remaining action to db
+				if($arrayOfAction != null && !(empty ($arrayOfAction)))
+				{
+					foreach($arrayOfAction as $action)
+					{
+						//if a new condition should be added then make condition here
+						$tempresults = addAction($ruleData->RId,$action);
+						if(is_string($tempresults))
+						{
+							//if not bool then it is an error message
+							return $tempresults;
+						}
+					}
+				}
+				return true;
+			}
+			elseif(is_array($resultValue))
+			{
+				return sqlErrorMessage($resultValue[1]);
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+		return false;
+		}
+	}
+	
+	/*helper function to editRule*/
+	function editAction($action)
+	{
+		$db= new MySQLHelper();
+		global $theTables;
+		global $theColumns;
+		//'AId', 'RId',	'name', 'points','controllerId'
+		$tempcol = $theColumns['Action'];
+		$table = $theTables['Action'];
+		$where = $tempcol[0] . "=" . $action->AId;
+		$columnValue =  "";
+		/*if( $action->name != null)
+		{
+			$columnValue .= $tempcol[2] . "='" . $action->name. "'";
+		}*/
+		if( $action->points != null)
+		{
+			if($columnValue != "")
+			{
+				$columnValue .=  ", ";
+			}
+			$columnValue .=  $tempcol[3] . "=". $action->points;
+		}
+		if( $action->controllerId != null)
+		{
+			if($columnValue != "")
+			{
+				$columnValue .=  ", ";
+			}
+			$columnValue .=  $tempcol[4] . "=" . $action->controllerId;
+		}
+		if($columnValue != "")
+		{
+			$resultValue = $db->update( $table, $columnValue, $where);
+			if(is_bool($resultValue))
+			{
+				return $resultValue;
+			}
+			elseif(is_array($resultValue))
+			{
+				return sqlErrorMessage($resultValue[1]);
+			}
+		}
+		else
+		{return true;}
+	}
+	
+	
+	/*helper function to editRule*/
+	function editCondition($cond)
+	{
+		$db= new MySQLHelper();
+		global $theTables;
+		global $theColumns;
+		
+		if(get_class($cond)=='Condition')
+		{
+			$tempcol = $theColumns['Rcondition'];
+			$table = $theTables['Rcondition'];
+			$columnValue = "";
+			$where =  $tempcol[0] ."=". $cond->condId;
+		/*	if($cond->name != null)
+			{
+				$columnValue =  $tempcol[2] . "='" . $cond->name. "'";
+			}*/
+			if($cond->controllerId != null)
+			{
+				$columnValue .=  $tempcol[3] . "=". $cond->controllerId;
+			}
+			if($columnValue != "")
+			{
+				$resultValue = $db->update( $table, $columnValue, $where);
+				if(is_array($resultValue))
+				{
+					return sqlErrorMessage($resultValue[1]);
+				}
+			}
+			/*specialist Condition handling*/
+			/*$arrayOfRestAttributes contains (timestamp) or ( 'timeFrom','timeTo','weekdays','weekly','ndWeekly','rdWeekly','firstInMonth','lastInMonth','weekNumber')*/
+			if($cond->arrayOfRestAttributes != null)
+			{
+				$extras = $cond->arrayOfRestAttributes;
+				if(count($extras)<2)
+				{
+					$tempcol = $theColumns['Cond_timestamp'];
+					$table = $theTables['Cond_timestamp'];	
+					if($extras[$tempcol[1]] != null)
+					{						
+						$columnValue =  $tempcol[1] ."=". $extras[$tempcol[1]];
+					}
+					$where = $tempcol[0] ."=".  $cond->condId;		
+				}
+				else
+				{ 
+					$tempcol = $theColumns['Cond_timeperiod'];
+					$table = $theTables['Cond_timeperiod'];		
+					$where = $tempcol[0] . "=". $cond->condId;
+					//  'timeFrom' 
+					if($extras[$tempcol[1]] != null)
+					{						
+						$columnValue = $tempcol[1] ."=". $extras[$tempcol[1]] ;
+					}
+					//'timeTo'
+					if($extras[$tempcol[2]] != null)
+					{
+						if($columnValue != "")
+						{
+							$columnValue .=  ", ";
+						}
+						$columnValue .=  $tempcol[2] ."=". $extras[$tempcol[2]];
+					}
+					//'weekdays'
+					if($extras[$tempcol[3]] != null)
+					{
+						if($columnValue != "")
+						{
+							$columnValue .=  ", ";
+						}
+						$columnValue .=  $tempcol[3]."='". $extras[$tempcol[3]]."'";
+					}
+					//weekly
+					if($extras[$tempcol[4]] != null)
+					{
+						if($columnValue != "")
+						{
+							$columnValue .=  ", ";
+						}
+						$columnValue .=  $tempcol[4]. "=". $extras[$tempcol[4]];
+					}
+					//2nd weekly
+					if($extras[$tempcol[5]]!= null)
+					{
+						if($columnValue != "")
+						{
+							$columnValue .=  ", ";
+						}
+
+						$columnValue .=  $tempcol[5]. "=". $extras[$tempcol[5]];
+					}
+					//3rdWeekly
+					if($extras[$tempcol[6]]!= null)
+					{
+						if($columnValue != "")
+						{
+							$columnValue .=  ", ";
+						}
+
+						$columnValue .= $tempcol[6]. "=". $extras[$tempcol[6]];
+					}
+					//'firstInMonth'
+					if($extras[$tempcol[7]]!= null)
+					{
+						if($columnValue != "")
+						{
+							$columnValue .=  ", ";
+						}
+
+						$columnValue .= $tempcol[7]. "=". $extras[$tempcol[7]];
+					}
+					//'lastInMonth'
+					if($extras[$tempcol[8]]!= null)
+					{
+						if($columnValue != "")
+						{
+							$columnValue .=  ", ";
+						}
+
+						$columnValue .=  $tempcol[8]. "=". $extras[$tempcol[8]];
+					}
+					//'weekNumber'
+					if($extras[$tempcol[9]]!= null)
+					{
+						if($columnValue != "")
+						{
+							$columnValue .=  ", ";
+						}
+
+						$columnValue .=  $tempcol[9]. "=". $extras[$tempcol[9]];
+					}
+				}
+				if($resultValue != "")
+				{				
+					$resultValue = $db->update( $table, $columnValue, $where);
+				
+					if(is_bool($resultValue))
+					{
+						return $resultValue;
+					}
+					elseif(is_array($resultValue))
+					{
+						return sqlErrorMessage($resultValue[1]);
+					}
+				}
+				else
+				{return true;}
+			}
+		}
+	}
+	
+	/*match the sqlErrorMessage*/
 	function sqlErrorMessage($errorValue)
 	{
 		$errorMessage = null;
 		switch($errorValue)
 		{
 		case 1054:
-				$errorMessage = $GLOBALS['SQL_ERROR_BAD_INPUT'];
-				break;
+			$errorMessage = $GLOBALS['SQL_ERROR_BAD_INPUT'];
+			break;
 		case 1062:
 			$errorMessage = $GLOBALS['SQL_ERROR_VALUE_ERROR'];
 			break;

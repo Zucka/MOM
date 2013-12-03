@@ -1,8 +1,8 @@
-<?
-require_once($_SERVER['DOCUMENT_ROOT'].'/database/sqlHelper.php');
-
+<?php
+require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/sqlHelper.php');
 function db_points_remove($tId,$points)
 {
+	$db = new MySQLHelper();
 	$db->autocommit(FALSE);
 	$row = $db->executeSQL("SELECT points,PId FROM profile,tag WHERE tag.TSerieNo='$tId' AND tag.profileId=profile.PId")->fetch_assoc();
 	$pId = $row['PId'];
@@ -21,6 +21,7 @@ function db_points_remove($tId,$points)
 
 function db_points_add($tId,$points)
 {
+	$db = new MySQLHelper();
 	$db->autocommit(FALSE);
 	$row = $db->executeSQL("SELECT points,PId FROM profile,tag WHERE tag.TSerieNo='$tId' AND tag.profileId=profile.PId")->fetch_assoc();
 	$currentPoints = $row['points']+$points;
