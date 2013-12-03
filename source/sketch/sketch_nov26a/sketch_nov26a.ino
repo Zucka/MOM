@@ -2,7 +2,8 @@
 
 SoftwareSerial rfid(7, 8); //Sets up the Digital Pins 7 and 8 which the RFID reader Communicates through.
 
-char write_input[16] = { 0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x57, 0x6F, 0x72, 0x6C, 0x64 };
+//Remember to Adjust Checksum when the write input changes.
+char write_input[16] = { 0x32, 0x33, 0x34 }; //{ 0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x57, 0x6F, 0x72, 0x6C, 0x64 };
 
 char rf_block_responce[23] = "";
 int block_length = 23;
@@ -75,6 +76,7 @@ void loop()
     {
       Serial.println("Writing.");
       write_block_RFID();
+      delay(10);
       parse_responce(rf_block_responce, block_length);
       if(rf_block_responce[2] == 0x12)
       {
@@ -84,6 +86,11 @@ void loop()
         }
         Serial.println("Stop");
         while(true);
+      }
+      else
+      {
+        Serial.print("Write Failed: ");
+        Serial.println(rf_block_responce[4]);
       }
     }
     else
@@ -154,7 +161,8 @@ void write_block_RFID(void)
   {
     rfid.write((uint8_t)write_input[i]);
   }
-  rfid.write((uint8_t)0x498); //The Message Checksum.
+  rfid.write((uint8_t)0x135);
+  //rfid.write((uint8_t)0x498); //The Message Checksum for the data { 0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x57, 0x6F, 0x72, 0x6C, 0x64 }
   delay(10); 
 }
 
@@ -174,6 +182,8 @@ void halt(void)
  * Needs to be called after any Command is sent to the SM130 module. */
 void parse_responce(char PH[], int length)
 {
+  delay(10);
+  
   for(int i=1;i<length;i++)
   {
     PH[i] = 0;

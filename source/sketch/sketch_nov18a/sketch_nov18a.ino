@@ -5,7 +5,7 @@
 
 //Setting up the Arduino
 char devID[4] = "123"; //Device ID. Limited to 3 bytes.
-char useID[5] = "234";  //ID of logged in User, Limited to 5.
+char* useID = (char*) malloc(3 * sizeof(char));  //ID of logged in User, Limited to 3.
 
 //Setting up the Shield's addresses.
 byte mac[] = { 0x90, 0xA2, 0xDA, 0x0E, 0xC5, 0x94 };
@@ -20,7 +20,8 @@ EthernetClient client;
 /*Preparing the RFID Reader*/
 SoftwareSerial rfid(7, 8); //Sets up the Digital Pins 7 and 8 which the RFID reader Communicates through.
 
-char rf_block_responce[23] = "";
+char* rf_block_responce = (char*) malloc(23* sizeof(char));
+//char rf_block_responce[23] = "";
 int block_length = 23;
 /* The RFID output in UART for reading a block: On a success. (The length would be 0x12.)
  * Slot 0-3 contains the message "Header", "Reserved", "Length" and "Command".
@@ -36,7 +37,7 @@ int block_length = 23;
  * Slot 5 Contains the Checksum. 
  */
  
-//char seek_responce[11] = "";
+char seek_responce[11] = "";
 int seek_length = 11;
 /* The RFID output in UART for seeking for tag: On 'Tag Found'. (The length would be 0x06.)
  * Slot Slot 0-3 contains the message "Header", "Reserved", "Length" and "Command".
@@ -52,7 +53,7 @@ int seek_length = 11;
  * Slot 5 Contains the Checksum.
  */
  
-//char authenticate_responce[7] = "";
+char authenticate_responce[7] = "";
 int authenticate_length = 7;
 /* The RFID output in UART for Authenticating a Data block.
  * Slot Slot 0-3 contains the message "Header", "Reserved", "Length" and "Command".
@@ -85,7 +86,8 @@ void setup()
 
 void loop()
 {
-  turnOff();
+  Serial.println(freeRam());
+  delay(1000);
   
   /*
   Serial.print(F("Turn On:  "));
@@ -97,43 +99,64 @@ void loop()
   Serial.print(F("Status:  "));
   Serial.println(freeRam());  
   getStatus();
+  client.stop();
   
   delay(10000);
   
   Serial.print(F("Turn Off:  "));
   Serial.println(freeRam());  
-  turnOff();*/
+  turnOff();
+  client.stop();
   Serial.println(F("Exit"));
-  while(true);
+  while(true);*/
   
-  /*
+  
   seek();
   delay(10);
   parse_responce(seek_responce, seek_length);
   delay(10);
+  Serial.println(freeRam());
   if(seek_responce[2] == 6)
   {
-    Serial.println("Authenticating.");
+    Serial.println(F("Authenticating."));
     authenticate();
     parse_responce(authenticate_responce, authenticate_length);
+    Serial.println(freeRam());
+    delay(10);
     if(authenticate_responce[4] == 0x4C)
     {
-      Serial.println("Reading.");
+      Serial.println(F("Reading."));
       read_block_RFID();
+      delay(10);
       parse_responce(rf_block_responce, block_length);
+      delay(10);
+      Serial.println(freeRam());
       if(rf_block_responce[2] == 0x12)
       {
-        for(int i=5;i<sizeof(rf_block_responce);i++)
-        {
-          Serial.print(rf_block_responce[i]);
+        //char tempID[3] = "";
+        Serial.println(F("Read Successfull:  "));
+        for(int i = 5; i < 8; i++) //TODO: Length of ID.
+        {        
+          Serial.print(rf_block_responce[i], HEX);
+          //tempID[i-5] = rf_block_responce[i];
+          useID[i-5] = rf_block_responce[i];
         }
-        Serial.println("Stop");
+        //Serial.println(tempID);
+        //strcpy(useID, tempID);
+        Serial.println(freeRam()); 
+        Serial.println(useID);
+        turnOn();
+        Serial.println(F("Stop"));
+        while(true);
+      }
+      else{
+        Serial.println(F("Read Failed"));
         while(true);
       }
     }
     else
     {
-      Serial.println("Authentication failed");
+      Serial.println(F("Authentication failed"));
     }
   }
   else
@@ -143,10 +166,10 @@ void loop()
       Serial.println(seek_responce[i], HEX);
     }
     
-    Serial.println("Wait for it");  
+    Serial.println(F("Wait for it"));  
     delay(10000);
   }
-  */
+  
 }
 
 /* Start: On Device Calls */
@@ -353,8 +376,7 @@ void turnOff(void)
 /* End: Calls to Website */
 
 /* Begin: Commands for RFID*/
- 
-/*
+
 void seek(void)
 {
   //search for RFID tag, sent in UART.
