@@ -18,7 +18,7 @@ function db_device_turn_off($cId,$tId) {
 	$timeSpent = floor((time()-$time)/60);
 	echo "system time: ".time();
 	echo "db time: ".$time; 
-	echo "systime-db time: ".time()-$time;
+	echo "systime-db time: ".(time()-$time);
 	echo " time spent in seconds: ".(time()-$time)/60;
 	$db->executeSQL("UPDATE controller SET status='RED' WHERE CSerieNo='$cId'");
 	$db->commit();
