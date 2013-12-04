@@ -35,8 +35,9 @@ After the design in the ER-schema was completed it was implemented into a MySQL 
 
 \section{Implementation}
 
-The design from figure \ref{fig:ERdiagram} has been implemented in a MySQL database and the result can be found in figure \ref{fig:databaseDiagram}. The schema is in 3NF
-%sql or diagram
+The design from figure \ref{fig:ERdiagram} has been implemented in a MySQL database and the result can be found in figure \ref{fig:databaseDiagram}. In the design and implementation of the database redundancy and anomalies are avoided and null values is reduced. 
+The mapping from the ER-schema to a relations representing in the database is basic mapping according to the relations 1:1, n:1, n:m except for Condition which decision is clarified in the following section. 
+
 \begin{figure}
 	\centering
 		\includegraphics[width=1.00\textwidth]{images/databaseDiagram.jpg}
@@ -44,10 +45,45 @@ The design from figure \ref{fig:ERdiagram} has been implemented in a MySQL datab
 	\label{fig:databaseDiagram}
 \end{figure}
 
+\subsection{Mapping of Rule}
+%sql or diagram
+The relational modeling of Rule is more advanced because it uses generalization and as such there are a implementation chose that should be made. There are four typical method of how to deal with generalization.
+
+\begin{description}
+	\item[Use main classes], so Condition is split up into three tables condition, cond_timestamp and cond_timeperiod where the all attributes in Condition are in each table. But to search for a condition it is possible to go though all three before finding it. 
+	\item[Use partitioning], so there are three tables condition, cond_timestamp and cond_timeperiod. The common attributes are in Condition and via an id the possible additional data can be found in either cond_timestamp or cond_timeperiod.
+	\item[Use full redundancy], its a much like the first but where all conditions from cond_timestamp and cond_timeperiod also are in Condition, without the additional data. As the name suggest this causes redundancy which is best to be avoided.
+	\item[Use single relation], so there will be a single table with all attributes from condition, cond_timestamp and cond_timeperiod. This will increase the number of null values. 
+\end{description}
+
+In the implementation of this database the partitioning option is used since it does not causes any redundancy or null values and it is easier to search for conditions compared to using the main classes.  \\\\
+
+
+There are also a important implementation decision made to deal with deletion of tuples from the essential tables and this is explained in the following section.
+ 
+\subsection{Deleting in the database}
 %delete cascade
+When a tuple in one of the tables control_system, profile, tag, controller, chore, and rule should be deleted it will likely affect one of the other tuples from another table because of the foreign keys. Therefore we have made an intentionally decision to use ON DELETE CASCASED with all foreign keys.
 
+As an consequence of this decision if a control system is deleted then every profile, tag, controller, chore, and rule which is connected to control system will be deleted, so this should be used with care. 
+If a profile is deleted then this profile's tags will be deleted including all of its history, such as when the tag have been used to activate the controllers, or when the user have done a chore. So it is very important that when one of the important tuples are to be deleted then it will not be regretted later. \\\\
 
-
+However, for anything to be added, updated or deleted by the user the website need a connection to the database which happen through the class MySQLHelper. 
 
 %sql Helper class
-\subsection{sql Helper class}
+\subsection{MySQLHelper class}
+The website connect to the database by using a class MySQLHelper, which establish a connection and send queries to it. The class have a construct and destruct that respectively establish the connection and close the connection to the database. The queries goes also through this class in at least one of these method:
+
+\begin{description}
+	\item[insertInto] this make a SQL string to insert into the database.
+	\item[update] this make a SQL string to update data in the database.	
+	\item[delete] this make a SQL string to delete data in the database.
+	\item[query] this make a SQL query string.
+	\item[executeSQL] this send the query to the database and return the result. All of the above uses this method.
+\end{description}
+  
+
+
+
+
+%\subsection{Updating of Rule}

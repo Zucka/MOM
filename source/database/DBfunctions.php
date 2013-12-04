@@ -5,6 +5,18 @@
 	include_once "errorMessageSQL.php";
 	include_once "getDataFromDBFunctions.php";
 	
+	function bool_to_String($boolValue)
+	{
+
+		if($boolValue)
+		{
+			return 'true';
+		}
+		else
+		{
+			return 'false';
+		}
+	}
 	/*adding into database in the tables Control_system,Profile, Tag, Controller and Chores*/
 	function simpleInsertIntoDB($object)
 	{
@@ -86,10 +98,11 @@
 				$colums .= ", " .  $columstemp[3] ;
 				$values .= ", '" .   $object->name . "'";
 			}
-			if($object->active != null)
+			if($object->active !== null)
 			{
+				
 				$colums .= ", " .  $columstemp[4] ;
-				$values .= ", " .   $object->active . "";
+				$values .= ", " .   bool_to_String($object->active) ;
 			}
 			$colums.=")";
 			$values.=")";
@@ -274,13 +287,13 @@
 				}
 				$columnValue .=   $columstemp[3] . " = '" . $object->name . "'";
 			}
-			if($object->active != null)
+			if($object->active !== null)
 			{
 				if($columnValue != "")
 				{
 					$columnValue .=  ", ";
 				}
-				$columnValue .= $columstemp[4] . " = " . $object->active;
+				$columnValue .= $columstemp[4] . " = " . bool_to_String($object->active);
 			
 			}
 			//('TSerieNo','CSId',) 'profileId', 'name', 'active'
@@ -532,10 +545,6 @@
 			{
 				$values .= ", " . $row['defaultPoints'] . ")"; 
 			}
-			else
-			{
-				echo 'error in addChoreToProfile:getting the default points';
-			}
 		}
 		else
 		{
@@ -694,6 +703,7 @@
 						$table = $theTables['Cond_timestamp'];	
 						$column = "( " . $tempcol[0] ;
 						$values = "( " . $condID ;		
+						//timestamp
 						if($extras[$tempcol[1]]!=null)
 						{
 							$column .= ", ". $tempcol[1];
@@ -709,32 +719,38 @@
 						//               'condId'         'timeFrom',         'timeTo',             'weekdays'
 						$column = "(" . $tempcol[0] . ", ".$tempcol[1] . ", ". $tempcol[2] . ", " . $tempcol[3];
 						$values = "(" . $condID . ", " . $extras[$tempcol[1]] . ", " . $extras[$tempcol[2]] . ", '" . $extras[$tempcol[3]]. "'";
-						if($extras['weekly'] != null)
+						//'weekly'
+						if($extras[$extras[$tempcol[4]]] !== null)
 						{
 							$column .= ", " . $tempcol[4];
-							$values .= ", " . $extras[$tempcol[4]];
+							$values .= ", " . bool_to_String($extras[$tempcol[4]]);
 						}
-						if($extras['ndWeekly']!= null)
+						//'ndWeekly'
+						if($extras[$tempcol[5]]!== null)
 						{
 							$column .= ", ". $tempcol[5];
-							$values .= ", ". $extras[$tempcol[5]];
+							$values .= ", ". bool_to_String($extras[$tempcol[5]]);
 						}
-						if($extras['rdWeekly']!= null)
+						//'rdWeekly'
+						if($extras[$tempcol[6]]!== null)
 						{
 							$column .= ", ". $tempcol[6];
-							$values .= ", ". $extras[$tempcol[6]];
+							$values .= ", ". bool_to_String($extras[$tempcol[6]]);
 						}
-						if($extras['firstInMonth']!= null)
+						//$extras['firstInMonth']
+						if($extras[$tempcol[7]]!== null)
 						{
 							$column .= ", ". $tempcol[7];
-							$values .= ", ". $extras[$tempcol[7]];
+							$values .= ", ". bool_to_String($extras[$tempcol[7]]);
 						}
-						if($extras['lastInMonth']!= null)
+						//'lastInMonth'
+						if($extras[$tempcol[8]]!== null)
 						{
 							$column .= ", ". $tempcol[8];
-							$values .= ", ". $extras[$tempcol[8]];
+							$values .= ", ". bool_to_String($extras[$tempcol[8]]);
 						}
-						if($extras['weekNumber']!= null)
+						//$extras['weekNumber']
+						if($extras[$tempcol[9]]!= null)
 						{
 							$column .= ", ". $tempcol[9];
 							$values .= ", ". $extras[$tempcol[9]];
@@ -1023,53 +1039,53 @@
 						$columnValue .=  $tempcol[3]."='". $extras[$tempcol[3]]."'";
 					}
 					//weekly
-					if($extras[$tempcol[4]] != null)
+					if($extras[$tempcol[4]] !== null)
 					{
 						if($columnValue != "")
 						{
 							$columnValue .=  ", ";
 						}
-						$columnValue .=  $tempcol[4]. "=". $extras[$tempcol[4]];
+						$columnValue .=  $tempcol[4]. "=". bool_to_String($extras[$tempcol[4]]);
 					}
 					//2nd weekly
-					if($extras[$tempcol[5]]!= null)
+					if($extras[$tempcol[5]]!== null)
 					{
 						if($columnValue != "")
 						{
 							$columnValue .=  ", ";
 						}
 
-						$columnValue .=  $tempcol[5]. "=". $extras[$tempcol[5]];
+						$columnValue .=  $tempcol[5]. "=". bool_to_String($extras[$tempcol[5]]);
 					}
 					//3rdWeekly
-					if($extras[$tempcol[6]]!= null)
+					if($extras[$tempcol[6]]!== null)
 					{
 						if($columnValue != "")
 						{
 							$columnValue .=  ", ";
 						}
 
-						$columnValue .= $tempcol[6]. "=". $extras[$tempcol[6]];
+						$columnValue .= $tempcol[6]. "=". bool_to_String($extras[$tempcol[6]]);
 					}
 					//'firstInMonth'
-					if($extras[$tempcol[7]]!= null)
+					if($extras[$tempcol[7]]!== null)
 					{
 						if($columnValue != "")
 						{
 							$columnValue .=  ", ";
 						}
 
-						$columnValue .= $tempcol[7]. "=". $extras[$tempcol[7]];
+						$columnValue .= $tempcol[7]. "=". bool_to_String($extras[$tempcol[7]]);
 					}
 					//'lastInMonth'
-					if($extras[$tempcol[8]]!= null)
+					if($extras[$tempcol[8]]!== null)
 					{
 						if($columnValue != "")
 						{
 							$columnValue .=  ", ";
 						}
 
-						$columnValue .=  $tempcol[8]. "=". $extras[$tempcol[8]];
+						$columnValue .=  $tempcol[8]. "=". bool_to_String($extras[$tempcol[8]]);
 					}
 					//'weekNumber'
 					if($extras[$tempcol[9]]!= null)
@@ -1100,6 +1116,8 @@
 			}
 		}
 	}
+	
+
 	
 	/*match the sqlErrorMessage*/
 	function sqlErrorMessage($errorValue)
