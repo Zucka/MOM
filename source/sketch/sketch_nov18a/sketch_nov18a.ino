@@ -6,6 +6,7 @@
 //Setting up the Arduino
 char devID[4] = "123"; //Device ID. Limited to 3 bytes.
 char* useID = (char*) malloc(3 * sizeof(char));  //ID of logged in User, Limited to 3.
+unsigned long* lastTime = (unsigned long *) malloc(1 * sizeof(long));
 
 //Setting up the Shield's addresses.
 byte mac[] = { 0x90, 0xA2, 0xDA, 0x0E, 0xC5, 0x94 };
@@ -70,6 +71,8 @@ void setup()
 {
   //starting the Serial Output
   Serial.begin(9600);
+  
+  *lastTime = millis();
 
   //Starting up the Ethernet.
   if (Ethernet.begin(mac) == 0) 
@@ -173,6 +176,33 @@ void loop()
 }
 
 /* Start: On Device Calls */
+boolean checkTime()
+{
+  if(millis() < *lastTime)
+  {
+    unsigned long* tempTime = (unsigned long *) malloc(1 * sizeof(long));
+    *tempTime = (0xffffffff - *lastTime) + millis();
+    if(*tempTime > 300000 ) //tempTime Larger than Five Minutes.
+    {      
+      *lastTime = millis();
+      free(tempTime);
+      
+      return true;
+    }
+    else
+    {
+      free(tempTime);
+      
+      return false;
+    }
+  }
+  else
+  {
+    //TODO
+    return true;
+  }  
+}
+
 int freeRam () 
 {
   extern int __heap_start, *__brkval; 
