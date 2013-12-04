@@ -15,11 +15,12 @@ function db_device_turn_off($cId,$tId) {
 	$db->autocommit(false);
 	$time = $db->executeSQL("SELECT UNIX_TIMESTAMP(starttime) as starttime FROM controller_used_by_tag WHERE CSerieNo='$cId' AND TSerieNo='$tId' AND endtime IS NULL")->fetch_assoc()['starttime'];
 	$db->executeSQL("UPDATE controller_used_by_tag SET endtime=now() WHERE CSerieNo='$cId' AND TSerieNo='$tId' AND endtime IS NULL");
-	$timeSpent = floor((time()-$time)/60);
-	echo "system time: ".time();
+	$timeNow = $db->executeSQL("SELECT UNIX_TIMESTAMP(now()) as time")->fetch_assoc()['time'];
+	$timeSpent = floor(($timeNow-$time)/60);
+	echo "system time: ".$timeNow;
 	echo "db time: ".$time; 
-	echo "systime-db time: ".(time()-$time);
-	echo " time spent in seconds: ".(time()-$time)/60;
+	echo "systime-db time: ".($timeNow-$time);
+	echo " time spent in seconds: ".($timeNow-$time)/60;
 	$db->executeSQL("UPDATE controller SET status='RED' WHERE CSerieNo='$cId'");
 	$db->commit();
 	$db->autocommit(true);
