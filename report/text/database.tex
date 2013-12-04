@@ -1,8 +1,8 @@
 \chapter{The Database}
-In this chapter the database design and implementation is presented.  
+In this chapter the database design and implementation is explained. We will presents the ER-shema with our design and explain some of the design decision. Then we will shown the diagram created from the implementation of the database and explain some of the implementation decisions that was made. 
+  
 \section{Design}
 In the parent control system there are seven essential objects; control system, profiles, tags, controller, chores, rules and permission. 
-
 
 \begin{description}
 	\item[Control system] is identifying the individual system and all of the other objects are connected to a control system.
@@ -72,7 +72,7 @@ However, for anything to be added, updated or deleted by the user the website ne
 
 %sql Helper class
 \subsection{MySQLHelper class}
-The website and API for the controllers connect to the database by using a class MySQLHelper, which establish a connection and send queries to it. The class have a construct and destruct that respectively establish the connection and close the connection to the database. The queries goes also through this class in at least one of these method:
+The website and API for the controllers connect to the database by using a PHP class MySQLHelper, which establish a connection and send queries to it. The class have a construct and destruct that respectively establish the connection and close the connection to the database. The queries goes also through this class in at least one of these method:
 
 \begin{description}
 	\item[insertInto] this make a SQL string to insert into the database.
@@ -82,6 +82,21 @@ The website and API for the controllers connect to the database by using a class
 	\item[executeSQL] this send the query to the database and return the result. All of the above uses this method.
 \end{description}
   
+It is also possible to control the transactions through this class by disabling the auto-commit of transactions and then manually commit when it is necessary. \\\\
+
+This class is used by several function. Functions that is used by the website to insert, update and delete in the database are very similar in most cases except for adding and updating a Rule. Therefore in the following sections we present a code sample for updating one of the simpler object and how to update rules. 
+
+\subsection{Functions to simple Update}
+%simpleInsertIntoDB
+%simpleUpdateDB
+%removeObjectFromDB
+%control system, profiles, tags, controller, chores, rules
+
+\subsection{Function to Update Rule}
+%addNewRuleToDB addCondition addAction
+%editRule editCondition editAction
 
 
-%\subsection{Updating of Rule}
+
+
+
