@@ -92,6 +92,7 @@
 	// Get $controllerId, $controllerName, $controllerLocation from Controllers id. 
 	/* return null or array with=>
 	returnArray[CSerieNo] => 123
+	returnArray[CSId] => 1
 	returnArray[name] => TV1
 	returnArray[location] => livingroom1*/
 	function getControllerByControllerId($CId) 
@@ -103,13 +104,13 @@
 		$table = $theTables['Controller'] ;
 		$whereClause = $columnController[0] . " = " . $CId;
 		//'Controller' =>array('CSerieNo','CSId', 'name' ,'location', 'status', 'cost' ),
-		$selectValues = $columnController[0] . ',' . $columnController[2].','. $columnController[3];
+		$selectValues = $columnController[0] . ',' . $columnController[1] . ',' . $columnController[2].','. $columnController[3] . ',' . $columnController[5];
 		$result = $db->query( $selectValues, $table, $whereClause );
 		
 		$returnArray = null;
 		if($row = mysqli_fetch_assoc($result))
 		{
-			$returnArray[] = $row; 
+			$returnArray = $row; 
 		}
 		return $returnArray;
 	}

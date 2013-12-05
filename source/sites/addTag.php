@@ -6,9 +6,7 @@
 		//Check if all required fields have been filled out
 		if($_POST['id'] != "" && $_POST['user'] != ""){
 			//Check if TagID already exists and if user exists in this system
-			//'SELECT COUNT(*) FROM tag WHERE TSerieNo = $input' - return nothing or 0
-			//'SELECT COUNT(*) FROM profile WHERE CSId = $input1 AND PId = $input2' - return 1
-			if(true){
+			if( isTagIdAvailable($_POST['id']) && existsProfileInCS($_POST['user'],$_SESSION['CSid']) ){
 				//Add Tag to System
 				$newTag = new Tag($_SESSION['CSid'],$_POST['id'],$_POST['user'],$_POST['name'],"1");
 				$result = simpleInsertIntoDB($newTag);

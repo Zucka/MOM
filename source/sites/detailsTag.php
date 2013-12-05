@@ -35,7 +35,12 @@
 		}
 	}
 	else{
-		printDetailTagForm($_GET['tag'],"2","test","");
+		$result = getTagByTagId($_GET['tag']);
+		if(!empty($result) && $result['CSId'] == $_SESSION['CSid']){
+			printDetailTagForm($result['TSerieNo'],$result['profileId'],$result['tagname'],"");
+		}
+		else
+			echo "This tag does not exist in your system.";
 	}
 
 	function printDetailTagForm($id,$user,$name,$errorMsg,$hidden = false){
@@ -69,8 +74,11 @@
 								<tr>
 									<td>Name:</td> <td><input type="text" name="name" placeholder="John\'s Keyring" value="'.$name.'"></td>
 								</tr>
-							</table>
+							</table>';
 							
+							printTagUsage($id,0,10);
+							
+							echo '
 							<button class="btn" name="cancel" value="cancel"><span class="glyphicon glyphicon-remove-circle"></span> Cancel</button> <button class="btn" name="save" value="saveTag"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button> <button class="btn" name="delete" value="deleteTag"><span class="glyphicon glyphicon-trash"></span> Delete</button>
 						</form>
 					</div>
@@ -79,6 +87,34 @@
 			</div>
 			';
 	}
+	
+	function printTagUsage($tagId,$offset,$numberOfActivities){
+		$result = getTagActivity($tagId,$offset,$numberOfActivities);
+		
+		echo '
+		<h3 class="headder-devices">Log</h3>
+		<table id="logTable" class="tablesorter">
+			<thead>
+				<tr>
+					<th>Device Name</th><th>From</th><th>To</th>
+				</tr>
+			</thead>
+			<tbody>';
+			
+			if(!empty($result)){
+				foreach($result as $row){
+					echo '<tr><td>'.$row['lastUsedController'].'</td><td>'.$row['lastTimeUsedFrom'].'</td><td>'.$row['lastTimeUsedTo'].'</td></tr>';
+				}
+			}
+			else
+				echo '<tr><td>This tag have not been used yet</td></tr>';
+				
+		echo '
+			</tbody>
+		</table>
+		';
+	}
+	
 ?>
 
 <script>
@@ -92,6 +128,7 @@
 		}
 	}
 	$(document).ready(function() {
+		$("#logTable").tablesorter();
 		
 		$("form button").click(function() {
 			$("input button", $(this).parents("form")).removeAttr("clicked");

@@ -83,7 +83,7 @@
 					echo "<tr>
 							<td>".printActiveTag($tag['active'],$tag['TSerieNo'])."</td>
 							<td>".$tag['profilename']."</td>
-							<td>".$tag['name']."</td>
+							<td>".$tag['tagname']."</td>
 							<td>";
 							if(isset($tag['lastUsedController'])){
 								echo $tag['lastUsedController'].": ".$tag['lastTimeUsedFrom']." - "; 
