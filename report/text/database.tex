@@ -1,7 +1,9 @@
 \chapter{The Database}
+\label{chap:database} 
 In this chapter the database design and implementation is explained. We will presents the ER-shema with our design and explain some of the design decision. Then we will shown the diagram created from the implementation of the database and explain some of the implementation decisions that was made. 
   
 \section{Design}
+\label{sec:DBdesign}
 In the parent control system there are seven essential objects; control system, profiles, tags, controller, chores, rules and permission. 
 
 \begin{description}
@@ -46,6 +48,7 @@ The mapping from the ER-schema to a relations representing in the database is ba
 \end{figure}
 
 \subsection{Mapping of Rule}
+\label{subsec:mappRule}
 %sql or diagram
 The relational modeling of Rule is more advanced because it uses generalization and as such there are a implementation chose that should be made. There are four typical method of how to deal with generalization.
 
@@ -56,7 +59,7 @@ The relational modeling of Rule is more advanced because it uses generalization 
 	\item[Use single relation], so there will be a single table with all attributes from condition, cond\_timestamp and cond\_timeperiod. This will increase the number of null values. 
 \end{description}
 
-In the implementation of this database the partitioning option is used since it does not causes any redundancy or null values and it is easier to search for conditions compared to using the main classes.  \\\\
+In the implementation of this database the partitioning option is used since it does not causes any redundancy or null values and it is easier to search for conditions compared to using the main classes. However, using partitioning there will be some challenges in making the functions to insert, update and get data about the rules, as will be explained in section \vref{subsec:dbRule}.\\\\
 
 
 There are also a important implementation decision made to deal with deletion of tuples from the essential tables and this is explained in the following section.
@@ -84,19 +87,151 @@ The website and API for the controllers connect to the database by using a PHP c
   
 It is also possible to control the transactions through this class by disabling the auto-commit of transactions and then manually commit when it is necessary. \\\\
 
-This class is used by several function. Functions that is used by the website to insert, update and delete in the database are very similar in most cases except for adding and updating a Rule. Therefore in the following sections we present a code sample for updating one of the simpler object and how to update rules. 
+This class is used by several function and in the following sections we present a code sample for updating one of the simpler object and how to update rules. 
 
 \subsection{Functions to simple Update}
-%simpleInsertIntoDB
-%simpleUpdateDB
-%removeObjectFromDB
+%if someday our repport gets to long this can be cut out or reduced
+To insert, update or delete in one of the tables: control\_system, profile, tag, controller or chore, one of the functions \texttt{simpleInsertIntoDB}, \texttt{simpleUpdateDB} or removeObjectFromDB is used. The way the functions build is similar and therefore only simpleUpdateDB will be presented. They all uses some classes that have been made to rape the data of a tuple from each table and the classes are used as the following code sample show.
+
+In code sample \ref{code:simpleUpdate} is a shorted version of the function \texttt{simpleUpdateDB}.
+The dynamic typing of PHP is used to discover which class type the input is and then parts of the SQL string can be made,see line $9-40$\fixme{check line no}. 
+It is possible that not all attributes should be updated and therefore these values in the class must be null except for the primary key.
+The string followed by the sql command SET in the update statement is made in the control structure, see line $15-36$\fixme{check line no}. 
+The result after sending the executing the update statement can be a Boolean value which indicate success or an error code contained in an array from which a error message is returned, see line $41-49$\fixme{check line no}.
+
+\begin{lstlisting}[language=PHP, label=code:simpleUpdate, caption=simpleUpdateDB code sample]
+function simpleUpdateDB($object)
+	{
+		global $theColumns;
+		global $theTables;
+		$table;
+		$columnValue;
+		$where;
+
+		switch (get_class($object))
+		{ 		
+		case 'Controller':
+			$table=  $theTables['Controller']; //get controllers tablename
+			$columstemp= $theColumns['Controller']; //get controllers columns in array
+			$where = $columstemp[0] . " = " . $object->CSerieNo;
+			$columnValue = "" ;
+			if($object->name != null)
+			{
+				$columnValue .= $columstemp[2] . " = '" . $object->name . "'";
+			}
+			if($object->location !== null) 
+			{
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .=  $columstemp[3] . " = '" . $object->location . "'";
+			}
+			
+			if($object->cost != null)
+			{
+				if($columnValue != "")
+				{
+					$columnValue .=  ", ";
+				}
+				$columnValue .=  $columstemp[5] . " = " . $object->cost;
+			}
+			break;
+			/*similar switch cases exist for control_system, profile, tag, controller or chore*/
+			default: 	return;
+		}
+		$resultValue = $db->update( $table, $columnValue, $where); //update the 
+		if(is_bool($resultValue))
+		{ 
+			return $resultValue;
+		}
+		elseif(is_array($resultValue))
+		{
+			return sqlErrorMessage($resultValue[1]);
+		}
+		return null;
+	}	
+\end{lstlisting}
+
+Inserting and updating a rule are different from the other and more complicated because of its design and implementation so its functions are explained in the following section. 
 %control system, profiles, tags, controller, chores, rules
 
-\subsection{Function to Update Rule}
-%addNewRuleToDB addCondition addAction
-%editRule editCondition editAction
+\subsection{Function working with Rule}
+\label{subsec:dbRule}
+As with the simpler updates this also uses some data rapping classes \texttt{Rules}, \texttt{Action} and \texttt{Condition}. In the class Condition there is a variable \texttt{arrayOfRestAttributes} which is an array with the attributes from either cond\_timeperiod or cond\_timestamp.
+
+As stated previously in mapping of a rule in \vref{subsec:mappRule}, there will be some challenges to make the insert and update functions. This is partly due to the fact that condition data is one of three alternative: condition, condition plus timestamp or condition plus timeperiod as was explained in \vref{sec:DBdesign}. In update it is also a challenge that each condition and action from the two arrays can be removed, add or updated which all should be handled together. 
+
+However, to explain further it is necessary to clarify that when a rule was previously mentioned it have been the rule as a hole with actions and conditions include. However, now there will be a distinction, when rule is mentioned it is the table rule and when action is mentioned it is the table action. The condition table is named rcondition, and when mentioning condition it include what can be found in rcondition, cond\_timeperiod and cond\_timestamp. 
+
+The function to update a rule is called editRule and it also used some other function as described below:
+
+\begin{description}
+	\item[addAction] from a rule id and a object of type Action it adds an action to the rule.
+	\item[editAction] from a object of type Action it updates the attributes in the database.   
+	\item[addCondition] from a rule id and a object of type Condition adds a condition to the rule.
+	\item[editcondition] from a object of type Condition it updates the attributes in the database.   
+\end{description}
+
+The editRule has three inputs a Rule object, an array with Condition objects, and an array with Action objects. Updating the rule table is like the simple updates of the other tables and therefore it will not be represented in the code sample. After the rule have been updated each condition and action must also be updated. 
+
+When updating an action and especially a condition the change can have different characteristics as listed below.
+
+\begin{itemize}
+	\item a new condition or action is add.
+	\item a condition or action need to be deleted.
+	\item an existing condition or action is to be updated with no structural change in the database.
+	\item an existing condition or action is to be updated but with a structural change in the database.
+\end{itemize}
+
+With a structural change it is meant that the name of the condition or action has been changes and this change can influence e.g. whether cond\_timeperiod or cond\_timestamp should be used. As a result it have been decided that in this case the old condition should be deleted and the new be added anew. 
+
+The code sample in \ref{code:UpdateRules} is from the update handling of condition and the it is similar to handle the actions. First the old conditions id are need such that they can be compared to the ids of the Condition objects from the array \$arrayOfCondition, see line $2$\fixme{check line no}. 
+Foreach old condition id we will look thourgh the new id and if it found and the name are not to be changed then we call editcondition with the updated condition object and remove this object from the array of condition, see line $4-20$\fixme{check line no}. As can be concluded from line $22-26$\fixme{check line no}, tuple with the old id is removed if no match was found among conditions in the array or if a match was found but the name are to changed. Now all the condition that was intended to be deleted is gone. Finally we then add or re-add the remain objects from the array with addCondition, see line $28-40$\fixme{check line no}.
 
 
+\begin{lstlisting}[language=PHP, label=code:UpdateRules, caption=editRule code sample]
+//SELECT condId AS id FROM rcondition WHERE RId = ($ruleData->RId)
+$CondIdResult = $db->query($theColumns['Rcondition'][0].' AS id', $theTables['Rcondition'], $theColumns['Rcondition'][1] . " = " . $ruleData->RId );
+				
+	while($row = mysqli_fetch_assoc($CondIdResult))
+	{
+		$StillExists = false;
+		foreach($arrayOfCondition as $key => $cond)
+		{
+			if($row['id'] == $cond->condId && $cond->name == null)				//edit the condition in db
+			{
+				$StillExists = true;
+				$tempresults = editCondition($cond);
+				unset($arrayOfCondition[$key]);
+				if(is_string($tempresults))
+				{
+				//if not bool then it is an error message
+					return $tempresults;
+				}
+			}	
+		}
+		//row id is not among the updated condition or cond_name not null so delete 
+		if(!$StillExists)
+		{
+			$db->delete($theTables['Rcondition'], $theColumns['Rcondition'][0] . " = " .$row['id']);
+		}
+	}
+	//add the remaining condition to db
+	if($arrayOfCondition != null )
+	{
+		foreach($arrayOfCondition as $cond)
+		{
+			//if a new condition should be added then make condition here
+			$tempresults = addCondition($ruleData->RId, $cond);
+			if(is_string($tempresults))
+			{
+			//if not bool then it is an error message
+				return $tempresults;
+			}
+		}
+	}
+\end{lstlisting}
 
 
 
