@@ -24,10 +24,10 @@ $app->get('/status/:cId', function($cId) {
     $action = 'none';
 
     //calculate timeRemaining and return it
-    $row2 = $db->executeSQL("SELECT points,UNIX_TIMESTAMP(controller_used_by_tag.starttime),UNIX_TIMESTAMP(now()) as now FROM profile,tag,controller_used_by_tag WHERE controller_used_by_tag.CSerieNo='$cId' AND controller_used_by_tag.endtime IS NULL AND controller_used_by_tag.TSerieNo=tag.TSerieNo AND tag.profileId=profile.PId LIMIT 1")->fetch_assoc();
+    $row2 = $db->executeSQL("SELECT points,UNIX_TIMESTAMP(controller_used_by_tag.starttime) as starttime,UNIX_TIMESTAMP(now()) as now FROM profile,tag,controller_used_by_tag WHERE controller_used_by_tag.CSerieNo='$cId' AND controller_used_by_tag.endtime IS NULL AND controller_used_by_tag.TSerieNo=tag.TSerieNo AND tag.profileId=profile.PId LIMIT 1")->fetch_assoc();
     $points = $row2['points'];
     $timeNow = $row2['now'];
-    $startTime = $row2['startTime'];
+    $startTime = $row2['starttime'];
     $timeElapsed = floor(($timeNow-$startTime)/60);
     $pointsRemaining = $points-($timeElapsed*$cost);
     $timeRemaining = $pointsRemaining/$cost;
@@ -123,7 +123,7 @@ $app->get('/turnOff/:cId/:tId', function($cId,$tId) {
 			else
 			{
 				$status = 'ERROR';
-				$error = 'Same user has to turn the device off again!';
+				$error = 'Same user has to turn the device off again, or another user should call turnOn!';
 			}
 			break;
 		case '!': //something is preventing the device turning on, but the device is off!
