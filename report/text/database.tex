@@ -31,11 +31,6 @@ In the database design it should be noticed that Permission is absent. The reaso
 Another observation in the design is the condition of a rule. The condition can be one of three representations. The first is the simplest because it is just the Condition. The second is Condition and a timestamp which is the \texttt{cond\_timestamp} in the design in \ref{fig:ERdiagram}. The last representation is Condition, a time period, and a representation of when it is valid, which in the design is \texttt{cond\_timeperiod}. 
  It is the name of the condition which distinguishes the representation that should be used. If the name is \texttt{Timestamp} it should be cond\_timestamp, if it is \texttt{Timeperiode} then it is cond\_timeperiod and any other name it is only the Condition. \fixme{Til sidst er navne stadig TimeStamp og TimePeriod}
 
-
-As can be seen from \texttt{cond\_timeperiod} it has several attributes to represent when the time period is valid, because it is repeatable. To better show how rule with action and condition which uses cond\_timeperiod, can be formed in real-life, two examples is given.
- An example could be that the profile Peter gets point for each football training (the action) and the football training is Monday and Thursday from 18:00 to 19:30 each week (the condition). 
-Another example could be that the family are going out every third Saturday at 18:00 and to get the children away from the media devices in time then the TV,PC and consoles must not be turn on from 17:30 to 18:00. Here the condition is its Saturday between 17:30 to 18:00 and its the third week. The action is all controllers turn off if the are on and the controllers must not be turned on. 
-
 After the design in the ER-schema has been completed it was implemented into a MySQL database.  
 
 \section{Implementation}
