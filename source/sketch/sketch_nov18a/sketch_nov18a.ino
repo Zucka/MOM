@@ -9,7 +9,6 @@ char* useID = (char*) malloc(3 * sizeof(char));  //ID of logged in User, Limited
 int* timeLeft = (int*) malloc(1 * sizeof(int));
 unsigned long* lastTime = (unsigned long *) malloc(1 * sizeof(long));
 int* state = (int *) malloc(1 * sizeof(int));
-char* tokenHolder = ( char* ) malloc(25 * sizeof(char));
 
 //Setting up the Shield's addresses.
 byte mac[] = { 0x90, 0xA2, 0xDA, 0x0E, 0xC5, 0x94 };
@@ -40,8 +39,9 @@ int block_length = 23;
  *        - 0x46: 'F' Failed to read.
  * Slot 5 Contains the Checksum. 
  */
- 
-char seek_responce[11] = "";
+
+char* seek_responce = (char*) malloc(11* sizeof(char)); 
+//char seek_responce[11] = "";
 int seek_length = 11;
 /* The RFID output in UART for seeking for tag: On 'Tag Found'. (The length would be 0x06.)
  * Slot Slot 0-3 contains the message "Header", "Reserved", "Length" and "Command".
@@ -56,8 +56,9 @@ int seek_length = 11;
  *        - 0x55: 'U' Command in progress but RF field is off.
  * Slot 5 Contains the Checksum.
  */
- 
-char authenticate_responce[7] = "";
+
+char* authenticate_responce = (char*) malloc(7* sizeof(char)); 
+//char authenticate_responce[7] = "";
 int authenticate_length = 7;
 /* The RFID output in UART for Authenticating a Data block.
  * Slot Slot 0-3 contains the message "Header", "Reserved", "Length" and "Command".
@@ -251,13 +252,13 @@ void stateZero()
   }
   else
   {
-    for(int i=1;i<sizeof(seek_responce);i++)
+    for(int i=1;i<11;i++)
     {
       Serial.println(seek_responce[i], HEX);
     }
     
     Serial.println(F("Wait for it"));  
-    delay(1000);
+    delay(5000);
   }
 }
 
@@ -315,13 +316,13 @@ void stateOne(void)
   }
   else
   {
-    for(int i=1;i<sizeof(seek_responce);i++)
+    for(int i=1;i<11;i++)
     {
       Serial.println(seek_responce[i], HEX);
     }
     
     Serial.println(F("Wait for it"));  
-    delay(1000);
+    delay(5000);
   }
 }
 
@@ -333,14 +334,13 @@ int freeRam()
   return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval); 
 }
 
-
-void getJSON(char input[], char token[])
+void getJSON(char* output, char input[], char token[])
 { 
   token_list_t *token_list = NULL;
   token_list = create_token_list(25); // Create the Token List. (Potential Memory Waste)
   json_to_token_list(input, token_list); // Convert JSON String to a Hashmap of Key/Value Pairs
-  tokenHolder = json_get_value(token_list, token);
-  release_token_list(token_list);  
+  output = json_get_value(token_list, token);
+  release_token_list(token_list); 
 }
 /* End: On device calls */
 
@@ -392,16 +392,19 @@ void getStatus(void)
     
     Serial.print(F("Status: "));
     Serial.println(o);
-        
-    getJSON(o, "status");  
     
-    if(tokenHolder == "GREEN")
+    char* stat = (char*) malloc(25);        
+    getJSON(stat, o, "status");  
+    
+    if(stat == "GREEN")
     {
-      getJSON(o, "timeRemaining");
-      *timeLeft = int(*tokenHolder);
+      getJSON(stat, o, "timeRemaining");
+      *timeLeft = int(*stat);
+      free(stat);
     }
     else
     {
+      free(stat);
     }
   }
   else
@@ -435,10 +438,13 @@ void turnOn(void)
     Serial.println(F("Message Sent"));
     
     while(!client.available()); //Waits for the Server to Answer, potential freeze point.
+    Serial.println(freeRam());
     
     boolean toggle = false;
-    char on[75] = "" ;
+    char* on = (char*) malloc(75 * sizeof(char));
+    //char on[75] = "" ;
     char i[1] = "";
+    
     
     while(client.available()) //Builds the JSON string from the data passed by the website.
     { 
@@ -460,24 +466,28 @@ void turnOn(void)
     }
     delay(10);
     
+    Serial.println(freeRam());
     Serial.print(F("On: "));
     Serial.println(on);
         
-    getJSON(on, "status");
-    Serial.println(tokenHolder);
+    char* p = (char*) malloc(25);
+    getJSON(p, on, "status");
+    Serial.println(p);
     
-    if(tokenHolder == "OK")
+    if(p == "OK")
     {
       Serial.println(F("TTO IF"));
-      getJSON(on, "timeRemaining");
-      *timeLeft = int(*tokenHolder);
+      getJSON(p, on, "timeRemaining");
+      *timeLeft = int(*p);
       *state = 1;
+      free(p);
     }
     else
     {
       Serial.println(F("TTO Else"));
       useID = "";
       *state = 0;
+      free(p);
     }
   }
   else
