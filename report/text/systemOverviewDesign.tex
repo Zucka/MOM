@@ -16,7 +16,7 @@ The second use pattern is pictured in the upper left corner of the figure. It is
 	\label{fig:systemoverview}
 \end{figure}
 
-On the server there will be a database, files that generate the website, a Web service(API), and a daemon. These elements of the system will be explained further in section \vref{sec:RequirMCCS} and after that the system architecture can be presented in section \vref{sec:sysArchitecture}. However, we need to explain some of the concepts that will be used in connection with this system.
+On the server there will be a database, files that generate the website, a Web service, and a daemon. These elements of the system will be explained further in section \vref{sec:RequirMCCS} and after that the system architecture can be presented in section \vref{sec:sysArchitecture}. However, we need to explain some of the concepts that will be used in connection with this system.
 
 \section{General Design Concepts}
 %Go into detail about rules, permission, chores
@@ -123,7 +123,7 @@ In the analysis we came to the conclusion that the following items is necessary 
 \end{itemize} 
 
 
-The first item is called controller in this system, the second is the tag and the last is the website on the computer. But also new components of the system is necessary. As explain in the previous section a daemon is needed to check the relevant rules and perform the appropriate actions if the conditions holds. Also during the following sections we find that a web service(API) is need. 
+The first item is called controller in this system, the second is the tag and the last is the website on the computer. But also new components of the system is necessary. As explain in the previous section a daemon is needed to check the relevant rules and perform the appropriate actions if the conditions holds. Also during the following sections we find that a web service is need. 
 
 In the following sections the specification of the website, controller and tag, web service and daemon will be explained further, before the design and implementation will be presented for each of them in the following chapters.  
 
@@ -167,8 +167,10 @@ The design and implementation of the controller will be explained further in cha
 
 The controller must communicate with the server and this is done via a web service.
 
-\subsection{The web service API}
-The web service is used to communicate with the controller. Its requirements are:
+\subsection{The web service}
+
+The web service is used to parse the relevant data to the controller. Its requirements are:
+
 \begin{itemize}
 	\item Receive and send messages to the controller
 	\item From a tag and controller it should be able to determine whether a user may use the media which is connected to the controller
@@ -176,23 +178,17 @@ The web service is used to communicate with the controller. Its requirements are
 	\item It should able to calculate when a controller should be turned off because of a rule, permission or point.
 \end{itemize}
 
------write something here -------
+The web service's design and implementation is explained further in chapter \fixme{ref to chapter}.
 
 
-\subsection{daemon}
-\label{subsec:daemon}
------write something here -------
-Requirement:
-\begin{itemize}
-	\item Check rules for when points should be add to a profile
-	\item -----more????----------------
-\end{itemize}
------write something here -------
+\subsection{Daemon}
+The daemon is used to update data in the database from a rule which the user have made at some point. The daemon has does not have any direct contact to a client. The daemons should handle any rule that is time determined so the condition is either Timestamp or Timeperiod. Then the daemon should do the appropriate action which could be add points to user or block a user.
 
-
+The design and implementation of the daemon is presented in detail in chapter \fixme{ref to chapter}. 
+ 
 \section{System Architecture}
 \label{sec:sysArchitecture}
-Now that all subsystem of the Media Consumption Control System have been presented the overall system architecture can be explained. The MCCS is using the client server architecture which is shown in the figure \ref{fig:serveroverview} \citep{OOAD}. This system has two types of client the first is a controller and the second is a computer where the user manage the system via the web site. The controller is depended on the web service (API) on the server and the computer is depended on the web site. On the server there are the web site, web service and daemon which all are depended on the functions component, MySQLHelper class and data component. In the function component there are several functions to work on the data in the database and this component is depended on MySQLHelper because it should establish the database connection and parse the quires on to the database. 
+Now that all subsystem of the Media Consumption Control System have been presented the overall system architecture can be explained. The MCCS is using the client server architecture which is shown in the figure \ref{fig:serveroverview} \citep{OOAD}. This system has two types of client the first is a controller and the second is a computer where the user manage the system via the web site. The controller is depended on the web service on the server and the computer is depended on the web site. On the server there are the web site, web service and daemon which all are depended on the functions component, MySQLHelper class and data component. In the function component there are several functions to work on the data in the database and this component is depended on MySQLHelper because it should establish the database connection and parse the quires on to the database. 
 
 \begin{figure}
 	\centering
