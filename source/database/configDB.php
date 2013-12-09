@@ -45,9 +45,9 @@
 		$actionNames= array('Block user', 'Activate user', 'Add points',  
 							'Set maximum of point', 'Unlimited time',
 							'Access any controller',	//permission all
-							'Access retracted',	//permission non
+							'Cannot access any controller',	//permission non
 							'Access controller',	// permissionDiv
-							'Turn off');
+							'Cannot access controller');
 							
 		$conditionNames = array('Timestamp',	'Controller on', 'Controller off',
 								'Timeperiode', 'True'
