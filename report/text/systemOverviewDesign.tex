@@ -1,13 +1,13 @@
 \chapter{Overall System Design}
-In this chapter we present the overall design of the Media Consumption Control System(MCCS). First we will present how we intend the users to use the MCCS. Then general concepts will be introduced which is an essential part of the system and will be mentioned several times hereafter. Thirdly the requirements of MCCS will be explained in more detailed. Finally the system architecture will be presented.    
+In this chapter we present the overall design of the Media-Online Management(MOM). First we will present how we intend the users to use the MOM. Then general concepts will be introduced which is an essential part of the system and will be mentioned several times hereafter. Thirdly the requirements of MOM will be explained in more detailed. Finally the system architecture will be presented.    
 
 
-\section{Media Consumption Control System} %name our system: temp name: Media Consumption Control System or MCCS
-The Media Consumption Control System (MCCS) is the system that are our solution on the problem statement. To give an overview of the complete system a rich picture have been made, see the figure \ref{fig:systemoverview} \citep{OOAD}. The figure show a home environment with a TV (media), computer and a internet connection, and it show a server. 
+\section{Media-Online Management} %name our system: temp name: Media-Online Management or MOM
+The Media-Online Management (MOM) is the system that are our solution on the problem statement. To give an overview of the complete system a rich picture \citep{OOAD} have been made, see the figure \ref{fig:systemoverview}. The figure show a home environment with a TV (media), computer and a internet connection, and it show a server. 
 
-There are two main use pattern. The first is a parent who manage the their MCCS and uses the website from the PC to add, change or delete settings. This is pictured in the bottom left-side corner in figure \ref{fig:systemoverview}. 
+There are two main use pattern. The first is a parent who manage the their MOM using the website from the PC to add, change or delete system settings. This is pictured in the bottom left-side corner in figure \ref{fig:systemoverview}. 
 
-The second use pattern is pictured in the upper left corner of the figure. It is a child user who want to use a media and in this case watch television, but to see television power is needed and its power source is blocked by the controller. So the child need to scan his tag and then the controller sends a message to the server which then reply whether the television can be turned on. When the child is done he must scan again such that points can be withdraw from his user profile. When the child does not have any point he cannot turn on the television nor can he if a rule or permission do not allow it. If a parent wants to watch television without being restricted in any way he can make a rule that gives him unlimited access, but he would still need to scan his tag before and after using the television.
+The second use pattern is pictured in the upper left corner of the figure. It is a child user who want to use a media which in this case watch television. But to see television it need power and its power source is blocked by the controller. So the child need to scan his tag and then the controller sends a message to the server which then reply whether the television can be turned on. When the child is done he must scan again such that points can be withdrawn from his user profile. If the child does not have any point he cannot turn on the television nor can he if a rule or permission do not allow it. If a parent wants to watch television without being restricted in any way he can make a rule that gives him unlimited access, but he would still need to scan his tag before and after using the television.
 
 \begin{figure}
 	\centering
@@ -16,20 +16,20 @@ The second use pattern is pictured in the upper left corner of the figure. It is
 	\label{fig:systemoverview}
 \end{figure}
 
-On the server there will be a database, files that generate the website, a Web service, and a daemon. These elements of the system will be explained further in section \vref{sec:RequirMCCS} and after that the system architecture can be presented in section \vref{sec:sysArchitecture}. However, we need to explain some of the concepts that will be used in connection with this system.
+On the server there will be a database, files that generate the website, a web service, and a daemon. These elements of the system will be explained further in section \vref{sec:RequirMOM} and after that the system architecture can be presented in section \vref{sec:sysArchitecture}. However, we need to explain some of the concepts that will be used in connection with this system.
 
 \section{General Design Concepts}
 %Go into detail about rules, permission, chores
-In the Media Consumption Control System there are a few concept that will be used though out the report. These are chore, permission and rules. The meaning of each will be explain in following sections.
+In the Media-Online Management there are a few concept that will be used though out the report. These are chore, permission and rules. The meaning of each will be explain in following sections.
 
 \subsection{Chore}
-A chore in the MCCS is a representation of a house chore that is to be done regally. We have included chore into this system to encourage children to help with the house chore with more time for media as a reward. Therefore each chore need a number of points which will be given when the child have done the house chore. 
-An example on a house chore could be to take out the garbage, then the chore in MCCS would have a name: 'take out garbage', possible a bigger description of the chore: 'remember to sort the garbage into the correct trash cans' and when the chore is done some points is given: '10'.  
+A chore in the MOM is a representation of a house chore that is to be done regally. We have included chore into this system to encourage children to help with the house chore with more time for media as a reward. Therefore each chore need a number of points which will be given when the child has done the house chore. 
+An example on a house chore could be to take out the garbage, then the chore in MOM would have a name: 'take out garbage', possible a bigger description of the chore: 'remember to sort the garbage into the correct trash cans' and when the chore is done some points is given: '10'.  
 
 One disadvantage about the chore design is that the parent needs to use the website to award the child with points for doing a chore. We would have liked to automate it further, but to limit the scope of the project this would be future work.  
 
 \subsection{Permission}
-Permissions in this system is a time period in which the child user are allowed to use a specific media. Permission is included in the MCCS to give parents an easy way of controlling in which time period during the day the media can be used by the child. This can help the parents to get the children to bed in time since they cannot use the medias unless the parent allows it. It would especially be useful if the child has medias in his rooms such that the parents do not need to check whether the media is turned on or not. 
+Permissions in this system is a time period in which the child user is allowed to use a specific media. Permission is included in the MOM to give parents an easy way of controlling in which time period during the day the media can be used by the child. This can help the parents to get the children to bed in time since they cannot use the medias unless the parent allows it. It would especially be useful if the child has medias in his rooms such that the parents do not need to check whether the media is turned on or not. 
 
 The permission consist of:
 \begin{itemize}
@@ -54,12 +54,11 @@ In the system a rule can be many things the following is just a few examples of 
 
 \begin{itemize}
 	\item any permission can also be written as a rule
-	\item it could be a statement like if the TV is turned on then the Playstation can be turn on
 	\item The first Monday in a month increase Peter's points by 100
-	\item Mom and Dad's profiles have unlimited and unrestricted access to each media
+	\item Mom and Dad's profiles have unlimited time and unrestricted access to any media
 \end{itemize}
 
-The rule has been included because that gives the user more powerful method to control the use of medias and to control the profiles in the MCCS.
+The rule has been included because that gives the user more powerful method to control the use of medias and to control the profiles in the MOM.
 But there are one disadvantage of a rule it might be complicated for the user to understand how to use it and how to construct a rule so the design of how the user can make a rule need to be though through carefully.
 
 A rule should be connected to one or more user profiles since the rules otherwise would be unnecessary if no one should follow them. A rule consist of a name, a set of conditions and a set of actions. The condition and actions will be explained further in the following sections.
@@ -93,33 +92,31 @@ An action is something that can or should be done if all of the rule's condition
 	\item[Turn off controller] it will turn off the media if one of the profile is using. Here a controller need to be connected to the action.
 \end{description}
 		
-Since some of the action like 'Add points' should be done automatically without further contact with the user. Therefore a background process typically called daemon, is also needed in the MCCS but this will be explained further in section \ref{subsec:daemon}. 
+Since some of the action like 'Add points' should be done automatically without further contact with the user. Therefore a background process typically called daemon, is also needed in the MOM but this will be explained further in section \ref{subsec:daemon}. 
 	
 
 
 \subsubsection{Examples of Rules}
 In this section some examples of rules for a profile will be given.
 
-The first example could be that the profile Peter gets point for each football training (the action) and the football training is Monday and Thursday from 18:00 to 19:30 each week (the condition with Timeperiod). \\
+The first example could be that the profile Peter gets point for each football training and the football training is Monday and Thursday from 18:00 to 19:30 each week. Then the action could be add 25 points to Peter when condition holds. The condition is from 19:30 to 19:30 where the day is 'Monday, Thursday' and it is repeated weekly. \\
 
 The second example could be that Susan is grounded from the 2. December. In the system there will be a condition with Timestamp which is 2. December 2013 18:00
 and an action that is 'Block user' such that she cannot use any media or gain points in this period. \\
 
-If the parents should make a rule which give themselves unlimited time and access to any media. The condition would be True and the actions would be 'Unlimited time' and 'Access any controller'.\\
+If the parents should make a rule which give themselves unlimited time and access to any media. The condition would be True and the actions would be 'Unlimited time' and 'Access any controller'.\\\\
 
-In the final example is Peter and Susan can only activate the Playstation if the TV is turned on. The condition is 'Controller on' with a connection to the controller for TV and the action is 'Turn on controller' with a connection to the Playstation's controller.\\\\
-
-This conclude the general concepts that will be used through out the remaining of the report. Next we will go into further details about the requirements of the MCCS.  
+This conclude the general concepts that will be used through out the remaining of the report. Next we will go into further details about the requirements of the MOM.  
 
 
-\section{Requirements of the MCCS}
-\label{sec:RequirMCCS}
+\section{Requirements of the MOM}
+\label{sec:RequirMOM}
 
-In the analysis we came to the conclusion that the following items is necessary for the MCCS: 
+In the analysis we came to the conclusion that the following items is necessary for the MOM: 
 \begin{itemize}
 	\item A device to toggle the power of an electronic media
 	\item An individual key for each child that can be read by the device
-	\item A web-interface to set up rules, permissions and view/modify allowed usage of electronic media
+	\item A website to set up rules, permissions and view/modify allowed usage of electronic media
 \end{itemize} 
 
 
@@ -127,33 +124,33 @@ The first item is called controller in this system, the second is the tag and th
 
 In the following sections the specification of the website, controller and tag, web service and daemon will be explained further, before the design and implementation will be presented for each of them in the following chapters.  
 
-\subsection{MCCS's Website}
-A media consumption control system (MCCS) owner need a way to manage the system and for this a website will be made. There are several requirements for this website:
+\subsection{MOM's Website}
+A Media-Online Management (MOM) owner need a way to manage the system and for this a website will be made. There are several requirements for this website:
 
 \begin{itemize}
-	\item Register a new MCCS together with a user profile which is a manager of this system
-	\item Make it possible to add, edit and delete user profiles in an existing MCCS 
-	\item Make it possible to add, edit and delete Controllers from an existing MCCS
+	\item Register a new MOM together with a user profile which is a manager of this system
+	\item Make it possible to add, edit and delete user profiles in an existing MOM 
+	\item Make it possible to add, edit and delete Controllers from an existing MOM
 	\item There should be a way to add, edit and delete Tags to the system. Also a tag should be connected to a user profile
 	\item There need to be an option to add, edit and delete rules, permissions and chores from a system
 	\item The user should be able to connect rules and permission with one or more user profiles. The connection should also be able to be removed without removing the rule or permission
 	\item When a chore is made in the real world by a child profile then by connecting this profile to a chore, points should be add to his points
 \end{itemize}
 
-There are also some requirements that is nice for the parents to use, but they are not essential for the MCCS system:
+There are also some requirements that is nice for the parents to use, but they are not essential for the MOM system:
 
 \begin{itemize}
 	\item present the media consumption data as graphs or log such that the parent easy can get an overview of their children's media consumption 
-	\item present data from the MCCS in a calendar that shows rule and permission with profiles for whom this is relevant. The calendar should also show when a chore have been done and by who.
+	\item present data from the MOM in a calendar that shows rule and permission with profiles for whom this is relevant. The calendar should also show when a chore have been done and by who.
 \end{itemize}
 
 In chapter \fixme{insert ref} the design and implementation of the website will be presented in more detail. 
  
 
 \subsection{Tag and Controller}
-The tag used in this system is using Radio-frequency Identification (RFID). The tag need to be uniquely identified in the MCCS and it must uniquely identify its user. The tag is used in combination with the controller.
+The tag used in this system is using Radio-frequency Identification (RFID). The tag need to be uniquely identified in the MOM and it must uniquely identify its user. The tag is used in combination with the controller.
 
-The controller is an Arduino which is connected to a tag reader. Like the tag it need to be uniquely identified in the MCCS. The controller must be able to do the following.
+The controller is an Arduino which is connected to a tag reader. Like the tag it need to be uniquely identified in the MOM. The controller must be able to do the following.
 
 \begin{itemize}
 	\item Read the data from the tag
@@ -188,7 +185,7 @@ The design and implementation of the daemon is presented in detail in chapter \f
  
 \section{System Architecture}
 \label{sec:sysArchitecture}
-Now that all subsystem of the Media Consumption Control System have been presented the overall system architecture can be explained. The MCCS is using the client server architecture which is shown in the figure \ref{fig:serveroverview} \citep{OOAD}. This system has two types of client the first is a controller and the second is a computer where the user manage the system via the web site. The controller is depended on the web service on the server and the computer is depended on the web site. On the server there are the web site, web service and daemon which all are depended on the functions component, MySQLHelper class and data component. In the function component there are several functions to work on the data in the database and this component is depended on MySQLHelper because it should establish the database connection and parse the quires on to the database. 
+Now that all subsystem of the Media-Online Management have been presented the overall system architecture can be explained. The MOM is using the client server architecture which is shown in the figure \ref{fig:serveroverview} \citep{OOAD}. This system has two types of client the first is a controller and the second is a computer where the user manage the system via the web site. The controller is depended on the web service on the server and the computer is depended on the web site. On the server there are the web site, web service and daemon which all are depended on the functions component, MySQLHelper class and data component. In the function component there are several functions to work on the data in the database and this component is depended on MySQLHelper because it should establish the database connection and parse the quires on to the database. 
 
 \begin{figure}
 	\centering
