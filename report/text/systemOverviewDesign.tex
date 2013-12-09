@@ -1,11 +1,9 @@
 \chapter{Overall System Design}
-presentation of Media Consumption Control System, how the user need to use the system.\\
-present concepts chore, permission and rule.\\
-present parts of the system and their requirements. \\
-present system architecture. \\
+In this chapter we present the overall design of the Media Consumption Control System(MCCS). First we will present how we intend the users to use the MCCS. Then general concepts will be introduced which is an essential part of the system and will be mentioned several times hereafter. Thirdly the requirements of MCCS will be explained in more detailed. Finally the system architecture will be presented.    
+
 
 \section{Media Consumption Control System} %name our system: temp name: Media Consumption Control System or MCCS
-The Media Consumption Control System (MCCS) is the system that are our solution on the problem statement. To give an overview of the complete system a rich picture have been made, see the figure \ref{fig:systemoverview}. The figure show a home environment with a TV (media), computer and a internet connection, and it show a server. 
+The Media Consumption Control System (MCCS) is the system that are our solution on the problem statement. To give an overview of the complete system a rich picture have been made, see the figure \ref{fig:systemoverview} \citep{OOAD}. The figure show a home environment with a TV (media), computer and a internet connection, and it show a server. 
 
 There are two main use pattern. The first is a parent who manage the their MCCS and uses the website from the PC to add, change or delete settings. This is pictured in the bottom left-side corner in figure \ref{fig:systemoverview}. 
 
@@ -18,7 +16,7 @@ The second use pattern is pictured in the upper left corner of the figure. It is
 	\label{fig:systemoverview}
 \end{figure}
 
-On the server there will be a database, files that generate the website, a Web service(API), and a Deamon. These elements of the system will be explained further in section \vref{sec:RequirMCCS} and after that the system architecture can be presented in section \vref{sec:sysArchitecture}. However, we need to explain some of the concepts that will be used in connection with this system.
+On the server there will be a database, files that generate the website, a Web service(API), and a daemon. These elements of the system will be explained further in section \vref{sec:RequirMCCS} and after that the system architecture can be presented in section \vref{sec:sysArchitecture}. However, we need to explain some of the concepts that will be used in connection with this system.
 
 \section{General Design Concepts}
 %Go into detail about rules, permission, chores
@@ -65,10 +63,22 @@ The rule has been included because that gives the user more powerful method to c
 But there are one disadvantage of a rule it might be complicated for the user to understand how to use it and how to construct a rule so the design of how the user can make a rule need to be though through carefully.
 
 A rule should be connected to one or more user profiles since the rules otherwise would be unnecessary if no one should follow them. A rule consist of a name, a set of conditions and a set of actions. The condition and actions will be explained further in the following sections.
+	
+\subsubsection{Condition}
+A condition is used to decide when a rule is relevant which is when all conditions fits. A condition has a predefine name and when the user make a condition he will chose it from a list. The names is listed below together with the additional information that is required. 
+
+\begin{description}
+	\item[Timeperiode] when this is chosen the user can define a time period. It need the same information as a permission, a from time, a to time, representation of days where the rule applies, and a representation of when it should be repeated.
+	\item[Timestamp] the condition has a timestamp as additional information and an action should happen immediately after this timestamp have been reached. 
+	\item[Controller on] this should check whether a given controller for a media is activated. This need a to be connected to a controller.
+	\item[Controller off] this should check whether a given controller for a media is not activate. This need a to be connected to a controller.
+	\item[True] This is always true.
+\end{description}
+
+Later in this chapter there will be some examples of rules which uses conditions.
 
 \subsubsection{Action}
-
-An action is something that can or should be done if all of the conditions holds. An action always have a name, but this name is not user defined. The user have a choice from a list which can be found in the description below with an explanation of what it does and what other information is needed for the action.   
+An action is something that can or should be done if all of the rule's conditions hold. An action always has a name, but as with the condition this name is not user defined. The user have a choice from a list which can be found in the description below with an explanation of what it does and what other information is needed for the action.   
 
 \begin{description}
 	\item[Block user] it will block the profiles of all profile connected to the rule.
@@ -76,35 +86,30 @@ An action is something that can or should be done if all of the conditions holds
 	\item[Add points] it will add points to all profile connected to the rule. Here the number of points is needed.
 	\item[Set maximum of point] it will set a maximum for the number of points that a profile can have. Here a number representing the maximum points is also needed. 
 	\item[Unlimited time] it will give the profile unlimited time to be spend on any media. 
-	\item[Access any] it will give the profile access to any media in the system.
-	\item[Access retracted] it will not give the profile access to any media. This is useful when the child is grounded.
+	\item[Access any controller] it will give the profile access to any media in the system.
+	\item[Access retracted] it will not give the profile access to any media. 
 	\item[Access controller] it will give the profile access to a specific media. Here a controller need to be connected to the action.
 	\item[Turn on controller] it will give the profile permission to use a specific media. Here a controller need to be connected to the action.
 	\item[Turn off controller] it will turn off the media if one of the profile is using. Here a controller need to be connected to the action.
 \end{description}
 		
------write more here--------
-
-Since some of the action like 'Add points' need to be done automatically without further contract to the user. Therefore a background process called Deamon, is also needed in the MCCS but this will be explained further in section \ref{subsec:deamon}. 
+Since some of the action like 'Add points' should be done automatically without further contact with the user. Therefore a background process typically called daemon, is also needed in the MCCS but this will be explained further in section \ref{subsec:daemon}. 
 	
-	
-\subsubsection{Condition}
-
-
-\begin{description}
-		\item[Timestamp] 
-		\item[Controller on]
-		\item[Controller off]
-		\item[Timeperiode]
-		\item[True]
-		\item[False] 
-	\end{description}
 
 
 \subsubsection{Examples of Rules}
-%An example could be that the profile Peter gets point for each football training (the action) and the football training is Monday and Thursday from 18:00 to 19:30 each week (the condition). 
-%Another example could be that the family are going out every third Saturday at 18:00 and to get the children away from the media devices in time then the TV,PC and consoles must not be turn on from 17:30 to 18:00. Here the condition is its Saturday between 17:30 to 18:00 and its the third week. The action is all controllers turn off if the are on and the controllers must not be turned on. 
------------write here-------------
+In this section some examples of rules for a profile will be given.
+
+The first example could be that the profile Peter gets point for each football training (the action) and the football training is Monday and Thursday from 18:00 to 19:30 each week (the condition with Timeperiod). \\
+
+The second example could be that Susan is grounded from the 2. December. In the system there will be a condition with Timestamp which is 2. December 2013 18:00
+and an action that is 'Block user' such that she cannot use any media or gain points in this period. \\
+
+If the parents should make a rule which give themselves unlimited time and access to any media. The condition would be True and the actions would be 'Unlimited time' and 'Access any controller'.\\
+
+In the final example is Peter and Susan can only activate the Playstation if the TV is turned on. The condition is 'Controller on' with a connection to the controller for TV and the action is 'Turn on controller' with a connection to the Playstation's controller.\\\\
+
+This conclude the general concepts that will be used through out the remaining of the report. Next we will go into further details about the requirements of the MCCS.  
 
 
 \section{Requirements of the MCCS}
@@ -118,9 +123,9 @@ In the analysis we came to the conclusion that the following items is necessary 
 \end{itemize} 
 
 
-The first item is called controller in this system, the second is the tag and the last is the website on the computer. But also new components of the system is necessary. As explain in the previous section a Deamon is needed to check the relevant rules and perform the appropriate actions if the conditions holds. Also during the following sections we find that a web service(API) is need. 
+The first item is called controller in this system, the second is the tag and the last is the website on the computer. But also new components of the system is necessary. As explain in the previous section a daemon is needed to check the relevant rules and perform the appropriate actions if the conditions holds. Also during the following sections we find that a web service(API) is need. 
 
-In the following sections the specification of the website, controller and tag, web service and deamon will be explained further, before the design and implementation will be presented for each of them in the following chapters.  
+In the following sections the specification of the website, controller and tag, web service and daemon will be explained further, before the design and implementation will be presented for each of them in the following chapters.  
 
 \subsection{MCCS's Website}
 A media consumption control system (MCCS) owner need a way to manage the system and for this a website will be made. There are several requirements for this website:
@@ -163,21 +168,19 @@ The design and implementation of the controller will be explained further in cha
 The controller must communicate with the server and this is done via a web service.
 
 \subsection{The web service API}
-
-----write more here----
-Requirement:
+The web service is used to communicate with the controller. Its requirements are:
 \begin{itemize}
 	\item Receive and send messages to the controller
 	\item From a tag and controller it should be able to determine whether a user may use the media which is connected to the controller
 	\item It must be able to subtract points from a user after he has been using a media
-	\item it should able to calculate when a controller should be turned off because of a rule, permission or point.
+	\item It should able to calculate when a controller should be turned off because of a rule, permission or point.
 \end{itemize}
 
 -----write something here -------
 
 
-\subsection{Deamon}
-\label{subsec:deamon}
+\subsection{daemon}
+\label{subsec:daemon}
 -----write something here -------
 Requirement:
 \begin{itemize}
@@ -189,11 +192,7 @@ Requirement:
 
 \section{System Architecture}
 \label{sec:sysArchitecture}
-
-%Symbolise server: API, Website, Daemon, Server, connection to controller, connection to laptop
-Now that all part of the Media Consumption Control System have been presented the overall system architecture can be explained. The MCCS is using the client server architecture and in the figure \ref{fig:serveroverview} it is presented.
-
--------write more here----------------
+Now that all subsystem of the Media Consumption Control System have been presented the overall system architecture can be explained. The MCCS is using the client server architecture which is shown in the figure \ref{fig:serveroverview} \citep{OOAD}. This system has two types of client the first is a controller and the second is a computer where the user manage the system via the web site. The controller is depended on the web service (API) on the server and the computer is depended on the web site. On the server there are the web site, web service and daemon which all are depended on the functions component, MySQLHelper class and data component. In the function component there are several functions to work on the data in the database and this component is depended on MySQLHelper because it should establish the database connection and parse the quires on to the database. 
 
 \begin{figure}
 	\centering
@@ -201,6 +200,9 @@ Now that all part of the Media Consumption Control System have been presented th
 	\caption{system architecture}
 	\label{fig:serveroverview}
 \end{figure}
+
+In the following chapters design and implementation of the web site, web service, deamon and database will be presented.
+
  
 
 
