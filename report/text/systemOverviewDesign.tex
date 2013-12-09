@@ -67,7 +67,7 @@ A rule should be connected to one or more user profiles since the rules otherwis
 A condition is used to decide when a rule is relevant which is when all conditions fits. A condition has a predefine name and when the user make a condition he will chose it from a list. The names is listed below together with the additional information that is required. 
 
 \begin{description}
-	\item[Timeperiode] when this is chosen the user can define a time period. It need the same information as a permission, a from time, a to time, representation of days where the rule applies, and a representation of when it should be repeated.
+	\item[Timeperiode] when this is chosen the user can define a time period. It need the same information as a permission, a from time, a to time, representation of days where the rule applies, and a representation of when it should be repeated. The time period can be either repeatable or nonrepeatable where the from time and to time is the only data required.
 	\item[Timestamp] the condition has a timestamp as additional information and an action should happen immediately after this timestamp have been reached. 
 	\item[Controller on] this should check whether a given controller for a media is activated. This need a to be connected to a controller.
 	\item[Controller off] this should check whether a given controller for a media is not activate. This need a to be connected to a controller.
@@ -77,23 +77,25 @@ A condition is used to decide when a rule is relevant which is when all conditio
 Later in this chapter there will be some examples of rules which uses conditions.
 
 \subsubsection{Action}
-An action is something that can or should be done if all of the rule's conditions hold. An action always has a name, but as with the condition this name is not user defined. The user have a choice from a list which can be found in the description below with an explanation of what it does and what other information is needed for the action.   
+An action is something that can or should be done if all of the rule's conditions hold. An action always has a name, but as with the condition this name is not user defined. The user have a choice from a list which can be found in the description below with an explanation of what it does and what other information is needed for the action and which conditions it should it can combines with.   
 
 \begin{description}
-	\item[Block user] it will block the profiles of all profile connected to the rule.
-	\item[Activate user] it will activate or re-activate the profiles of all profile connected to the rule.
-	\item[Add points] it will add points to all profile connected to the rule. Here the number of points is needed.
-	\item[Set maximum of point] it will set a maximum for the number of points that a profile can have. Here a number representing the maximum points is also needed. 
-	\item[Unlimited time] it will give the profile unlimited time to be spend on any media. 
-	\item[Access any controller] it will give the profile access to any media in the system.
-	\item[Access retracted] it will not give the profile access to any media. 
-	\item[Access controller] it will give the profile access to a specific media. Here a controller need to be connected to the action.
-	\item[Turn on controller] it will give the profile permission to use a specific media. Here a controller need to be connected to the action.
-	\item[Turn off controller] it will turn off the media if one of the profile is using. Here a controller need to be connected to the action.
+	\item[Block user] it will block the profiles of all profile connected to the rule. This action can be combined with Timestamp.
+	\item[Activate user] it will activate or re-activate the profiles of all profile connected to the rule. This action can be combined with Timestamp.
+	\item[Add points] it will add points to all profile connected to the rule. Here the number of points is needed.This action can be combined with Timestamp, Timeperiod(Repeateble).
+	\item[Remove points]    This action can be combine with Timestamp, Timeperiod(Repeateble).
+	\item[Set maximum of point] it will set a maximum for the number of points that a profile can have. Here a number representing the maximum points is also needed.This action can be combined with True.
+	\item[Unlimited time] it will give the profile unlimited time to be spend on any media. This action can be combined with True and Timeperiod both repeatable and nonrepeatable.
+	\item[Access any controller] it will give the profile access to any media in the system.This action can be combined with True and Timeperiod both repeatable and nonrepeatable.
+	\item[Cannot access any controller] it will not give the profile access to any media. This action can be combined with True and Timeperiod both repeatable and nonrepeatable.
+	\item[Access controller] it will give the profile access to a specific media. Here a controller need to be connected to the action. This action can be combined with any of the condition names.
+	\item[Cannot access controller] it will give block the user from using a specific media Here a controller need to be connected to the action.This action can be combined with any of the condition names.
 \end{description}
 		
 Since some of the action like 'Add points' should be done automatically without further contact with the user. Therefore a background process typically called daemon, is also needed in the MOM but this will be explained further in section \ref{subsec:daemon}. 
 	
+\subsubsection{Rules precedence}
+Rules are allowed overwrite the  
 
 
 \subsubsection{Examples of Rules}
