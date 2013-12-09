@@ -8,6 +8,7 @@ function db_rules_user_can_turn_device_on($cId,$tId)
 	$pId = $db->executeSQL("SELECT profileId from tag where tag.TSerieNo='$tId'")->fetch_assoc()['profileId'];
 	error_log($pId);
 	$permission = getRulesFromPId($pId,true);
+	print_r($permission);
 	return $permission;
 }
 

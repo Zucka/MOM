@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL);
 require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/sqlHelper.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/db_device.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/db_points.php');
