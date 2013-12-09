@@ -68,12 +68,12 @@ function setMenuActive(menuId){
 			break;
 		
 		case "graf":
-			//include "";
+			include "sites/graph.php";
 			?><script>setMenuActive("graf");</script><?php
 			break;
 		
 		case "calendar":
-			//include "";
+			include "sites/calendar.php";
 			?><script>setMenuActive("calendar");</script><?php
 			break;
 			
