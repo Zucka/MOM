@@ -526,6 +526,48 @@
 		}
 
 	}
+	function addPointsToProfile($profileId, $points)
+	{
+		$db = new MySQLHelper();
+		$rules = getRulesFromPId($profileId);
+		$maxpoints = null;
+		foreach($rules as $rule)
+		{
+			foreach($rule['actions'] as $action)
+			{
+				if($action['name'] == 'Set maximum of point')
+				{
+					$maxpoints = $action['points'];
+				}
+			}
+		}
+		if($maxpoints !=null)
+		{
+			$result = $db->query('points', 'profile', 'PId ='. $profileId);
+			if($result	= mysqli_fetch_assoc($result))
+			{
+				
+				$OldPoints = $result['points'];
+				echo 'old: ' . $OldPoints . '<br>';
+				if(($OldPoints + $points) > $maxpoints)
+				{
+					$points = $maxpoints - $OldPoints;
+				}
+			}
+		}
+		echo 'points: ' . $points. '<br>';
+		$resultValue = $db->update('profile', "points = (points + ". $points . ')', 'PId =' . $profileId);
+		//$resultValue = $db->executeSQL("UPDATE profile  SET points = (points + 2) WHERE PId = 3" );
+		if(is_bool($resultValue))
+		{
+			return $resultValue;
+		}
+		elseif(is_array($resultValue))
+		{
+			return sqlErrorMessage($resultValue[1]);
+		}
+	}
+	
 	
 	/* This will connect a Chore to a Profile*/
 	function addChoreToProfile($choreId, $profileId, $points= null)
@@ -538,12 +580,14 @@
 		$table = $theTables['Profile_did_chores'];
 		$column = "( " . $tempcol[0] . ", " . $tempcol[1] . ", ". $tempcol[2] .")";
 		$values = "( ". $profileId . ", ". $choreId;
+
 		if($points == null)
 		{
 			$result = $db->query($theColumns['Chores'][4] , $theTables['Chores'], $tempcol[1] . "= ". $choreId);
 			if($row = mysqli_fetch_assoc($result))
 			{
-				$values .= ", " . $row['defaultPoints'] . ")"; 
+				$points = $row['defaultPoints'];
+				$values .= ", " . $points . ")"; 
 			}
 		}
 		else
@@ -554,6 +598,7 @@
 		$resultValue = $db->insertInto($table, $values, $column);
 		if(is_bool($resultValue))
 		{
+			addPointsToProfile($profileId, $points);
 			return $resultValue;
 		}
 		elseif(is_array($resultValue))
@@ -888,7 +933,7 @@
 					
 				}
 				//add the remaining action to db
-				if($arrayOfAction != null )
+				if($arrayOfAction != null && !(empty ($arrayOfAction)))
 				{
 					foreach($arrayOfAction as $action)
 					{
@@ -929,8 +974,16 @@
 		$table = $theTables['Action'];
 		$where = $tempcol[0] . "=" . $action->AId;
 		$columnValue =  "";
+		/*if( $action->name != null)
+		{
+			$columnValue .= $tempcol[2] . "='" . $action->name. "'";
+		}*/
 		if( $action->points != null)
 		{
+			if($columnValue != "")
+			{
+				$columnValue .=  ", ";
+			}
 			$columnValue .=  $tempcol[3] . "=". $action->points;
 		}
 		if( $action->controllerId != null)

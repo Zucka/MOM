@@ -27,6 +27,7 @@ function db_points_add($tId,$points)
 	$currentPoints = $row['points']+$points;
 	$pId = $row['PId'];
 	$db->executeSQL("UPDATE profile SET points='$currentPoints' WHERE PId='$pId'"); //need to change to take point ceiling into account
+	//From lisbeth use addPointsToProfile($profileId, $points) in DBfunction it takes max point into account
 	$db->commit();
 	$db->autocommit(TRUE);
 }
