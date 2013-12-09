@@ -40,7 +40,7 @@ int block_length = 23;
  * Slot 5 Contains the Checksum. 
  */
 
-char* seek_responce = (char*) malloc(11* sizeof(char)); 
+//char* seek_responce = (char*) malloc(11* sizeof(char)); 
 //char seek_responce[11] = "";
 int seek_length = 11;
 /* The RFID output in UART for seeking for tag: On 'Tag Found'. (The length would be 0x06.)
@@ -57,7 +57,7 @@ int seek_length = 11;
  * Slot 5 Contains the Checksum.
  */
 
-char* authenticate_responce = (char*) malloc(7* sizeof(char)); 
+//char* authenticate_responce = (char*) malloc(7* sizeof(char)); 
 //char authenticate_responce[7] = "";
 int authenticate_length = 7;
 /* The RFID output in UART for Authenticating a Data block.
@@ -134,7 +134,7 @@ void loop()
             }
             
     case 2: Serial.println(F("State 2"));
-            break;
+            break; //TODO: Write code
             
   }
 }
@@ -215,15 +215,15 @@ void stateZero()
 {
   seek();
   delay(10);
-  parse_responce(seek_responce, seek_length);
+  parse_responce(rf_block_responce, seek_length);
   delay(10);
-  if(seek_responce[2] == 6)
+  if(rf_block_responce[2] == 6)
   {
     Serial.println(F("Authenticating."));
     authenticate();
-    parse_responce(authenticate_responce, authenticate_length);
+    parse_responce(rf_block_responce, authenticate_length);
     delay(10);
-    if(authenticate_responce[4] == 0x4C)
+    if(rf_block_responce[4] == 0x4C)
     {
       Serial.println(F("Reading."));
       read_block_RFID();
@@ -254,7 +254,7 @@ void stateZero()
   {
     for(int i=1;i<11;i++)
     {
-      Serial.println(seek_responce[i], HEX);
+      Serial.println(rf_block_responce[i], HEX);
     }
     
     Serial.println(F("Wait for it"));  
@@ -266,15 +266,15 @@ void stateOne(void)
 {
   seek();
   delay(10);
-  parse_responce(seek_responce, seek_length);
+  parse_responce(rf_block_responce, seek_length);
   delay(10);
-  if(seek_responce[2] == 6)
+  if(rf_block_responce[2] == 6)
   {
     Serial.println(F("Authenticating."));
     authenticate();
-    parse_responce(authenticate_responce, authenticate_length);
+    parse_responce(rf_block_responce, authenticate_length);
     delay(10);
-    if(authenticate_responce[4] == 0x4C)
+    if(rf_block_responce[4] == 0x4C)
     {
       Serial.println(F("Reading."));
       read_block_RFID();
@@ -318,7 +318,7 @@ void stateOne(void)
   {
     for(int i=1;i<11;i++)
     {
-      Serial.println(seek_responce[i], HEX);
+      Serial.println(rf_block_responce[i], HEX);
     }
     
     Serial.println(F("Wait for it"));  
