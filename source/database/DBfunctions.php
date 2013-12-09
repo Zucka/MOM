@@ -529,6 +529,10 @@
 	function addPointsToProfile($profileId, $points)
 	{
 		$db = new MySQLHelper();
+		if(isProfileActive($profileId)!=true)
+		{
+			return false;
+		}
 		$rules = getRulesFromPId($profileId);
 		$maxpoints = null;
 		foreach($rules as $rule)

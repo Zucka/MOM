@@ -108,7 +108,6 @@
 	// Get $controllerId, $controllerName, $controllerLocation from Controllers id. 
 	/* return null or array with=>
 	returnArray[CSerieNo] => 123
-	returnArray[CSId] => 1
 	returnArray[name] => TV1
 	returnArray[location] => livingroom1*/
 	function getControllerByControllerId($CId) 
@@ -120,13 +119,13 @@
 		$table = $theTables['Controller'] ;
 		$whereClause = $columnController[0] . " = " . $CId;
 		//'Controller' =>array('CSerieNo','CSId', 'name' ,'location', 'status', 'cost' ),
-		$selectValues = $columnController[0] . ',' . $columnController[1] . ',' . $columnController[2].','. $columnController[3] . ',' . $columnController[5];
+		$selectValues = $columnController[0] . ',' . $columnController[2].','. $columnController[3];
 		$result = $db->query( $selectValues, $table, $whereClause );
 		
 		$returnArray = null;
 		if($row = mysqli_fetch_assoc($result))
 		{
-			$returnArray = $row; 
+			$returnArray[] = $row; 
 		}
 		return $returnArray;
 	}
@@ -334,7 +333,146 @@
 		}
 		return $returnArray;
 	}
-
+	
+	/*returns true if the profile is currently active and false otherwise*/
+	function isProfileActive($profileId)
+	{
+		$db= new MySQLHelper();
+		$rules=getRulesFromPId($profileId);
+		$lastTimeActivated = null;
+		$lastTimeBlocked =null;
+		$timeNow =strtotime( $db->executeSQL("SELECT now() as time")->fetch_assoc()['time']);
+		if($rules != null)
+		{foreach($rules as $rule)
+		{
+			foreach($rule['actions'] as $action)
+			{
+				if($action['name'] == 'Block user')
+				{
+					foreach($rule['conditions'] as $cond)
+					{
+						if($cond['name'] == 'Timestamp')
+						{
+							$array = $cond['ekstra_attribute'];
+							$timestamp=$array['onTimestamp'];
+							if(($lastTimeBlocked == null || $lastTimeBlocked < $timestamp ) && $timestamp <= $timeNow )
+							{
+								$lastTimeBlocked = strtotime($timestamp);
+							}
+						}
+					}
+				}
+				elseif($action['name'] == 'Activate user')
+				{
+					foreach($rule['conditions'] as $cond)
+					{
+						if($cond['name'] == 'Timestamp')
+						{
+							$array = $cond['ekstra_attribute'];
+							$timestamp=$array['onTimestamp'];
+							if(($lastTimeActivated == null || $lastTimeActivated < $timestamp ) && $timestamp <= $timeNow )
+							{
+								$lastTimeActivated = strtotime($timestamp);
+							}
+						}
+					}
+				}
+			}
+		}}
+		if($lastTimeActivated == null && $lastTimeBlocked == null)
+		{
+			return false;
+		}
+		elseif($lastTimeBlocked == null)
+		{
+			return true;
+		}
+		elseif($lastTimeActivated == null)
+		{
+			return false;
+		}
+		elseif($lastTimeBlocked <= $lastTimeActivated )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}		
+	}
+	
+	/* returns true if the tag is currently active and false otherwise*/
+	function isTagActive($tagID)
+	{
+		$db= new MySQLHelper();
+		
+		$query = "SELECT active FROM tag WHERE TSerieNo = " . $tagID;
+		$result = $db->executeSQL($query);
+		if($row = mysqli_fetch_assoc($result))
+		{
+			if($row['active'] == 1)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/* returns true if the tag is currently active and false otherwise */
+	function hasPersonIdUnlimitedPoints($profileId)
+	{
+		$db= new MySQLHelper();
+		$rules=getRulesFromPId($profileId);
+		$timeNow =strtotime( $db->executeSQL("SELECT now() as time")->fetch_assoc()['time']);
+		
+		if($rules != null)
+		{foreach($rules as $rule)
+		{
+			foreach($rule['actions'] as $action)
+			{
+				if($action['name'] == 'Unlimited time')
+				{
+					foreach($rule['conditions'] as $cond)
+					{
+						if($cond['name'] == 'Timeperiod')
+						{
+							$array = $cond['ekstra_attribute'];
+							//if repeatable
+							if((!empty($array['weekdays'])) || $array['weekly'] == true || $array['ndWeekly'] == true || $array['rdWeekly'] == true
+								|| $array['firstInMonth'] == true || $array['lastInMonth'] == true)
+							{ 
+								$timeNowFormatHMS = date("H:i:s",$timeNow );
+								
+								$timeTo =  date("H:i:s", strtotime( $array['timeTo'] ));
+								$timeFrom =   date("H:i:s", strtotime( $array['timeFrom'] ));
+								$timeNowFormatWeekNo = date("W",$timeNow );					
+								if($timeNowFormatWeekNo == $array['weekNumber'] && $timeFrom <= $timeNowFormatHMS && $timeNowFormatHMS <= $timeTo)
+								{
+									return true;
+								}
+							}
+							//if non repeatable
+							else
+							{
+								$fromTime = date("d M Y H:i:s", strtotime($array['timeFrom']));
+								$toTime = date("d M Y H:i:s", strtotime($array['timeTo']));
+								$timeNow = date("d M Y H:i:s",$timeNow );								
+								if( $fromTime <= $timeNow && $timeNow <= $toTime )
+								{								
+									return true;
+								}
+							}
+						}
+						elseif($cond['name'] == 'True')
+						{
+							return true;
+						}
+					}
+				}
+			}
+		}}
+		
+	}
 	/* get rules and permission from a personID*/	
 	/* (Permission returns an array where value is an array with the following key=>value:
 PId: 1
@@ -410,98 +548,7 @@ weekNumber: 23
 				$conditionsArray;
 				while($condition = mysqli_fetch_assoc($tempresult))
 				{	
-					if($condition['name'] == "Timeperiode")
-					{
-						$tables = $theTables['Cond_timeperiod'] ; 
-						$whereClause = $columnCondTP[0] . "=" . $condition['condId'] ;
-
-						$timeResult = $db->query($selectValues, $tables, $whereClause ); //find timeperiode to this condition
-						if($timeResult)
-						{
-							$condition['ekstra_attribute'] = mysqli_fetch_assoc($timeResult);
-						}				
-					}
-					elseif($condition['name'] == "Timestamp")
-					{
-						$tables = $theTables['Cond_timestamp'] ; 
-						$whereClause = $condition['condId'] . "=" . $columnCondTS[0] ;
-						$timeResult = $db->query($selectValues, $tables, $whereClause );//find timestamp to this condition
-						if($timeResult)
-						{
-							$condition['ekstra_attribute'] = mysqli_fetch_assoc($timeResult);
-						}
-					}
-					else
-					{
-						$condition['ekstra_attribute'] = null;
-					}
-					$conditionsArray[] = $condition;
-				}				
-				$ruleArray['conditions'] = $conditionsArray;
-				
-				/* get all actions for the rule*/
-				$tables = $theTables['Action'] ;
-				$whereClause = $row['RId'] . " = " . $columnAction[1] ;
-				$tempresult = $db->query($selectValues, $tables, $whereClause );
-				$actionArray;
-				while($tempRow = mysqli_fetch_assoc($tempresult))
-				{
-					$actionArray[] = $tempRow;
-				}
-				$ruleArray['actions'] = $actionArray;
-				
-				$returnArray[] = $ruleArray; 
-			}
-			
-			return $returnArray;
-		}
-	}
-	/*not tested but is similar to the above these two could use a refactoring */
-	function getRulesFromCSId($CSId, $isPermission = false)
-	{
-		$db= new MySQLHelper();
-		global $theTables;
-		global $theColumns;
-		$columnCond =  $theColumns['Rcondition'];
-		$columnCondTP = $theColumns['Cond_timeperiod'];
-		$columnCondTS = $theColumns['Cond_timestamp'];
-		$columnAction = $theColumns['Action'];
-		$columnRules = $theColumns['Rules'];
-
-		
-		$selectValues='*';
-		$tables = $theTables['Rules'] . " r" ;
-		$whereClause = 'r.'. $columnRules[1] . '=' . $CSId ; 
-		if($isPermission)
-		{
-			$tables .= ',' . $theTables['Rcondition'] . ' cond,' . $theTables['Cond_timeperiod'] . ' condTP';
-			$whereClause .= ' AND r.'. $columnRules[3] . '= '. $isPermission .' AND cond.' . $columnCond[1] . "= r.". $columnRules[0].  ' AND condTP.' . $columnCondTP[0] . "= cond.". $columnCond[0]; 
-		
-			$result = $db->query($selectValues, $tables, $whereClause );
-			$returnArray = null;
-			while($row = mysqli_fetch_assoc($result))
-			{	
-				$returnArray[] = $row; 
-			}
-			return $returnArray;
-		}
-		else
-		{
-			$whereClause .= ' AND r.'. $columnRules[3] . '= false';
-			$result = $db->query($selectValues, $tables, $whereClause );//find all rules
-			$returnArray = null;
-			while($row = mysqli_fetch_assoc($result))
-			{				
-				/*get all conditions for the rule*/
-				$ruleArray['rulesVariable'] = $row;
-				$tables = $theTables['Rcondition'] ;
-				$whereClause = $row['RId'] . " = " . $columnCond[1] ;
-				
-				$tempresult = $db->query($selectValues, $tables, $whereClause );//find all conditions to the rules
-				$conditionsArray;
-				while($condition = mysqli_fetch_assoc($tempresult))
-				{	
-					if($condition['name'] == "Timeperiode")
+					if($condition['name'] == "Timeperiod")
 					{
 						$tables = $theTables['Cond_timeperiod'] ; 
 						$whereClause = $columnCondTP[0] . "=" . $condition['condId'] ;

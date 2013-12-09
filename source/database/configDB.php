@@ -50,7 +50,7 @@
 							'Cannot access controller');
 							
 		$conditionNames = array('Timestamp',	'Controller on', 'Controller off',
-								'Timeperiode', 'True'
+								'Timeperiod', 'True'
 							);
 								
 		
