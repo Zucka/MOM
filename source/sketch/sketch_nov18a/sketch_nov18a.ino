@@ -6,13 +6,17 @@
 //Setting up the Arduino
 char devID[4] = "123"; //Device ID. Limited to 3 bytes.
 char* useID = (char*) malloc(3 * sizeof(char));  //ID of logged in User, Limited to 3.
+int* timeLeft = (int*) malloc(1 * sizeof(int));
+unsigned long* lastTime = (unsigned long *) malloc(1 * sizeof(long));
+int* state = (int *) malloc(1 * sizeof(int));
+char* tokenHolder = ( char* ) malloc(25 * sizeof(char));
 
 //Setting up the Shield's addresses.
 byte mac[] = { 0x90, 0xA2, 0xDA, 0x0E, 0xC5, 0x94 };
 //IPAddress ip(172,25,11,177); For Backup, unlikely to be used.
 
 //The Server we are connecting to. (DNS)
-char server[] = "spcadmin.tk"; //TODO: Correct this.
+char server[] = "spcadmin.tk";
 
 // Initialize the Ethernet client library
 EthernetClient client;
@@ -70,6 +74,10 @@ void setup()
 {
   //starting the Serial Output
   Serial.begin(9600);
+  
+  *lastTime = millis();
+  *state = 0;
+  *timeLeft = 0;
 
   //Starting up the Ethernet.
   if (Ethernet.begin(mac) == 0) 
@@ -85,43 +93,134 @@ void setup()
 }
 
 void loop()
-{
-  Serial.println(freeRam());
-  delay(1000);
-  
-  /*
-  Serial.print(F("Turn On:  "));
-  Serial.println(freeRam());
-  turnOn();
-  
-  delay(10000);
+{  
+  client.flush();
+  delay(10);
+  if(checkTimeStatus())
+  {
+    switch(*state)
+    {
+      case 0: 
+              getStatus();
+              break;
+              
+      case 1: 
+              getStatus();
+              break;
+             
+      case 2: 
+              *state = 0;
+              break;           
+    }
+  }
+    
+  switch (*state)
+  {
+    case 0: Serial.println(F("State 0"));
+            stateZero();
+            break;
+            
+    case 1: Serial.println(F("State 1"));
+            if(checkNoTimeLeft)
+            {
+              turnOff();
+              break;
+            }
+            else
+            {
+              stateOne();
+              break;
+            }
+            
+    case 2: Serial.println(F("State 2"));
+            break;
+            
+  }
+}
 
-  Serial.print(F("Status:  "));
-  Serial.println(freeRam());  
-  getStatus();
-  client.stop();
+/* Start: On Device Calls */
+boolean checkTimeStatus()
+{
+  if(millis() < *lastTime)
+  {
+    unsigned long* tempTime = (unsigned long *) malloc(1 * sizeof(long));
+    *tempTime = (0xffffffff - *lastTime) + millis();
+    if(*tempTime > 300000 ) //tempTime Larger than Five Minutes.
+    {      
+      *lastTime = millis();
+      free(tempTime);
+      
+      return true;
+    }
+    else
+    {
+      free(tempTime);
+      
+      return false;
+    }
+  }
+  else if ((millis() - *lastTime) > 300000)
+  {
+    *lastTime = millis();
+    
+    return true;
+  }
+  else
+  {
+    return false;  
+  }  
+}
+
+boolean checkNoTimeLeft()
+{
+  unsigned long* tempLeft = (unsigned long *) malloc(1 * sizeof(long));
+  *tempLeft = *timeLeft * 60000;
   
-  delay(10000);
-  
-  Serial.print(F("Turn Off:  "));
-  Serial.println(freeRam());  
-  turnOff();
-  client.stop();
-  Serial.println(F("Exit"));
-  while(true);*/
-  
-  
+  if(millis() < *lastTime)
+  {
+    unsigned long* tempTime = (unsigned long *) malloc(1 * sizeof(long));
+    *tempTime = (0xffffffff - *lastTime) + millis();
+    
+    if(*tempTime > *tempLeft ) //tempTime Larger than Five Minutes.
+    {      
+      free(tempTime);
+      free(tempLeft);
+      
+      return true;
+    }
+    else
+    {
+      free(tempTime);
+      free(tempLeft);
+      
+      return false;
+    }
+  }
+  else if ((millis() - *lastTime) > *tempLeft)
+  {
+    free(tempLeft);
+    
+    return true;
+  }
+  else
+  {
+    free(tempLeft);
+    
+    return false;  
+  }  
+}
+
+void stateZero()
+{
   seek();
   delay(10);
   parse_responce(seek_responce, seek_length);
   delay(10);
-  Serial.println(freeRam());
   if(seek_responce[2] == 6)
   {
     Serial.println(F("Authenticating."));
     authenticate();
     parse_responce(authenticate_responce, authenticate_length);
-    Serial.println(freeRam());
     delay(10);
     if(authenticate_responce[4] == 0x4C)
     {
@@ -130,28 +229,19 @@ void loop()
       delay(10);
       parse_responce(rf_block_responce, block_length);
       delay(10);
-      Serial.println(freeRam());
       if(rf_block_responce[2] == 0x12)
       {
-        //char tempID[3] = "";
         Serial.println(F("Read Successfull:  "));
         for(int i = 5; i < 8; i++) //TODO: Length of ID.
         {        
-          Serial.print(rf_block_responce[i], HEX);
-          //tempID[i-5] = rf_block_responce[i];
           useID[i-5] = rf_block_responce[i];
         }
-        //Serial.println(tempID);
-        //strcpy(useID, tempID);
-        Serial.println(freeRam()); 
         Serial.println(useID);
         turnOn();
         Serial.println(F("Stop"));
-        while(true);
       }
       else{
         Serial.println(F("Read Failed"));
-        while(true);
       }
     }
     else
@@ -167,13 +257,76 @@ void loop()
     }
     
     Serial.println(F("Wait for it"));  
-    delay(10000);
+    delay(1000);
   }
-  
 }
 
-/* Start: On Device Calls */
-int freeRam () 
+void stateOne(void)
+{
+  seek();
+  delay(10);
+  parse_responce(seek_responce, seek_length);
+  delay(10);
+  if(seek_responce[2] == 6)
+  {
+    Serial.println(F("Authenticating."));
+    authenticate();
+    parse_responce(authenticate_responce, authenticate_length);
+    delay(10);
+    if(authenticate_responce[4] == 0x4C)
+    {
+      Serial.println(F("Reading."));
+      read_block_RFID();
+      delay(10);
+      parse_responce(rf_block_responce, block_length);
+      delay(10);
+      if(rf_block_responce[2] == 0x12)
+      {
+        char* tempID = (char *) malloc(3 * sizeof(char));
+        Serial.println(F("Read Successfull:  "));
+        for(int i = 5; i < 8; i++) //TODO: Length of ID.
+        {        
+          tempID[i-5] = rf_block_responce[i];
+        } 
+        
+        if(tempID == useID)
+        {
+          turnOff();
+          useID = "";
+        }
+        else
+        {
+          turnOff();
+          *useID = *tempID;
+          turnOn();
+        }
+        delay(10);
+        free(tempID);
+        Serial.println(F("Stop"));
+      }
+      else{
+        Serial.println(F("Read Failed"));
+      }
+    }
+    else
+    {
+      Serial.println(F("Authentication failed"));
+    }
+  }
+  else
+  {
+    for(int i=1;i<sizeof(seek_responce);i++)
+    {
+      Serial.println(seek_responce[i], HEX);
+    }
+    
+    Serial.println(F("Wait for it"));  
+    delay(1000);
+  }
+}
+
+
+int freeRam() 
 {
   extern int __heap_start, *__brkval; 
   int v; 
@@ -181,15 +334,13 @@ int freeRam ()
 }
 
 
-void getJSON(char input[])
-{  
-  char* output;
+void getJSON(char input[], char token[])
+{ 
   token_list_t *token_list = NULL;
   token_list = create_token_list(25); // Create the Token List. (Potential Memory Waste)
   json_to_token_list(input, token_list); // Convert JSON String to a Hashmap of Key/Value Pairs
-  output = json_get_value(token_list, "status");
-  release_token_list(token_list);
-  Serial.println(output);  
+  tokenHolder = json_get_value(token_list, token);
+  release_token_list(token_list);  
 }
 /* End: On device calls */
 
@@ -242,14 +393,24 @@ void getStatus(void)
     Serial.print(F("Status: "));
     Serial.println(o);
         
-    getJSON(o);  
+    getJSON(o, "status");  
     
-    Serial.println(F("Tokens Baby"));
-    //client.stop();
+    if(tokenHolder == "GREEN")
+    {
+      getJSON(o, "timeRemaining");
+      *timeLeft = int(*tokenHolder);
+    }
+    else
+    {
+    }
   }
   else
   {
     Serial.println("Connection Failed");
+    if(*state == 1)
+    {
+      *timeLeft = 3;
+    }
   }
 }
 
@@ -273,16 +434,16 @@ void turnOn(void)
     
     Serial.println(F("Message Sent"));
     
-    while(!client.available());
+    while(!client.available()); //Waits for the Server to Answer, potential freeze point.
     
     boolean toggle = false;
     char on[75] = "" ;
     char i[1] = "";
     
-    while(client.available())
+    while(client.available()) //Builds the JSON string from the data passed by the website.
     { 
-      i[0] = client.read();
-      if( i[0] == '{')
+      i[0] = client.read();   //Bytes are passed through the Ethernet Shield with client.Read();
+      if( i[0] == '{')        //The JSON string starts with '{' and stops with '}'.
       {
         toggle = !toggle;
         strcat(on, i);
@@ -302,14 +463,27 @@ void turnOn(void)
     Serial.print(F("On: "));
     Serial.println(on);
         
-    getJSON(on);  
+    getJSON(on, "status");
+    Serial.println(tokenHolder);
     
-    Serial.println(F("Tokens Baby"));
-    //client.stop();   
+    if(tokenHolder == "OK")
+    {
+      Serial.println(F("TTO IF"));
+      getJSON(on, "timeRemaining");
+      *timeLeft = int(*tokenHolder);
+      *state = 1;
+    }
+    else
+    {
+      Serial.println(F("TTO Else"));
+      useID = "";
+      *state = 0;
+    }
   }
   else
   {
     Serial.println(F("Connection Failed"));
+    *state = 0;
   }
 }
 
@@ -362,14 +536,15 @@ void turnOff(void)
     Serial.print(F("Off: "));
     Serial.println(off);
         
-    getJSON(off);  
+    //getJSON(off);   TODO:
     
-    Serial.println(F("Tokens Baby"));
-    //client.stop();   
+    *state = 0;
+    
   }
   else
   {
     Serial.println(F("Connection Failed"));
+    *state = 2;
   }
 }
 

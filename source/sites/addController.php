@@ -6,10 +6,8 @@
 		//Check if all required fields have been filled out
 		//The first check of isset, is to avoid errors, the last part is to make sure they have a valid value.
 		if((isset($_POST['id']) && isset($_POST['name']) && isset($_POST['cost'])) && (is_numeric($_POST['id']) && $_POST['name'] != "" && is_numeric($_POST['cost']))){
-			//Check if ControllerID already exists and if user exists in this system
-			//'SELECT COUNT(*) FROM controller WHERE CSerieNo = $input' - return nothing or 0
-			//'SELECT COUNT(*) FROM profile WHERE CSId = $input1 AND PId = $input2' - return 1
-			if(true){
+			//Check if ControllerID already exists
+			if(isControllerIdAvalliable($_POST['id']) ){
 				//Add Controller to System
 				if(isset($_POST['location'])){
 					$location = $_POST['location'];

@@ -888,7 +888,7 @@
 					
 				}
 				//add the remaining action to db
-				if($arrayOfAction != null && !(empty ($arrayOfAction)))
+				if($arrayOfAction != null )
 				{
 					foreach($arrayOfAction as $action)
 					{
@@ -929,16 +929,8 @@
 		$table = $theTables['Action'];
 		$where = $tempcol[0] . "=" . $action->AId;
 		$columnValue =  "";
-		/*if( $action->name != null)
-		{
-			$columnValue .= $tempcol[2] . "='" . $action->name. "'";
-		}*/
 		if( $action->points != null)
 		{
-			if($columnValue != "")
-			{
-				$columnValue .=  ", ";
-			}
 			$columnValue .=  $tempcol[3] . "=". $action->points;
 		}
 		if( $action->controllerId != null)
