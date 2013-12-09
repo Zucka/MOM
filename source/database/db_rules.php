@@ -6,21 +6,20 @@ function db_rules_user_can_turn_device_on($cId,$tId)
 {
 	$db = new MySQLHelper();
 	$pId = $db->executeSQL("SELECT profileId from tag where tag.TSerieNo='$tId'")->fetch_assoc()['profileId'];
-	error_log($pId);
 	$permission = getRulesFromPId($pId,true);
-	print_r($permission);
-	return $permission;
+	//return $permission;
+	return true; //temporary
 }
 
 function db_rules_device_should_turn_off($cId)
 {
 	$db = new MySQLHelper();
+	return false;
 }
 
-$db = new MySQLHelper();
-$pId = $db->executeSQL("SELECT profileId from tag where tag.TSerieNo='234'")->fetch_assoc()['profileId'];
-echo $pId;
-$permission = getRulesFromPId($pId,true);
-print_r($permission);
+function db_rules_user_has_unlimited_points($pId)
+{
+	return false;
+}
 
 ?>

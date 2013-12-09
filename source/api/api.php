@@ -18,21 +18,36 @@ $app->get('/', function() {
 //	dId = Id of the device wanting status
 $app->get('/status/:cId', function($cId) {
 	$db = new MySQLHelper();
-	$dId = $db->real_escape_string($cId);
+	$cId = $db->real_escape_string($cId);
     $row = $db->executeSQL("SELECT status,cost FROM controller WHERE CSerieNo='$cId' LIMIT 1")->fetch_assoc(); //change to get cost from controller
     $status = $row['status'];
     $cost = $row['cost'];
-    //Check rules if controller should shut off
     $action = 'none';
+    //Check rules if controller should shut off
+    if (db_rules_device_should_turn_off($cId))
+    {
+    	$action = 'RED';
+    }
 
-    //calculate timeRemaining and return it
-    $row2 = $db->executeSQL("SELECT points,UNIX_TIMESTAMP(controller_used_by_tag.starttime) as starttime,UNIX_TIMESTAMP(now()) as now FROM profile,tag,controller_used_by_tag WHERE controller_used_by_tag.CSerieNo='$cId' AND controller_used_by_tag.endtime IS NULL AND controller_used_by_tag.TSerieNo=tag.TSerieNo AND tag.profileId=profile.PId LIMIT 1")->fetch_assoc();
-    $points = $row2['points'];
-    $timeNow = $row2['now'];
-    $startTime = $row2['starttime'];
-    $timeElapsed = floor(($timeNow-$startTime)/60);
-    $pointsRemaining = $points-($timeElapsed*$cost);
-    $timeRemaining = $pointsRemaining/$cost;
+    //get data for later
+    $row2 = $db->executeSQL("SELECT points,UNIX_TIMESTAMP(controller_used_by_tag.starttime) as starttime,UNIX_TIMESTAMP(now()) as now,profile.PId FROM profile,tag,controller_used_by_tag WHERE controller_used_by_tag.CSerieNo='$cId' AND controller_used_by_tag.endtime IS NULL AND controller_used_by_tag.TSerieNo=tag.TSerieNo AND tag.profileId=profile.PId LIMIT 1")->fetch_assoc();
+    
+    //check rules if user has unlimited points
+    if (db_rules_user_has_unlimited_points($row2['PId']))
+    {
+    	$timeRemaining = 60; //static 60 minutes from unlimited points
+    }
+    else
+    {
+    	//calculate timeRemaining and return it
+	    $points = $row2['points'];
+	    $timeNow = $row2['now'];
+	    $startTime = $row2['starttime'];
+	    $timeElapsed = floor(($timeNow-$startTime)/60);
+	    $pointsRemaining = $points-($timeElapsed*$cost);
+	    $timeRemaining = $pointsRemaining/$cost;
+    }
+    
 
     //encode json and print it
     $data = array('status' => $status, 'action' => $action, 'timeRemaining' => $timeRemaining); 
@@ -47,7 +62,7 @@ $app->get('/turnOn/:cId/:tId', function($cId,$tId) {
 	$db = new MySQLHelper();
 	$dId = $db->real_escape_string($cId);
 	$uId = $db->real_escape_string($tId);
-	if (!db_device_verify_cId($cId,$tId))
+	if (!db_device_verify_cId($cId,$tId) || !db_rules_user_can_turn_device_on($cId,$tId))
 	{
 		return;
 	}
