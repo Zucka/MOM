@@ -17,7 +17,7 @@ In the parent control system there are seven essential objects; control system, 
 \end{description}
 
 From the former description the database design is made. The design is represented in a ER schema where the cardinality ratio is expressed in 
-Chen notation. The ER schema is shown in figure \ref{fig:ERdiagram}. 
+Chen notation\citep{DatabaseKilde}. The ER schema is shown in figure \ref{fig:ERdiagram}. 
 
 \begin{figure}
 	\centering
@@ -36,7 +36,7 @@ After the design in the ER-schema has been completed it was implemented into a M
 \section{Implementation}
 
 The design from figure \ref{fig:ERdiagram} has been implemented in a MySQL database and the result can be found in figure \ref{fig:databaseDiagram}. In the implementation of the database redundancy and anomalies is to be avoided and null values reduced. 
-The mapping from the ER-schema to a relations representing in the database is basic mapping according to the relations $1:1$, $n:1$, $n:m$ except for Condition which decision is clarified in the following section. 
+The mapping from the ER-schema to a relations representing in the database is basic mapping according to the relations $1:1$, $n:1$, $n:m$ except for Condition which decision is clarified in the following section\citep{DatabaseKilde}. 
 
 \begin{figure}
 	\centering
@@ -48,7 +48,7 @@ The mapping from the ER-schema to a relations representing in the database is ba
 \subsection{Mapping of Condition}
 \label{subsec:mappRule}
 %sql or diagram
-The relational modeling of Condition is more advanced because it uses generalization and as such there are a implementation choice that should be made. There are four typical method of how to deal with generalization and a solution of using each method is described below.
+The relational modeling of Condition is more advanced because it uses generalization and as such there are a implementation choice that should be made. There are four typical method of how to deal with generalization and a solution of using each method is described below \citep{DatabaseKilde}.
 
 \begin{description}
 	\item[Using main classes,] then Condition is split up into three tables rcondition, cond\_timestamp and cond\_timeperiod where the all attributes in Condition are repeated in each table. An disadvantage of using this method is in querying because it is possible to go though all three before finding the wanted tuple.
