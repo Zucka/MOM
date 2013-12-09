@@ -28,15 +28,6 @@
 <!DOCTYPE html>
 <head>
 	<title>Create User</title>
-
-	<!-- SITE SPECIFIC CSS -->
-	<style type="text/css">
-		/* all */
-		::-webkit-input-placeholder { font-style:italic; }
-		::-moz-placeholder { font-style:italic; } /* firefox 19+ */
-		:-ms-input-placeholder { font-style:italic; } /* ie */
-		input:-moz-placeholder { font-style:italic; }
-	</style>
 </head>
 <body>
 	<div class="container">

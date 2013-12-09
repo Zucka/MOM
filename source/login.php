@@ -6,7 +6,7 @@
 	include_once "database/DBfunctions.php";
 	// require_once "db/db_user.php";
 	
-	session_start();
+	// session_start();
 	if (isset($_GET['action'])) {$action = $_GET['action'];} else {$action = '';}
 
 	if ($action == '')
@@ -32,46 +32,35 @@
 				echo "Somthing not set";
 			}
 			/*Print Form*/?>
-				<html lang="en">
-						<head>
-							<meta charset="utf-8">
-							<title>Login</title>
-							<meta name="viewport" content="width=device-width, initial-scale=1.0">
-							 <meta http-equiv="X-UA-Compatible" content="IE=Edge"> <!-- Force document mode to IE9 standards -->
-							 <!-- JQuery from Google -->
-							<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-							<!-- JQueryUI from Google -->
-							<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script> 
-							<!-- Bootstrap -->
-							<link href="assets/css/bootstrap.min.css" rel="stylesheet">
-
-							<script src="assets/js/bootstrap.min.js"></script>
-
-							<!-- Tablesorter -->
-							<script type="text/javascript" src="assets/tablesorter/jquery-latest.js"></script> 
-							<script type="text/javascript" src="assets/tablesorter/jquery.tablesorter.js"></script> 
-							<link href="assets/tablesorter/themes/blue/style.css" rel="stylesheet">
-
-							<!-- Our CSS -->
-							<link href="assets/css/style.css" rel="stylesheet">
-						</head>
-						<body>
-						<div class="container">
-								<form class="form-signin" action="?action=login" method="post">
-										<div class="logo" >
-												<img height="90%" src="assets/image/loginImage.jpg">
-										</div>
-										<?php echo $errorStartUsername; ?>
-										<input type="text" name="usernameLogin" class="input-block-level" placeholder="Username">
-										<?php echo $errorEndUsername; ?>
-										<?php echo $errorStartPassword; ?>
-										<input type="password" name="passwordLogin" class="input-block-level" placeholder="Password">
-										<?php echo $errorEndPassword; ?>
-										<button class="btn btn-large btn-primary" type="submit">Log In</button>
-								</form>
-						</div> <!-- /container -->
-						</body>
-				</html>
+			<html lang="en">
+			<head>
+				<meta charset="utf-8">
+				<title>Login</title>
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<meta http-equiv="X-UA-Compatible" content="IE=Edge"> <!-- Force document mode to IE9 standards -->
+				<!-- Bootstrap -->
+				<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+				<script src="assets/js/bootstrap.min.js"></script>
+				<!-- Our CSS -->
+				<link href="assets/css/signin.css" rel="stylesheet">
+			</head>
+			<body>
+				<div class="container">
+					<form class="form-signin" action="?action=login" method="post">
+						<div class="logo" >
+							<img width="100%" src="assets/image/loginImage.jpg">
+						</div>
+						<?php echo $errorStartUsername; ?>
+						<input type="text" name="usernameLogin" class="form-control" placeholder="Username">
+						<?php echo $errorEndUsername; ?>
+						<?php echo $errorStartPassword; ?>
+						<input type="password" name="passwordLogin" class="form-control" placeholder="Password">
+						<?php echo $errorEndPassword; ?>
+						<button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
+					</form>
+				</div> <!-- /container -->
+			</body>
+			</html>
 			<?php /*End of Print*/
 	}
 	elseif ($action == 'login')
@@ -95,7 +84,7 @@
 				$_SESSION['role'] = $result['role'];
 				$_SESSION['session_id'] = session_id();
 				session_write_close();
-				header("Location:/?login=ok");
+				header("Location:?login=ok");
 		}
 	}
 ?>

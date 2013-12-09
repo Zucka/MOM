@@ -1,13 +1,15 @@
 <?php
 	session_start();
 	
+	if (isset($_SESSION['session_id'])) {} else {$_SESSION['session_id'] = '';}
 	if ($_SESSION['session_id'] != session_id())
 	{
-        header('location:login.php');
-	} 
-?>
+        include "login.php";
+	}
+	else
+	{ echo "
 <head>
-	<?php include "include/headInclude.php"; ?>
+	";include "include/headInclude.php"; echo '
 </head>
 
 <body>
@@ -28,7 +30,7 @@
 		<ul class="nav navbar-nav navbar-right">
 		  <li><a href="#">Help</a></li>
 		  <li><a href="#">Web-Shop</a></li>
-		  <li><a href="/logout.php">Log Out</a></li>
+		  <li><a href="logout.php">Log Out</a></li>
 		</ul>
 	  </div><!-- /.navbar-collapse -->
 	</nav>
@@ -54,8 +56,9 @@
 				</ul>
 			</div>
 			<div class="col-md-10" id="content">
-				<?php include 'switch.php';?>
+				';include 'switch.php'; echo '
 			</div>
 		</div>
 	</div>
-</body>
+</body>';}
+?>

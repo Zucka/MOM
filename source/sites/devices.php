@@ -6,15 +6,15 @@
 	function printStatus($status){
 		switch($status){
 			case "GREEN":
-				return '<img src="/assets/icon/green.ico" class="statusSymbol">';
+				return '<img src="assets/icon/green.ico" class="statusSymbol">';
 			break;
 			
 			case "RED":
-				return '<img src="/assets/icon/red.ico" class="statusSymbol">';
+				return '<img src="assets/icon/red.ico" class="statusSymbol">';
 			break;
 			
 			case "!":
-				return '<img src="/assets/icon/warning.ico" class="statusSymbol">';
+				return '<img src="assets/icon/warning.ico" class="statusSymbol">';
 			break;
 			
 			default:

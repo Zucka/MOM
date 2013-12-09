@@ -3,6 +3,12 @@ body {
 	padding-top: 50px;
 }
 
+/* all */
+::-webkit-input-placeholder { font-style:italic; }
+::-moz-placeholder { font-style:italic; } /* firefox 19+ */
+:-ms-input-placeholder { font-style:italic; } /* ie */
+input:-moz-placeholder { font-style:italic; }
+
 .outer-center {
     float: right;
     right: 50%;
