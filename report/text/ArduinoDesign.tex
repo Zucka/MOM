@@ -1,5 +1,5 @@
 \chapter{Design of Demo Devices}
-This chapter is focused on the tag and power control device of the \textbf{Parentsystem}. 
+This chapter is focused on the tag reader and power control device of the \textbf{Parentsystem}. 
 The design and functionality of the prototype will be presented in parallel to the designed end product.
 
 \section{Product Design}
@@ -10,14 +10,26 @@ There is two devises need to activete a usage of device from the user to the ser
 
 One is a small detection device to read user tags when swiped over it, this devise is often placed in the most asseble place. 
 The other devise is a powercontrol devise whitch i located on the powerline to the media device and tunes on and off the electrisity when needed.
-The powercontrol devise is the brain of the two devises and is therefore to moniter the users time usage and communication center with the server and detection devise. 
-The detection devise also work as infomation communicater to the user on the state of the connection to the server, acceptens/decline of login and more.     
+The powercontrol devise(PCD) is the brain of the two devises and is therefore to moniter the users time usage and communication center with the server and detection devise. 
+The detection devise(DD) also work as infomation communicater to the user on the state of the connection to the server, acceptens/decline of login and more.     
 
 \subsection{Senario Design}
 
-The systemt is designed on mulitble senarios and the creteria of communication to server and user. The flow chart below is a overview of actions and communication the two devices can make to keep the user from         
+The systemt is designed on mulitble senarios and the creteria of communication to server and user. The flow chart below is a overview of actions and communication the two devices have to give the right permission to user, communicat with the user and server about status, handel disconnection to server and control of user- and timeusage restrictions.
 
 \fixme{indsæt Flowcart af systemet}
+
+To test develop the flowcart of the system is multible usercases constucted.
+
+\textbf{Setting up and turning on the system.} \n
+The PCD retive information on wifi connection form USB port if an USB is connected at start point of PCD. 
+If the USB information is wrong or not retived then a restart botton is included to redo the procedure.  
+The PCD will then connect to the wifi network and to the web server of MOM. If the connection isn't found a massage is send to the DD. DD indicate that there is no connection bus trying to find with a blinking red light \fixme{indsæt referance til appendix table af lys indikater}. When the connection is established then the server will communicate what state the media device should be in. If it is open to for usage then the DD will blink a orange light else constant red light and a blinking orange light. 
+
+\textbf{Connection issues and waiting for tag.} \n
+The connection to the sever is tested by a rutine call every five minuts form the PCD to the server. In the mean time will the PCD ask for a tag from the DD. If the PCD is disconnected form the server at the rutine call the DD will again light a constant red and a blinking orange.    
+  
+
 
 The standard user senario:
 The tag dectector reads the identification tag when the user swip it on the device and sends the information to the powercontorl device with a low frequency connection.
