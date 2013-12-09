@@ -21,12 +21,12 @@ The systemt is designed on mulitble senarios and the creteria of communication t
 
 To test develop the flowcart of the system is multible usercases constucted.
 
-\textbf{Setting up and turning on the system.} \n
+\textbf{Setting up and turning on the system.} \\
 The PCD retive information on wifi connection form USB port if an USB is connected at start point of PCD. 
 If the USB information is wrong or not retived then a restart botton is included to redo the procedure.  
 The PCD will then connect to the wifi network and to the web server of MOM. If the connection isn't found a massage is send to the DD. DD indicate that there is no connection bus trying to find with a blinking red light \fixme{indsæt referance til appendix table af lys indikater}. When the connection is established then the server will communicate what state the media device should be in. If it is open to for usage then the DD will blink a orange light else constant red light and a blinking orange light. 
 
-\textbf{Connection issues and waiting for tag.} \n
+\textbf{Connection issues and waiting for tag.} \\
 The connection to the sever is tested by a rutine call every five minuts form the PCD to the server. In the mean time will the PCD ask for a tag from the DD. If the PCD is disconnected form the server at the rutine call the DD will again light a constant red and a blinking orange.    
   
 
