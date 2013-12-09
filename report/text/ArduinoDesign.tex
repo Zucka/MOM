@@ -2,14 +2,32 @@
 This chapter is focused on the tag and power control device of the \textbf{Parentsystem}. 
 The design and functionality of the prototype will be presented in parallel to the designed end product.
 \section{Product Design}
-To detect login/logoff of users and control the power supplie is two devices as shown in figure below.
+There is two devises need to activete a usage of device from the user to the server as shown in figure below.
+One is a small detection device to read user tags when swiped over it, this devise is often placed in the most asseble place. 
+The other devise is a powercontrol devise whitch i located on the powerline to the media device and tunes on and off the electrisity when needed.
+The powercontrol devise is the brain of the two devises and is therefore to moniter the users time usage and communication center with the server and detection devise. 
+The detection devise also work as infomation communicater to the user ion the state of the connection to the server, acceptens/decline of login and more.     
 
 \begin{figure}
 	\centering
 		\includegraphics{}
 \end{figure}
 
-The tag dectector reads identification tags when then the user swip it on the device and sends the information to the  
+The standard user senario:
+The tag dectector reads the identification tag when the user swip it on the device and sends the information to the powercontorl device with a low frequency connection.
+The powercontrol device translate the swip to a command that is send to the server with the devise id and tag id. The server will respond, if the user is allowed to use the media then the powercontroler turn on the powersupplie else it dosn't in both cases it gives the information to the tag detector to confirm/decline the logon to the user though it's indications lights visa versa for logging off the system(light indications is descriped in table XXXX).
+
+Time- and user restriction senario:
+A user may end up using all the time whitch is given or incounter a rule that will shout off the devise. The powercontroler as communicater to the server has a regular "`Chat"' to both insure that there is a connection and for any changes to the allowed usage for the current user. To avoid that the media devise suddenly is shout down a minimum of 5 min warning is send from powercontroler to the detection devise to the user though the small speaker. 
+
+These two senarios is not always the reallity because of connection malfunction. 
+This "`apnormalties"' creates design quistions that will influens the user in one way or the other.   
+Lost of connection is decovered whe the user is swiping (skal det ske ved eventet eller ved regulær kontorl?) this will be displayed with the lights on the detection devise. Connection lost at a time when the user is using the media devise the light indicate this and keep the media devise turned on. The powersupply devise will still keep track af the timeusage and user restrigtions. If the user logoff the media devise then is done so and a timestamp is saved on the powersupply devise whitch is send with the timeusage til the server then the connection is reastablage. (skal der skrives her om servers restrigtioner når en bruger er låst ved et media devise der ikke er forbindelse til?) This have the advange that the user will not have to cut off the media in use if the connection is waopely. 
+
+
+
+
+  the input either to a turnon or turnoff call,    
 
 The devices functionalty is the main of the system to make users able login/off the system and control the power supplie to the entertainment system. The power control device is the communications center from the control system at the media system to the server. The power controller connects to the server though wifi and to reader device through low frequency connection. 
 
@@ -18,101 +36,3 @@ The devices functionalty is the main of the system to make users able login/off 
 
 The detection device is to be placesed as easy to access and is the main communication to the user of his/hers status on the entertainment device.
 The communication is both visual and aurdiotory through three collored lights in red, yellow and green, and a small sound speaker.
-
-
-
-
-
-
-
-
-
-  
-
-   this often also include being very visioble    reads tags when the user want to use a electronic entertainment system.    
-
-
-In the parent control system there are seven essential objects; control system, profiles, tags, controller, chores, rules and permission. 
-
-
-\begin{description}
-	\item[Control system] is identifying the individual system and all of the other objects are connected to a control system.
-	\item[Profile] is a representation of a specific person in the control system. The person can both be a child or the parent, but this should be distinguishable.
-	\item[Tag] identifies the physical tag that a profile uses to activate the controllers. A tag is identified by the serial number of the physical tag.
-	\item[Controller]	is a object representation of the physical controller and like the tag it is identified by the serial number of the physical controller.
-	\item[Chore] is a representation of a house chore which can be carried out by a child (profile) which then gets point as a reward.
-	\item[Permission] is representing time restrictions on the controllers which some of the profiles need to abide by. 
-	\item[Rule] is representing other restriction or rules that cannot be expressed by the permission. An example could be the Playstation may not be turned on unless the TV has been turned on. A rule consist of some conditions that need to meet before some actions should be taken. 
-\end{description}
-
-From the former description the database design is made. The design is represented in a ER schema where the cardinality ratio is expressed in 
-Chen notation. The ER schema is shown in figure \ref{fig:ERdiagram}. 
-
-\begin{figure}
-	\centering
-		\includegraphics[width=1.00\textwidth]{images/ERdiagram.jpg}
-	\caption{ER schema of the database design}
-	\label{fig:ERdiagram}
-\end{figure}
-
-In the database design it should be noticed that Permission is absent. The reason is that for every permission that could be made a similar rule can be made but not every rule can be represented as a permission. Therefore the data representation of Permission is the same as Rule. However, on the website the two should be represented differently and so the attribute \texttt{isPermission} have been add to Rule which will difference the two.
-
-Another observation in the design is the condition of a rule. The condition can be one of three representations. The first is the simplest because it is just the Condition. The second is Condition and a timestamp which is the \texttt{cond\_timestamp} in the design in \ref{fig:ERdiagram}. The last representation is Condition, a time period, and a representation of when it is valid, which in the design is \texttt{cond\_timeperiod}. Since the \texttt{cond\_timeperiod} is the more advanced of the three it will later be explained further including with some examples. It is the name of the condition which distinguishes with representation should be used. If the name is \texttt{Timestamp} it should be cond\_timestamp, if it is \texttt{Timeperiode} then it is cond\_timeperiod and any other name it is only the Condition.
-
-
-As can be seen in \texttt{cond\_timeperiod} it has several attributes to represent when the time period is valid, because it is repeatable. An example could be that the profile Peter gets point for each football training and the football training is Monday and Thursday from 18:00 to 19:30 each week. Another example could be that the family are going out every third Saturday at 18:00 and to get the children away from the media devices in time then the TV,PC and consoles must not be turn on from 17:30 to 18:00. 
-
-After the design in the ER-schema was completed it was implemented into a MySQL database.  
-
-\section{Implementation}
-
-The design from figure \ref{fig:ERdiagram} has been implemented in a MySQL database and the result can be found in figure \ref{fig:databaseDiagram}. In the design and implementation of the database redundancy and anomalies are avoided and null values is reduced. 
-The mapping from the ER-schema to a relations representing in the database is basic mapping according to the relations 1:1, n:1, n:m except for Condition which decision is clarified in the following section. 
-
-\begin{figure}
-	\centering
-		\includegraphics[width=1.00\textwidth]{images/databaseDiagram.jpg}
-	\caption{The Database implementation}
-	\label{fig:databaseDiagram}
-\end{figure}
-
-\subsection{Mapping of Rule}
-%sql or diagram
-The relational modeling of Rule is more advanced because it uses generalization and as such there are a implementation chose that should be made. There are four typical method of how to deal with generalization.
-
-\begin{description}
-	\item[Use main classes], so Condition is split up into three tables condition, cond\_timestamp and cond\_timeperiod where the all attributes in Condition are in each table. But to search for a condition it is possible to go though all three before finding it. 
-	\item[Use partitioning], so there are three tables condition, cond\_timestamp and cond\_timeperiod. The common attributes are in Condition and via an id the possible additional data can be found in either cond\_timestamp or cond\_timeperiod.
-	\item[Use full redundancy], its a much like the first but where all conditions from cond\_timestamp and cond\_timeperiod also are in Condition, without the additional data. As the name suggest this causes redundancy which is best to be avoided.
-	\item[Use single relation], so there will be a single table with all attributes from condition, cond\_timestamp and cond\_timeperiod. This will increase the number of null values. 
-\end{description}
-
-In the implementation of this database the partitioning option is used since it does not causes any redundancy or null values and it is easier to search for conditions compared to using the main classes.  \\\\
-
-
-There are also a important implementation decision made to deal with deletion of tuples from the essential tables and this is explained in the following section.
- 
-\subsection{Deleting in the database}
-%delete cascade
-When a tuple in one of the tables control\_system, profile, tag, controller, chore, and rule should be deleted it will likely affect one of the other tuples from another table because of the foreign keys. Therefore we have made an intentionally decision to use \texttt{ON DELETE CASCASED} with all foreign keys.
-
-As an consequence of this decision if a control system is deleted then every profile, tag, controller, chore, and rule which is connected to control system will be deleted, so this should be used with care. 
-If a profile is deleted then this profile's tags will be deleted including all of its history, such as when the tag have been used to activate the controllers, or when the user have done a chore. So it is very important that when one of the important tuples are to be deleted then it will not be regretted later. \\\\
-
-However, for anything to be added, updated or deleted by the user the website need a connection to the database which happen through the class MySQLHelper. 
-
-%sql Helper class
-\subsection{MySQLHelper class}
-The website and API for the controllers connect to the database by using a class MySQLHelper, which establish a connection and send queries to it. The class have a construct and destruct that respectively establish the connection and close the connection to the database. The queries goes also through this class in at least one of these method:
-
-\begin{description}
-	\item[insertInto] this make a SQL string to insert into the database.
-	\item[update] this make a SQL string to update data in the database.	
-	\item[delete] this make a SQL string to delete data in the database.
-	\item[query] this make a SQL query string.
-	\item[executeSQL] this send the query to the database and return the result. All of the above uses this method.
-\end{description}
-  
-
-
-%\subsection{Updating of Rule}
