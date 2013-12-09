@@ -17,4 +17,10 @@ function db_rules_device_should_turn_off($cId)
 	$db = new MySQLHelper();
 }
 
+$db = new MySQLHelper();
+$pId = $db->executeSQL("SELECT profileId from tag where tag.TSerieNo='234'")->fetch_assoc()['profileId'];
+echo $pId;
+$permission = getRulesFromPId($pId,true);
+print_r($permission);
+
 ?>
