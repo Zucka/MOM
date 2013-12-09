@@ -1,19 +1,23 @@
 \chapter{Design of Demo Devices}
 This chapter is focused on the tag and power control device of the \textbf{Parentsystem}. 
 The design and functionality of the prototype will be presented in parallel to the designed end product.
+
 \section{Product Design}
+
 There is two devises need to activete a usage of device from the user to the server as shown in figure below.
+
+\fixme{indsæt et rig billed af systemet}
+
 One is a small detection device to read user tags when swiped over it, this devise is often placed in the most asseble place. 
 The other devise is a powercontrol devise whitch i located on the powerline to the media device and tunes on and off the electrisity when needed.
 The powercontrol devise is the brain of the two devises and is therefore to moniter the users time usage and communication center with the server and detection devise. 
 The detection devise also work as infomation communicater to the user on the state of the connection to the server, acceptens/decline of login and more.     
 
-\begin{figure}
-	\centering
-		\includegraphics{}
-\end{figure}
-
 \subsection{Senario Design}
+
+The systemt is designed on mulitble senarios and the creteria of communication to server and user. The flow chart below is a overview of actions and communication the two devices can make to keep the user from         
+
+\fixme{indsæt Flowcart af systemet}
 
 The standard user senario:
 The tag dectector reads the identification tag when the user swip it on the device and sends the information to the powercontorl device with a low frequency connection.
@@ -26,6 +30,7 @@ These two senarios is not always the reallity because of connection malfunction.
 This "`apnormalties"' creates design quistions that will influens the user in one way or the other.   
 Lost of connection is decovered when there is no connection at a status call that is send every five min form the powercontrol devise. With this rutine the server know that it has lost connection with the devise when it haven't resieved and massage in five miniuts. The user will see on the detector device that there is no connection. If the connection lost at a time when the user is using the media devise the light indicate this and keep the media devise turned on. The powersupply devise will still keep track af the timeusage and user restrigtions. If the user logoff the media devise then the powercontrol devise set a timestamp whitch is send to the server then the connection is reastablage. The lost connection on the server side consider it as the user has logget off within the last five miniuts. This procedure have the advange that the user will not have to cut off the media in use if the connection is waopely and the user will be able to login on other media device even with previus media divice not yet have connection. The disavenge is that the user has the possiblety to overuse the time resigtion by still use the disconnected divice until there is no more time and in the mean time has turned on at new device. The disadvange will but also have the effect to punish the user with a big negitive time to use other devices when the disconnected device is reconnected and this should discourage this senario. 
 
-\section{Demo Implemtation}
+\section{Prototype Implemtation}
+The prototype is designed to prove the concept of a tag reader and the communication protecal between powercontrol and server. Therefor shall the Ardurino hardware be seen as replaceble for to manufature this system it is need be unic devices that is able to connect on the power core to the the media device and slim designed card reader with speaker and indications lights. To prove the conecpt the device is able to read and accept/decline tags, indicate this using ligts to the user and turn on the power if accepteted.   
 
-\fixme{just a try}
+    
