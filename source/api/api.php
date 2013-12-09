@@ -2,6 +2,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/sqlHelper.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/db_device.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/db_points.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/db_rules.php');
 require 'vendor/autoload.php';
 $app = new \Slim\Slim();
 
@@ -52,7 +53,12 @@ $app->get('/turnOn/:cId/:tId', function($cId,$tId) {
 	$row = $db->executeSQL("SELECT status,cost FROM controller WHERE controller.CSerieNo='$cId' LIMIT 1")->fetch_assoc();
 	$cost = $row['cost']; //cost is points per minute
 
-	$points = $db->executeSQL("SELECT points FROM profile,tag WHERE tag.TSerieNo='$tId' AND tag.profileId=profile.PId LIMIT 1")->fetch_assoc()['points'];
+	$row2 = $db->executeSQL("SELECT points,active FROM profile,tag WHERE tag.TSerieNo='$tId' AND tag.profileId=profile.PId LIMIT 1")->fetch_assoc();
+	if ($row2['active'] == 0)
+	{
+		return;
+	}
+	$points = $row2['points'];
 	$timeRemaining = $cost > 0 ? $points/$cost : 0; //time remaining in minutes, check for cost > 0 so that we don't devide by zero
 	$status = '';
 	$error = '';
@@ -151,6 +157,11 @@ $app->get('/turnOff/:cId/:tId', function($cId,$tId) {
 	}
 	echo json_encode($data);
 });
+
+$app->get('/test/:cId/:tId', function($cId,$tId) {
+	$data = db_rules_user_can_turn_device_on($cId,$tId);
+	echo json_encode($data);
+}
 
 $app->run();
 ?>
