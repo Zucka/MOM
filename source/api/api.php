@@ -161,7 +161,7 @@ $app->get('/turnOff/:cId/:tId', function($cId,$tId) {
 $app->get('/test/:cId/:tId', function($cId,$tId) {
 	$data = db_rules_user_can_turn_device_on($cId,$tId);
 	echo json_encode($data);
-}
+});
 
 $app->run();
 ?>
