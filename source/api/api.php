@@ -145,7 +145,7 @@ $app->get('/turnOff/:cId/:tId', function($cId,$tId) {
 			else
 			{
 				$status = 'ERROR';
-				$error = 'Same user has to turn the device off again, or another user should call turnOn!';
+				$error = 'Same user has to turn device off, or another user should call turnOn!';
 			}
 			break;
 		case '!': //something is preventing the device turning on, but the device is off!
