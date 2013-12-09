@@ -40,7 +40,13 @@
 		}
 	}
 	else{
-		printDetailsControllerForm($_GET['controller'],'test','','1');
+		$result = getControllerByControllerId($_GET['controller']);
+		if(!empty($result) && $result['CSId'] == $_SESSION['CSid']){
+			printDetailsControllerForm($result['CSerieNo'],$result['name'],$result['location'],$result['cost']);
+		}
+		else{
+			echo "This controller does not exist in your system.";
+		}
 	}
 
 	function printDetailsControllerForm($id,$name,$location,$cost,$errorMsg = '',$hidden = false){
