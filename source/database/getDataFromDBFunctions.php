@@ -32,6 +32,22 @@
 	//- Du skal nok hører Johan om hvad der helt præcist skal med ud her.
 	function getProfileByProfileId($PId) 
 	{
+		$db= new MySQLHelper();
+		global $theTables;
+		global $theColumns;
+		$tempColumn = $theColumns['Profile'];
+		$selectValue =  "p.".$tempColumn[0]. ", p.". $tempColumn[1]. ", p.". $tempColumn[2]. ", p.". $tempColumn[3]. ", p.". $tempColumn[4]. ", p.".$tempColumn[6]. 
+			", p.". $tempColumn[7]. ", p.". $tempColumn[8] .", t.TSerieNo";		
+
+		$table = $theTables['Profile']." p LEFT JOIN ".$theTables['Tag']." t ON t.profileId = p.PId";
+		$whereClause = $tempColumn[0] . " = " . $PId ;
+		$result = $db->query($selectValue, $table, $whereClause );
+		$returnArray = null;
+		if($row = mysqli_fetch_assoc($result))
+		{
+			$returnArray = $row;
+		}
+		return $returnArray;
 	}
 	
 	//Get $tagId, $profileName, $profileId, $tagName and a array with the latested 10 activities for a tag

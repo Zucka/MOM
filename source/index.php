@@ -37,7 +37,7 @@
 	<div id="wrapper">
 		<div class="row" id="lowerWrapper">
 			<div class="col-md-2" id="leftMenu">
-				<ul class="nav nav-pills nav-stacked">
+				<ul class="nav nav-pills nav-stacked navba">
 				  <li id="dashboard"><a href="?page=dashboard"><span class="glyphicon glyphicon-home"></span> Dashboard</a></li>
 				  <li id="devices"><a href="?page=devices"><span class="glyphicon glyphicon-hdd"></span> Devices</a></li>
 				  <li class="dropdown" id="users">
@@ -45,6 +45,7 @@
 					  <span class="glyphicon glyphicon-user"></span> Users <span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
+					  <li id="users"><a href="?page=users"><span class="glyphicon glyphicon-user"></span> Users</a></li>
 					  <li id="chores"><a href="?page=chores"><span class="glyphicon glyphicon-list-alt"></span> Chores</a></li>
 					  <li id="rules"><a href="?page=rules"><span class="glyphicon glyphicon-tower"></span> Rules</a></li>
 					  <li id="permissions"><a href="?page=permissions"><span class="glyphicon glyphicon-lock"></span> Permissions</a></li>

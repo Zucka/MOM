@@ -7,7 +7,6 @@
 <link href="assets/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- Tablesorter -->
-<script type="text/javascript" src="assets/tablesorter/jquery-latest.js"></script> 
 <script type="text/javascript" src="assets/tablesorter/jquery.tablesorter.js"></script> 
 <link href="assets/tablesorter/themes/blue/style.css" rel="stylesheet">
 

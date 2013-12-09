@@ -12,7 +12,6 @@
 	<!-- SITE SPECIFIC STYLE -->
 	<link rel="stylesheet" href="//cdn.oesmith.co.uk/morris-0.4.3.min.css">
 	<!-- SITE SPECIFIC JS -->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 	<script src="//cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
     <script type="text/javascript">
