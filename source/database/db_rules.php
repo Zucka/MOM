@@ -91,7 +91,7 @@ function db_rules_device_should_turn_off($cId)
 function db_rules_user_has_unlimited_points($pId)
 {
 	$db= new MySQLHelper();
-	$rules=getRulesFromPId($profileId);
+	$rules=getRulesFromPId($pId);
 	$timeNow =strtotime( $db->executeSQL("SELECT now() as time")->fetch_assoc()['time']);
 		
 	if($rules != null)
