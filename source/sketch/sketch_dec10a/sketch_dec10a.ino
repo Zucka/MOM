@@ -386,10 +386,10 @@ void getStatus(void)
     Serial.println(o);
     delay(1000);
     
-    aJsonObject* json = aJson.parse(on);
+    aJsonObject* json = aJson.parse(o);
     aJsonObject* statJson = aJson.getObjectItem(json,"status");  
     
-    if(strcmp(stat->valuestring,"GREEN") == 0)
+    if(strcmp(statJson->valuestring,"GREEN") == 0)
     {
       aJsonObject* timeRemainingJson = aJson.getObjectItem(json,"timeRemaining");
       timeLeft = int(timeRemainingJson->valuestring);
@@ -479,7 +479,7 @@ void turnOn(void)
       aJsonObject* timeRemaining = aJson.getObjectItem(json,"timeRemaining");
       Serial.print(F("timeRemaining: "));
       Serial.println(timeRemaining->valuestring);
-      timeLeft = int(timeRemaining-valuestring);
+      timeLeft = int(timeRemaining->valuestring);
       state = 1;
     }
     else
@@ -489,13 +489,13 @@ void turnOn(void)
       state = 0;
     }
     delay(100);
+    free(on);
   }
   else
   {
     Serial.println(F("Connection Failed"));
     state = 0;
   }
-  free(on);
 }
 
 void turnOff(void)
