@@ -1,7 +1,7 @@
 <?php
 	error_reporting(E_ALL);
 	ini_set('display_errors', 1);
-
+	print_r($_SESSION);
 	// require_once "db/db_user.php";
 
 	if (isset($_GET['Pid'])) {$Pid = $_GET['Pid'];} else {$Pid = $_SESSION['PId'];}
