@@ -1,8 +1,7 @@
 <?php
-/*require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/sqlHelper.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/getDataFromDBFunctions.php');*/
-include_once "getDataFromDBFunctions.php";
-include_once "sqlHelper.php";
+require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/sqlHelper.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/getDataFromDBFunctions.php');
+
 
 
 /*This assumes that one rule has atmost 1 condition and 1 action*/
