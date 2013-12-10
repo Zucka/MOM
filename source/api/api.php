@@ -103,11 +103,11 @@ $app->get('/turnOn/:cId/:tId', function($cId,$tId) {
 			$error = 'Status value not recognized, something is very wrong!';
 			break;
 	}
-	$data = array('test' => 'lars','status' => $status);
+	$data = array('status' => $status);
 	if ($status == 'OK')
 	{
 		db_device_turn_on($dId,$uId); //update db to indicate device is on
-		$data['timeR'] = strval($timeRemaining);
+		$data['timeRemaining'] = strval($timeRemaining);
 	}
 	else
 	{
