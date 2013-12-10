@@ -622,7 +622,7 @@ weekNumber: 23
 			$whereClause = $row['RId'] . " = " . $columnCond[1] ;
 			
 			$tempresult = $db->query($selectValues, $tables, $whereClause );//find all conditions to the rules
-			$conditionsArray;
+			$conditionsArray = null;
 			while($condition = mysqli_fetch_assoc($tempresult))
 			{	
 				if($condition['name'] == "Timeperiod")
@@ -658,7 +658,7 @@ weekNumber: 23
 			$tables = $theTables['Action'] ;
 			$whereClause = $row['RId'] . " = " . $columnAction[1] ;
 			$tempresult = $db->query($selectValues, $tables, $whereClause );
-			$actionArray;
+			$actionArray = null;
 			while($tempRow = mysqli_fetch_assoc($tempresult))
 			{
 				$actionArray[] = $tempRow;
