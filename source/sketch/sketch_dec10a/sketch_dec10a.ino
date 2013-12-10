@@ -96,7 +96,7 @@ void setup()
 
 void loop()
 {  
-  client.flush();
+  checkConnection();
   delay(10);
   if(checkTimeStatus())
   {
@@ -243,7 +243,7 @@ void stateZero()
     }
     
     Serial.println(F("Wait for it"));  
-    delay(5000);
+    delay(2500);
   }
 }
 
@@ -306,10 +306,9 @@ void stateOne(void)
     }
     
     Serial.println(F("Wait for it"));  
-    delay(5000);
+    delay(2500);
   }
 }
-
 
 int freeRam() 
 {
@@ -317,6 +316,33 @@ int freeRam()
   int v; 
   return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval); 
 }
+void checkConnection(void)
+{
+  switch(Ethernet.maintain()) //TODO: Maybe actually handle these situations?
+  {
+    case 0:
+            break;
+    case 1:
+            Serial.println(F("DHCP Lease failed to renew."));
+            break;
+            
+    case 2: 
+            Serial.println(F("DHCP Lease Succeded in renewing."));
+            break;
+            
+    case 3: 
+            Serial.println(F("DHCP Lease failed to rebind."));
+            break;
+            
+    case 4: 
+            Serial.println(F("DHCP Lease is rebound."));
+            break;
+            
+    default:
+            break;
+  } 
+}
+
 /*
 void getJSON(char* output, char input[], char token[])
 { 
@@ -339,7 +365,7 @@ void getStatus(void)
     client.print(F("GET /api/api.php/status/"));
     client.print(devID);
     client.println(F(" HTTP/1.1"));
-    client.println(F("Host: spcadmin.tk")); //TODO: Correct this.
+    client.println(F("Host: spcadmin.tk"));
     client.println(F("Connection: close"));
     client.println();
         
@@ -418,7 +444,7 @@ void turnOn(void)
     client.print(F("/"));
     client.print(useID);
     client.println(F(" HTTP/1.1"));
-    client.println(F("Host: spcadmin.tk")); //TODO: Correct this.
+    client.println(F("Host: spcadmin.tk"));
     client.println(F("Connection: close"));
     client.println();
     
@@ -509,7 +535,7 @@ void turnOff(void)
     client.print(F("/"));
     client.print(useID);
     client.println(F(" HTTP/1.1"));
-    client.println(F("Host: spcadmin.tk")); //TODO: Correct this.
+    client.println(F("Host: spcadmin.tk"));
     client.println(F("Connection: close"));
     client.println();
     
@@ -556,9 +582,8 @@ void turnOff(void)
     Serial.print(F("Off: "));
     Serial.println(off);
     delay(1000);
-        
-    //getJSON(off);   TODO:
     
+    strcpy(useID,"");
     state = 0;
     free(off);
   }
@@ -566,6 +591,7 @@ void turnOff(void)
   {
     Serial.println(F("Connection Failed"));
     state = 2;
+    strcpy(useID,"");
   }
 }
 
