@@ -511,8 +511,6 @@ weekNumber: 23
 		global $theColumns;
 		$columnCond =  $theColumns['Rcondition'];
 		$columnCondTP = $theColumns['Cond_timeperiod'];
-		$columnCondTS = $theColumns['Cond_timestamp'];
-		$columnAction = $theColumns['Action'];
 		$columnRules = $theColumns['Rules'];
 		$columnPHR = $theColumns['Profile_has_rules'];
 		
@@ -536,62 +534,141 @@ weekNumber: 23
 		{
 			$whereClause .= ' AND r.'. $columnRules[3] . '= false';
 			$result = $db->query($selectValues, $tables, $whereClause );//find all rules
-			$returnArray = null;
-			while($row = mysqli_fetch_assoc($result))
-			{				
-				/*get all conditions for the rule*/
-				$ruleArray['rulesVariable'] = $row;
-				$tables = $theTables['Rcondition'] ;
-				$whereClause = $row['RId'] . " = " . $columnCond[1] ;
-				
-				$tempresult = $db->query($selectValues, $tables, $whereClause );//find all conditions to the rules
-				$conditionsArray;
-				while($condition = mysqli_fetch_assoc($tempresult))
-				{	
-					if($condition['name'] == "Timeperiod")
-					{
-						$tables = $theTables['Cond_timeperiod'] ; 
-						$whereClause = $columnCondTP[0] . "=" . $condition['condId'] ;
-
-						$timeResult = $db->query($selectValues, $tables, $whereClause ); //find timeperiode to this condition
-						if($timeResult)
-						{
-							$condition['ekstra_attribute'] = mysqli_fetch_assoc($timeResult);
-						}				
-					}
-					elseif($condition['name'] == "Timestamp")
-					{
-						$tables = $theTables['Cond_timestamp'] ; 
-						$whereClause = $condition['condId'] . "=" . $columnCondTS[0] ;
-						$timeResult = $db->query($selectValues, $tables, $whereClause );//find timestamp to this condition
-						if($timeResult)
-						{
-							$condition['ekstra_attribute'] = mysqli_fetch_assoc($timeResult);
-						}
-					}
-					else
-					{
-						$condition['ekstra_attribute'] = null;
-					}
-					$conditionsArray[] = $condition;
-				}				
-				$ruleArray['conditions'] = $conditionsArray;
-				
-				/* get all actions for the rule*/
-				$tables = $theTables['Action'] ;
-				$whereClause = $row['RId'] . " = " . $columnAction[1] ;
-				$tempresult = $db->query($selectValues, $tables, $whereClause );
-				$actionArray;
-				while($tempRow = mysqli_fetch_assoc($tempresult))
-				{
-					$actionArray[] = $tempRow;
-				}
-				$ruleArray['actions'] = $actionArray;
-				
-				$returnArray[] = $ruleArray; 
-			}
-			
-			return $returnArray;
+			return getRuleHelper($result);
 		}
 	}
+	
+	
+		/* get rules and permission from a CSID*/	
+	/* (Permission returns an array where value is an array with the following key=>value:
+PId: 1
+RId: 1
+validFromTime: 2013-11-27 16:06:59
+CSId: 1
+name: timeperiode
+isPermission: 1
+condId: 1
+controllerId: 123
+timeFrom: 2013-11-14 09:00:00
+timeTo: 2013-11-14 11:00:00
+weekdays: monday,tuesday,wednesday,thursday,friday
+weekly: 1
+ndWeekly: 0
+rdWeekly: 0
+firstInMonth: 0
+lastInMonth: 0
+weekNumber: 23
+	*/
+	/* (rules returns)- an array that contain rules:so array(rule1, rule2 ....)
+			rule1 is an array =>  array(rulesVariable, conditions, actions)
+			rulesVariable is an array with => array(PId=> value,RId=>value,validFromTime=>value,CSId=>value,name=>value,isPermission=>value) 
+			conditions is an array => array(cond1, cond2 ....)
+			cond1 is an array with => array(condId=>value,RId=>value,name=>value,controllerId=>value, ekstra_attribute=>ArrayValue)
+			ekstra_attribute is an array with => array(condId=>value,timeFrom=>value,timeTo=>value,weekdays=>value,weekly=>value,ndWeekly=>value,rdWeekly=>value,firstInMonth=>value,lastInMonth=>value,weekNumber=>value)
+										OR with =>array(condId=>value, onTimestamp=>value)
+										OR it is null
+			actions is an array => array(action1, action2 ....)
+			action1 is an array with => array(AId=>value,RId=>value,name=>value,points=>value)
+	*/
+	function getRulesFromCSID($CSID, $isPermission = false)
+	{
+		$db= new MySQLHelper();
+		global $theTables;
+		global $theColumns;
+		$columnCond =  $theColumns['Rcondition'];
+		$columnCondTP = $theColumns['Cond_timeperiod'];
+		$columnRules = $theColumns['Rules'];
+		
+		$selectValues='*';
+		$tables = $theTables['Rules'] . " r" ;
+		$whereClause = "r.".  $columnRules[1].' = '. $CSID; 
+		if($isPermission)
+		{
+			$tables .= ',' . $theTables['Rcondition'] . ' cond,' . $theTables['Cond_timeperiod'] . ' condTP';
+			$whereClause .= ' AND r.'. $columnRules[3] . '= '. $isPermission .' AND cond.' . $columnCond[1] . "= r.". $columnRules[0].  ' AND condTP.' . $columnCondTP[0] . "= cond.". $columnCond[0]; 
+		
+			$result = $db->query($selectValues, $tables, $whereClause );
+			$returnArray = null;
+			while($row = mysqli_fetch_assoc($result))
+			{	
+				$returnArray[] = $row; 
+			}
+			return $returnArray;
+		}
+		else
+		{
+			$whereClause .= ' AND r.'. $columnRules[3] . '= false';
+			$result = $db->query($selectValues, $tables, $whereClause );//find all rules
+			return getRuleHelper($result);
+		}
+	}
+	
+	function getRuleHelper($result)
+	{
+		$db= new MySQLHelper();
+		global $theTables;
+		global $theColumns;
+		$columnCond =  $theColumns['Rcondition'];
+		$columnCondTP = $theColumns['Cond_timeperiod'];
+		$columnCondTS = $theColumns['Cond_timestamp'];
+		$columnAction = $theColumns['Action'];
+		$selectValues= '*';
+		$returnArray = null;
+		while($row = mysqli_fetch_assoc($result))
+		{				
+			/*get all conditions for the rule*/
+			$ruleArray['rulesVariable'] = $row;
+			$tables = $theTables['Rcondition'] ;
+			$whereClause = $row['RId'] . " = " . $columnCond[1] ;
+			
+			$tempresult = $db->query($selectValues, $tables, $whereClause );//find all conditions to the rules
+			$conditionsArray;
+			while($condition = mysqli_fetch_assoc($tempresult))
+			{	
+				if($condition['name'] == "Timeperiod")
+				{
+					$tables = $theTables['Cond_timeperiod'] ; 
+					$whereClause = $columnCondTP[0] . "=" . $condition['condId'] ;
+
+					$timeResult = $db->query($selectValues, $tables, $whereClause ); //find timeperiode to this condition
+					if($timeResult)
+					{
+						$condition['ekstra_attribute'] = mysqli_fetch_assoc($timeResult);
+					}				
+				}
+				elseif($condition['name'] == "Timestamp")
+				{
+					$tables = $theTables['Cond_timestamp'] ; 
+					$whereClause = $condition['condId'] . "=" . $columnCondTS[0] ;
+					$timeResult = $db->query($selectValues, $tables, $whereClause );//find timestamp to this condition
+					if($timeResult)
+					{
+						$condition['ekstra_attribute'] = mysqli_fetch_assoc($timeResult);
+					}
+				}
+				else
+				{
+					$condition['ekstra_attribute'] = null;
+				}
+				$conditionsArray[] = $condition;
+			}				
+			$ruleArray['conditions'] = $conditionsArray;
+			
+			/* get all actions for the rule*/
+			$tables = $theTables['Action'] ;
+			$whereClause = $row['RId'] . " = " . $columnAction[1] ;
+			$tempresult = $db->query($selectValues, $tables, $whereClause );
+			$actionArray;
+			while($tempRow = mysqli_fetch_assoc($tempresult))
+			{
+				$actionArray[] = $tempRow;
+			}
+			$ruleArray['actions'] = $actionArray;
+			
+			$returnArray[] = $ruleArray; 
+		}
+		
+		return $returnArray;
+	}
+	
 ?>
