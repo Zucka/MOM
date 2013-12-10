@@ -394,6 +394,8 @@ void getStatus(void)
       aJsonObject* timeRemainingJson = aJson.getObjectItem(json,"timeRemaining");
       timeLeft = int(timeRemainingJson->valuestring);
     }
+    
+    free(o);
   }
   else
   {
@@ -558,7 +560,7 @@ void turnOff(void)
     //getJSON(off);   TODO:
     
     state = 0;
-    
+    free(off);
   }
   else
   {
