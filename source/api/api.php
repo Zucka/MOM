@@ -35,7 +35,7 @@ $app->get('/status/:cId', function($cId) {
     //get data for later
     $result = $db->executeSQL("SELECT points,UNIX_TIMESTAMP(controller_used_by_tag.starttime) as starttime,UNIX_TIMESTAMP(now()) as now,profile.PId as PId FROM profile,tag,controller_used_by_tag WHERE controller_used_by_tag.CSerieNo='$cId' AND controller_used_by_tag.endtime IS NULL AND controller_used_by_tag.TSerieNo=tag.TSerieNo AND tag.profileId=profile.PId LIMIT 1");
     
-    if ($result->numrows > 0)
+    if ($result->num_rows > 0)
     {
     	$row2 = $result->fetch_assoc();
 	    //check rules if user has unlimited points
