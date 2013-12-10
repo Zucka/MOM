@@ -21,7 +21,7 @@
 	<!-- SITE SPECIFIC JS -->
 	<script src='assets/js/fullcalendar.min.js'></script>
 	<script type="text/javascript">
-		var userID = '<?php echo $_SESSION['Pid'] ?>';
+		var userID = '<?php echo $_SESSION['PId'] ?>';
 	</script>
 	<script src="assets/js/calendar.js"></script>
 	<!-- SITE SPECIFIC CSS -->

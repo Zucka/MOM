@@ -50,7 +50,7 @@ $app->get('/status/:cId', function($cId) {
     
 
     //encode json and print it
-    $data = array('status' => $status, 'action' => $action, 'timeRemaining' => $timeRemaining); 
+    $data = array('status' => $status, 'action' => $action, 'timeRemaining' => strval($timeRemaining)); 
     echo json_encode($data);
 });
 
@@ -107,7 +107,7 @@ $app->get('/turnOn/:cId/:tId', function($cId,$tId) {
 	if ($status == 'OK')
 	{
 		db_device_turn_on($dId,$uId); //update db to indicate device is on
-		$data['timeRemaining'] = $timeRemaining;
+		$data['timeRemaining'] = strval($timeRemaining);
 	}
 	else
 	{
@@ -164,8 +164,8 @@ $app->get('/turnOff/:cId/:tId', function($cId,$tId) {
 		$timeSpent = db_device_turn_off($cId,$tId); //turn off device and get time spent
 		$points = $timeSpent*$cost;
 		db_points_remove($tId,$points);
-		$data['timeSpent'] = $timeSpent; //return time spent?
-		$data['pointsRemoved'] = $points;
+		$data['timeSpent'] = strval($timeSpent); //return time spent?
+		$data['pointsRemoved'] = strval($points);
 	}
 	else
 	{

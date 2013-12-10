@@ -75,7 +75,7 @@
 		}
 		else {
 				// Store user info in Session varieble
-				$_SESSION['PId'] = $result['PId'];
+				$_SESSION['PId'] = $result['Pid'];
 				$_SESSION['CSid'] = $result['CSid'];
 				$_SESSION['name'] = $result['name'];
 				$_SESSION['username'] = $result['username'];

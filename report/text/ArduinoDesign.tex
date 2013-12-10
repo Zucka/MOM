@@ -6,16 +6,12 @@ The design and functionality of the prototype will be presented in parallel to t
 
 There is two devises need to activete a usage of device from the user to the server as shown in figure below.
 
-
-
 \begin{figure}[h]
 	\centering
 		\includegraphics[width=1.00\textwidth]{C:/Users/JML88/Documents/GitHub/MOM/report/images/Power&Tagdevice.png}
 	\caption{Rich picture for Powercontrol and Tag reader}
 	\label{fig:Power&Tagdevice}
 \end{figure}
-
-
 
 One is a small detection device to read user tags when swiped over it, this devise is often placed in the most asseble place. 
 The other devise is a powercontrol devise whitch i located on the powerline to the media device and tunes on and off the electrisity when needed.
@@ -32,13 +28,16 @@ To test develop the flowcart of the system is multible usercases constucted.
 
 \textbf{Setting up and turning on the system.} \n
 The PCD retive information on wifi connection form USB port if an USB is connected at start point of PCD. 
-If the USB information is wrong or not retived then a restart botton is included to redo the procedure.  
-The PCD will then connect to the wifi network and to the web server of MOM. If the connection isn't found a massage is send to the DD. DD indicate that there is no connection bus trying to find with a blinking red light \fixme{indsæt referance til appendix table af lys indikater}. When the connection is established then the server will communicate what state the media device should be in. If it is open to for usage then the DD will blink a orange light else constant red light and a blinking orange light. 
+If the USB information is wrong or not retived then a restart botton is included to redo the procedure.  \n
+The PCD will then connect to the wifi network and to the web server of MOM. If the connection isn't found a massage is send to the DD. \n DD indicate that there is no connection by blinking the red light \fixme{indsæt referance til appendix table af lys indikater}.\n When the connection is established then the server will communicate what state the media device should be in. If it is open to for usage then the DD will blink a orange light else constant red light and a blinking orange light. 
 
-\textbf{Connection issues and waiting for tag.} \n
-The connection to the sever is tested by a rutine call every five minuts form the PCD to the server. In the mean time will the PCD ask for a tag from the DD. If the PCD is disconnected form the server at the rutine call the DD will again light a constant red and a blinking orange.    
+\textbf{Detection of connection issues and waiting for tag.} \n
+The connection to the sever is tested by a rutine call every five minutes form the PCD to the server. In the meanwhile will the PCD ask for a tag from the DD which blick the orange light. If the PCD is disconnected form the server at the rutine call the DD will again light a constant red and a blinking orange.    
   
+\textbf{Logon/logoff media divice.} \n
+When a tag is read by the DD will the PCD recieve the tag id which formed to a login massage if no one is all ready logged in the system. The PCD will then read if the user is declined or accepted to use the device. If the user is declined to use the divece then will the DD blink three times with the red light. If the user is accepted then the PCD will switch the power on to the media device, save the tag id in local memory and recieve time left before a rule or to time usage limit accour. The DD indicate that the user i approve to use the media device with a constant green light.\n When the PCD recieve the tag id that is stored in the local memory then it means the user is logging off. The PCD will switch off the poer to the media device and send a logoff massage til the server. The DD will return to only blink the orange light. Should another user want to take over the usage of a media device the PCD will try to login with the new tag if declined then the DD will blink the red ligh 3 times else if accepted then the server will overwirte the the previus user and PCD will recieve the information for the new user and the DD will blink with the green light 3 times.
 
+        
 
 The standard user senario:
 The tag dectector reads the identification tag when the user swip it on the device and sends the information to the powercontorl device with a low frequency connection.
