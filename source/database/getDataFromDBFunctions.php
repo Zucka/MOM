@@ -381,7 +381,7 @@
 		}}
 		if($lastTimeActivated == null && $lastTimeBlocked == null)
 		{
-			return false;
+			return true;
 		}
 		elseif($lastTimeBlocked == null)
 		{
