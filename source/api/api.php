@@ -29,28 +29,30 @@ $app->get('/status/:cId', function($cId) {
     	$action = 'RED';
     }
 
+    //encode json and print it
+    $data = array('status' => $status, 'action' => $action); 
+
     //get data for later
     $row2 = $db->executeSQL("SELECT points,UNIX_TIMESTAMP(controller_used_by_tag.starttime) as starttime,UNIX_TIMESTAMP(now()) as now,profile.PId as PId FROM profile,tag,controller_used_by_tag WHERE controller_used_by_tag.CSerieNo='$cId' AND controller_used_by_tag.endtime IS NULL AND controller_used_by_tag.TSerieNo=tag.TSerieNo AND tag.profileId=profile.PId LIMIT 1")->fetch_assoc();
     
-    //check rules if user has unlimited points
-    if (db_rules_user_has_unlimited_points($row2['PId']))
+    if ($row2->numrows > 0)
     {
-    	$timeRemaining = 60; //static 60 minutes from unlimited points
-    }
-    else
-    {
-    	//calculate timeRemaining and return it
-	    $points = $row2['points'];
-	    $timeNow = $row2['now'];
-	    $startTime = $row2['starttime'];
-	    $timeElapsed = floor(($timeNow-$startTime)/60);
-	    $pointsRemaining = $points-($timeElapsed*$cost);
-	    $timeRemaining = $pointsRemaining/$cost;
-    }
-    
-
-    //encode json and print it
-    $data = array('status' => $status, 'action' => $action, 'timeRemaining' => strval($timeRemaining)); 
+	    //check rules if user has unlimited points
+	    if (db_rules_user_has_unlimited_points($row2['PId']))
+	    {
+	    	$data['timeRemaining'] = 60; //static 60 minutes from unlimited points
+	    }
+	    else
+	    {
+	    	//calculate timeRemaining and return it
+		    $points = $row2['points'];
+		    $timeNow = $row2['now'];
+		    $startTime = $row2['starttime'];
+		    $timeElapsed = floor(($timeNow-$startTime)/60);
+		    $pointsRemaining = $points-($timeElapsed*$cost);
+		    $data['timeRemaining'] = strval($pointsRemaining/$cost);
+	    }
+	}
     echo json_encode($data);
 });
 
