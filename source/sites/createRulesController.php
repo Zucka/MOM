@@ -32,11 +32,11 @@
 			startView: 2,
 			pickerPosition: 'bottom-left',
 			forceParse: 0,
-   		    minuteStep: 15
+   		    minuteStep: 5
     	});
 		$('.formEndRepeatOn').datetimepicker({
 			startDate: new Date(),
-	        format: "dd MM yyyy",
+	        format: "dd MM yyyy - hh:ii",
 	        linkField: "endRepeatOn",
 	        linkFormat: "yyyy-mm-dd hh:ii",
         	language:  'da',
@@ -45,7 +45,8 @@
 			minView: 2,
 			startView: 2,
 			pickerPosition: 'bottom-left',
-			forceParse: 0
+			forceParse: 0,
+   		    minuteStep: 5
     	});
     	$('.formStarttime').datetimepicker().on('hide', function(e){
 		    $('.formEndRepeatOn').datetimepicker('setStartDate', e.date);
@@ -54,6 +55,31 @@
 		    $('.formStarttime').datetimepicker('setEndDate', e.date);
 		});
   	});
+
+function repeatWeeklySelect () {
+		$( "select option:selected" ).each(function() {
+			if ($( this ).attr("value") == "sWeek") {
+				$("#selectWeekNo").css("display", "");
+			}
+	});
+}
+
+	// $("#repeatEach").change(function() {
+	// 	console.log("1");
+	// 	$( "select option:selected" ).each(function() {
+	// 	console.log("2");
+	// 		if ($( this ).value() == "sWeek") {
+	// 	console.log("3");
+	// 			$("#selectWeekNo").css("display", "");
+	// 		}
+	// 	});
+	// })
+
+				// $('#teamNameEN').attr("value",data.name_en);
+				// $('#description').val(data.description);
+				// $('#descriptionEN').val(data.description_en);
+				// $('.attendantsDiv').children('.form-control').find("option[value='"+data.maxAttendants+"']").attr("selected","selected");
+				// $('.timeDiv').children('.form-control').find("option[value='"+data.defaultLength+"']").attr("selected","selected");
 </script>
 </head>
 <body>
@@ -64,24 +90,46 @@
 			<div class="form-group">
 				<label for="controllerName" class="col-sm-3 control-label">Controller Name: </label>
 				<div class="col-sm-8">
-					<select name="controllerName" id="controllerName" class="form-control" required autofocus onchange="submitFormGeneric();">
-					  	<option disabled >Please select a controller...</option>
+					<select name="controllerName" id="controllerName" class="form-control" required autofocus>
+					  	<option disabled ><i>Please select a controller...</i></option>
 					  	<?php foreach(controllersByCSId($_SESSION['CSid']) as $row) {print ('<option value="'.$row['CSerieNo'].'">'.$row['name'].'</option>');} ?>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="actionName" class="col-sm-3 control-label">Action: </label>
+				<div class="col-sm-8">
+					<select name="actionName" id="actionName" class="form-control" required autofocus>
+					  	<option disabled style="text" >Please select an action...</option>
+					  	<?php foreach($actionNames as $name) {print ('<option>'.$name.'</option>');} ?>
 					</select>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="name" class="col-sm-3 control-label">Rule Name: </label>
 				<div class="col-sm-8">
-					<input type="text" class="form-control" name="name" id="name" placeholder="Name..." required autofocus>
+					<input type="text" class="form-control" name="name" id="name" placeholder="Name..." required >
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="userRole" class="col-sm-3 control-label">User Role: </label>
+				<label for="repeatEach" class="col-sm-3 control-label">Repeat each: </label>
 				<div class="col-sm-8">
-					<select name="userRole" id="userRole" class="form-control" required>
-						<option value="user" selected>User</option>
-						<option value="manager">Manager</option>
+					<select name="repeatEach" id="repeatEach" class="form-control" required onchange="repeatWeeklySelect();" >
+						<option value="eachWekk" selected>Every Week</option>
+						<option value="biWeekly">Every two Weeks</option>
+						<option value="triWeekly">Every three Weeks</option>
+						<option value="primo">First in a month</option>
+						<option value="ultimo">Last in a month</option> 
+						<option value="sWeek">Specific Week No.</option> 
+					</select>
+				</div>
+			</div>
+			<div class="form-group" id="selectWeekNo" style="display:none;">
+				<label for="weekNo" class="col-sm-3 control-label">Week No: </label>
+				<div class="col-sm-8">
+					<select name="weekNo" id="weekNo" class="form-control">
+						<option selected disabled>Please select a week...</option>
+						<?php for ($x=1; $x <= 52; $x++): print ('<option value="'.$x.'">'.$x.'</option>'); endfor; ?>
 					</select>
 				</div>
 			</div>
@@ -101,7 +149,7 @@
 				</div>
 				<input type="hidden" name="endDate" id="endRepeatOn" value="" /><br/>
 			</div>
- 				<div class="form-group">
+ 			<div class="form-group">
 				<label for="repeat" class="col-sm-3 control-label">Repeat each: </label>
 				<div class="col-sm-1"><label class="checkbox-inline"><input type="checkbox" id="repeatMon" name="repeat['Mon']">Monday</label></div>
 				<div class="col-sm-1"><label class="checkbox-inline"><input type="checkbox" id="repeatTue" name="repeat['Tue']">Tueday</label></div>

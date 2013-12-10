@@ -10,12 +10,8 @@
 <body>
 	<div class="container">
 		</br>
-		<form class="form-createRulesController form-horizontal" role="form" id="createRulesController" action="?page=rulesControllerAdd" method="post">
-			<button class="btn btn-lg btn-primary" type="submit">Add controller rule</button>
-		</form>
-		<form class="form-createRulesUser form-horizontal" role="form" id="createRulesUser" action="?page=rulesUserAdd" method="post">
-			<button class="btn btn-lg btn-primary" type="submit">Add user rule</button>
-		</form>
+		<button class="btn btn-lg btn-primary" type="button" onclick="location.href='?page=rulesControllerAdd';">Add controller rule</button>
+		<button class="btn btn-lg btn-primary" type="button" onclick="location.href='?page=rulesUserAdd';">Add user rule</button>
 	</div> <!-- /container -->
 </body>
 </html>
