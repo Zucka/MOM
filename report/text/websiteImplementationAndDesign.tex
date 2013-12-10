@@ -1,9 +1,49 @@
 \chapter{Admin Web Interface}
-
+This chapter goes into details about the design and implementation of the website used to administrate Media-Online Management (MOM).
 
 \section{Design}
-%Navigation
 %Interface Design
+As mentioned in the overview, see subsection \vref{subsection:momswebsite}, we know what the website is required to do for the system.
+These requirements made the basis for deciding what pages should be created and what each page's functionality should be. During the designing of the website we aimed to fit all relevant information into each page.\\
+All pages was first designed on the blackboards, where we would discover inconsistencies, new navigation paths and learn about how concepts such as rules should be implemented.\\
+Next is a short overview of what pages were designed and their purposes.\\
+
+\textbf{Dashboard} is used to get a quick overview of relevant data. The overview is customizable so that each parent can decide what information is most relevant for them.\\
+\\
+\textbf{Devices} is used to get an overview of what controllers and tags is registered with one's MOM system. It also is the only way to navigate to the Add Tag/Controller and Details Tag/Controller pages.\\
+From this page it is also possible to deactivate a tag, meaning the owner of that tag, can no longer log in with it.\\
+\\
+\textbf{Devices - Details Controller} is used to display, delete and change information about a controller. A user can only access controllers that is registered to his system.\\
+\\
+\textbf{Devices - Details Tag} is used to display, delte and change information about a tag. A user can only access tags that is registered to his system.\\
+\\
+\textbf{Devices - Add Controller} is used to add controllers to one's system. In order to add a controller one must add a unique key found on the controller, this is then checked towards a database of available keys.\\
+However we have not currently implemented this way of validation, but it would be the right way to go in order to commercialize the system and ensure security for our users.\\
+\\
+\textbf{Devices - Add Tag} is like Add Controller, except with tags. Also in order to register a tag, a user must be dedicated to this tag. The one registering a tag, will be meet by a list of current users in the system. This means that in order to apply a tag, one must first create a user, then register a tag.\\
+\\
+\textbf{Users} is used to get an overview of users in one's system. It is also used to navigate to Create User and User Details.\\
+\\
+\textbf{Users - User Details} is for viewing details about a user. It is also used to change information about a user, however it is only possible to change information, if your user is of a manager-role, or if you are the owner of that profile.\\
+\\
+\textbf{Users - Create User} is as the name suggests, used for creating a user. We are making the system ready for children to login to the system already now. We do not have any feature that requires the children to log in to the system as of yet, but a feature might utilize this later on.\\
+\\
+\textbf{Users - Chores} is used to get an overview of available chores, and for easy rewarding of already created chores. When a chore is done, the parent should go to this site, and simply select a child and press a button to give them the assigned reward of the chore.\\
+Chores will also have a subsite for creating chores.\\
+\\
+\textbf{Users - Rules} is where parents can get an overview of rules and create them for their system. We have taken great care to help users in creating rules, by making a step by step procedure. Starting with making the user choose what sort of action they want to achieve and thereafter choose the sort of condition they want to set, since actions only match certain conditions. This should limit some of the confusion about the rules. For more information about actions and conditions see subsection \vref{subsubsection:action}.\\
+\\
+\textbf{Users - Permissions} is designed for an easier way to think of rules, in relation to what devices which child is allowed to use in which time slots of the days.\\
+We decided to create this permissions page, because permissions is an essential part of even the smallest of systems. This tool gives the parents an easy way to limit their child’s usage, by deciding devices can not be turned on after a certain time.\\
+\\
+\textbf{Graf} page is intended for viewing statistics, such as how much have a controller been active, how is a users usage of media divided and so forth.\\
+\\
+\textbf{Calendar} has two purposes. It serves as a graphical presentation of rules, in the sense that it shows when a rule will apply, and to what user.\\
+It also serves to provide a shortcut to create rules, from other calendars. For example, if the user has a Google calendar, that have been registered to the system, they can simply click that event and the system will start creating a rule with a condition corresponding to the calendar events configuration.\\
+\\
+
+%Navigation
+
 %Color Schemes
 %Bootstrap and other inspiration sources
 %What you can do from the website, and how
