@@ -418,61 +418,11 @@
 		return false;
 	}
 	
-	/* returns true if the tag is currently active and false otherwise */
-	function hasPersonIdUnlimitedPoints($profileId)
-	{
-		$db= new MySQLHelper();
-		$rules=getRulesFromPId($profileId);
-		$timeNow =strtotime( $db->executeSQL("SELECT now() as time")->fetch_assoc()['time']);
-		
-		if($rules != null)
-		{foreach($rules as $rule)
-		{
-			foreach($rule['actions'] as $action)
-			{
-				if($action['name'] == 'Unlimited time')
-				{
-					foreach($rule['conditions'] as $cond)
-					{
-						if($cond['name'] == 'Timeperiod')
-						{
-							$array = $cond['ekstra_attribute'];
-							//if repeatable
-							if((!empty($array['weekdays'])) || $array['weekly'] == true || $array['ndWeekly'] == true || $array['rdWeekly'] == true
-								|| $array['firstInMonth'] == true || $array['lastInMonth'] == true)
-							{ 
-								$timeNowFormatHMS = date("H:i:s",$timeNow );
-								
-								$timeTo =  date("H:i:s", strtotime( $array['timeTo'] ));
-								$timeFrom =   date("H:i:s", strtotime( $array['timeFrom'] ));
-								$timeNowFormatWeekNo = date("W",$timeNow );					
-								if($timeNowFormatWeekNo == $array['weekNumber'] && $timeFrom <= $timeNowFormatHMS && $timeNowFormatHMS <= $timeTo)
-								{
-									return true;
-								}
-							}
-							//if non repeatable
-							else
-							{
-								$fromTime = date("d M Y H:i:s", strtotime($array['timeFrom']));
-								$toTime = date("d M Y H:i:s", strtotime($array['timeTo']));
-								$timeNow = date("d M Y H:i:s",$timeNow );								
-								if( $fromTime <= $timeNow && $timeNow <= $toTime )
-								{								
-									return true;
-								}
-							}
-						}
-						elseif($cond['name'] == 'True')
-						{
-							return true;
-						}
-					}
-				}
-			}
-		}}
-		
-	}
+
+	
+	
+	
+
 	/* get rules and permission from a personID*/	
 	/* (Permission returns an array where value is an array with the following key=>value:
 PId: 1
