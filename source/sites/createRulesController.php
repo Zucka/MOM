@@ -4,7 +4,9 @@
 
 	if (isset($_GET['action'])) {$action = $_GET['action'];} else {$action = '';}
 
-
+	if ($action == "create") {
+		print_r($_POST);
+	}
 ?>
 
 <!DOCTYPE html>
@@ -60,6 +62,21 @@ function repeatWeeklySelect () {
 		$( "select option:selected" ).each(function() {
 			if ($( this ).attr("value") == "sWeek") {
 				$("#selectWeekNo").css("display", "");
+				$('.formStarttime').datetimepicker({
+					startDate: new Date(),
+					format: "yyyy",
+					linkField: "datePicker",
+					linkFormat: "yyyy-mm-dd hh:ii",
+					language:  'da',
+					weekStart: 1,
+					todayBtn:  0,
+					autoclose: 1,
+					todayHighlight: 1,
+					startView: 3,
+					pickerPosition: 'bottom-left',
+					forceParse: 0,
+					minuteStep: 5
+				});
 			}
 	});
 }
@@ -86,16 +103,7 @@ function repeatWeeklySelect () {
 	<div class="container">
 		<h1>Create a new Rule for a controller</h1>
 		</br>
-		<form class="form-createRulesController form-horizontal" role="form" id="createRulesController" action="?page=createRulesController&action=create" method="post">
-			<div class="form-group">
-				<label for="controllerName" class="col-sm-3 control-label">Controller Name: </label>
-				<div class="col-sm-8">
-					<select name="controllerName" id="controllerName" class="form-control" required autofocus>
-					  	<option disabled ><i>Please select a controller...</i></option>
-					  	<?php foreach(controllersByCSId($_SESSION['CSid']) as $row) {print ('<option value="'.$row['CSerieNo'].'">'.$row['name'].'</option>');} ?>
-					</select>
-				</div>
-			</div>
+		<form class="form-createRulesController form-horizontal" role="form" id="createRulesController" action="?page=rulesControllerAdd&action=create" method="post">
 			<div class="form-group">
 				<label for="actionName" class="col-sm-3 control-label">Action: </label>
 				<div class="col-sm-8">
@@ -106,9 +114,24 @@ function repeatWeeklySelect () {
 				</div>
 			</div>
 			<div class="form-group">
+				<label for="controllerName" class="col-sm-3 control-label">Controller Name: </label>
+				<div class="col-sm-8">
+					<select name="controllerName" id="controllerName" class="form-control">
+					  	<option disabled selected >Please select a controller...</option>
+					  	<?php foreach(controllersByCSId($_SESSION['CSid']) as $row) {print ('<option value="'.$row['CSerieNo'].'">'.$row['name'].'</option>');} ?>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
 				<label for="name" class="col-sm-3 control-label">Rule Name: </label>
 				<div class="col-sm-8">
 					<input type="text" class="form-control" name="name" id="name" placeholder="Name..." required >
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="amountOfPoints" class="col-sm-3 control-label">Amount of Points: </label>
+				<div class="col-sm-8">
+					<input type="text" class="form-control" name="amountOfPoints" id="amountOfPoints" placeholder="Points..." required >
 				</div>
 			</div>
 			<div class="form-group">
