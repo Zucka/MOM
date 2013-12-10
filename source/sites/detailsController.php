@@ -40,7 +40,10 @@
 		}
 	}
 	else{
+		
 		$result = getControllerByControllerId($_GET['controller']);
+		$result = $result[0];
+		
 		if(!empty($result) && $result['CSId'] == $_SESSION['CSid']){
 			printDetailsControllerForm($result['CSerieNo'],$result['name'],$result['location'],$result['cost']);
 		}

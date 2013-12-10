@@ -6,7 +6,16 @@ The design and functionality of the prototype will be presented in parallel to t
 
 There is two devises need to activete a usage of device from the user to the server as shown in figure below.
 
-\fixme{indsæt et rig billed af systemet}
+
+
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=1.00\textwidth]{C:/Users/JML88/Documents/GitHub/MOM/report/images/Power&Tagdevice.png}
+	\caption{Rich picture for Powercontrol and Tag reader}
+	\label{fig:Power&Tagdevice}
+\end{figure}
+
+
 
 One is a small detection device to read user tags when swiped over it, this devise is often placed in the most asseble place. 
 The other devise is a powercontrol devise whitch i located on the powerline to the media device and tunes on and off the electrisity when needed.
@@ -21,12 +30,12 @@ The systemt is designed on mulitble senarios and the creteria of communication t
 
 To test develop the flowcart of the system is multible usercases constucted.
 
-\textbf{Setting up and turning on the system.} \\
+\textbf{Setting up and turning on the system.} \n
 The PCD retive information on wifi connection form USB port if an USB is connected at start point of PCD. 
 If the USB information is wrong or not retived then a restart botton is included to redo the procedure.  
 The PCD will then connect to the wifi network and to the web server of MOM. If the connection isn't found a massage is send to the DD. DD indicate that there is no connection bus trying to find with a blinking red light \fixme{indsæt referance til appendix table af lys indikater}. When the connection is established then the server will communicate what state the media device should be in. If it is open to for usage then the DD will blink a orange light else constant red light and a blinking orange light. 
 
-\textbf{Connection issues and waiting for tag.} \\
+\textbf{Connection issues and waiting for tag.} \n
 The connection to the sever is tested by a rutine call every five minuts form the PCD to the server. In the mean time will the PCD ask for a tag from the DD. If the PCD is disconnected form the server at the rutine call the DD will again light a constant red and a blinking orange.    
   
 

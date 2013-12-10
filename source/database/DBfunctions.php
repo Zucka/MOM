@@ -613,6 +613,17 @@
 	}
 	
 	/* This will add a rule with its conditions and actions to a control system and returns its id if successful*/
+	/*
+		$rulesData => is of the class type Rules
+		$arrayOfCondition => is an array with object of type Condition where arrayOfRestAttributes is an array
+				condition name must be one of 'Timestamp',	'Controller on', 'Controller off',	'Timeperiod', 'True'
+				if cond name = timeperiod then arrayOfRestAttributes => array('timeFrom'=> value,'timeTo'=> value,'weekdays'=> value,'weekly'=> value,'ndWeekly'=> value,'rdWeekly'=> value,'firstInMonth'=> value,'lastInMonth'=> value,'weekNumber'=> value)
+				if cond name = timestamp then arrayOfRestAttributes => array(onTimestamp=> value)
+				else arrayOfRestAttributes=null
+		$arrayOfAction is an array with object of type Action
+				where name must be one of 'Block user', 'Activate user', 'Add points', 'Set maximum of point', 'Access any controller','Cannot access any controller',	
+							'Access controller','Cannot access controller'.	
+	*/
 	function addNewRuleToDB($ruleData, $arrayOfCondition, $arrayOfAction)
 	{
 		$db= new MySQLHelper();

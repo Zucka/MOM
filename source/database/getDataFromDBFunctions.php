@@ -119,7 +119,7 @@
 		$table = $theTables['Controller'] ;
 		$whereClause = $columnController[0] . " = " . $CId;
 		//'Controller' =>array('CSerieNo','CSId', 'name' ,'location', 'status', 'cost' ),
-		$selectValues = $columnController[0] . ',' . $columnController[2].','. $columnController[3];
+		$selectValues = $columnController[0] . ',' . $columnController[1] . ',' . $columnController[2].','. $columnController[3] . ',' . $columnController[5];
 		$result = $db->query( $selectValues, $table, $whereClause );
 		
 		$returnArray = null;
