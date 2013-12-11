@@ -52,13 +52,46 @@ We also designed the system such that no other menu or functionality is any more
 \subsection{Color Scheme and Layout Design}
 %Color Schemes
 %Bootstrap and other inspiration sources
+<<<<<<< HEAD
 Our color scheme and layout design was inspired by both bootstrap and a website which utilizes bootstrap, called SB Admin\citep{sbadmin}. We have used a standard bootstrap color scheme, and added in a little blue, we wanted to keep the colors simple but no further thought was put into it.//
 The most of the design is based on standard tools from bootstrap. With exception of the table sorter functionality. Which is a JQuery tool that allows for sorting of tables.
+=======
+Our color scheme and layout design was inspired by both bootstrap and a website which utilizes bootstrap, called SB Admin\citep{sbadmin}. We have used a standard bootstrap color scheme, and added in a little blue, we wanted to keep the colors simple but no further thought was put into it.\\
+The most of the design is based on standard tools from bootstrap. With exception of the table sorter functionality. Which is a JQuery tool that allows for sorting of tables.\\
+We chose to use bootstrap since it gives an okay design and it is easy to implement prototypes in bootstrap.	
+>>>>>>> websiteImplementation
 
 
 \section{Implementation}
 The previous section explained what each page should do, and in some detail how from the users viewpoint.
+
+The implementation itself of the web-pages is not very interesting since they are based on a simple format of inputting the required information and submitting it to the server.\\
+A few of the functionalists are however a bit more advanced. Two of these are toggling activity of a user and the page for users.\\
+
+\subsection{Toggling Activity}
 %AJAX
 %PHP
+
+Under the page Devices, the overview of tags and controllers can be seen. But this is also were the activity of a user can be toggled.
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=1.00\textwidth]{images/tagOverview.PNG}
+	\caption{Tag Overview}
+	\label{fig:tagOverview}
+\end{figure}
+
+This is done by pressing the checkbox in the left side of the tags overview, see figure \ref{fig:tagOverview}. When this is pressed it activates an AJAX call that makes a http request to the PHP page \texttt{setActiveTag.php}. That PHP page then makes a query to the database in order to set the \texttt{active} status of a tag in the system, see figure \ref{fig:flowChartTagActivity}. Resulting in the user no longer being able to use said tag.
+
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=1.00\textwidth]{images/flowChartTagActivity.png}
+	\caption{Flowchart for Toggling Activity}
+	\label{fig:flowChartTagActivity}
+\end{figure}
+
+
+\subsection{The Rules Page}
 %Database communication
 %JQuery
