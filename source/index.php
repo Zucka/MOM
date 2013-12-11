@@ -4,7 +4,7 @@
 	if (isset($_SESSION['session_id'])) {} else {$_SESSION['session_id'] = '';}
 	if ($_SESSION['session_id'] != session_id())
 	{
-        include "login.php";
+        header('location: login.php');
 	}
 	else
 	{ echo "
