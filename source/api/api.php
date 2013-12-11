@@ -20,11 +20,12 @@ $app->get('/status/:cId', function($cId) {
 	$db = new MySQLHelper();
 	$cId = $db->real_escape_string($cId);
     $row = $db->executeSQL("SELECT status,cost FROM controller WHERE CSerieNo='$cId' LIMIT 1")->fetch_assoc(); //change to get cost from controller
+    $tId = $db->executeSQL("SELECT TSerieNo from controller_used_by_tag WHERE CSerieNo='$cId' AND endtime IS NULL")->fetch_assoc()['TSerieNo'];
     $status = $row['status'];
     $cost = $row['cost'];
     $action = 'none';
     //Check rules if controller should shut off
-    if (db_rules_device_should_turn_off($cId))
+    if (db_rules_device_should_turn_off($cId,$tId))
     {
     	$action = 'RED';
     }
