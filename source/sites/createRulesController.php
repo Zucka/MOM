@@ -9,11 +9,13 @@
 			isset($_POST['name']) &&
 			isset($_POST['repeatEach'])) {
 			switch ($_POST['actionName']) {
-				case 'Block user':
+				case 'Block user': echo "Not yet implemented so sorry";
 					break;
-				case 'Activate user':
+				case 'Activate user': echo "Not yet implemented so sorry";
 					break;
 				case 'Add points':
+					$startTime = new DateTime($_POST['startTime']);
+					$endTime = new DateTime($_POST['endDate']);
 					$nRule = new Rules($_SESSION['CSid'], $_POST['name']);
 					$weekdays  = (isset($_POST['repeatMon']) ? 'monday,' 	: '');
 					$weekdays .= (isset($_POST['repeatTue']) ? 'tuesday,' 	: '');
@@ -22,8 +24,8 @@
 					$weekdays .= (isset($_POST['repeatFri']) ? 'friday,' 	: '');
 					$weekdays .= (isset($_POST['repeatSat']) ? 'saturday,' 	: '');
 					$weekdays .= (isset($_POST['repeatSun']) ? 'sunday,' 	: '');
-					$nCondition = new Condition(0 , "Timeperiod", null, null, array('timeFrom'		=> $_POST['startTime'],
-																					'timeTo'		=> $_POST['endDate'],
+					$nCondition = new Condition(0 , "Timeperiod", null, null, array('timeFrom'		=> $startTime->format('Y-m-d H:i'),
+																					'timeTo'		=> $endTime->format('Y-m-d H:i'),
 																					'weekdays'		=> $weekdays,
 																					'weekly'		=> ($_POST['repeatEach'] == 'eachWekk' 	? 1 : 0),
 																					'ndWeekly'		=> ($_POST['repeatEach'] == 'biWeekly' 	? 1 : 0),
