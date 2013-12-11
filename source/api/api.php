@@ -19,24 +19,17 @@ $app->get('/', function() {
 $app->get('/status/:cId', function($cId) {
 	$db = new MySQLHelper();
 	$cId = $db->real_escape_string($cId);
+
     $row = $db->executeSQL("SELECT status,cost FROM controller WHERE CSerieNo='$cId' LIMIT 1")->fetch_assoc(); //change to get cost from controller
-    $tId = $db->executeSQL("SELECT TSerieNo from controller_used_by_tag WHERE CSerieNo='$cId' AND endtime IS NULL")->fetch_assoc()['TSerieNo'];
     $status = $row['status'];
+    $data = array('status' => $status);
     $cost = $row['cost'];
     $action = 'none';
-    //Check rules if controller should shut off
-    if (db_rules_device_should_turn_off($cId,$tId))
-    {
-    	$action = 'RED';
-    }
-
-    //encode json and print it
-    $data = array('status' => $status, 'action' => $action); 
 
     //get data for later
     $result = $db->executeSQL("SELECT points,UNIX_TIMESTAMP(controller_used_by_tag.starttime) as starttime,UNIX_TIMESTAMP(now()) as now,profile.PId as PId FROM profile,tag,controller_used_by_tag WHERE controller_used_by_tag.CSerieNo='$cId' AND controller_used_by_tag.endtime IS NULL AND controller_used_by_tag.TSerieNo=tag.TSerieNo AND tag.profileId=profile.PId LIMIT 1");
     
-    if ($result->num_rows > 0)
+    if ($result->num_rows > 0) //only do certain things if the controller is active
     {
     	$row2 = $result->fetch_assoc();
 	    //check rules if user has unlimited points
@@ -54,7 +47,13 @@ $app->get('/status/:cId', function($cId) {
 		    $pointsRemaining = $points-($timeElapsed*$cost);
 		    $data['timeRemaining'] = strval($pointsRemaining/$cost);
 	    }
+	    //Check rules if controller should shut off
+	    if (db_rules_device_should_turn_off($cId,$row2['PId']))
+	    {
+	    	$action = 'RED';
+	    }
 	}
+	$data['action'] = $action;
     echo json_encode($data);
 });
 
