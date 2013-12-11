@@ -29,7 +29,7 @@ function db_device_turn_off($cId,$tId) {
 function db_device_verify_cId($cId,$tId)
 {
 	$db = new MySQLHelper();
-	if (!(is_numeric($cId) && is_numeric($tId))
+	if (!(is_numeric($cId) && is_numeric($tId)))
 	{
 		return FALSE;
 	}
