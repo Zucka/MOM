@@ -4,14 +4,14 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/getDataFromDBFuncti
 
 
 
-/*This assumes that one rule has atmost 1 condition and 1 action*/
+/*This assumes that one rule has at most 1 condition and 1 action*/
 function db_rules_user_can_turn_device_on($cId,$tId)
 {
 	$db = new MySQLHelper();
 	$pId = $db->executeSQL("SELECT profileId from tag where tag.TSerieNo='$tId'")->fetch_assoc()['profileId'];
 	if(isTagActive($tId) == false || isProfileActive($pId) == false)
 	{
-		return true;
+		return false;
 	}
 	//check Timeperiod and True contrains 
 	$rules = getRulesFromPId($pId,false);
@@ -29,8 +29,8 @@ function db_rules_user_can_turn_device_on($cId,$tId)
 				$timeTo =  date("H:i:s", strtotime( $per['timeTo'] ));
 				$timeFrom =   date("H:i:s", strtotime( $per['timeFrom'] ));
 				$timeNowFormatWeekNo = date("W",$timeNow );	
-				if($timeNowFormatWeekNo == $per['weekNumber'] && strpos($per['weekdays'], $timeNowFormatDay) 
-						&& $timeFrom <= $timeNowFormatHMS && $timeNowFormatHMS <= $timeTo  && ($per['controllerId'] == $cId))
+				if($per['controllerId'] == $cId && $timeNowFormatWeekNo == $per['weekNumber'] && strpos($per['weekdays'], strtolower($timeNowFormatDay)) 
+						&& $timeFrom <= $timeNowFormatHMS && $timeNowFormatHMS <= $timeTo)
 				{
 					$permissionGiving = true;
 					break;
@@ -75,17 +75,71 @@ function db_rules_user_can_turn_device_on($cId,$tId)
 }
 
 
-
-function db_rules_device_should_turn_off($cId)
+/*This assumes that one rule has at most 1 condition and 1 action*/
+function db_rules_device_should_turn_off($cId, $tId)
 {
 	$db = new MySQLHelper();
+	$pId = $db->executeSQL("SELECT profileId from tag where tag.TSerieNo='$tId'")->fetch_assoc()['profileId'];
+	$timeNow =strtotime( $db->executeSQL("SELECT now() as time")->fetch_assoc()['time']);
+	$rules=getRulesFromPId($pId);
+	
+	$lowestTime= null;
+	
+	foreach($rules as $rule)
+	{
+		if( $rule['conditions'][0]['controllerId']== $cId && $rule['conditions'][0]['name'] == 'Timeperiod' && timeperiodIsValidNowInRule($rule))
+		{
+			if(conditionRepeatable($rule['conditions'][0])) //is repeatable
+			{
+				$timeNowFormatHMS = date("H:i:s",$timeNow );
+				$timeTo =  date("H:i:s", strtotime(  $rule['conditions'][0]['ekstra_attribute']['timeTo'] ));
+				//subtract tempTime= $timeTo-$timeNowFormatHMS
+				/*if($lowestTime==null || $tempTime < $lowestTime)
+				{
+				}*/
+			}
+			else//is not repeat
+			{
+				$timeNowFormat = date("d M Y H:i:s",$timeNow );
+				$timeTo =  date("d M Y H:i:s", strtotime(  $rule['conditions'][0]['ekstra_attribute']['timeTo'] ));
+				//subtract: tempTime= $timeTo-$timeNowFormat
+				/*if($lowestTime==null || $tempTime < $lowestTime)
+				{
+				}*/
+			}
+		}
+	}
+	$permissions=getRulesFromPId($pId, true);
+	foreach($permissions as $per)
+	{
+		
+		$timeNowFormatHMS = date("H:i:s",$timeNow );
+		$timeNowFormatDay = strtolower(date("l", $timeNow));
+		$timeTo =  date("H:i:s", strtotime( $per['timeTo'] ));
+		$timeFrom =   date("H:i:s", strtotime( $per['timeFrom'] ));
+		$timeNowFormatWeekNo = date("W",$timeNow );	
+		
+		if($per['controllerId'] == $cId && $timeNowFormatWeekNo == $per['weekNumber'] && strpos($per['weekdays'], $timeNowFormatDay) 
+				&& $timeFrom <= $timeNowFormatHMS && $timeNowFormatHMS <= $timeTo )
+		{
+			
+			$tempTime=$timeTo-$timeNowFormatHMS;//how ever subtract two times
+			echo 'temp: ' . $tempTime. '<br>';
+			if( $lowestTime==null || $tempTime < $lowestTime)
+			{
+				$lowestTime=$tempTime;
+				
+			}
+		}
+	}
+	
 	return false;
 }
 
 function db_rules_user_has_unlimited_points($pId)
 {
 	$db= new MySQLHelper();
-	$rules=getRulesFromPId($profileId);
+	$rules=getRulesFromPId($pId);
 	$timeNow =strtotime( $db->executeSQL("SELECT now() as time")->fetch_assoc()['time']);
 		
 	if($rules != null)
