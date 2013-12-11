@@ -84,7 +84,7 @@
 				$_SESSION['role'] = $result['role'];
 				$_SESSION['session_id'] = session_id();
 				session_write_close();
-				header("Location:./?login=ok");
+				header("Location:./",true,302);
 		}
 	}
 ?>
