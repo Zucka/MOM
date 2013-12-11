@@ -142,7 +142,7 @@ $app->get('/turnOff/:cId/:tId', function($cId,$tId) {
 	$row = $db->executeSQL("SELECT controller.status,controller_used_by_tag.TSerieNo,controller.cost FROM controller,controller_used_by_tag WHERE controller_used_by_tag.CSerieNo=controller.CSerieNo AND controller.CSerieNo='$cId' AND controller_used_by_tag.endtime IS NULL LIMIT 1")->fetch_assoc(); //time is when the device was turned on, user is who turned the device on
 	$status = '';
 	$error = '';
-	switch ($row['status']) {
+	switch ($row['controller.status']) {
 		case 'RED': //device is currently off and is able to be turned on
 			$status = 'ERROR';
 			$error = 'Device is already off!';
