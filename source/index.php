@@ -49,7 +49,6 @@
 					  <li id="chores"><a href="?page=chores"><span class="glyphicon glyphicon-list-alt"></span> Chores</a></li>
 					  <li id="rules"><a href="?page=rules"><span class="glyphicon glyphicon-tower"></span> Rules</a></li>
 					  <li id="permissions"><a href="?page=permissions"><span class="glyphicon glyphicon-lock"></span> Permissions</a></li>
-					  <li id="createUser"><a href="?page=createUser"><span class="glyphicon glyphicon-plus"></span> Create User</a></li>
 					</ul>
 				  </li>
 				  <li id="graf"><a href="?page=graf"><span class="glyphicon glyphicon-stats"></span> Graf</a></li>
