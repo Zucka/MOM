@@ -3,8 +3,7 @@
 [] optional
 () group
 * 0 to many
-
-<Permission>:= <name> <ConditionTimeperiod> <Controller>
+(**) comments
 
 <Rule>:= <name> (
 	 	  (<ActionsetSet1><ConditionSet1>)*
@@ -14,33 +13,32 @@
 		| (<ActionsetSet5><ConditionSet5>)*
 	)
 
-<ActionsetSet1> := 'Block user' | 'Activate user' 
+<ActionsetSet1> := "Block user" | "Activate user" 
 <ConditionSet1> := <ConditionTimestamp>
 
-<ActionsetSet2> := ('Add points' | 'Delete points') <Points>
+<ActionsetSet2> := ("Add points" | "Delete points") <Points>
 <ConditionSet2> := <ConditionTimeperiod> | <ConditionTimestamp>
 
-<ActionsetSet3> := 'Set maximum of point' <Points>
+<ActionsetSet3> := "Set maximum of point" <Points>
 <ConditionSet3> := <ConditionTrue>
 
-<ActionsetSet4> := 'Unlimited time' | ('Access any controller' | 'Cannot access any controller') <Controller>
+<ActionsetSet4> := "Unlimited time" | ("Access any controller" | "Cannot access any controller") <Controller>
 <ConditionSet4> := <ConditionTimeperiod> | <ConditionTimestamp> 
 
-<ActionsetSet5> := ('Access controller' | 'Cannot access controller')<Controller>
+<ActionsetSet5> := ("Access controller" | "Cannot access controller")<Controller>
 <ConditionSet5> := <ConditionTimestamp> |	<ConditionTimeperiod> 
 					| 	<ConditionTrue>	|	<ConditionElse>	
 				
-<ConditionTimestamp> :=  'Timestamp' <Timestamp>
-<ConditionTimeperiod> :=  'TimePeriod' <Timestamp> <Timestamp> <Repeatable>					
+<ConditionTimestamp> :=  "Timestamp" <Timestamp>
+<ConditionTimeperiod> :=  "TimePeriod" <Timestamp> <Timestamp> <Repeatable>					
 <Repeatable> :=   <Weekdays> <Repeat> | Nill
 
-<ConditionTrue> := 'True' 
-<ConditionElse>:= ('Device on' | 'Device off') <Controller>
+<ConditionTrue> := "True" 
+<ConditionElse>:= ("Device on" | "Device off") <Controller>
 				
-<Name> := ALPHA
-<Controller> :=DIGIT
-<Points> := DIGIT
-<Weekdays> := ('monday'| 'tuesday'| 'wednesday'| 'thursday'| 'friday'| 'saturday'| 'sunday')*
-<Repeat> := 'weekly' | 'biweekly' | 'triweekly' | 'first in month' | 'last in month'
-
- 
+<Name> := ALPHA* 		(*Upper- and lower-case ASCII letters (A–Z, a–z*) 
+<Controller> := DIGIT* (*Decimal digits (0–9)*)
+<Points> := DIGIT*
+<Timestamp> := 4*DIGIT,"-",2*DIGIT,"-",2*DIGIT, " ",2*DIGIT,":"2*DIGIT,":"2*DIGIT  (*YYYY-MM-DD HH:mm:ss*)
+<Weekdays> := ("monday"| "tuesday"| "wednesday"| "thursday"| "friday"| "saturday"| "sunday")*
+<Repeat> := "weekly" | "biweekly" | "triweekly" | "first in month" | "last in month" 
