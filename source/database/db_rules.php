@@ -84,32 +84,56 @@ function db_rules_device_should_turn_off($cId, $tId)
 	$rules=getRulesFromPId($pId);
 	
 	$lowestTime= null;
-	
+	if($rules != null)
+	{echo 'in rule <br>';
 	foreach($rules as $rule)
 	{
-		if( $rule['conditions'][0]['controllerId']== $cId && $rule['conditions'][0]['name'] == 'Timeperiod' && timeperiodIsValidNowInRule($rule))
+		$timeTo=null;
+		$timeNowFormatHMS=null;
+		
+		//I assume they already have access so I don't check whether they are allowed to be on 
+		//check it is a Access controller or Access any controller with a valid timeperiod
+		if((ruleHasActionWithName($rule, 'Access any controller') 
+			|| (ruleHasAActControllerWithID($rule, $cId) && ruleHasActionWithName($rule, 'Access controller'))) 
+			&& ruleHasConditionWithName($rule, 'Timeperiod') && timeperiodIsValidNowInRule($rule))
 		{
 			if(conditionRepeatable($rule['conditions'][0])) //is repeatable
 			{
-				$timeNowFormatHMS = date("H:i:s",$timeNow );
 				$timeTo =  date("H:i:s", strtotime(  $rule['conditions'][0]['ekstra_attribute']['timeTo'] ));
-				//subtract tempTime= $timeTo-$timeNowFormatHMS
-				/*if($lowestTime==null || $tempTime < $lowestTime)
-				{
-				}*/
+			}
+			else//is not repeat
+			{
+				$timeTo =  date("d M Y H:i:s", strtotime(  $rule['conditions'][0]['ekstra_attribute']['timeTo'] ));
+			}
+			//check which is the shortest amount of time.
+			if($timeTo < $lowestTime || $lowestTime==null)
+			{
+				$lowestTime=$timeTo;
+			}
+		}//check it is a Cannot access controller or Cannot access any controller with a timeperiod
+		elseif( (ruleHasActionWithName($rule, 'Cannot access any controller') 
+			|| (ruleHasAActControllerWithID( $rule, $cId) && ruleHasActionWithName($rule, 'Cannot access controller'))) 
+			&& ruleHasConditionWithName($rule, 'Timeperiod'))// rule has action Cannot access any controller or Cannot access controller with a timeperiod
+		{	
+			if(conditionRepeatable($rule['conditions'][0])) //is repeatable
+			{
+				$timeNowFormat = date("H:i:s",$timeNow );
+				$timeFrom =  date("H:i:s", strtotime(  $rule['conditions'][0]['ekstra_attribute']['timeFrom'] ));
 			}
 			else//is not repeat
 			{
 				$timeNowFormat = date("d M Y H:i:s",$timeNow );
-				$timeTo =  date("d M Y H:i:s", strtotime(  $rule['conditions'][0]['ekstra_attribute']['timeTo'] ));
-				//subtract: tempTime= $timeTo-$timeNowFormat
-				/*if($lowestTime==null || $tempTime < $lowestTime)
-				{
-				}*/
+				$timeFrom =  date("d M Y H:i:s", strtotime(  $rule['conditions'][0]['ekstra_attribute']['timeFrom'] ));
+			}
+			if($timeFrom > $timeNowFormat && ( $timeFrom < $lowestTime || $lowestTime==null))
+			{
+				$lowestTime=$timeFrom;
 			}
 		}
-	}
+	}}
 	$permissions=getRulesFromPId($pId, true);
+	if($permissions != null){
+	echo 'is permission<br>';
 	foreach($permissions as $per)
 	{
 		
@@ -122,18 +146,22 @@ function db_rules_device_should_turn_off($cId, $tId)
 		if($per['controllerId'] == $cId && $timeNowFormatWeekNo == $per['weekNumber'] && strpos($per['weekdays'], $timeNowFormatDay) 
 				&& $timeFrom <= $timeNowFormatHMS && $timeNowFormatHMS <= $timeTo )
 		{
-			
-			$tempTime=$timeTo-$timeNowFormatHMS;//how ever subtract two times
-			echo 'temp: ' . $tempTime. '<br>';
-			if( $lowestTime==null || $tempTime < $lowestTime)
+			if( $lowestTime==null || $timeTo < $lowestTime)
 			{
-				$lowestTime=$tempTime;
+				$lowestTime=$timeTo;
 				
 			}
 		}
-	}
+	}}
 	
-	return false;
+	if($lowestTime == null)
+	{
+		return false;
+	}
+	else
+	{
+		return $lowestTime;
+	}
 }
 
 function db_rules_user_has_unlimited_points($pId)
@@ -184,14 +212,14 @@ function checkRulesTrueAndTimeperiod($rules, $cId)
 			{
 				if(ruleHasActionWithName($rule, 'Access controller')  )
 				{	
-					if( ruleHasAControllerWithID($rule, $cId))
+					if( ruleHasAActControllerWithID($rule, $cId))
 					{
 						$AccController=$rule;
 					}
 				}
 				elseif(ruleHasActionWithName($rule, 'Cannot access controller') )
 				{	
-					if(ruleHasAControllerWithID($rule, $cId))
+					if(ruleHasAActControllerWithID($rule, $cId))
 					{
 						$NotAccController=$rule;
 					}
@@ -288,12 +316,25 @@ function ruleHasActionWithName($rule, $name)
 	return false;
 }
 //this is only look on action-side for Id 
-function ruleHasAControllerWithID($rule, $ID)
+function ruleHasAActControllerWithID($rule, $ID)
 {
 	$actions = $rule['actions'];
 	foreach($actions as $action)
 	{
 		if($action['controllerId'] == $ID)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+function ruleHasACondControllerWithID($rule, $ID)
+{
+	$conditions = $rule['conditions'];
+	foreach($conditions as $cond)
+	{
+		if($cond['controllerId'] == $ID)
 		{
 			return true;
 		}
