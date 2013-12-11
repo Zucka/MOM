@@ -29,6 +29,10 @@ function db_device_turn_off($cId,$tId) {
 function db_device_verify_cId($cId,$tId)
 {
 	$db = new MySQLHelper();
+	if (!(is_numeric($cId) && is_numeric($tId))
+	{
+		return FALSE;
+	}
 	$result = $db->executeSQL("SELECT TRUE FROM control_system,tag,controller WHERE controller.CSerieNo='$cId' AND tag.TSerieNo='$tId' AND tag.CSId=control_system.CSId AND controller.CSId=control_system.CSId");
 	if ($result->num_rows > 0)
 	{
