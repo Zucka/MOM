@@ -164,7 +164,7 @@ $app->get('/turnOff/:cId/:tId', function($cId,$tId) {
 			break;
 		default:
 			$status = 'ERROR';
-			$error = 'Status value not recognized, something is very wrong!';
+			$error = 'Status value not recognized, something is very wrong! - status value: '.$row['controller.status'];
 			break;
 	}
 	$cost = $row['cost'];
