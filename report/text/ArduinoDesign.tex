@@ -4,7 +4,7 @@ The design and functionality of the prototype will be presented in parallel to t
 
 \section{Product Design}
 
-There is two devises need to activete a usage of device from the user to the server as shown in figure below.
+There is two devices need to activate a usage of device from the user to the server as shown in figure below.
 
 <<<<<<< HEAD
 \begin{center}[h]
@@ -14,45 +14,45 @@ There is two devises need to activete a usage of device from the user to the ser
 \begin{center}
 	\includegraphics[width=1.00\textwidth]{images/Power&Tagdevice.png}	
 >>>>>>> DR2.6
-	\caption{Rich picture for Powercontrol and Tag reader}
+	\caption{Rich picture for Power-control and Tag reader}
 	\label{fig:Power&Tagdevice}
 \end{center}
 
-One is a small detection device to read user tags when swiped over it, this devise is often placed in the most asseble place. \newline
-The other devise is a powercontrol devise whitch i located on the powerline to the media device and tunes on and off the electrisity when needed.\newline
-The powercontrol devise(PCD) is the brain of the two devises and is therefore to moniter the users time usage and communication center with the server and detection devise. \newline
-The detection devise(DD) also work as infomation communicater to the user on the state of the connection to the server, acceptens/decline of login and more. \newline    
+One is a small detection device to read user tags when swiped over it, this device is often placed in the most accessible place. \newline
+The other device is a power-control device which i located on the power-line to the media device and tunes on and off the electricity when needed.\newline
+The power-control device(PCD) is the brain of the two devices and is therefore to monitor the users time usage and communication center with the server and detection devise. \newline
+The detection device(DD) also work as information communicator to the user on the state of the connection to the server, acceptance/decline of log-in and more. \newline    
 
-\subsection{Senario Design}
+\subsection{Scenario Design}
 
-The systemt is designed on mulitble senarios and the creteria of communication to server and user. The flow chart below is a overview of actions and communication the two devices have to give the right permission to user, communicat with the user and server about status, handel disconnection to server and control of user- and timeusage restrictions.\newline
+The system is designed on multiple scenarios and the criteria of communication to server and user. The flow chart below is a overview of actions and communication the two devices have to give the right permission to user, communicate with the user and server about status, handle disconnection to server and control of user- and time usage restrictions.\newline
 
-\fixme{indsæt Flowcart af systemet}
+\fixme{indsæt Flowchart af systemet}
 
-To test develop the flowcart of the system is multible usercases constucted.\newline
+To test develop the flowchart of the system is multiple use-cases constructed.\newline
 
 
 \textbf{Setting up and turning on the system.} \newline
-The PCD retive information on wifi connection form USB port if an USB is connected at start point of PCD. 
-If the USB information is wrong or not retived then a restart botton is included to redo the procedure.  \newline
-The PCD will then connect to the wifi network and to the web server of MOM. If the connection isn't found a massage is send to the DD. \newline DD indicate that there is no connection by showing a constant red light. The communication protocal can be found in the appendix  \fixme{indsæt referance til appendix table af lys indikater}.\newline When the connection is established then the DD is ready to read user tags.\newline
+The PCD retrieve information on wifi connection form USB port if an USB is connected at start point of PCD. 
+If the USB information is wrong or not retrieved then a restart button is included to redo the procedure.  \newline
+The PCD will then connect to the wifi network and to the web server of MOM. If the connection isn't found a massage is send to the DD. \newline DD indicate that there is no connection by showing a constant red light. The communication protocol can be found in the appendix  \fixme{indsæt referance til appendix table af lys indikater}.\newline When the connection is established then the DD is ready to read user tags.\newline
 
 \textbf{Detection of connection issues and status changes.} \newline
-The connection to the sever is tested by a rutine call every five minutes form the PCD to the server. In this call will the PCD recieve information on when next rule or user time cut will come. This both insure that there is connection each five minutes and if any changes in rules or in the time the user may spend on the media device. In the period between the call will the PCD ask for a tag from the DD. If the PCD is disconnected form the server that is informed to the DD and to the user.  \newline
+The connection to the sever is tested by a routine call every five minutes form the PCD to the server. In this call will the PCD receive information on when next rule or user time cut will come. This both insure that there is connection each five minutes and if any changes in rules or in the time the user may spend on the media device. In the period between the call will the PCD ask for a tag from the DD. If the PCD is disconnected form the server that is informed to the DD and to the user.  \newline
 	
-\textbf{Logon/logoff media divice.} \newline
-When a tag is read by the DD will the PCD recieve the tag id which formed to a login massage if no one is all ready logged in the system. The PCD will then read if the user is declined or accepted to use the device. If the user is accepted then the PCD will switch the power on to the media device, save the tag id in local memory and recieve time left before a rule or to time usage limit accour. The DD indicate to the user that he/she is approved to use the media device.\newline When the PCD recieve the tag id that is stored in the local memory then it means the user is logging off. The PCD will switch off the power to the media device and send a logoff massage til the server. Should another user want to take over the usage of a media device the PCD will try to login with the new tag if declined then the DD will then signal this and keep the old user on. If accepted then the server will overwirte the the previus user and PCD will recieve the information for the new user with out turning the power off and then on again.\newline
+\textbf{Logon/logoff media device.} \newline
+When a tag is read by the DD will the PCD receive the tag id which formed to a login message if no one is all ready logged in the system. The PCD will then read if the user is declined or accepted to use the device. If the user is accepted then the PCD will switch the power on to the media device, save the tag id in local memory and receive time left before a rule or to time usage limit occur. The DD indicate to the user that he/she is approved to use the media device.\newline When the PCD receive the tag id that is stored in the local memory then it means the user is logging off. The PCD will switch off the power to the media device and send a logoff massage til the server. Should another user want to take over the usage of a media device the PCD will try to login with the new tag if declined then the DD will then signal this and keep the old user on. If accepted then the server will overwirte the the previus user and PCD will recieve the information for the new user with out turning the power off and then on again.\newline
 
 
 \textbf{Disconnection under use.} \newline
-A disconection is either found under the regular status call efter each five minutes or at a logon/logoff call. A disconection will lock the device so only the current user can use the media device until the PCD is reconected with the server. The server see the disconection when there haven't been a status call from the device in five minutes. The disconnection is translated to a logoff at the server side stoppe the usage of the users time to use media devises. The use will not be logged off at the media device but will be able to use his/her time until a rule or his/her time used up according to the last status the PCD have got and is keeping track of. If the user want to logoff in a period where there is a disconnection a time stamp is set to sent to the server when the connection is reastablage. The media can also first be used when the connection is reastablage.   
-This procedure have the advange that the user will not have to cut off the media in use if the connection is waopely and the user will be able to login on other media device even with previus media divice not yet have connection. 
-The disavenge is that the user has the possiblety to overuse the time resigtion by still use the disconnected divice until there is no more time and in the mean time has turned on at new device. 
-The disadvange will but also have the effect to punish the user with a big negitive time to use other devices when the disconnected device is reconnected and this should discourage this senario.       
+A disconnection is either found under the regular status call after each five minutes or at a logon/logoff call. A disconnection will lock the device so only the current user can use the media device until the PCD is reconnected with the server. The server see the disconnection when there haven't been a status call from the device in five minutes. The disconnection is translated to a logoff at the server side stoppe the usage of the users time to use media devices. The user will not be logged off at the media device but will be able to use his/her time until a rule or his/her time used up according to the last status the PCD have got and is keeping track of. If the user want to logoff in a period where there is a disconnection a time stamp is set to sent to the server when the connection is reestablished. The media can also first be used when the connection is reestablished.   
+This procedure have the advantage that the user will not have to cut off the media in use if the connection is waopely and the user will be able to login on other media device even with previous media device not yet have connection. 
+The disadvantage is that the user has the possibility to overuse the time restriction by still use the disconnected device until there is no more time and in the mean time has turned on at new device. 
+The disadvantage will but also have the effect to punish the user with a big negative time to use other devices when the disconnected device is reconnected and this should discourage this scenario.       
     
 		
-\section{Prototype Implemtation}
-The prototype is designed to prove the concept of a tag reader and the communication protecol between powercontrol and server. Therefor shall the Ardurino hardware be seen as replaceble for to manufature this system it is need be unic devices that is able to connect on the power core to the the media device and slim designed card reader with speaker and indications lights. To prove the conecpt the device is able to read and accept/decline tags, handele time usage and time restictions. 
+\section{Prototype Implementation}
+The prototype is designed to prove the concept of a tag reader and the communication protocol between powercontrol and server. Therefor shall the Ardurino hardware be seen as replacable for to manufacture this system it is need be unique devices that is able to connect on the power core to the the media device and slim designed card reader with speaker and indications lights. To prove the concept the device is able to read and accept/decline tags, handle time usage and time restrictions. 
 
 \fixme{Indsæt flowchart}
 
