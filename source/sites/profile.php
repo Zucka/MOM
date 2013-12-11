@@ -1,12 +1,14 @@
 <?php
 	error_reporting(E_ALL);
 	ini_set('display_errors', 1);
-	print_r($_SESSION);
 	// require_once "db/db_user.php";
 
 	if (isset($_GET['Pid'])) {$Pid = $_GET['Pid'];} else {$Pid = $_SESSION['PId'];}
 	$userDetails = getProfileByProfileId($Pid);
-	$tagDetails  = getTagActivity($userDetails['TSerieNo'],0,10);
+	$tagDetails = null;
+	if ($userDetails['TSerieNo'] != '') {
+		$tagDetails  = getTagActivity($userDetails['TSerieNo'],0,10);
+	} 
 
 ?>
 
@@ -49,6 +51,12 @@
 					<label class="col-sm-3 control-label">Email: </label>
 					<div class="col-sm-8">
 						<p class="form-control-static"><?php echo $userDetails['email'] ?></p>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Points left: </label>
+					<div class="col-sm-8">
+						<p class="form-control-static"><?php echo $userDetails['points'] ?></p>
 					</div>
 				</div>
 				<div class="form-group">
