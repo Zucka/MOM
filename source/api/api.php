@@ -131,8 +131,8 @@ $app->get('/turnOn/:cId/:tId', function($cId,$tId) {
 //	uId = Id of the user that want's to turn off device (might not be needed? have that info already?)
 $app->get('/turnOff/:cId/:tId', function($cId,$tId) {
 	$db = new MySQLHelper();
-	$dId = $db->real_escape_string($cId);
-	$uId = $db->real_escape_string($tId);
+	$cId = $db->real_escape_string($cId);
+	$tId = $db->real_escape_string($tId);
 	if (!db_device_verify_cId($cId,$tId))
 	{
 		echo json_encode(array('status' => 'ERROR', 'error' => 'Could not verify controller or tag id'));
@@ -140,9 +140,10 @@ $app->get('/turnOff/:cId/:tId', function($cId,$tId) {
 	}
 
 	$row = $db->executeSQL("SELECT controller.status,controller_used_by_tag.TSerieNo,controller.cost FROM controller,controller_used_by_tag WHERE controller_used_by_tag.CSerieNo=controller.CSerieNo AND controller.CSerieNo='$cId' AND controller_used_by_tag.endtime IS NULL LIMIT 1")->fetch_assoc(); //time is when the device was turned on, user is who turned the device on
+	$controllerStatus = $db->executeSQL("SELECT status FROM controller WHERE CSerieNo='$cId'")->fetch_assoc()['status'];
 	$status = '';
 	$error = '';
-	switch ($row['controller.status']) {
+	switch ($controllerStatus) {
 		case 'RED': //device is currently off and is able to be turned on
 			$status = 'ERROR';
 			$error = 'Device is already off!';
@@ -164,7 +165,7 @@ $app->get('/turnOff/:cId/:tId', function($cId,$tId) {
 			break;
 		default:
 			$status = 'ERROR';
-			$error = 'Status value not recognized, something is very wrong! - status value: '.$row['controller.status'];
+			$error = 'Status value not recognized, something is very wrong! - status value: '.$controllerStatus;
 			break;
 	}
 	$cost = $row['cost'];
