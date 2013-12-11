@@ -65,8 +65,14 @@ $app->get('/turnOn/:cId/:tId', function($cId,$tId) {
 	$db = new MySQLHelper();
 	$dId = $db->real_escape_string($cId);
 	$uId = $db->real_escape_string($tId);
-	if (!db_device_verify_cId($cId,$tId) || !db_rules_user_can_turn_device_on($cId,$tId))
+	if (!db_device_verify_cId($cId,$tId))
 	{
+		echo json_encode(array('status' => 'ERROR', 'error' => 'Could not verify controller or tag id'));
+		return;
+	}
+	if (!db_rules_user_can_turn_device_on($cId,$tId))
+	{
+		echo json_encode(array('status' => 'ERROR', 'error' => 'User does not have the rights to turn on this device'));
 		return;
 	}
 	$row = $db->executeSQL("SELECT status,cost FROM controller WHERE controller.CSerieNo='$cId' LIMIT 1")->fetch_assoc();
@@ -129,6 +135,7 @@ $app->get('/turnOff/:cId/:tId', function($cId,$tId) {
 	$uId = $db->real_escape_string($tId);
 	if (!db_device_verify_cId($cId,$tId))
 	{
+		echo json_encode(array('status' => 'ERROR', 'error' => 'Could not verify controller or tag id'));
 		return;
 	}
 
