@@ -778,7 +778,7 @@
 						$table = $theTables['Cond_timeperiod'];		
 						//               'condId'         'timeFrom',         'timeTo',             'weekdays'
 						$column = "(" . $tempcol[0] . ", ".$tempcol[1] . ", ". $tempcol[2] . ", " . $tempcol[3];
-						$values = "(" . $condID . ", " . $extras[$tempcol[1]] . ", " . $extras[$tempcol[2]] . ", '" . $extras[$tempcol[3]]. "'";
+						$values = "(" . $condID . ", " . $extras[$tempcol[1]] . ", "  . $extras[$tempcol[2]]  . ", '".$extras[$tempcol[3]] . "'";
 						//'weekly'
 						if($extras[$tempcol[4]] !== null)
 						{
