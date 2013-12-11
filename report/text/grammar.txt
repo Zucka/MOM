@@ -1,0 +1,46 @@
+| alternative
+:= equal
+[] optional
+() group
+* 0 to many
+
+<Permission>:= <name> <ConditionTimeperiod> <Controller>
+
+<Rule>:= <name> (
+	 	  (<ActionsetSet1><ConditionSet1>)*
+		| (<ActionsetSet2><ConditionSet2>)*
+		| (<ActionsetSet3><ConditionSet3>)*
+		| (<ActionsetSet4><ConditionSet4>)*
+		| (<ActionsetSet5><ConditionSet5>)*
+	)
+
+<ActionsetSet1> := 'Block user' | 'Activate user' 
+<ConditionSet1> := <ConditionTimestamp>
+
+<ActionsetSet2> := ('Add points' | 'Delete points') <Points>
+<ConditionSet2> := <ConditionTimeperiod> | <ConditionTimestamp>
+
+<ActionsetSet3> := 'Set maximum of point' <Points>
+<ConditionSet3> := <ConditionTrue>
+
+<ActionsetSet4> := 'Unlimited time' | ('Access any controller' | 'Cannot access any controller') <Controller>
+<ConditionSet4> := <ConditionTimeperiod> | <ConditionTimestamp> 
+
+<ActionsetSet5> := ('Access controller' | 'Cannot access controller')<Controller>
+<ConditionSet5> := <ConditionTimestamp> |	<ConditionTimeperiod> 
+					| 	<ConditionTrue>	|	<ConditionElse>	
+				
+<ConditionTimestamp> :=  'Timestamp' <Timestamp>
+<ConditionTimeperiod> :=  'TimePeriod' <Timestamp> <Timestamp> <Repeatable>					
+<Repeatable> :=   <Weekdays> <Repeat> | Nill
+
+<ConditionTrue> := 'True' 
+<ConditionElse>:= ('Device on' | 'Device off') <Controller>
+				
+<Name> := ALPHA
+<Controller> :=DIGIT
+<Points> := DIGIT
+<Weekdays> := ('monday'| 'tuesday'| 'wednesday'| 'thursday'| 'friday'| 'saturday'| 'sunday')*
+<Repeat> := 'weekly' | 'biweekly' | 'triweekly' | 'first in month' | 'last in month'
+
+ 
