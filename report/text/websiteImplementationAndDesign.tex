@@ -3,6 +3,7 @@ This chapter goes into details about the design and implementation of the websit
 
 \section{Design}
 %Interface Design
+%What you can do from the website, and how
 As mentioned in the overview, see subsection \vref{subsection:momswebsite}, we know what the website is required to do for the system.
 These requirements made the basis for deciding what pages should be created and what each page's functionality should be. During the designing of the website we aimed to fit all relevant information into each page.\\
 All pages was first designed on the blackboards, where we would discover inconsistencies, new navigation paths and learn about how concepts such as rules should be implemented.\\
@@ -41,14 +42,22 @@ We decided to create this permissions page, because permissions is an essential 
 \textbf{Calendar} has two purposes. It serves as a graphical presentation of rules, in the sense that it shows when a rule will apply, and to what user.\\
 It also serves to provide a shortcut to create rules, from other calendars. For example, if the user has a Google calendar, that have been registered to the system, they can simply click that event and the system will start creating a rule with a condition corresponding to the calendar events configuration.\\
 \\
-
+Every page have been explained and in the next section the navigation is explained.
 %Navigation
+\subsection{Navigation}
+When the user has logged in, they are navigated to the dashboard. From here and every other page they can navigate to the main pages: Dashboard, Devices, Users, Permissions, Rules, Chores, Graf and Calendar.\\
+We decided to keep our navigation as simple as possible. In the design there is 5 head menus, Dashboard, Devices, Users, Graf and Calendar. Meaning Permissions, Rules and Chores are sub-menus and these are all listed under Users.\\
+We also designed the system such that no other menu or functionality is any more than 2 clicks away, every add or detail function can be accessed directly from one of the head menus.\\
 
+\subsection{Color Scheme and Layout Design}
 %Color Schemes
 %Bootstrap and other inspiration sources
-%What you can do from the website, and how
+Our color scheme and layout design was inspired by both bootstrap and a website which utilizes bootstrap, called SB Admin\citep{sbadmin}. We have used a standard bootstrap color scheme, and added in a little blue, we wanted to keep the colors simple but no further thought was put into it.\\
+The most of the design is based on standard tools from bootstrap. With exception of the table sorter functionality. Which is a JQuery tool that allows for sorting of tables.
+
 
 \section{Implementation}
+The previous section explained what each page should do, and in some detail how from the users viewpoint.
 %AJAX
 %PHP
 %Database communication
