@@ -10,6 +10,7 @@ char useID[4];  //ID of logged in User, Limited to 3.
 int timeLeft;
 unsigned long lastTime;
 int state;
+int dvc = 2;
 
 //Setting up the Shield's addresses.
 byte mac[] = { 0x90, 0xA2, 0xDA, 0x0E, 0xC5, 0x94 };
@@ -90,6 +91,7 @@ void setup()
   delay(1000);
   rfid.begin(19200);
   delay(1000);
+  pinMode(dvc, OUTPUT);
   
   Serial.println("Start");
 }
@@ -420,6 +422,12 @@ void getStatus(void)
       aJsonObject* timeRemainingJson = aJson.getObjectItem(json,"timeRemaining");
       timeLeft = int(timeRemainingJson->valuestring);
     }
+    if(strcmp(statJson->valuestring,"RED") == 0)
+    {
+      digitalWrite(dvc, LOW); //Turn off the device controlled.
+      strcpy(useID,"");
+      state = 0;
+    }
     
     free(o);
   }
@@ -507,6 +515,7 @@ void turnOn(void)
       Serial.println(timeRemaining->valuestring);
       timeLeft = int(timeRemaining->valuestring);
       state = 1;
+      digitalWrite(dvc, HIGH); //Turn on the device controlled.
     }
     else
     {
@@ -585,12 +594,14 @@ void turnOff(void)
     
     strcpy(useID,"");
     state = 0;
+    digitalWrite(dvc, LOW); //Turn off the device controlled.
     free(off);
   }
   else
   {
     Serial.println(F("Connection Failed"));
     state = 2;
+    digitalWrite(dvc, LOW); //Turn off the device controlled.
     strcpy(useID,"");
   }
 }
