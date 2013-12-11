@@ -65,12 +65,12 @@
 	}
 	elseif ($action == 'login')
 	{
-		if (isset($_POST['usernameLogin'])) {$username = $_POST['usernameLogin'];} else {header('location:login.php?error=2');}
-		if (isset($_POST['passwordLogin'])) {$password = $_POST['passwordLogin'];} else {header('location:login.php?error=2');}
+		if (isset($_POST['usernameLogin'])) {$username = $_POST['usernameLogin'];} else {header('location:?error=2');}
+		if (isset($_POST['passwordLogin'])) {$password = $_POST['passwordLogin'];} else {header('location:?error=2');}
 
 		$result = validateLogin($username,$password);
 		if ($result == false) {
-				header('location:login.php?error=1');
+				header('location:?error=1');
 				die();
 		}
 		else {
