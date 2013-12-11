@@ -24,8 +24,8 @@
 					$weekdays .= (isset($_POST['repeatFri']) ? 'friday,' 	: '');
 					$weekdays .= (isset($_POST['repeatSat']) ? 'saturday,' 	: '');
 					$weekdays .= (isset($_POST['repeatSun']) ? 'sunday,' 	: '');
-					$nCondition = new Condition(0 , "Timeperiod", null, null, array('timeFrom'		=> $_POST['startTime'],
-																					'timeTo'		=> $_POST['endDate'],
+					$nCondition = new Condition(0 , "Timeperiod", null, null, array('timeFrom'		=> '"'.$_POST['startTime'].'"',
+																					'timeTo'		=> '"'.$_POST['endDate'].'"',
 																					'weekdays'		=> $weekdays,
 																					'weekly'		=> ($_POST['repeatEach'] == 'eachWekk' 	? 1 : 0),
 																					'ndWeekly'		=> ($_POST['repeatEach'] == 'biWeekly' 	? 1 : 0),
