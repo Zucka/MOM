@@ -636,10 +636,10 @@
 			$table = $theTables['Rules'];
 			$column = "( " . $tempcol[1] . ", " . $tempcol[2] ;
 			$values = "( ". $ruleData->CSId . ", '". $ruleData->name . "'";
-			if($ruleData->isPermission != null)
+			if($ruleData->isPermission !== null)
 			{
 				$column .= ", " . $tempcol[3]; 
-				$values .= ", " . $ruleData->isPermission ;
+				$values .= ", " .  bool_to_String($ruleData->isPermission) ;
 			}
 			$column .= ")"; 
 			$values .= ")";
@@ -780,7 +780,7 @@
 						$column = "(" . $tempcol[0] . ", ".$tempcol[1] . ", ". $tempcol[2] . ", " . $tempcol[3];
 						$values = "(" . $condID . ", " . $extras[$tempcol[1]] . ", " . $extras[$tempcol[2]] . ", '" . $extras[$tempcol[3]]. "'";
 						//'weekly'
-						if($extras[$extras[$tempcol[4]]] !== null)
+						if($extras[$tempcol[4]] !== null)
 						{
 							$column .= ", " . $tempcol[4];
 							$values .= ", " . bool_to_String($extras[$tempcol[4]]);
