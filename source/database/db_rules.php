@@ -20,7 +20,7 @@ function db_rules_user_can_turn_device_on($cId,$tId)
 	{
 		return false;
 	}
-	elseif($result===null) //Timeperiod and True allow the rule to use controller but need to check device on and off later
+	/*elseif($result===null) //Timeperiod and True allow the rule to use controller but need to check device on and off later
 	{				//if not then check if Permissions give access in time
 		$permission = getRulesFromPId($pId,true);
 		$permissionGiving = false;
@@ -53,7 +53,7 @@ function db_rules_user_can_turn_device_on($cId,$tId)
 			return false;
 		}
 	}
-	
+	*/
 	//check on device on device off constrains
 	if($rules !=null)
 	{
