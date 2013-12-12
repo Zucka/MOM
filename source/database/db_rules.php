@@ -20,7 +20,7 @@ function db_rules_user_can_turn_device_on($cId,$tId)
 	{
 		return false;
 	}
-	/*elseif($result===null) //Timeperiod and True allow the rule to use controller but need to check device on and off later
+	elseif($result===null) //Timeperiod and True allow the rule to use controller but need to check device on and off later
 	{				//if not then check if Permissions give access in time
 		$permission = getRulesFromPId($pId,true);
 		$permissionGiving = false;
@@ -40,9 +40,9 @@ function db_rules_user_can_turn_device_on($cId,$tId)
 				if($per['controllerId'] == $cId && $weekValid && strpos($per['weekdays'], strtolower($timeNowFormatDay)) 
 						&& $timeFrom <= $timeNowFormatHMS && $timeNowFormatHMS <= $timeTo)
 				$timeNowFormatWeekNo = date("W",$timeNow );	*/
-	/*			if($per['conditions'][0]['controllerId'] == $cId) /*&& $timeNowFormatWeekNo == $per['weekNumber'] && strpos($per['weekdays'], strtolower($timeNowFormatDay)) 
+				if($per['conditions'][0]['controllerId'] == $cId) /*&& $timeNowFormatWeekNo == $per['weekNumber'] && strpos($per['weekdays'], strtolower($timeNowFormatDay)) 
 						&& $timeFrom <= $timeNowFormatHMS && $timeNowFormatHMS <= $timeTo)*/
-	/*			{
+				{
 					$permissionGiving = true;
 					break;
 				}
@@ -53,7 +53,7 @@ function db_rules_user_can_turn_device_on($cId,$tId)
 			return false;
 		}
 	}
-	*/
+	
 	//check on device on device off constrains
 	if($rules !=null)
 	{
