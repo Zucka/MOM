@@ -101,6 +101,7 @@ function actionNameSelect () {
 function setVisibility (controllerName, amountOfPoints) {
 	$("#controllerName").css("display"	, (controllerName 	? "" : "none"));
 	$("#amountOfPoints").css("display"	, (amountOfPoints 	? "" : "none"));
+	changeStateOfID(	"#repeatEach"	, 'add');
 	repeatWeeklySelect ();
 }
 function repeatWeeklySelect () {
