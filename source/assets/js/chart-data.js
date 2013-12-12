@@ -49,16 +49,16 @@
 //   smooth: false,
 // });
 
-Morris.Donut({
-  element: 'morris-chart-donut',
-  data: [
-    {label: "TV", value: 42.7},
-    {label: "Shower", value: 8.3},
-    {label: "Playstation", value: 12.8},
-    {label: "Wii", value: 36.2}
-  ],
-  formatter: function (y) { return y + "%" ;}
-});
+// Morris.Donut({
+//   element: 'morris-chart-donut',
+//   data: [
+//     {label: "TV", value: 42.7},
+//     {label: "Shower", value: 8.3},
+//     {label: "Playstation", value: 12.8},
+//     {label: "Wii", value: 36.2}
+//   ],
+//   formatter: function (y) { return y + "%" ;}
+// });
 
 Morris.Line({
   // ID of the element in which to draw the chart.

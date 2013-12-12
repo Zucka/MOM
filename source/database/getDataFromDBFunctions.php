@@ -621,4 +621,83 @@ weekNumber: 23
 		return $returnArray;
 	}
 	
+
+	// STATISTICS !!!
+	// Get usage statistics by PId 
+	// function getUsageByPId($PId, $type='device') {
+	// 	$db= new MySQLHelper();
+	// 	global $theTables;
+	// 	global $theColumns;
+	// 	$profile = getProfileByProfileId($PId);
+	// 	$selectValue =  "cubt.TSerieNo,
+	// 					cubt.CSerieNo,
+	// 					con.CSId,
+	// 					con.name,
+	// 					con.location,
+	// 					con.status,
+	// 					con.cost,
+	// 					cubt.starttime,
+	// 					SUM((FLOOR((UNIX_TIMESTAMP(cubt.endtime) - UNIX_TIMESTAMP(cubt.starttime)) / 60))*con.cost) AS point";
+	// 	$table = "controller_used_by_tag cubt LEFT JOIN  controller con ON con.CSerieNo = cubt.CSerieNo";
+	// 	$whereClause = "cubt.TSerieNo = ".$profile['TSerieNo']." AND (UNIX_TIMESTAMP(cubt.endtime) - UNIX_TIMESTAMP(cubt.starttime) >= 59)";
+	// 	$ordering = "";
+	// 	$otherSQL = " GROUP BY con.CSerieNo ";
+	// 	$result = $db->query($selectValue, $table, $whereClause, $ordering, $otherSQL);
+	// 	$returnArray = null;
+	// 	while($row = mysqli_fetch_assoc($result))
+	// 	{
+	// 		$returnArray[] = $row; 
+	// 	}
+	// 	return $returnArray;
+	// }
+	function getUsageByPId($PId, $type='device') {
+		$db= new MySQLHelper();
+		global $theTables;
+		global $theColumns;
+		$profile = getProfileByProfileId($PId);
+		$selectValue =  "subSelect1.TSerieNo,
+					    subSelect1.CSerieNo,
+					    subSelect1.CSId,
+					    subSelect1.name,
+					    subSelect1.location,
+					    subSelect1.status,
+					    subSelect1.cost,
+					    subSelect1.starttime,
+					    subSelect1.point,
+					    (subSelect1.point / (subSelect.totalPoints / 100)) AS percentage,
+					    subSelect.totalPoints";
+		$from = "(SELECT 
+			        SUM((FLOOR((UNIX_TIMESTAMP(cubt.endtime) - UNIX_TIMESTAMP(cubt.starttime)) / 60)) * con.cost) AS totalPoints
+			    FROM
+			        controller_used_by_tag cubt
+			    LEFT JOIN controller con ON con.CSerieNo = cubt.CSerieNo
+			    WHERE
+			        cubt.TSerieNo = ".$profile['TSerieNo']."
+			            AND (UNIX_TIMESTAMP(cubt.endtime) - UNIX_TIMESTAMP(cubt.starttime) >= 59)
+			    GROUP BY cubt.TSerieNo) AS subSelect,
+			    (SELECT 
+			        cubt1.TSerieNo,
+		            cubt1.CSerieNo,
+		            con1.CSId,
+		            con1.name,
+		            con1.location,
+		            con1.status,
+		            con1.cost,
+		            cubt1.starttime,
+		            SUM((FLOOR((UNIX_TIMESTAMP(cubt1.endtime) - UNIX_TIMESTAMP(cubt1.starttime)) / 60)) * con1.cost) AS point
+			    FROM
+			        controller_used_by_tag cubt1
+			    LEFT JOIN controller con1 ON con1.CSerieNo = cubt1.CSerieNo
+			    WHERE
+			        cubt1.TSerieNo = ".$profile['TSerieNo']."
+			            AND (UNIX_TIMESTAMP(cubt1.endtime) - UNIX_TIMESTAMP(cubt1.starttime) >= 59)
+			    GROUP BY con1.CSerieNo) AS subSelect1";
+		$result = $db->query($selectValue, $from);
+		$returnArray = null;
+		while($row = mysqli_fetch_assoc($result))
+		{
+			$returnArray[] = $row; 
+		}
+		return $returnArray;
+	}
 ?>
