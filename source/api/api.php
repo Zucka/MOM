@@ -181,7 +181,7 @@ $app->get('/turnOff/:cId/:tId', function($cId,$tId) {
 	{
 		$timeSpent = db_device_turn_off($cId,$tId); //turn off device and get time spent
 		$points = $timeSpent*$cost;
-		if (!db_rules_user_has_unlimited_points($row2['PId'])) //only remove points if user does not have unlimited points
+		if (!db_rules_user_has_unlimited_points($row['PId'])) //only remove points if user does not have unlimited points
 		{
 			db_points_remove($tId,$points);
 			$data['pointsRemoved'] = strval($points);
