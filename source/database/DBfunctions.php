@@ -818,7 +818,7 @@
 						else
 						{
 							$column .= ", ". $tempcol[9];
-							$values .= ", WEEK()";
+							$values .= ", null";
 						}
 						$column .= ")";
 						$values .= ")";
