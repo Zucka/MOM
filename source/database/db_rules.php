@@ -28,8 +28,12 @@ function db_rules_user_can_turn_device_on($cId,$tId)
 				$timeNowFormatDay = strtolower(date("l", $timeNow));
 				$timeTo =  date("H:i:s", strtotime( $per['timeTo'] ));
 				$timeFrom =   date("H:i:s", strtotime( $per['timeFrom'] ));
+				$week = date('W',strtotime( $per['timeFrom'] ));
 				$timeNowFormatWeekNo = date("W",$timeNow );	
-				if($per['controllerId'] == $cId && $timeNowFormatWeekNo == $per['weekNumber'] && strpos($per['weekdays'], strtolower($timeNowFormatDay)) 
+				$weekValid = true;
+				if ($array['ndWeekly'] == true) {$weekValid = ($timeNowFormatWeekNo-$week) % 2 == 0;}					
+				if ($array['rdWeekly'] == true) {$weekValid = ($timeNowFormatWeekNo-$week) % 3 == 0;}
+				if($per['controllerId'] == $cId && $weekValid && strpos($per['weekdays'], strtolower($timeNowFormatDay)) 
 						&& $timeFrom <= $timeNowFormatHMS && $timeNowFormatHMS <= $timeTo)
 				{
 					$permissionGiving = true;
@@ -141,9 +145,12 @@ function db_rules_device_should_turn_off($cId, $tId)
 		$timeNowFormatDay = strtolower(date("l", $timeNow));
 		$timeTo =  date("H:i:s", strtotime( $per['timeTo'] ));
 		$timeFrom =   date("H:i:s", strtotime( $per['timeFrom'] ));
+		$week = date('W',strtotime( $per['timeFrom'] ));
 		$timeNowFormatWeekNo = date("W",$timeNow );	
-		
-		if($per['controllerId'] == $cId && $timeNowFormatWeekNo == $per['weekNumber'] && strpos($per['weekdays'], $timeNowFormatDay) 
+		$weekValid = true;
+		if ($array['ndWeekly'] == true) {$weekValid = ($timeNowFormatWeekNo-$week) % 2 == 0;}					
+		if ($array['rdWeekly'] == true) {$weekValid = ($timeNowFormatWeekNo-$week) % 3 == 0;}
+		if($per['controllerId'] == $cId && $weekValid && strpos($per['weekdays'], $timeNowFormatDay) 
 				&& $timeFrom <= $timeNowFormatHMS && $timeNowFormatHMS <= $timeTo )
 		{
 			if( $lowestTime==null || $timeTo < $lowestTime)
@@ -371,8 +378,12 @@ function timeperiodIsValidNowInRule($rule)
 			$timeNowFormatDay = strtolower(date("l", $timeNow));
 			$timeTo =  date("H:i:s", strtotime( $array['timeTo'] ));
 			$timeFrom =   date("H:i:s", strtotime( $array['timeFrom'] ));
-			$timeNowFormatWeekNo = date("W",$timeNow );					
-			if($timeNowFormatWeekNo == $array['weekNumber'] && strpos($array['weekdays'], $timeNowFormatDay) 
+			$week = date('W', strtotime( $array['timeFrom'] ));
+			$timeNowFormatWeekNo = date("W",$timeNow );
+			$weekValid = true;
+			if ($array['ndWeekly'] == true) {$weekValid = ($timeNowFormatWeekNo-$week) % 2 == 0;}					
+			if ($array['rdWeekly'] == true) {$weekValid = ($timeNowFormatWeekNo-$week) % 3 == 0;}					
+			if($weekValid && strpos($array['weekdays'], $timeNowFormatDay) 
 				&& $timeFrom <= $timeNowFormatHMS && $timeNowFormatHMS <= $timeTo )
 			{
 				return true;
