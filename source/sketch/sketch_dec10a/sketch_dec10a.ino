@@ -662,18 +662,18 @@ void halt(void)
  * Needs to be called after any Command is sent to the SM130 module. */
 void parse_response(char PH[], int length)
 {
-  for(int i=1;i<length;i++)
+  for(int i=1;i<length;i++) //Removes the remnants of any previous message
   {
     PH[i] = 0;
   }
   
-  while(rfid.available())
+  while(rfid.available()) //This whileloop runs so long as there is still bytes to be read.
   {
-    if(rfid.read() == 255)
+    if(rfid.read() == 255) //Checks for the Message Header.
     {
-      for(int i=1;i<length;i++)
+      for(int i=1;i<length;i++) 
       {
-        PH[i]= rfid.read();
+        PH[i]= rfid.read(); //For the Length of the expected UART message, Add bytes to the Array.
       }
     }
   }

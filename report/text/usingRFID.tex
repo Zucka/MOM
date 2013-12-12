@@ -1,5 +1,17 @@
 \section{Using RFID With The Arduino}
 The Arduino board utilizes the SM130 by sending it commands and receiving replies through Digital Pins 7 and 8.
+These pins are initialized using the library \verb|SoftwareSerial.h|.\\
+\begin{lstlisting}
+SoftwareSerial rfid(7, 8); //Sets up the Digital Pins 7 and 8 '
+                           //Which the RFID reader Communicates through.
+													
+rfid.begin(19200); //This Method is called in the Setup() phase 
+                   //of the Arduino Startup.
+									 //It starts the Communication on the standard baud
+									 //rate of 19200 bps, N, 8, 1.
+													
+\end{lstlisting}
+
 These messages are a series of bytes sent one at the time in the form of Hexadecimals and in the context of an UART framed message. \newline
 \begin{tabular}{|l|l|l|}
 \hline \hline
@@ -32,9 +44,49 @@ The command messages needed we need to allow logging in with a tag are:
 	\end{itemize}
 \end{itemize}
 
+As an example \autoref{RBCE} is the code run when sending the Read Block Command to the SM130.
+\begin{lstlisting} [label=RBCE, caption=Example of the Read Block Command from the code point of view.]
+void read_block_RFID(void)
+{
+  //Read Block Command in UART, sent to the SM130. The Block needs to be Authenticated beforehand.
+  rfid.write((uint8_t)0xFF); //Header: 1 byte, must always be 0xFF.
+  rfid.write((uint8_t)0x00); //Reserved: 1 byte, must always be 0x00.  
+  rfid.write((uint8_t)0x02); //Message Length: 1 byte, both for Command and Data (Here: 2 bytes).
+  rfid.write((uint8_t)0x86); //Command: 1 byte, 0x86 is the Read Block Command
+  rfid.write((uint8_t)0x01); //Data(Block Number): 1 byte, read block nr 0x01. 
+  rfid.write((uint8_t)0x89); //The Message Checksum.
+  delay(10); 
+}													
+\end{lstlisting}
+
+
 On being given a command the SM130 will send a response from which you can tell if the command has been successfully performed or not.
-In the code this information is saved on a char array and on `Seek' and `Read Block' we determine the success by reading the slot containing the length of the Message.
-On the Authenticate command the Data slot is read to determine success.
+In the code this information is saved on a char array by the parse method seen in \autoref{arduinoparse}. 
+On `Seek' and `Read Block' we determine the success by reading the slot containing the length of the Message, while on the Authenticate command the Data slot is read to determine success.
+
+\begin{lstlisting} [label=arduinoparse, caption=The method used to read the SM130's response.]
+void read_block_RFID(void)
+{
+void parse_response(char PH[], int length)
+{
+  for(int i=1;i<length;i++)
+  {
+    PH[i] = 0;
+  }
+  
+  while(rfid.available()) //This whileloop runs so long as there is still bytes to be read. 
+  {
+    if(rfid.read() == 255) //Checks for the Message Header.
+    {
+      for(int i=1;i<length;i++)
+      {
+        PH[i]= rfid.read(); //For the Length of the expected UART message, Add bytes to the Array.
+      }
+    }
+  }
+}
+}													
+\end{lstlisting}
 
 \begin{tabular}{|l|l|}
 \hline
