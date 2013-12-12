@@ -146,7 +146,7 @@ $app->get('/turnOff/:cId/:tId', function($cId,$tId) {
 		return;
 	}
 
-	$row = $db->executeSQL("SELECT controller.status,controller_used_by_tag.TSerieNo,controller.cost,tag.profileId FROM controller,controller_used_by_tag,tag WHERE controller_used_by_tag.CSerieNo=controller.CSerieNo AND controller_used_by_tag.TSerieNo=tag.TSerieNo AND controller.CSerieNo='$cId' AND controller_used_by_tag.endtime IS NULL LIMIT 1")->fetch_assoc(); //time is when the device was turned on, user is who turned the device on
+	$row = $db->executeSQL("SELECT controller.status,controller_used_by_tag.TSerieNo,controller.cost,tag.profileId as PId FROM controller,controller_used_by_tag,tag WHERE controller_used_by_tag.CSerieNo=controller.CSerieNo AND controller_used_by_tag.TSerieNo=tag.TSerieNo AND controller.CSerieNo='$cId' AND controller_used_by_tag.endtime IS NULL LIMIT 1")->fetch_assoc(); //time is when the device was turned on, user is who turned the device on
 	$controllerStatus = $db->executeSQL("SELECT status FROM controller WHERE CSerieNo='$cId'")->fetch_assoc()['status'];
 	$status = '';
 	$error = '';
