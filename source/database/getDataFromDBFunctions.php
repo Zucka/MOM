@@ -421,9 +421,7 @@
 
 	
 	
-	
-
-	/* get rules and permission from a personID*/	
+		/* get rules and permission from a personID*/	
 
 	/* (rules/permission returns)- an array that contain rules:so array(rule1, rule2 ....)
 			rule1 is an array =>  array(rulesVariable, conditions, actions)
@@ -517,23 +515,24 @@ weekNumber: 23
 		$whereClause = "r.".  $columnRules[1].' = '. $CSID; 
 		if($isPermission)
 		{
-			$tables .= ',' . $theTables['Rcondition'] . ' cond,' . $theTables['Cond_timeperiod'] . ' condTP';
-			$whereClause .= ' AND r.'. $columnRules[3] . '= '. $isPermission .' AND cond.' . $columnCond[1] . "= r.". $columnRules[0].  ' AND condTP.' . $columnCondTP[0] . "= cond.". $columnCond[0]; 
+			//$tables .= ',' . $theTables['Rcondition'] . ' cond,' . $theTables['Cond_timeperiod'] . ' condTP';
+			$whereClause .= ' AND r.'. $columnRules[3] . '= '. $isPermission; //.' AND cond.' . $columnCond[1] . "= r.". $columnRules[0].  ' AND condTP.' . $columnCondTP[0] . "= cond.". $columnCond[0]; 
 		
-			$result = $db->query($selectValues, $tables, $whereClause );
+		/*	$result = $db->query($selectValues, $tables, $whereClause );
 			$returnArray = null;
 			while($row = mysqli_fetch_assoc($result))
 			{	
 				$returnArray[] = $row; 
 			}
-			return $returnArray;
+			return $returnArray;*/
 		}
 		else
 		{
 			$whereClause .= ' AND r.'. $columnRules[3] . '= false';
-			$result = $db->query($selectValues, $tables, $whereClause );//find all rules
-			return getRuleHelper($result);
+			
 		}
+		$result = $db->query($selectValues, $tables, $whereClause );//find all rules
+			return getRuleHelper($result);
 	}
 	
 	function getRuleHelper($result)
@@ -547,6 +546,7 @@ weekNumber: 23
 		$columnAction = $theColumns['Action'];
 		$selectValues= '*';
 		$returnArray = null;
+		if($result!=null){
 		while($row = mysqli_fetch_assoc($result))
 		{				
 			/*get all conditions for the rule*/
@@ -556,6 +556,7 @@ weekNumber: 23
 			
 			$tempresult = $db->query($selectValues, $tables, $whereClause );//find all conditions to the rules
 			$conditionsArray = null;
+			if($tempresult!=null){
 			while($condition = mysqli_fetch_assoc($tempresult))
 			{	
 				if($condition['name'] == "Timeperiod")
@@ -584,7 +585,7 @@ weekNumber: 23
 					$condition['ekstra_attribute'] = null;
 				}
 				$conditionsArray[] = $condition;
-			}				
+			}}				
 			$ruleArray['conditions'] = $conditionsArray;
 			
 			/* get all actions for the rule*/
@@ -592,18 +593,21 @@ weekNumber: 23
 			$whereClause = $row['RId'] . " = " . $columnAction[1] ;
 			$tempresult = $db->query($selectValues, $tables, $whereClause );
 			$actionArray = null;
+			if($tempresult!=null)
+			{
 			while($tempRow = mysqli_fetch_assoc($tempresult))
 			{
 				$actionArray[] = $tempRow;
-			}
+			}}
 			$ruleArray['actions'] = $actionArray;
 			
 			$returnArray[] = $ruleArray; 
-		}
+		}}
 		
 		return $returnArray;
 	}
 	
+
 
 	// STATISTICS !!!
 	// Get usage statistics by PId 
