@@ -16,7 +16,11 @@ function db_rules_user_can_turn_device_on($cId,$tId)
 	//check Timeperiod and True contrains 
 	$rules = getRulesFromPId($pId,false);
 	$result = checkRulesTrueAndTimeperiod($rules, $cId);
-	if($result!=true) //Timeperiod and True allow the rule to use controller but need to check device on and off later
+	if($result===false)
+	{
+		return false;
+	}
+	elseif($result===null) //Timeperiod and True allow the rule to use controller but need to check device on and off later
 	{				//if not then check if Permissions give access in time
 		$permission = getRulesFromPId($pId,true);
 		$permissionGiving = false;
@@ -311,7 +315,7 @@ function checkRulesTrueAndTimeperiod($rules, $cId)
 		}
 		
 	}
-	return false;
+	return null;
 }
 	
 function ruleHasActionWithName($rule, $name)
