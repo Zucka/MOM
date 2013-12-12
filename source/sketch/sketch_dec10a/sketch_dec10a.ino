@@ -613,11 +613,11 @@ void turnOff(void)
 void seek(void)
 {
   //search for RFID tag, sent in UART.
-  rfid.write((uint8_t)255);
-  rfid.write((uint8_t)0);
-  rfid.write((uint8_t)1);
-  rfid.write((uint8_t)130);
-  rfid.write((uint8_t)131);
+  rfid.write((uint8_t)255); //Header: 1 Byte, Must always be 0xFF.
+  rfid.write((uint8_t)0); //Reserved: 1 Byte, Must always be 0x00.
+  rfid.write((uint8_t)1); //Message Length: 1 Byte, both for Command and Data (Seek has a message length of 1 byte).
+  rfid.write((uint8_t)130); //Command: 1 Byte, 0x82 is the Seek Command.
+  rfid.write((uint8_t)131); //The message checksum (Sum of all hexidecimals.)
   delay(10);
   Serial.println("Seek");
 }
@@ -628,7 +628,7 @@ void authenticate(void)
   rfid.write((uint8_t)0xFF); //Header: 1 byte, must always be 0xFF.
   rfid.write((uint8_t)0x00); //Reserved: 1 byte, must always be 0x00.  
   rfid.write((uint8_t)0x03); //Message Length: 1 byte, both for Command and Data (here: 3 bytes).
-  rfid.write((uint8_t)0x85); //Command: 1 byte, 0x86 is the Read Block Command
+  rfid.write((uint8_t)0x85); //Command: 1 byte, 0x85 is the Authenticate Command.
   rfid.write((uint8_t)0x01); //Data(Block Number): 1 byte, read block nr 0x01. TODO: Maybe replace with input so other than one can be read.
   rfid.write((uint8_t)0xFF); //Data(Key Type): 1 byte, authenticate with keytype A and transporty key "0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF"
   rfid.write((uint8_t)0x88); //The Message Checksum.
