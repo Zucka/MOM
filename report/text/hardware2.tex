@@ -39,9 +39,37 @@ In conclusion the identification chosen is RFID. RFID was originally not chosen,
 
 \section{Servers}
 In order to maintain the wast amount of information collected from the users and in order to offer a graphical interface to add rules, permissions and chores to the system a server setup will be needed.\\
-We here list the pros and cons of having a private home server versus having a single global server, maintained by the manufacturer of the system.
+We here list the pros and cons of having a decentralized server setup versus centralized server setup.\\
 
-\subsection{Private Home Server}
-\fixme{LARS: I'm gonna need some help writing down the pros and cons here.}
+\textbf{Decentralized Server Setup}\\
+Pros:
+\begin{itemize}
+	\item Maintains proper functionality even if the internet connection out of the house is broken.
+  \item Every person can edit the base code
+  \item Could be integrated in a Smart Home setup
+\end{itemize}
 
-\subsection{Global Server}
+Cons:
+\begin{itemize}
+	\item Each user will have to setup the system themselves or pay for a professional
+  \item If the server malfunctions the user is the one with the problem
+  \item Need to own a domain name and an external IP address in order to access the system from outside
+\end{itemize}
+
+\textbf{Centralized Server Setup}
+Pros:
+\begin{itemize}
+	\item The setup of the system is for the user only registering on the website
+	\item The user does not have to pay for extra electricity consumption of the server
+	\item If the server fails, proper security measures can be setup to handle these problems
+\end{itemize}
+
+Cons:
+\begin{itemize}
+	\item If the internet connection malfunctions for what ever reason, the system will not work optimally.
+  \item The user is limited to the functionality we offer
+\end{itemize}
+
+As can be seen by the lists, most pros in the central setup is cons in the decentralized setup and vice verse.\\
+This project focuses on developing a user friendly and upgradable system, therefor a centralized server setup was chosen. The centralized system offers the easiest way for users to get started and it also makes it easier to deal with problems. The only problem that a user can face, is the lack of internet connection or power, which in our modern time is very unlikely.\\
+Also the user would never have to do anything to keep their system up to date, since this would be handled on the server side.
