@@ -34,10 +34,9 @@ def lastDayInMonth(day,month,year):
 	return date - datetime.timedelta(days=delta)
 
 
-def shouldActivate(rule):
+def shouldActivate(rule,now):
 	timeFrom = rule['timeFrom']
 	timeTo = rule['timeTo']
-	now = datetime.datetime.now()
 	repeatable = rule['weekly'] == 1 or rule['ndWeekly'] == 1 or rule['rdWeekly'] == 1 or rule['firstInMonth'] == 1 or rule['lastInMonth'] == 1 or rule['weekdays'] is not None
 	repeatWeekMonth = rule['weekly'] == 1 or rule['ndWeekly'] == 1 or rule['rdWeekly'] == 1 or rule['firstInMonth'] == 1 or rule['lastInMonth'] == 1
 	activateDate = (now.date() >= timeFrom.date() and now.date() <= timeTo.date())
@@ -121,19 +120,22 @@ def AddPoints(rule):
 	return
 
 #check rules that have specific actions, so far only checks the 'Add points' action
-def checkRules():
+def checkRules(now):
 	print "Checking rules"
 	cur.execute("SELECT * FROM rule,rcondition,cond_timeperiod,action,profile_has_rule WHERE rule.RId=rcondition.RId AND rule.RId=action.RId AND rule.RId=profile_has_rule.RId AND rcondition.condId=cond_timeperiod.condId AND rcondition.name='Timeperiod' AND action.name='Add points'")
 	rules = cur.fetchall()
 	for rule in rules:
-		if shouldActivate(rule):
+		if shouldActivate(rule,now):
 			if rule['action.name'] == 'Add points': #add more ifs here for doing more actions
 				AddPoints(rule)
 			print 'rule nr '+str(rule['RId'])+' with condition '+str(rule['condId'])+' was activated\n'
 
-
+lastCheck = datetime.datetime.now().minute
 while True:
-	now = time()
-	checkRules()
-	print 'checking rules took {0} milliseconds'.format(str((time()-now)*1000))
-	sleep(60)
+	t = time()
+	now = datetime.datetime.now()
+	checkRules(now)
+	print 'checking rules took {0} milliseconds'.format(str((time()-t)*1000))
+	while lastCheck == datetime.datetime.now().minute:
+		sleep(1)
+	lastCheck = datetime.datetime.now().minute
