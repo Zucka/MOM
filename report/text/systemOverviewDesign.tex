@@ -1,16 +1,16 @@
 \chapter{Overall System Design}
-In this chapter the challenges from the problem statement are looked upon and an overview of what will be needed to overcome these challenges will be formulated.
+In this chapter the challenges from the problem statement are looked upon, and an overview of what will be needed to overcome these challenges, will be formulated.
 
 %In this chapter we present the overall design of Media-Online Management(MOM). First we will present how we intend the users to use MOM. Then general concepts will be introduced which is an essential part of the system and will be mentioned several times hereafter. Thirdly the requirements of MOM will be explained in more detail. Finally the system architecture will be presented.    
 
 \section{Designing a solution}
-During the design of the system, deciding on what type of hardware was needed to accommodate the challenges of the problem was one of the first things to be considered.\\
-In order to know what hardware was needed, first we had to design an overall solution and designate functionality to components.\\
+During the design of the system was deciding, on what type of hardware was needed to accommodate the challenges of the problem, one of the first things to be considered.\\
+In order to know what hardware was needed, was a design of the overall solution and designate functionality to components needed.\\
 
 \subsection{Identify Unique Users}
 %How do we identify unique users in a subtle and child friendly way.
 The first challenge in the problem statement was: ''How do we identify unique users in a subtle and child friendly way.''.\\
-As mentioned in the analysis we thought of several different ways to do this, including fingerprints and NFC tags. Common for them all is that they require some sort of scanning device to be used. For the choice of hardware see chapter \ref{chap:hardware}\\
+As mentioned in the analysis was there several different ways to do this, including fingerprints and NFC tags. Common for them all is that they require some sort of scanning device to be used. For the choice of hardware see chapter \ref{chap:hardware}\\
 And in order to verify that the user is actually a user on this families system this scanner must have a way to contact some sort of database or overview of members. Which leads us to the next challenge.
 
 \subsection{Enforce Restrictions on Media Devices}
@@ -39,9 +39,9 @@ Next follows a section that puts the finishing touches on the system design and 
 \section{Media-Online Management} %name our system: temp name: Media-Online Management or MOM
 The Media-Online Management (MOM) is the name of the system which is our solution on the problem statement. To give an overview of the complete system a rich picture \citep{OOAD} have been made, see the figure \ref{fig:systemoverview}. The figure shows a home environment with a TV (media), computer and an internet connection, and it shows a server. 
 
-There are two main use patterns. The first is a parent who manage their MOM using the website from the PC to add, change or delete system settings. This is pictured in the bottom left-side corner in figure \ref{fig:systemoverview}. 
+There are two main use patterns. The first is a parent who manage their MOM system using the website from a PC to add, change or delete system settings. The settings will from the server that host the website changed in the database as seen in the right side of the figure \ref{fig:systemoverview}. 
 
-The second use pattern is pictured in the upper left corner of the figure. It is a child user who wants to use a media which in this case is the television. But to watch television it need power and its power source is blocked by the controller. So the child needs to scan his tag and then the controller sends a message to the server which then reply whether the television can be turned on or not. When the child is done he must scan again such that points can be withdrawn from his user profile. If the child does not have any points he cannot turn on the television nor can he turn it on if a rule or permission does not allow it. If a parent wants to watch television without being restricted in any way he can make a rule that gives him unlimited access, but he would still need to scan his tag before and after using the television. \fixme{Vil vi lave en lille evaluering om vi synes det er fair at forældrene også skal scanne?}
+The second use pattern is pictured in the left side of the figure. It is a child user who wants to use a media which in this case is the television. But to watch television it need power and its power source is blocked by the controller. So the child needs to scan his tag and then the controller sends a message to the server which then reply whether the television can be turned on or not. When the child is done he must scan again such that points can be withdrawn from his user profile. If the child does not have any points he cannot turn on the television nor can he turn it on if a rule or permission does not allow it. If a parent wants to watch television without being restricted in any way he can make a rule that gives him unlimited access, but he would still need to scan his tag before and after using the television. \fixme{Vil vi lave en lille evaluering om vi synes det er fair at forældrene også skal scanne?}
 
 \begin{figure}
 	\centering
