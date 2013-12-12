@@ -424,26 +424,8 @@
 	
 
 	/* get rules and permission from a personID*/	
-	/* (Permission returns an array where value is an array with the following key=>value:
-PId: 1
-RId: 1
-validFromTime: 2013-11-27 16:06:59
-CSId: 1
-name: timeperiode
-isPermission: 1
-condId: 1
-controllerId: 123
-timeFrom: 2013-11-14 09:00:00
-timeTo: 2013-11-14 11:00:00
-weekdays: monday,tuesday,wednesday,thursday,friday
-weekly: 1
-ndWeekly: 0
-rdWeekly: 0
-firstInMonth: 0
-lastInMonth: 0
-weekNumber: 23
-	*/
-	/* (rules returns)- an array that contain rules:so array(rule1, rule2 ....)
+
+	/* (rules/permission returns)- an array that contain rules:so array(rule1, rule2 ....)
 			rule1 is an array =>  array(rulesVariable, conditions, actions)
 			rulesVariable is an array with => array(PId=> value,RId=>value,validFromTime=>value,CSId=>value,name=>value,isPermission=>value) 
 			conditions is an array => array(cond1, cond2 ....)
@@ -469,23 +451,24 @@ weekNumber: 23
 		$whereClause = "phr.". $columnPHR[0] . ' = '. $personId ." AND phr.". $columnPHR[1] . '= r.'. $columnRules[0] ; 
 		if($isPermission)
 		{
-			$tables .= ',' . $theTables['Rcondition'] . ' cond,' . $theTables['Cond_timeperiod'] . ' condTP';
-			$whereClause .= ' AND r.'. $columnRules[3] . '= '. $isPermission .' AND cond.' . $columnCond[1] . "= r.". $columnRules[0].  ' AND condTP.' . $columnCondTP[0] . "= cond.". $columnCond[0]; 
+			//$tables .= ',' . $theTables['Rcondition'] . ' cond,' . $theTables['Cond_timeperiod'] . ' condTP';
+			$whereClause .= ' AND r.'. $columnRules[3] . '= '. $isPermission; //.' AND cond.' . $columnCond[1] . "= r.". $columnRules[0].  ' AND condTP.' . $columnCondTP[0] . "= cond.". $columnCond[0]; 
 		
-			$result = $db->query($selectValues, $tables, $whereClause );
+		/*	$result = $db->query($selectValues, $tables, $whereClause );
 			$returnArray = null;
 			while($row = mysqli_fetch_assoc($result))
 			{	
 				$returnArray[] = $row; 
 			}
-			return $returnArray;
+			return $returnArray;*/
 		}
 		else
 		{
 			$whereClause .= ' AND r.'. $columnRules[3] . '= false';
-			$result = $db->query($selectValues, $tables, $whereClause );//find all rules
-			return getRuleHelper($result);
+			
 		}
+		$result = $db->query($selectValues, $tables, $whereClause );//find all rules
+			return getRuleHelper($result);
 	}
 	
 	

@@ -23,7 +23,7 @@ function db_rules_user_can_turn_device_on($cId,$tId)
 		if($permission!=null){
 			foreach($permission as $per)
 			{
-				$timeNow =strtotime( $db->executeSQL("SELECT now() as time")->fetch_assoc()['time']);
+				/*$timeNow =strtotime( $db->executeSQL("SELECT now() as time")->fetch_assoc()['time']);
 				$timeNowFormatHMS = date("H:i:s",$timeNow );
 				$timeNowFormatDay = strtolower(date("l", $timeNow));
 				$timeTo =  date("H:i:s", strtotime( $per['timeTo'] ));
@@ -35,6 +35,9 @@ function db_rules_user_can_turn_device_on($cId,$tId)
 				if ($array['rdWeekly'] == true) {$weekValid = ($timeNowFormatWeekNo-$week) % 3 == 0;}
 				if($per['controllerId'] == $cId && $weekValid && strpos($per['weekdays'], strtolower($timeNowFormatDay)) 
 						&& $timeFrom <= $timeNowFormatHMS && $timeNowFormatHMS <= $timeTo)
+				$timeNowFormatWeekNo = date("W",$timeNow );	*/
+				if($per['controllerId'] == $cId) /*&& $timeNowFormatWeekNo == $per['weekNumber'] && strpos($per['weekdays'], strtolower($timeNowFormatDay)) 
+						&& $timeFrom <= $timeNowFormatHMS && $timeNowFormatHMS <= $timeTo)*/
 				{
 					$permissionGiving = true;
 					break;
@@ -135,6 +138,8 @@ function db_rules_device_should_turn_off($cId, $tId)
 			}
 		}
 	}}
+	/*
+	Dette burde ikke være relevant mere
 	$permissions=getRulesFromPId($pId, true);
 	if($permissions != null){
 	echo 'is permission<br>';
@@ -159,7 +164,7 @@ function db_rules_device_should_turn_off($cId, $tId)
 				
 			}
 		}
-	}}
+	}}*/
 	
 	if($lowestTime == null)
 	{
