@@ -3,7 +3,9 @@
 In the previous chapters we looked at the design and implementation of the different system part there are in the Media-Online Management (MOM).
 In this chapter we are going to show how it all of the parts are working together.
 
-In figure \ref{fig:deployment} is a deployment and component diagram which have the  
+In figure \ref{fig:deployment} is a deployment and component diagram of the Media-Online Management system. 
+The components Website, API and Daemon on the server have been implemented independently of each other such that if a component was to be replaced the other components will not be affected. 
+   
 \begin{figure}
 	\centering
 		\includegraphics[width=1.50\textwidth, angle=90 ]{images/deployment.jpg}
