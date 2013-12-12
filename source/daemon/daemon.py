@@ -136,4 +136,4 @@ while True:
 	now = time()
 	checkRules()
 	print 'checking rules took {0} milliseconds'.format(str((time()-now)*1000))
-	sleep(5)
+	sleep(60)
