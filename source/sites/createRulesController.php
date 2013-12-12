@@ -14,7 +14,7 @@
 				case 'Activate user': echo "Not yet implemented so sorry";
 					break;
 				case 'Add points':
-						print_r($_POST);
+					print_r($_POST); // DEVELOPER 
 					$startTime = new DateTime($_POST['startDate'].' '.$_POST['timeATHidden']);
 					$endTime = new DateTime($_POST['endDate']);
 					$nRule = new Rules($_SESSION['CSid'], $_POST['name']);
@@ -38,13 +38,13 @@
 					if (is_numeric($_POST['amountOfPoints'])) {
 						$nAction = new Action( 0, $_POST['actionName'], null, null, $_POST['amountOfPoints'] );
 						$arrayAction = array('cond' => $nAction);
-						echo "</br>";
-						print_r($nRule);
-						echo "</br>";
-						print_r($arrayCondition);
-						echo "</br>";
-						print_r($arrayAction);
-						echo "</br>";
+						echo "</br>"; // DEVELOPER 
+						print_r($nRule); // DEVELOPER 
+						echo "</br>"; // DEVELOPER 
+						print_r($arrayCondition); // DEVELOPER 
+						echo "</br>"; // DEVELOPER 
+						print_r($arrayAction); // DEVELOPER 
+						echo "</br>"; // DEVELOPER 
 						$dbResult = addNewRuleToDB($nRule, $arrayCondition, $arrayAction);
 						print_r($dbResult);
 					} else { echo '<script type="text/javascript">alert("You are missing points..");</script>'; }
@@ -76,60 +76,79 @@
 <script src="assets/js/bootstrap-datetimepicker.min.2.js"></script>
 <script src="assets/js/addRules.js"></script>
 <script type="text/javascript">
-// function selectAction () {
-// 	$( "select option:selected" ).each(function() {
-// 		if ($( this ).attr("value") == "sWeek") {
-// 			$("#selectWeekNo").css("display", "");
-// 		}
-// 	});
-// }
-// controllerName amountOfPoints repeatEach selectWeekNo repeatBetween betweenTime ATTime repeatDays submitBtn
 var actionSelected ="";
 function actionNameSelect () {
 	$( "#actionName option:selected" ).each(function() {
+		dateFromTo();
+		timeFromTo();
+		timeAT();
+		specificTime();
 		actionSelected = $( this ).text();
 		switch (actionSelected) {
-			case 'Block user':{
-				}break;
-			case 'Activate user':{
-				}break;
-			case 'Add points': {
-				dateFromTo();
-				timeAT();
-				$("#controllerName").css("display", "none"); 
-				$("#selectWeekNo").css("display", "none"); 
-				$("#betweenTime").css("display", "none"); 
-				$("#amountOfPoints").css("display", ""); 
-				$("#repeatEach").css("display", ""); 
-				$("#repeatBetween").css("display", ""); 
-				$("#ATTime").css("display", ""); 
-				$("#repeatDays").css("display", ""); 
-				$("#submitBtn").css("display", ""); 
-				}break;
-			case 'Set maximum of point':{
-				}break;
-			case 'Access any controller':{
-				}break;
-			case 'Cannot access any controller':{
-				}break;
-			case 'Access controller':{
-				}break;
-			case 'Cannot access controller':{
-				}break;
+			case 'Block user':{ 					setVisibility (false, true ); }break;
+			case 'Activate user':{  				setVisibility (false, true ); }break;
+			case 'Add points':{ 					setVisibility (false, true ); }break;
+			case 'Set maximum of point':{   		setVisibility (false, true ); }break;
+			case 'Access any controller':{  		setVisibility (false, true ); }break;
+			case 'Cannot access any controller':{   setVisibility (false, true ); }break;
+			case 'Access controller':{  			setVisibility (true , false); }break;
+			case 'Cannot access controller':{   	setVisibility (true , false); }break;
 			default: break;
 		}
 	});
 }
+
+function setVisibility (controllerName, amountOfPoints) {
+	$("#controllerName").css("display"	, (controllerName 	? "" : "none"));
+	$("#amountOfPoints").css("display"	, (amountOfPoints 	? "" : "none"));
+	changeStateOfID(	"#repeatEach"	, 'add');
+	repeatWeeklySelect ();
+}
 function repeatWeeklySelect () {
 	$( "#repeatEach option:selected" ).each(function() {
+		// Reset form
+		changeStateOfID(	"#repeatBetween", 'add');
+		changeStateOfID(	"#betweenTime"	, 'add');
+		changeStateOfChkBox("#repeatDays"	, 'add');
+		changeStateOfID(	"#selectWeekNo"	, 'remove');
+		changeStateOfID(	"#ATTime"		, 'remove');
+		changeStateOfID(	"#SpecificTime"	, 'remove');
+		if (actionSelected == 'Add points') {
+			changeStateOfID("#ATTime"		, 'add');
+			changeStateOfID("#betweenTime"	, 'remove');
+		}
 		if ($( this ).attr("value") == "sWeek") {
-			$("#selectWeekNo").css("display", "");
-
-		} else {
-			$("#selectWeekNo").css("display", "none");
-
+			changeStateOfID("#selectWeekNo"	, 'add');
+			changeStateOfID("#repeatBetween", 'remove');
+		} 
+		else if ($( this ).attr("value") == "noRepeat") {
+			changeStateOfID("#SpecificTime"	, 'add');
+			changeStateOfID("#repeatBetween", 'remove');
+			changeStateOfID("#betweenTime"	, 'remove');
+			changeStateOfID("#ATTime"		, 'remove');
+			changeStateOfChkBox("#repeatDays",'remove');
+		}
+		else {
 		}
 	});
+}
+function changeStateOfID(id, changeTo) {
+	if (changeTo == 'remove') {
+		$(id).css("display", "none");
+		$(id).attr("disabled","disabled");
+	} else {
+		$(id).css("display", "");
+		$(id).removeAttr("disabled","disabled");
+	};
+}
+function changeStateOfChkBox(id, changeTo) {
+	if (changeTo == 'remove') {
+		$(id).css("display", "none");
+		$(id).children('.col-sm-1').children('.checkbox-inline').children('input').attr("disabled","disabled");
+	} else {
+		$(id).css("display", "");
+		$(id).children('.col-sm-1').children('.checkbox-inline').children('input').removeAttr("disabled","disabled");
+	};
 }
 
 	// $("#repeatEach").change(function() {
@@ -160,7 +179,8 @@ function repeatWeeklySelect () {
 				<div class="col-sm-8">
 					<select name="actionName" id="actionName" class="form-control actionName" required autofocus onchange="actionNameSelect();">
 						<option value="def" disabled selected>Please select an action...</option>
-					  	<?php foreach($actionNames as $name) {print ('<option '.($name != "Add points" ? 'disabled':'').'>'.$name.'</option>'); }?>
+					  	<?php foreach($actionNames as $name) {print ('<option '.($name != "Add points" ? 'disabled':'').'>'.$name.'</option>
+					  	'); }?>
 					</select>
 				</div>
 			</div>
@@ -175,7 +195,8 @@ function repeatWeeklySelect () {
 				<div class="col-sm-8">
 					<select name="controllerName" id="controllerName" class="form-control" disabled>
 					  	<option value="def" disabled selected >Please select a controller...</option>
-					  	<?php foreach(controllersByCSId($_SESSION['CSid']) as $row) {print ('<option value="'.$row['CSerieNo'].'">'.$row['name'].'</option>');} ?>
+					  	<?php foreach(controllersByCSId($_SESSION['CSid']) as $row) {print ('<option value="'.$row['CSerieNo'].'">'.$row['name'].'</option>
+					  	');} ?>
 					</select>
 				</div>
 			</div>
@@ -189,42 +210,52 @@ function repeatWeeklySelect () {
 				<label for="repeatEach" class="col-sm-3 control-label">Repeat each: </label>
 				<div class="col-sm-8">
 					<select name="repeatEach" id="repeatEach" class="form-control" required onchange="repeatWeeklySelect();" >
-						<option value="eachWekk" selected>Every Week</option>
-						<option value="biWeekly">Every two Weeks</option>
-						<option value="triWeekly">Every three Weeks</option>
-						<option value="primo">First in a month</option>
-						<option value="ultimo">Last in a month</option> 
-						<option value="sWeek">Specific Week No.</option> 
+						<option value="eachWekk"	>Every Week</option>
+						<option value="biWeekly"	>Every two Weeks</option>
+						<option value="triWeekly"	>Every three Weeks</option>
+						<option value="primo"		>First in a month</option>
+						<option value="ultimo"		>Last in a month</option> 
+						<option value="sWeek"		>Specific Week No.</option> 
+						<option value="noRepeat"	>Do not repeat</option>
 					</select>
 				</div>
 			</div>
-			<div class="form-group" id="selectWeekNo" style="display:none;">
+			<div class="form-group" id="selectWeekNo" style="display:none;" disabled>
 				<label for="weekNo" class="col-sm-3 control-label">Week No: </label>
 				<div class="col-sm-8">
 					<select name="weekNo" id="weekNo" class="form-control">
 						<option value="def" selected disabled>Please select a week...</option>
-						<?php for ($x=1; $x <= 52; $x++): print ('<option value="'.$x.'">'.$x.'</option>'); endfor; ?>
+						<?php for ($x=1; $x <= 52; $x++): print ('<option value="'.$x.'">'.$x.'</option>
+						'); endfor; ?>
 					</select>
 				</div>
+			</div>
+			<div class="form-group" id="SpecificTime" style="display:none;">
+				<label for="timeSPCTHidden" class="col-sm-3 control-label">On the: </label>
+				<div class="input-group date formSpecificTime col-sm-8">
+					<input class="form-control" type="text" value="" required readonly>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+				</div>
+				<input type="hidden" name="timeSPCTHidden" id="timeSPCTHidden" required/>
 			</div>
 			<div class="form-group" id="repeatBetween" style="display:none;">
 				<label for="startRepeatOn" class="col-sm-3 control-label">From date: </label>
 				<div class="input-group date formStartRepeatOn col-sm-3">
-					<input class="form-control" type="text" required readonly>
-					<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+					<input class="form-control" type="text" value="" required readonly>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 				</div>
 				<input type="hidden" name="startDate" id="startRepeatOn" required/>
 				<label for="endRepeatOn" class="col-sm-2 control-label">To date: </label>
 				<div class="input-group date formEndRepeatOn col-sm-3">
 					<input class="form-control" type="text" value="" required readonly>
-					<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 				</div>
 				<input type="hidden" name="endDate" id="endRepeatOn" value="" />
 			</div>
 			<div class="form-group" id="ATTime" style="display:none;">
 				<label for="timeATHidden" class="col-sm-3 control-label">At: </label>
 				<div class="input-group date formATTime col-sm-8">
-					<input class="form-control" type="text" required readonly>
+					<input class="form-control" type="text" value="" required readonly>
 					<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
 				</div>
 				<input type="hidden" name="timeATHidden" id="timeATHidden" required/>
@@ -238,7 +269,7 @@ function repeatWeeklySelect () {
 				<input type="hidden" name="startTime" id="startTime" value="" />
 				<label for="endTime" class="col-sm-2 control-label">To time: </label>
 				<div class="input-group date formEndTime col-sm-3">
-					<input class="form-control" type="text" value="" required disabled>
+					<input class="form-control" type="text" value="" required readonly>
 					<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
 				</div>
 				<input type="hidden" name="endTime" id="endTime" value="" />

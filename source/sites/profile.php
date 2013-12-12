@@ -20,6 +20,22 @@
 	<!-- SITE SPECIFIC JS -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 	<script src="//cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() { 
+			$.ajax({
+				url: 'ajax/json-charts1.php?chart=useStatistics&PId=1',
+				success: function(data) {
+					var $graph = data;
+					var obj = $.parseJSON($graph);
+					Morris.Donut({
+					  element: 'morris-chart-donut',
+					  data: obj,
+					  formatter: function (y) { return y + "%" ;}
+					});
+				}
+			});
+		})
+	</script>
 </head>
 <body>
 	<div class="container">

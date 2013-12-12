@@ -33,6 +33,18 @@
 					});
 				}
 			});
+			$.ajax({
+				url: 'ajax/json-charts1.php?chart=useStatistics&PId=1',
+				success: function(data) {
+					var $graph = data;
+					var obj = $.parseJSON($graph);
+					Morris.Donut({
+					  element: 'morris-chart-donut',
+					  data: obj,
+					  formatter: function (y) { return y + "%" ;}
+					});
+				}
+			});
 		})
 	</script>
 </head>

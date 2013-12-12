@@ -29,14 +29,15 @@
 	  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav navbar-right">
 		  <li><a href="#">Help</a></li>
+		  <li><a href="?page=profile&Pid='.$_SESSION['PId'].'">Profile</a></li>
 		  <li><a href="#">Web-Shop</a></li>
 		  <li><a href="logout.php">Log Out</a></li>
 		</ul>
 	  </div><!-- /.navbar-collapse -->
 	</nav>
 	<div id="wrapper">
-		<div class="row" id="lowerWrapper">
-			<div class="col-md-2" id="leftMenu">
+		<div class="row" id="lowerWrapper" style="width:100%;">
+			<div class="col-md-2 col-sm-2" id="leftMenu" style="position:fixed;">
 				<ul class="nav nav-pills nav-stacked navba">
 				  <li id="dashboard"><a href="?page=dashboard"><span class="glyphicon glyphicon-home"></span> Dashboard</a></li>
 				  <li id="devices"><a href="?page=devices"><span class="glyphicon glyphicon-hdd"></span> Devices</a></li>
@@ -55,7 +56,7 @@
 				  <li id="calendar"><a href="?page=calendar"><span class="glyphicon glyphicon-calendar"></span> Calendar</a></li>
 				</ul>
 			</div>
-			<div class="col-md-10" id="content">
+			<div class="col-md-10 col-md-offset-2 col-sm-6 col-sm-offset-2 " id="content">
 				';include 'switch.php'; echo '
 			</div>
 		</div>
