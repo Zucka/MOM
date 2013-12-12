@@ -85,27 +85,29 @@ function actionNameSelect () {
 		specificTime();
 		actionSelected = $( this ).text();
 		switch (actionSelected) {
-			case 'Block user':{ 					setVisibility (false, true ); }break;
-			case 'Activate user':{  				setVisibility (false, true ); }break;
-			case 'Add points':{ 					setVisibility (false, true ); }break;
-			case 'Set maximum of point':{   		setVisibility (false, true ); }break;
-			case 'Access any controller':{  		setVisibility (false, true ); }break;
-			case 'Cannot access any controller':{   setVisibility (false, true ); }break;
-			case 'Access controller':{  			setVisibility (true , false); }break;
-			case 'Cannot access controller':{   	setVisibility (true , false); }break;
+			case 'Block user':{ 					setVisibility (false, true , false); }break;
+			case 'Activate user':{  				setVisibility (false, true , false); }break;
+			case 'Add points':{ 					setVisibility (false, true , true ); }break;
+			case 'Set maximum of point':{   		setVisibility (false, true , false); }break;
+			case 'Access any controller':{  		setVisibility (false, true , false); }break;
+			case 'Cannot access any controller':{   setVisibility (false, true , false); }break;
+			case 'Access controller':{  			setVisibility (true , false, false); }break;
+			case 'Cannot access controller':{   	setVisibility (true , false, false); }break;
 			default: break;
 		}
 	});
 }
 
-function setVisibility (controllerName, amountOfPoints) {
-	$("#controllerName").css("display"	, (controllerName 	? "" : "none"));
-	$("#amountOfPoints").css("display"	, (amountOfPoints 	? "" : "none"));
+function setVisibility (controllerName, amountOfPoints, submitBtn) {
+	changeStateOfID(	"#controllerName"	, (controllerName 	? "add" : "remove"));
+	changeStateOfID(	"#amountOfPoints"	, (amountOfPoints 	? "add" : "remove"));
+	changeStateOfID(	"#submitBtn"		, (submitBtn 		? "add" : "remove"));
 	changeStateOfID(	"#repeatEach"	, 'add');
 	repeatWeeklySelect ();
 }
 function repeatWeeklySelect () {
 	$( "#repeatEach option:selected" ).each(function() {
+		var repeatOptionSelected = $( this ).attr("value");
 		// Reset form
 		changeStateOfID(	"#repeatBetween", 'add');
 		changeStateOfID(	"#betweenTime"	, 'add');
@@ -113,19 +115,25 @@ function repeatWeeklySelect () {
 		changeStateOfID(	"#selectWeekNo"	, 'remove');
 		changeStateOfID(	"#ATTime"		, 'remove');
 		changeStateOfID(	"#SpecificTime"	, 'remove');
+		changeStateOfID(	"#specificDay"	, 'remove');
 		if (actionSelected == 'Add points') {
 			changeStateOfID("#ATTime"		, 'add');
 			changeStateOfID("#betweenTime"	, 'remove');
 		}
-		if ($( this ).attr("value") == "sWeek") {
+		if (repeatOptionSelected == "sWeek") {
 			changeStateOfID("#selectWeekNo"	, 'add');
 			changeStateOfID("#repeatBetween", 'remove');
 		} 
-		else if ($( this ).attr("value") == "noRepeat") {
+		else if (repeatOptionSelected == "noRepeat") {
 			changeStateOfID("#SpecificTime"	, 'add');
 			changeStateOfID("#repeatBetween", 'remove');
 			changeStateOfID("#betweenTime"	, 'remove');
-			changeStateOfID("#ATTime"		, 'remove');
+			changeStateOfChkBox("#repeatDays",'remove');
+		}
+		else if (repeatOptionSelected == "primo" || repeatOptionSelected ==  "ultimo" ) {
+			changeStateOfID("#repeatBetween", 'add');
+			changeStateOfID("#ATTime"		, 'add');
+			changeStateOfID("#specificDay"	, 'add');
 			changeStateOfChkBox("#repeatDays",'remove');
 		}
 		else {
@@ -179,7 +187,17 @@ function changeStateOfChkBox(id, changeTo) {
 				<div class="col-sm-8">
 					<select name="actionName" id="actionName" class="form-control actionName" required autofocus onchange="actionNameSelect();">
 						<option value="def" disabled selected>Please select an action...</option>
-					  	<?php foreach($actionNames as $name) {print ('<option '.($name != "Add points" ? 'disabled':'').'>'.$name.'</option>
+					  	<?php foreach($actionNames as $name) {print ('<option '.($name != "Add points" ? '':'').'>'.$name.'</option>
+					  	'); }?>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="actionName" class="col-sm-3 control-label">Condition: </label>
+				<div class="col-sm-8">
+					<select name="actionName" id="actionName" class="form-control actionName" required autofocus onchange="actionNameSelect();">
+						<option value="def" disabled selected>Please select a condition...</option>
+					  	<?php foreach($conditionNames as $name) {print ('<option>'.$name.'</option>
 					  	'); }?>
 					</select>
 				</div>
@@ -283,6 +301,16 @@ function changeStateOfChkBox(id, changeTo) {
 				<div class="col-sm-1"><label class="checkbox-inline"><input type="checkbox" value="1" id="repeatFri" name="repeatFri">Friday</label></div>
 				<div class="col-sm-1"><label class="checkbox-inline"><input type="checkbox" value="1" id="repeatSat" name="repeatSat">Saturday</label></div>
 				<div class="col-sm-1"><label class="checkbox-inline"><input type="checkbox" value="1" id="repeatSun" name="repeatSun">Sunday</label></div>
+			</div>
+ 			<div class="form-group" id="specificDay" style="display:none;">
+				<label for="repeat" class="col-sm-3 control-label">On day: </label>
+				<div class="col-sm-1"><label class="checkbox-inline"><input type="radio" value="mon" id="repeatMon" name="specDay">Monday</label></div>
+				<div class="col-sm-1"><label class="checkbox-inline"><input type="radio" value="tue" id="repeatTue" name="specDay">Tueday</label></div>
+				<div class="col-sm-1"><label class="checkbox-inline"><input type="radio" value="wed" id="repeatWed" name="specDay">Wednesday</label></div>
+				<div class="col-sm-1"><label class="checkbox-inline"><input type="radio" value="thu" id="repeatThu" name="specDay">Thursday</label></div>
+				<div class="col-sm-1"><label class="checkbox-inline"><input type="radio" value="fri" id="repeatFri" name="specDay">Friday</label></div>
+				<div class="col-sm-1"><label class="checkbox-inline"><input type="radio" value="sat" id="repeatSat" name="specDay">Saturday</label></div>
+				<div class="col-sm-1"><label class="checkbox-inline"><input type="radio" value="sun" id="repeatSun" name="specDay">Sunday</label></div>
 			</div>
 			</br>
 			<center>
