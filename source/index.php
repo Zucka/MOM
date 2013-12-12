@@ -29,6 +29,7 @@
 	  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav navbar-right">
 		  <li><a href="#">Help</a></li>
+		  <li><a href="?page=profile&Pid='.$_SESSION['PId'].'">Profile</a></li>
 		  <li><a href="#">Web-Shop</a></li>
 		  <li><a href="logout.php">Log Out</a></li>
 		</ul>
