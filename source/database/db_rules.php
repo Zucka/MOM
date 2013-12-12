@@ -384,10 +384,10 @@ function timeperiodIsValidNowInRule($rule)
 			$timeTo =  date("H:i:s", strtotime( $array['timeTo'] ));
 			$timeFrom =   date("H:i:s", strtotime( $array['timeFrom'] ));
 			$week = date('W', strtotime( $array['timeFrom'] ));
-			$timeNowFormatWeekNo = date("W",$timeNow );
+			$weekDelta = floor(($timeNow-$timeFrom) / 60 / 60 / 24 / 7); //seconds to weeks
 			$weekValid = true;
-			if ($array['ndWeekly'] == true) {$weekValid = ($timeNowFormatWeekNo-$week) % 2 == 0;}					
-			if ($array['rdWeekly'] == true) {$weekValid = ($timeNowFormatWeekNo-$week) % 3 == 0;}					
+			if ($array['ndWeekly'] == true) {$weekValid = $weekDelta % 2 == 0;}					
+			if ($array['rdWeekly'] == true) {$weekValid = $weekDelta % 3 == 0;}					
 			if($weekValid && strpos($array['weekdays'], $timeNowFormatDay) 
 				&& $timeFrom <= $timeNowFormatHMS && $timeNowFormatHMS <= $timeTo )
 			{
