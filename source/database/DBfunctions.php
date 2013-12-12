@@ -809,17 +809,7 @@
 							$column .= ", ". $tempcol[8];
 							$values .= ", ". bool_to_String($extras[$tempcol[8]]);
 						}
-						//$extras['weekNumber']
-						if($extras[$tempcol[9]]!= null)
-						{
-							$column .= ", ". $tempcol[9];
-							$values .= ", ". $extras[$tempcol[9]];
-						}
-						else
-						{
-							$column .= ", ". $tempcol[9];
-							$values .= ", WEEK(".$tempcol[1].",3)";
-						}
+						
 						$column .= ")";
 						$values .= ")";
 					}
@@ -1147,16 +1137,7 @@
 
 						$columnValue .=  $tempcol[8]. "=". bool_to_String($extras[$tempcol[8]]);
 					}
-					//'weekNumber'
-					if($extras[$tempcol[9]]!= null)
-					{
-						if($columnValue != "")
-						{
-							$columnValue .=  ", ";
-						}
-
-						$columnValue .=  $tempcol[9]. "=". $extras[$tempcol[9]];
-					}
+				
 				}
 				if($resultValue != "")
 				{				
