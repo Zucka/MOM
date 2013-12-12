@@ -23,7 +23,6 @@ function db_rules_user_can_turn_device_on($cId,$tId)
 		if($permission!=null){
 			foreach($permission as $per)
 			{
-				print_r($per);
 				/*$timeNow =strtotime( $db->executeSQL("SELECT now() as time")->fetch_assoc()['time']);
 				$timeNowFormatHMS = date("H:i:s",$timeNow );
 				$timeNowFormatDay = strtolower(date("l", $timeNow));
