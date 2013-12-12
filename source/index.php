@@ -36,7 +36,7 @@
 	  </div><!-- /.navbar-collapse -->
 	</nav>
 	<div id="wrapper">
-		<div class="row" id="lowerWrapper">
+		<div class="row" id="lowerWrapper" style="width:100%;">
 			<div class="col-md-2 col-sm-2" id="leftMenu" style="position:fixed;">
 				<ul class="nav nav-pills nav-stacked navba">
 				  <li id="dashboard"><a href="?page=dashboard"><span class="glyphicon glyphicon-home"></span> Dashboard</a></li>
