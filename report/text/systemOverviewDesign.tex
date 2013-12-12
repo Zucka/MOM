@@ -1,9 +1,43 @@
 \chapter{Overall System Design}
-In this chapter we present the overall design of Media-Online Management(MOM). First we will present how we intend the users to use MOM. Then general concepts will be introduced which is an essential part of the system and will be mentioned several times hereafter. Thirdly the requirements of MOM will be explained in more detail. Finally the system architecture will be presented.    
+In this chapter the challenges from the problem statement are looked upon and an overview of what will be needed to overcome these challenges will be formulated.
+
+%In this chapter we present the overall design of Media-Online Management(MOM). First we will present how we intend the users to use MOM. Then general concepts will be introduced which is an essential part of the system and will be mentioned several times hereafter. Thirdly the requirements of MOM will be explained in more detail. Finally the system architecture will be presented.    
+
+\section{Designing a solution}
+During the design of the system, deciding on what type of hardware was needed to accommodate the challenges of the problem was one of the first things to be considered.\\
+In order to know what hardware was needed, first we had to design an overall solution and designate functionality to components.\\
+
+\subsection{Identify Unique Users}
+%How do we identify unique users in a subtle and child friendly way.
+The first challenge in the problem statement was: ''How do we identify unique users in a subtle and child friendly way.''.\\
+As mentioned in the analysis we thought of several different ways to do this, including fingerprints and NFC tags. Common for them all is that they require some sort of scanning device to be used. For the choice of hardware see chapter \ref{chap:hardware}\\
+And in order to verify that the user is actually a user on this families system this scanner must have a way to contact some sort of database or overview of members. Which leads us to the next challenge.
+
+\subsection{Enforce Restrictions on Media Devices}
+%How do we enforce restrictions on media devices.
+As mentioned in the analysis, see section \ref{section:pcHowToExtend}, it is necessary to find a way to physically restrict the usage of medias. We first thought that the best solution would be to implement it directly into all medias, but this would result in an endless amount of coding, since a code base would be needed to be implemented for each device it would run on.\\
+Instead we took the restriction a bit further. Most media today runs on electricity and without batteries, meaning if the power is cut to the media, it will be restricted.\\
+The idea developed into a combination with the solution for the prevues challenge and resulted into what we like to call a ''controller''. It is a device equipped with a relay, an internet connection and a scanner.\\
+Using the relay to control the power to medias, using the scanner to identify users and the internet connection to look up in a sub-global\footnote{Global in the scope of each families system.} register of users, which again leads us to the next and final challenge in the problem statement. Here we already have three different devices communicating, on their own, emphasizing the idea of Internet Of Things.
+
+\subsection{Facilitate Rules, Permissions and Chores}
+%How do we facilitate concepts as rules, permission and chores without parents interaction.
+Rules, permissions and chores are complicated concepts to explain which will be explained in further detail in chapter \ref{chapter:concepts}. The short version however is:\\
+\textbf{Rules} is a combination of an action and a condition. Where actions could for example be to allow the usage of a device, give points\footnote{Points is the currency we intend to use in the system to pay for media usage.} to user or block user. And a condition could for example be a period of time or a repeating event such as every Monday in every week.\\
+\textbf{Permissions} is a subtype of rules. But we like to differentiate on rules not being necessary for the usage of the system, where permissions is. Permissions is only used to tell the system the normal allowed usage of media and rules is there to overwrite these permissions in special cases, or if the user wants to customize the system.\\
+\textbf{Chores} is intended as an idea to get the children to do physical activities. Parents create chores and designate a set of points that can be earned by doing this chore.\\
+\\
+By now there already is a lot of information in the system. We have users, rules, permissions, chores, points, timestamps and time periods, and if the system is to be extended to learn anything from the users behavior it should also include logs.\\
+This is more information than should ever be put into a simple hardcoded text sheet. Meaning the system will need a database and considering that we want the devices to independently be able to fetch the information they will need a good solution would be to store the information on a server accessible by the controller.\\
+Also considering the advanced concepts of rules, permissions and chores it is very likely that a graphical interface will be needed and since there already is the need for a server in our system it would be a good idea to make a web-site for the user to maintain edit or add these rules.\\
+\\
+With all these required features we still need to specify how they communicate and this should implement a structure that allows for changes later on. Simply because this is a prototype system and will most likely need improvements if it was to ever be commercialized or extended, which is easiest done if the system is build for it from the start.\\
+\\
+Next follows a section that puts the finishing touches on the system design and finally gives it a name.
 
 
 \section{Media-Online Management} %name our system: temp name: Media-Online Management or MOM
-The Media-Online Management (MOM) is the system that is our solution on the problem statement. To give an overview of the complete system a rich picture \citep{OOAD} have been made, see the figure \ref{fig:systemoverview}. The figure shows a home environment with a TV (media), computer and an internet connection, and it shows a server. 
+The Media-Online Management (MOM) is the name of the system which is our solution on the problem statement. To give an overview of the complete system a rich picture \citep{OOAD} have been made, see the figure \ref{fig:systemoverview}. The figure shows a home environment with a TV (media), computer and an internet connection, and it shows a server. 
 
 There are two main use patterns. The first is a parent who manage their MOM using the website from the PC to add, change or delete system settings. This is pictured in the bottom left-side corner in figure \ref{fig:systemoverview}. 
 
@@ -16,99 +50,5 @@ The second use pattern is pictured in the upper left corner of the figure. It is
 	\label{fig:systemoverview}
 \end{figure}
 
-On the server there will be a database, files that generate the website, a web service, and a daemon. These elements of the system will be explained further in section \vref{sec:RequirMOM} and after that the system architecture can be presented in section \vref{sec:sysArchitecture}. However, we need to explain some of the concepts that will be used in connection with this system.
-
-\input{text/newGeneralDesignConcepts.tex}
-
-
-\section{Requirements of MOM}
-\label{sec:RequirMOM}
-
-In the analysis we came to the conclusion that the following items is necessary for MOM: 
-\begin{itemize}
-	\item A device to toggle the power of an electronic media
-	\item An individual key for each child that can be read by the device
-	\item A website to set up rules, permissions and view/modify allowed usage of electronic media
-\end{itemize} 
-
-
-The first item is called controller in this system, the second is the tag and the last is the website on the computer. But also new components of the system is necessary. As explained in the previous section a daemon is needed to check the relevant rules and perform the appropriate actions if the conditions holds. Also during the following sections we find that a web service is needed. 
-
-In the following sections the specification of the website, controller and tag, web service and daemon will be explained, before the design and implementation will be presented for each of them in the following chapters.  
-
-\subsection{MOM's Website}
-\label{subsection:momswebsite}
-A Media-Online Management (MOM) owner needs a way to manage the system and for this a website will be made. There are several requirements for this website:
-
-\begin{itemize}
-	\item Register a new MOM together with a user profile which is a manager of this system
-	\item Make it possible to add, edit and delete user profiles in an existing MOM 
-	\item Make it possible to add, edit and delete Controllers from an existing MOM
-	\item There should be a way to add, edit and delete Tags to the system. Also a tag should be connected to a user profile
-	\item There need to be an option to add, edit and delete rules, permissions and chores from a system
-	\item The user should be able to connect rules and permission with one or more user profiles. The connection should also be able to be removed without removing the rule or permission
-	\item When a chore is done in the real world by a child profile then by connecting this profile to a chore, points should be added to his profile
-\end{itemize}
-
-There are also some requirements that is nice for the parents to use, but they are not essential for MOM system:
-
-\begin{itemize}
-	\item present the media consumption data as graphs or logs such that the parents easy can get an overview of their children's media consumption 
-	\item present data from MOM in a calendar that shows rule and permission with profiles for whom this is relevant. The calendar should also show when a chore have been done and by who.
-\end{itemize}
-
-In chapter \fixme{insert ref} the design and implementation of the website will be presented in more detail. 
- 
-
-\subsection{Tag and Controller}
-The tag used in this system is using Radio-frequency Identification (RFID). The tag need to be uniquely identified in MOM and it must uniquely identify its user. The tag is used in combination with the controller.
-
-The controller is an Arduino which is connected to a tag reader. Like the tag it need to be uniquely identified in MOM. The controller must be able to do the following.
-
-\begin{itemize}
-	\item Read the data from the tag
-	\item Send and receive messages from the server
-	\item Control the power source of the media 
-	\item Temporarily store the tag id that activated this controller
-	\item Keep track of the time spent between activation of the media to its end
-\end{itemize}
- 
-The design and implementation of the controller will be explained further in chapter \fixme{insert chapter ref}. 
-
-The controller must communicate with the server and this is done via a web service.
-
-\subsection{The web service}
-
-The web service is used to parse the relevant data to the controller. Its requirements are:
-
-\begin{itemize}
-	\item Receive and send messages to the controller
-	\item From a tag and controller it should be able to determine whether a user may use the media which is connected to the controller
-	\item It must be able to subtract points from a user after he has been using a media
-	\item It should able to calculate when a controller should be turned off because of a rule, permission or point.
-\end{itemize}
-
-The web service's design and implementation is explained further in chapter \fixme{ref to chapter}.
-
-
-\subsection{Daemon}
-The daemon is used to update data in the database from a rule which the user have made at some point. The daemon does not have any direct contact to a client. The daemon should handle any rule that is time determined so the condition is either Timestamp or Timeperiod. Then the daemon should do the appropriate action which could be add points to user or block a user.
-
-The design and implementation of the daemon is presented in detail in chapter \fixme{ref to chapter}. 
- 
-\section{System Architecture}
-\label{sec:sysArchitecture}
-Now that all subsystem of the Media-Online Management have been presented the overall system architecture can be explained. MOM is using the client server architecture which is shown in the figure \ref{fig:serveroverview} \citep{OOAD}. This system has two types of client the first is a controller and the second is a computer where the user manages the system via the web site. The controller is depended on the web service on the server and the computer is depended on the web site. On the server there is the web site, web service and daemon which all are depended on the functions component, MySQLHelper class and data component. In the function component there are several functions to work on the data in the database and this component is depended on MySQLHelper because it should establish the database connection and parse the quires on to the database. 
-
-\begin{figure}
-	\centering
-		\includegraphics[width=1.25\textwidth,  angle=90]{images/serveroverview.jpg}
-	\caption{system architecture}
-	\label{fig:serveroverview}
-\end{figure}
-
-In the following chapters design and implementation of the web site, web service, deamon and database will be presented.
-
- 
-
-
+On the server there will be a database, files that generate the website, a web service, and a daemon. These elements of the system will be explained further in section \vref{chap:RequirMOM} and after that the system architecture can be presented in section \vref{sec:sysArchitecture}. However, first the hardware choices made for the system will be went through and also the concepts of rules, permissions and chores needs to be explained.\\
+The next chapter is about the hardware choices.
