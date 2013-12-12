@@ -50,7 +50,7 @@ function timeAT() {
 }
 function specificTime() {
 	$('.formSpecificTime').datetimepicker({
-		startDate: new Date(),
+		startDate: new Date(), // Add 10 minutes
 		format: "dd MM yyyy hh:ii",
 		linkField: "timeSPCTHidden",
 		linkFormat: "yyyy-mm-dd hh:ii",
@@ -66,7 +66,7 @@ function specificTime() {
 }
 function dateFromTo() {
 	$('.formStartRepeatOn').datetimepicker({
-		startDate: new Date(),
+		startDate: new Date(), // Add 10 minutes
 		format: "dd MM yyyy",
 		linkField: "startRepeatOn",
 		linkFormat: "yyyy-mm-dd",
@@ -82,7 +82,7 @@ function dateFromTo() {
 		minuteStep: 5
 	});
 	$('.formEndRepeatOn').datetimepicker({
-		startDate: new Date(),
+		startDate: new Date(), // Add 10 minutes
 		format: "dd MM yyyy",
 		linkField: "endRepeatOn",
 		linkFormat: "yyyy-mm-dd",
