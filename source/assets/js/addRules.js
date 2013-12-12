@@ -48,6 +48,22 @@ function timeAT() {
 		minuteStep: 5
 	});
 }
+function specificTime() {
+	$('.formSpecificTime').datetimepicker({
+		startDate: new Date(),
+		format: "dd MM yyyy hh:ii",
+		linkField: "timeSPCTHidden",
+		linkFormat: "yyyy-mm-dd hh:ii",
+		language:  'da',
+		todayBtn:  1,
+		autoclose: 1,
+		startView: 2,
+		minView: 0,
+		maxView: 3,
+		pickerPosition: 'bottom-left',
+		minuteStep: 5
+	});
+}
 function dateFromTo() {
 	$('.formStartRepeatOn').datetimepicker({
 		startDate: new Date(),
