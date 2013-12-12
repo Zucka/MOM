@@ -1,8 +1,9 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/sqlHelper.php');
+/*require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/sqlHelper.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/getDataFromDBFunctions.php');
-
-
+*/
+	include_once "sqlHelper.php";
+	include_once "getDataFromDBFunctions.php";
 
 /*This assumes that one rule has at most 1 condition and 1 action*/
 function db_rules_user_can_turn_device_on($cId,$tId)
@@ -16,11 +17,12 @@ function db_rules_user_can_turn_device_on($cId,$tId)
 	//check Timeperiod and True contrains 
 	$rules = getRulesFromPId($pId,false);
 	$result = checkRulesTrueAndTimeperiod($rules, $cId);
-	if($result===false)
+	echo $result. '<br>';
+	if($result==false)
 	{
 		return false;
 	}
-	elseif($result===null) //Timeperiod and True allow the rule to use controller but need to check device on and off later
+	elseif(is_string($result)) //Timeperiod and True allow the rule to use controller but need to check device on and off later
 	{				//if not then check if Permissions give access in time
 		$permission = getRulesFromPId($pId,true);
 		$permissionGiving = false;
@@ -79,8 +81,10 @@ function db_rules_user_can_turn_device_on($cId,$tId)
 			}
 		}
 	}
-	//return true;
-	
+	else
+	{
+		return true;
+	}
 	
 
 }
@@ -245,6 +249,7 @@ function checkRulesTrueAndTimeperiod($rules, $cId)
 				}
 				elseif(ruleHasActionWithName($rule, 'Cannot access any controller') )
 				{
+					echo 'Cannot access any<br>';
 					$NotAllAccController=$rule;
 				}
 			}
@@ -311,11 +316,12 @@ function checkRulesTrueAndTimeperiod($rules, $cId)
 		}
 		elseif($NotAllAccController != null)
 		{
+			echo"I'm in the right corner <br>";
 			return false;
 		}
 		
 	}
-	return null;
+	return 'error';
 }
 	
 function ruleHasActionWithName($rule, $name)
