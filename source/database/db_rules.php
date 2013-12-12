@@ -83,10 +83,9 @@ function db_rules_user_can_turn_device_on($cId,$tId)
 
 
 /*This assumes that one rule has at most 1 condition and 1 action*/
-function db_rules_device_should_turn_off($cId, $tId)
+function db_rules_device_should_turn_off($cId, $pId)
 {
 	$db = new MySQLHelper();
-	$pId = $db->executeSQL("SELECT profileId from tag where tag.TSerieNo='$tId'")->fetch_assoc()['profileId'];
 	$timeNow =strtotime( $db->executeSQL("SELECT now() as time")->fetch_assoc()['time']);
 	$rules=getRulesFromPId($pId);
 	
