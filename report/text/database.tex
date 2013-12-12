@@ -85,14 +85,14 @@ The website and API for the controllers connect to the database by using a PHP c
   
 It is also possible to control the transactions through this class by disabling the auto-commit of transactions and then manually commit when it is necessary. \\\\
 
-This class is used by several functions that are connected to the website or API and in the following section we present the more interesting of them  how to update rules. 
+This class is used by several functions that are connected to the website, API and Daemon in the following section we present the more interesting of them how to update rules. 
 
-\subsection{Function to Manipulate Data}
+\subsection{EditRule from the Function Library}
 \label{subsec:dbRule}
 %if someday our repport gets to long this can be cut out or reduced
-To insert or update in one of the essentials tables either \texttt{simpleInsertIntoDB} or \texttt{simpleUpdateDB} is used with the exception of Rule. 
-As stated previously in mapping of a rule in \vref{subsec:mappRule}, there would be some challenges to make the insert and update functions. This is partly due to the fact that the data of a condition  is one of three alternative: condition, condition plus timestamp or condition plus timeperiod as was explained in \vref{sec:DBdesign}.
-In update it is also a challenge that each condition and action can be removed, add or updated which all should be handled together and this will be explained further in this section. Insert and updating a rule is similar but the latter is the more interesting so it will be this sections focus.
+This system also have a function library which get, insert, update or delete data from the database. Among these function are e.g. \texttt{simpleInsertIntoDB} and \texttt{simpleUpdateDB} that is used to insert and update the essential tables with the exception of Rule. Insert and updating a rule is similar but the latter is the more interesting so it will be this sections focus.
+
+As stated previously in mapping of a rule in \vref{subsec:mappRule}, there would be some challenges to make the insert and update functions. This is partly due to the fact that the data of a condition  is one of three alternative: condition, condition plus timestamp or condition plus timeperiod as was explained in \vref{sec:DBdesign}.In update it is also a challenge that each condition and action can be removed, add or updated which all should be handled together and this will be explained further in this section. 
 
 The function to update a rule is called editRule and it also used some other function as described below:
 
@@ -163,6 +163,8 @@ $CondIdResult = $db->query($theColumns['Rcondition'][0].' AS id', $theTables['Rc
 		}
 	}
 \end{lstlisting}
+
+
 
 \fixme{To be decided look below:}
 Decision to all:To be decided use the State Chart diagram \ref{fig:tilstandsdiagram} instead of code or both? Didn't feel sekvense diagram whould symbolize it better.
