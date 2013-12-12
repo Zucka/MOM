@@ -40,12 +40,19 @@ $app->get('/status/:cId', function($cId) {
 	    else
 	    {
 	    	//calculate timeRemaining and return it
-		    $points = $row2['points'];
-		    $timeNow = $row2['now'];
-		    $startTime = $row2['starttime'];
-		    $timeElapsed = floor(($timeNow-$startTime)/60);
-		    $pointsRemaining = $points-($timeElapsed*$cost);
-		    $data['timeRemaining'] = strval($pointsRemaining/$cost);
+	    	if ($cost > 0)
+	    	{
+			    $points = $row2['points'];
+			    $timeNow = $row2['now'];
+			    $startTime = $row2['starttime'];
+			    $timeElapsed = floor(($timeNow-$startTime)/60);
+			    $pointsRemaining = $points-($timeElapsed*$cost);
+			    $data['timeRemaining'] = strval($pointsRemaining/$cost);
+			}
+			else
+			{
+				$data['timeRemaining'] = 60;
+			}
 	    }
 	    //Check rules if controller should shut off
 	    if (db_rules_device_should_turn_off($cId,$row2['PId']))
@@ -84,7 +91,7 @@ $app->get('/turnOn/:cId/:tId', function($cId,$tId) {
 		return;
 	}
 	$points = $row2['points'];
-	$timeRemaining = $cost > 0 ? $points/$cost : 0; //time remaining in minutes, check for cost > 0 so that we don't devide by zero
+	$timeRemaining = $cost > 0 ? $points/$cost : 60; //time remaining in minutes, check for cost > 0 so that we don't devide by zero
 	$status = '';
 	$error = '';
 	switch ($row['status']) {
@@ -139,7 +146,7 @@ $app->get('/turnOff/:cId/:tId', function($cId,$tId) {
 		return;
 	}
 
-	$row = $db->executeSQL("SELECT controller.status,controller_used_by_tag.TSerieNo,controller.cost FROM controller,controller_used_by_tag WHERE controller_used_by_tag.CSerieNo=controller.CSerieNo AND controller.CSerieNo='$cId' AND controller_used_by_tag.endtime IS NULL LIMIT 1")->fetch_assoc(); //time is when the device was turned on, user is who turned the device on
+	$row = $db->executeSQL("SELECT controller.status,controller_used_by_tag.TSerieNo,controller.cost,tag.profileId FROM controller,controller_used_by_tag,tag WHERE controller_used_by_tag.CSerieNo=controller.CSerieNo AND controller_used_by_tag.TSerieNo=tag.TSerieNo AND controller.CSerieNo='$cId' AND controller_used_by_tag.endtime IS NULL LIMIT 1")->fetch_assoc(); //time is when the device was turned on, user is who turned the device on
 	$controllerStatus = $db->executeSQL("SELECT status FROM controller WHERE CSerieNo='$cId'")->fetch_assoc()['status'];
 	$status = '';
 	$error = '';
@@ -174,9 +181,13 @@ $app->get('/turnOff/:cId/:tId', function($cId,$tId) {
 	{
 		$timeSpent = db_device_turn_off($cId,$tId); //turn off device and get time spent
 		$points = $timeSpent*$cost;
-		db_points_remove($tId,$points);
+		if (!db_rules_user_has_unlimited_points($row2['PId'])) //only remove points if user does not have unlimited points
+		{
+			db_points_remove($tId,$points);
+			$data['pointsRemoved'] = strval($points);
+		}
 		$data['timeSpent'] = strval($timeSpent); //return time spent?
-		$data['pointsRemoved'] = strval($points);
+		
 	}
 	else
 	{
