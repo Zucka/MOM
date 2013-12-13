@@ -56,7 +56,6 @@ To see a quick overview of the different conditions and their name:
 
 \begin{description}
 	\item[Timeperiode] the action can be done in this time period. 
-	\item[Timestamp] the action may only happen at a given point in time. 
 	\item[Controller on] the action can be done if a specific controller is turn on. 
 	\item[Controller off] the action can be done if a specific controller is turn off. 
 	\item[True] The action can always be taken.
@@ -76,12 +75,14 @@ An overview of the actions and their name is listed below:
 	\item[Access controller] it will give the profile access to a specific media. 
 	\item[Cannot access controller] it will block the user from using a specific media. 
 \end{description}
-	
-The rule's structure is presented in a grammar in listing	\ref{grammar} expressed in Extended Backus-Naur Form(EBNF) \citep{CoPL}.
-In a nonterminal is en-captured in $<>$ and a terminal is just a word or en-captured in "". 
-Also the grouping is used represented in $()$, the replica symbol is $*$, comments is $(**)$ and alternative is $|$. 
 
-A rule consist of a name and one of five action and condition sets which determine which actions and conditions can be combined. A rule can have several actions and conditions but only from the same set, see line 1-7. The action set is presented from 9-23 where all has a specific name, some have a specific Controller represented as a number and some has points which is a number. The condition set likewise represented from 9-23 and the condition types are presented from 25-30. There are four types but they each have a specific name. One type has Timestamp, another a Controller, the third only the name and the last is a timeperiod. The timeperiod has with two timestamp and if it is repeatable it has a string representation of the weekdays and a representation of then it is repeatable. 
+Two designs have been made over rule. The first design is explained in the appendix \vref{appendixFirstRuleDesign}. The final design is of the rule is explain later in this section. The main difference is that in the first design is an extra type of condition timestamp.   
+
+%The rule's structure is presented in a grammar in listing	\ref{grammar} expressed in Extended Backus-Naur Form(EBNF) \citep{CoPL}.
+%In a nonterminal is en-captured in $<>$ and a terminal is just a word or en-captured in "". 
+%Also the grouping is used represented in $()$, the replica symbol is $*$, comments is $(**)$ and alternative is $|$. 
+
+%A rule consist of a name and one of five action and condition sets which determine which actions and conditions can be combined. A rule can have several actions and conditions but only from the same set, see line 1-7. The action set is presented from 9-23 where all has a specific name, some have a specific Controller represented as a number and some has points which is a number. The condition set likewise represented from 9-23 and the condition types are presented from 25-30. There are four types but they each have a specific name. One type has Timestamp, another a Controller, the third only the name and the last is a timeperiod. The timeperiod has with two timestamp and if it is repeatable it has a string representation of the weekdays and a representation of then it is repeatable. 
 
 \begin{lstlisting}[label=grammar, caption=Grammar of a rule in EBNF]
 <Rule>:= <name> (
