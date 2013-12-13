@@ -42,7 +42,7 @@
 						'Tag' =>array('TSerieNo','CSId', 'profileId', 'name', 'active')
 		);
 
-		$actionNames= array('Block user', 'Activate user', 'Add points', 'Delete points',  
+		$actionNames= array('Block user', 'Add points', 'Delete points',  
 							'Set maximum of point', 'Unlimited time',
 							'Access any controller',	//permission all
 							'Cannot access any controller',	//permission non

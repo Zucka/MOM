@@ -64,8 +64,7 @@ To see a quick overview of the different conditions and their name:
 An overview of the actions and their name is listed below:
 
 \begin{description}
-	\item[Block user] it will block the profiles of all profiles connected to the rule.
-	\item[Activate user] it will activate the profiles connected to it. 
+	\item[Block user] it will block the profiles of all profiles connected to the rule. 
 	\item[Add points] it will add points to the profiles' points.
 	\item[Delete points]  it will delete points to the profiles' points.  
 	\item[Set maximum of point] it will set a maximum number of points that a profile can have. 
@@ -93,7 +92,7 @@ A rule consist of a name and one of five action and condition sets which determi
 		| (<ActionsetSet5><ConditionSet5>)*
 	)
 
-<ActionsetSet1> := "Block user" | "Activate user" 
+<ActionsetSet1> := "Block user" 
 <ConditionSet1> := <ConditionTimeperiod> |<ConditionTrue>
 
 <ActionsetSet2> := ("Add points" | "Delete points") <Points>
@@ -106,8 +105,7 @@ A rule consist of a name and one of five action and condition sets which determi
 <ConditionSet4> := <ConditionTimeperiod> | <ConditionTrue> 
 
 <ActionsetSet5> := ("Access controller" | "Cannot access controller")<Controller>
-<ConditionSet5> :=	<ConditionTimeperiod> 
-					| 	<ConditionTrue>	|	<ConditionElse>	
+<ConditionSet5> :=	<ConditionTimeperiod> |	<ConditionTrue>	|	<ConditionElse>	
 				
 <ConditionTimeperiod> :=  "TimePeriod" <Timestamp> <Timestamp> <Repeatable>					
 <Repeatable> :=   <Weekdays> <Repeat> | Nill
