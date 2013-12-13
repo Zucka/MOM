@@ -10,15 +10,15 @@ In order to know what hardware was needed, was a design of the overall solution 
 \subsection{Identify Unique Users}
 %How do we identify unique users in a subtle and child friendly way.
 The first challenge in the problem statement was: ''How do we identify unique users in a subtle and child friendly way.''.\\
-As mentioned in the analysis was there several different ways to do this, including fingerprints and NFC tags. Common for them all is that they require some sort of scanning device to be used. For the choice of hardware see chapter \ref{chap:hardware}\\
-And in order to verify that the user is actually a user on this families system this scanner must have a way to contact some sort of database or overview of members. Which leads us to the next challenge.
+As mentioned in the analysis was there several different ways to do this, including fingerprints and NFC tags. Common for them all is that they require some sort of scanning device to be used. For the choice of hardware see chapter \ref{chap:hardware}.\\
+In order to verify that the user is actually a user on this families system this scanner must have a way to contact some sort of database or an overview of members. Which leads us to the next challenge.
 
 \subsection{Enforce Restrictions on Media Devices}
 %How do we enforce restrictions on media devices.
-As mentioned in the analysis, see section \ref{section:pcHowToExtend}, it is necessary to find a way to physically restrict the usage of medias. We first thought that the best solution would be to implement it directly into all medias, but this would result in an endless amount of coding, since a code base would be needed to be implemented for each device it would run on.\\
-Instead we took the restriction a bit further. Most media today runs on electricity and without batteries, meaning if the power is cut to the media, it will be restricted.\\
-The idea developed into a combination with the solution for the prevues challenge and resulted into what we like to call a ''controller''. It is a device equipped with a relay, an internet connection and a scanner.\\
-Using the relay to control the power to medias, using the scanner to identify users and the internet connection to look up in a sub-global\footnote{Global in the scope of each families system.} register of users, which again leads us to the next and final challenge in the problem statement. Here we already have three different devices communicating, on their own, emphasizing the idea of Internet Of Things.
+As mentioned in the analysis, see section \ref{section:pcHowToExtend}, it is necessary to find a way to physically restrict the usage of medias. We first thought that the best solution would be to implement it directly into all media, but this would result in an endless amount of coding, since a code base would be needed to be implemented for each device it would run on.\\
+Instead we took the restriction a bit further. Most media today run on electricity and without batteries, meaning if the power is cut to the media, it will be restricted.\\
+The idea developed into a combination with the solution for the previous challenge and resulted into what we like to call a ''controller''. It is a device equipped with a relay, an internet connection and a scanner.\\
+Using the relay to control the power to media, using the scanner to identify users and the internet connection to look up in a sub-global\footnote{Global in the scope of each families system.} register of users, which again leads us to the next and final challenge in the problem statement. Here we already have three different devices communicating, on their own, emphasizing the idea of Internet Of Things.
 
 \subsection{Facilitate Rules, Permissions and Chores}
 %How do we facilitate concepts as rules, permission and chores without parents interaction.
@@ -28,7 +28,7 @@ Rules, permissions and chores are complicated concepts to explain which will be 
 \textbf{Chores} is intended as an idea to get the children to do physical activities. Parents create chores and designate a set of points that can be earned by doing this chore.\\
 \\
 By now there already is a lot of information in the system. We have users, rules, permissions, chores, points, timestamps and time periods, and if the system is to be extended to learn anything from the users behavior it should also include logs.\\
-This is more information than should ever be put into a simple hardcoded text sheet. Meaning the system will need a database and considering that we want the devices to independently be able to fetch the information they will need a good solution would be to store the information on a server accessible by the controller.\\
+This is more information than should ever be put into a simple hardcoded text sheet. Meaning the system will need a database and considering that we want the devices to independently be able to fetch the information they will need a good solution which would be to store the information on a server accessible by the controller.\\
 Also considering the advanced concepts of rules, permissions and chores it is very likely that a graphical interface will be needed and since there already is the need for a server in our system it would be a good idea to make a web-site for the user to maintain edit or add these rules.\\
 \\
 With all these required features we still need to specify how they communicate and this should implement a structure that allows for changes later on. Simply because this is a prototype system and will most likely need improvements if it was to ever be commercialized or extended, which is easiest done if the system is build for it from the start.\\
@@ -45,10 +45,10 @@ The second use pattern is pictured in the left side of the figure. It is a child
 
 \begin{figure}
 	\centering
-		\includegraphics[width=1.00\textwidth]{images/systemoverview2.png}
+		\includegraphics[width=1.00\textwidth, angle= 90]{images/systemoverview2.png}
 	\caption{system overview}
 	\label{fig:systemoverview}
 \end{figure}
 
-On the server there will be a database, files that generate the website, a web service, and a daemon. These elements of the system will be explained further in section \vref{chap:RequirMOM} and after that the system architecture can be presented in section \vref{sec:sysArchitecture}. However, first the hardware choices made for the system will be went through and also the concepts of rules, permissions and chores needs to be explained.\\
+On the server there will be a database, files that generate the website, API(a web service), and a Daemon. These elements of the system will be explained further in section \vref{chap:RequirMOM} and after that the system architecture can be presented in section \vref{sec:sysArchitecture}. However, first the hardware choices made for the system will be went through and also the concepts of rules, permissions and chores needs to be explained.\\
 The next chapter is about the hardware choices.
