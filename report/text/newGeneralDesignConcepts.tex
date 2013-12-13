@@ -10,9 +10,12 @@ An example on a house chore could be to take out the garbage, then the chore in 
 One disadvantage about the chore design is that the parent needs to use the website to award the child with points for doing a chore. We would have liked to automate it further, but to limit the scope of the project this would be future work.  
 
 \section{Permission}
-Permission in this system is whether a user have access to the media. Permissions can also be expressed in a rule, but it is easier to make and understand a permission. A permission has a name and a controller. When a user then is connected a permission it would mean this user has permission to uses the media which is connected to this controller. An example could be that Peter has permission to use the TV. 
+Permission in this system is whether a user have access to the media. Permissions can also be expressed in a rule, but it is easier to make and understand a permission. This also the main reason for differentiate the two.
+
+A permission need a name and a controller. When a user then is connected a permission it would mean this user has permission to uses the media which is connected to this controller. An example could be that Peter has permission to use the TV. 
 
   
+%is a subtype of rules. But we like to differentiate on rules not being necessary for the usage of the system, where permissions is. Permissions is only used to tell the system the normal allowed usage of media and rules is there to overwrite these permissions in special cases, or if the user wants to customize the system.\\
 
 %Permissions in this system is a time period in which the child user is allowed to use a specific media. Permission is included in MOM to give parents an easy way of controlling which time periods during the day the media can be used by the child. This can help the parents to get the children to bed in time since they cannot use the medias unless the parent allows it. It would especially be useful if the child has medias in his room such that the parents do not need to check whether the media is turned off or not. 
 
