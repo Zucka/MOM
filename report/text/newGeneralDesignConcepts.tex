@@ -10,9 +10,12 @@ An example on a house chore could be to take out the garbage, then the chore in 
 One disadvantage about the chore design is that the parent needs to use the website to award the child with points for doing a chore. We would have liked to automate it further, but to limit the scope of the project this would be future work.  
 
 \section{Permission}
-Permission in this system is whether a user have access to the media. Permissions can also be expressed in a rule, but it is easier to make and understand a permission. This also the main reason for differentiate the two for the user. 
+Permission in this system is whether a user have access to a given media. Permissions can also be expressed as a rule, but it is easier to make and understand a permission. This is also the main reason for differentiating the two for the user. 
 
-A permission need a name and a controller. When a user then is connected a permission it would mean this user has permission to uses the media which is connected to this controller. An example could be that Peter has permission to use the TV. 
+A permission need a user and a controller. When a user then is connected to a permission it means this user has permission to use the media which is connected to this controller. An example could be that Peter has permission to use the TV. 
+
+A permission is different from a rule in two ways according to the data structure. First, a permission does not need a condition, it is always true. Secondly a permission is always of the action type ''Access Controller''.\\
+This means that permissions is only an abstraction making an easier understanding for the user.
 
   
 %is a subtype of rules. But we like to differentiate on rules not being necessary for the usage of the system, where permissions is. Permissions is only used to tell the system the normal allowed usage of media and rules is there to overwrite these permissions in special cases, or if the user wants to customize the system.\\
