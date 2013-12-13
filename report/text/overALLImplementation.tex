@@ -26,3 +26,8 @@ The function library consist of several functions that are able to manipulate th
 \subsection*{The API}
 \subsection*{The Daemon}
 \subsection*{The Website}
+\subsection*{The Arduino}
+The Arduino is the implemented solution for controlling interaction with media devices and it has been issued with both the software and extension in hardware to function in this capacity.
+To turn on a device the user must swipe his tag over the RFID antenna.
+Upon the swipe, the Arduino will read the Tag ID and call the API to check for permission to turn on the device, and if the permission is granted, the Arduino will do so.
+The Media device will continue to run until one of three events occur: The user chooses to log out from the device, which is done with another swipe and another call to the API. The user could also run out of time, at which point the Arduino shuts off the device. Finally, status updates, which the Arduino gets from calling the API regularly, could tell the Arduino to shut off.
