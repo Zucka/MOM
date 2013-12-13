@@ -1,8 +1,8 @@
 \chapter{Parental Control - Why we need it} \fixme{der er meget datid og we i dette kapitel, skal omskrivs til nutid de fleste gange}
-Today children spend more and more time watching TV and playing video games. Research show that there have been an increase in children's usage of electronic media during the later years. \citep{sundhedsstyrelsen}\\
-Research also show that this increase in media usage have consequences for the children. It has been linked to sleep deprivation\citep{bmcPublicHealth} and lack of physical exercise\citep{bmcPublicHealth}.\\
+Today children spend more and more time watching TV and playing video games. Research shows that there has been an increase in children's use of electronic media in later years. \citep{sundhedsstyrelsen}\\
+Research also shows that this increase in media usage have consequences for the children. It has been linked to sleep deprivation\citep{bmcPublicHealth} and lack of physical exercise\citep{bmcPublicHealth}.\\
 \\
-In this report we give a suggestion towards a solution to control this problem, by extending the concept of Parental Control over electronic devices.
+In this report we give a suggestion towards a solution to control this problem, by extending \fixme{expanding on} the concept of Parental Control over electronic devices.
 
 \section{Words}
 In this section keywords are explained, in order to easier understand the report.\\
@@ -18,19 +18,19 @@ In this project, we focus on the ability for different entities to act with each
 
 \section{Increased media usage - It is a problem}
 As stated in the intro to this chapter, the increase in media usage has been linked to sleep deprivation and lack of physical exercise. Which in turn lead to higher risks of getting type 2 diabetes and concentration issues.\\
-Worse is that there seems to be an increase in the media usage of each generation. In an article from the Danish Health Department, they point out that over a 5 year period children between the age of 10 and 15, have had an increase in media usage from 1.57 hours a day, to 2.47 hours a day, an increase of more than 50\%.\citep{sundhedsstyrelsen}\\
+Worse is that, there seems to be an increase in the media usage of each generation. In an article from the Danish Health Department, they point out that over a 5 year period children between the age of 10 and 15, have had an increase in media usage from 1.57 hours a day, to 2.47 hours a day, a rise of more than 50\%.\citep{sundhedsstyrelsen}\\
 \\
-If this tendency is not dealt with, the risk for children getting type 2 diabetes will also rise. Our suggestion to help lower the media usage is to give the parents proper tools to limit their child’s media usage in a fair way, which will be discussed in the next section.
+If this tendency is not dealt with, the risk of children getting type 2 diabetes will also rise. Our suggestion to help lower the media usage is to give the parents proper tools to limit their child’s us of media in a fair way, which will be discussed in the next section.
 
 
 \section{Parental Control - How to extend it}
 \label{section:pcHowToExtend}
 As previously mentioned parental control is commonly found in televisions, computers and internet-browsers. But none of these tools are meant to limit the usage of a device totally, they are able to do so, but it will result in parents having to enter passwords for their children every time they need to use the device.\\
-The idea behind this project, is to extend the normal parental control, so that a child has a limited usage of media, without having the constant interaction from parents. 
+The idea behind this project, is to extend the normal parental control, so that a child has a limited usage of media, without having the constant interaction from parents. \fixme{Maybe add a reference? -Jakob}
 %For the idea to be an improvement upon the existing parental control, it must be able to give the parents control over their children's media usage without forcing the parents to be around constantly. (lisbeth: this repeat the line above)
 But simply restricting a child's media usage is not enough, for the idea to work. We believe it is also necessary to inspire the child to physical activity, e.g. by helping out at the house.\\
 \\
-This, coupled with the subject of this report, ''Internet of Things'' lead us to an idea that consists of the following features:
+This, coupled with the subject of this report, ''Internet of Things'' have lead to an idea that consists of the following features:
 
 \begin{enumerate}
 	\item A way to set up permissions for which media and when they can be accessed
@@ -40,20 +40,20 @@ This, coupled with the subject of this report, ''Internet of Things'' lead us to
 	\item A way to inspire children to physical activity
 \end{enumerate}
 
-After figuring out what the key features of the system should be, we started brainstorming how to implement them.\\
-The 1st and 2nd feature was decided to be maintained from a website with a graphical interface. This was due to the complexity of the idea and the realization that simplifying permissions and rules into something a machine would understand is a hard task and an even harder one for non-computer educatee, more information on how we implemented rules can be read in section \vref{sec:rule}.\\
+After having figuring out what the key features of the system should be, we started brainstorming how to implement them.\\
+The 1st and 2nd feature is best maintained from a website with a graphical interface. This is due to the complexity of the idea and the realization that simplifying permissions and rules into something a machine would understand is a hard task and an even harder one for non-computer graduate, more information on how we implemented rules can be read in section \vref{sec:rule}.\\
 Among other solutions could have been a desktop- or phone application.\\
 \\
-For the 3rd feature  we came up with a few different solutions. One solution was to write code for a bunch of media, that then would be able to work directly with the administration web-site, but this would force us to write code for every media device from every fabricator.\\
-We therefore decided that it would be better to create a device that could turn the power on and off from a media instead. We are aware that this solution might influence some media in a bad way, but most media today is setup to handle a sudden disappearance of electrical power.\\
+For the 3rd feature has a few different solutions. One solution was to write code for a bunch of media, that then would be able to work directly with the administration web-site, but this would force us to write code for every media device from every fabricator.\\
+A better alternative is to create a device that can turn the power on and off for a media instead. We are aware that this solution might influence some media in a bad way, but most media today is setup to handle a sudden disappearance of electrical power.\\
 More about the chosen device can be found in chapter \vref{chap:hardware}.\\
 \\
-For the 5th feature  we discussed different ways to identify child users. Mobile phones, finger prints and NFC tags are only a few of the discussed ways. What was important was that we needed a way for the device from feature 3. to uniquely identify each user, such that the rules from the 1st and 2nd feature could be upheld.\\
+For the 5th feature there are different ways to identify child users. Mobile phones, fingerprints and NFC tags are only a few potential directions. What is important is that we need a way for the device from feature no.3 to uniquely identify each user, such that the rules from the 1st and 2nd feature can be upheld.\\
 More about the chosen identification can be found in chapter \vref{chap:hardware}.\\
-We also took into account that we wanted the system to be able to decide if a media would be allowed to be turned on, without involving the parents. Meaning that the identification of a child would have to suffice as enough information to make this decision.\\
+We have also taken into account that we want the system to be able to decide if a media device is to be allowed to turn on, without having to involve a parent. This means that the identification of a child will have to be sufficient information to make that decision.\\
 %we discussed if a mobile phone would be a good way to identify children, but this would encourage children to further use of electronic media, simply by giving them a mobile phone in the first place. We therefor came up with the idea to use RFID or NFC, to create small tags, which could be embedded into jewelry or key chains to identify the child.\\
 \\
-For feature 5. we did some serious consideration of how to motivate children in a way that would go along with the idea of the parental control system and we came up with the idea to implement chores into the system. In the belief that if a sort of point system was used to determine how much time a child would be able to use electronic media per week. Then a way to obtain extra points could be to do chores. Meaning if the child was attaining a habit of spending a lot of time using electronic media, the only way to obtain more time would be to do chores which could then consist of moving the lawn or other physical exercises.\\
+For feature no.5 we have seriously considered how to motivate children in a way that will go along with the idea of the parental control system. We have come up with the idea of implementing chores into the system. We believe that if a sort of point system is used to determine how much time a child will be able to use on electronic media per week. Then a way to obtain extra points could be to do chores. Meaning if the child has a habit of spending a lot of time using electronic media, the only way to obtain more time will be to do chores. Chores that could consist of moving the lawn or other physical exercises.\\
 
 This idea then boils down to these 3 key aspects:
 
@@ -63,4 +63,4 @@ This idea then boils down to these 3 key aspects:
 	\item A website to set up rules, permissions and view/modify allowed usage of electronic media
 \end{itemize} 
 
-Next follows a formal description of the problem, in the form of the problem statement followed by a more detailed explanation of how the system is designed and implemented.
+what follows is a formal description of the problem, in the form of the problem statement followed by a more detailed explanation of how the system is designed and implemented.
