@@ -76,11 +76,11 @@ An overview of the actions and their name is listed below:
 	\item[Cannot access controller] it will block the user from using a specific media. 
 \end{description}
 
-Two designs have been made over rule. The first design is explained in the appendix \vref{appendixFirstRuleDesign}. The final design is of the rule is explain later in this section. The main difference is that in the first design is an extra type of condition timestamp.   
+Two designs have been made over rule. The first design is explained in the appendix \vref{appendixFirstRuleDesign}. The final design is of the rule is explain later in this section. The main difference is that in the first design is an extra type of condition timestamp. But late into the implementation of MOM we found that it would not be needed and then we have made this design.   
 
-%The rule's structure is presented in a grammar in listing	\ref{grammar} expressed in Extended Backus-Naur Form(EBNF) \citep{CoPL}.
-%In a nonterminal is en-captured in $<>$ and a terminal is just a word or en-captured in "". 
-%Also the grouping is used represented in $()$, the replica symbol is $*$, comments is $(**)$ and alternative is $|$. 
+The rule's structure is presented in a grammar in listing	\ref{grammar} expressed in Extended Backus-Naur Form(EBNF) \citep{CoPL}.
+In a nonterminal is en-captured in $<>$ and a terminal is just a word or en-captured in "". 
+Also the grouping is used represented in $()$, the replica symbol is $*$, comments is $(**)$ and alternative is $|$. 
 
 %A rule consist of a name and one of five action and condition sets which determine which actions and conditions can be combined. A rule can have several actions and conditions but only from the same set, see line 1-7. The action set is presented from 9-23 where all has a specific name, some have a specific Controller represented as a number and some has points which is a number. The condition set likewise represented from 9-23 and the condition types are presented from 25-30. There are four types but they each have a specific name. One type has Timestamp, another a Controller, the third only the name and the last is a timeperiod. The timeperiod has with two timestamp and if it is repeatable it has a string representation of the weekdays and a representation of then it is repeatable. 
 
@@ -94,22 +94,21 @@ Two designs have been made over rule. The first design is explained in the appen
 	)
 
 <ActionsetSet1> := "Block user" | "Activate user" 
-<ConditionSet1> := <ConditionTimestamp>
+<ConditionSet1> := <ConditionTimeperiod> |<ConditionTrue>
 
 <ActionsetSet2> := ("Add points" | "Delete points") <Points>
-<ConditionSet2> := <ConditionTimeperiod> | <ConditionTimestamp>
+<ConditionSet2> := <ConditionTimeperiod>
 
 <ActionsetSet3> := "Set maximum of point" <Points>
 <ConditionSet3> := <ConditionTrue>
 
 <ActionsetSet4> := "Unlimited time" | ("Access any controller" | "Cannot access any controller") <Controller>
-<ConditionSet4> := <ConditionTimeperiod> | <ConditionTimestamp> 
+<ConditionSet4> := <ConditionTimeperiod> | <ConditionTrue> 
 
 <ActionsetSet5> := ("Access controller" | "Cannot access controller")<Controller>
-<ConditionSet5> := <ConditionTimestamp> |	<ConditionTimeperiod> 
+<ConditionSet5> :=	<ConditionTimeperiod> 
 					| 	<ConditionTrue>	|	<ConditionElse>	
 				
-<ConditionTimestamp> :=  "Timestamp" <Timestamp>
 <ConditionTimeperiod> :=  "TimePeriod" <Timestamp> <Timestamp> <Repeatable>					
 <Repeatable> :=   <Weekdays> <Repeat> | Nill
 
