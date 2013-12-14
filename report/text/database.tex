@@ -16,8 +16,7 @@ In the parent control system there are seven essential objects; control system, 
 	\item[Rule] is representing other restriction or rules that cannot be expressed by the permission. A rule consist of some conditions that need to meet before some actions should be taken as explained previously in \vref{sec:rule}. 
 \end{description}
 
-From the former description the database design is made. It is represented in a ER-diagram where the cardinality ratio is expressed in 
-Chen notation\citep{DatabaseKilde}. The ER-diagram is shown in figure \ref{fig:ERdiagram}. 
+From the former description the database design is made. It is represented in a ER-diagram in figure \ref{fig:ERdiagram} where the cardinality ratio is expressed in Chen notation\citep{DatabaseKilde}. It should be mentioned that the design of a rule in the database is based on the first design of the rules, which can be found in appendix \vref{appendixFirstRuleDesign}. The reason for not using the final design is that it was changed fare into the implementation phase and the first database design does still support the final design of rule. 
 
 \begin{figure}
 	\centering
@@ -28,9 +27,9 @@ Chen notation\citep{DatabaseKilde}. The ER-diagram is shown in figure \ref{fig:E
 
 In the ER-diagram it should be noticed that Permission is absent. The reason is for every permission that could be made then there is an equivalent rule. Therefore the data representation of Permission is the same as Rule. However, on the website the two should be represented differently and so the attribute \texttt{isPermission} have been added to Rule which will differentiate the two.
 
-Another observation from the diagram is the condition of a rule. The condition can be one of three representations. The first is the simplest because it is just the Condition. The second is Condition and a timestamp which is the \texttt{cond\_timestamp} in the design in \ref{fig:ERdiagram}. The last representation is Condition, a time period, and a representation of when it is valid, which in the ER-diagram is \texttt{cond\_timeperiod}. 
- The type of condition that should be used, can be distinguished by the condition name. If the name is \texttt{Timestamp} it should be cond\_timestamp, if it is \texttt{Timeperiode} then it is cond\_timeperiod and any other name it is only the Condition. \fixme{Til sidst er navne stadig TimeStamp og TimePeriod}
+Another observation from the diagram is the condition of a rule. The condition can be one of three representations. The first is the simplest because it is just the Condition. The second is Condition and a timestamp which is the \texttt{cond\_timestamp} in the design in \ref{fig:ERdiagram}. The last representation is Condition, a time period, and a representation of when it is valid, which in the ER-diagram is \texttt{cond\_timeperiod}. The type of condition that should be used, can be distinguished by the condition name. If the name is \texttt{Timestamp} it should be cond\_timestamp, if it is \texttt{Timeperiode} then it is cond\_timeperiod and any other name it is only the Condition. 
 
+Notice if the database design had been design from the final design then the table \texttt{cond\_timestamp} would not have been in the design.
 After the database design has been completed it was implemented into a MySQL database.  
 
 \section{Implementation}
@@ -90,9 +89,9 @@ This class is used by several functions that are connected to the website, API a
 \subsection{EditRule from the Function Library}
 \label{subsec:dbRule}
 %if someday our repport gets to long this can be cut out or reduced
-This system also have a function library which get, insert, update or delete data from the database. Among these function are e.g. \texttt{simpleInsertIntoDB} and \texttt{simpleUpdateDB} that is used to insert and update the essential tables with the exception of Rule. Insert and updating a rule is similar but the latter is the more interesting so it will be this sections focus.
+This system also have a function library which get, insert, update or delete data from the database. Among these function are e.g. \texttt{simpleInsertIntoDB} and \texttt{simpleUpdateDB} that is used to insert and update the essential tables with the exception of Rule. Insert and updating a rule is similar but the latter is the more interesting so it will be this sections focus. 
 
-As stated previously in mapping of a rule in \vref{subsec:mappRule}, there would be some challenges to make the insert and update functions. This is partly due to the fact that the data of a condition  is one of three alternative: condition, condition plus timestamp or condition plus timeperiod as was explained in \vref{sec:DBdesign}.In update it is also a challenge that each condition and action can be removed, add or updated which all should be handled together and this will be explained further in this section. 
+As stated previously in mapping of a rule in \vref{subsec:mappRule}, there would be some challenges to make the insert and update functions. This is partly due to the fact that the data of a condition  is one of two alternative: condition, condition plus timestamp  or condition plus timeperiod as was explained in \vref{sec:DBdesign}. However, in the newer design of a rule the condition plus timestamp is removed which makes it easier but the problem still exist. In update it is also a challenge that each condition and action can be removed, add or updated which all should be handled together and this will be explained further in this section. 
 
 The function to update a rule is called editRule and it also used some other function as described below:
 
@@ -114,7 +113,7 @@ However, when updating an action and especially a condition the changes can have
 	\item an existing condition or action is to be updated but with a structural change in the database.
 \end{itemize}
 
-With a structural change it is meant that the name of the condition or action has been changes and this change can influence e.g. whether cond\_timeperiod or cond\_timestamp should be used. As a result it have been decided that in this case the old condition should be deleted and the new be added anew. 
+With a structural change it is meant that the name of the condition or action has been changes and this change can influence e.g. whether cond\_timeperiod or cond\_timestamp should be used. As a result it have been decided that in this case the old condition should be deleted and the new be added anew. A structural change should not happen for an action, but the function are still able to handle it in the same way as a condition.
 
 The code sample in \ref{code:UpdateRules} is from the update handling of condition and the it is similar to handle the actions. First the old conditions id are need such that they can be compared to the ids of the Condition objects from the array \$arrayOfCondition, see line $2$\fixme{check line no}. 
 Then foreach old condition id we will look thourgh the new id and if it found and the name are not to be changed then we call editcondition with the updated condition object and remove this object from the array of condition, see line $4-20$\fixme{check line no}. 
@@ -164,15 +163,9 @@ $CondIdResult = $db->query($theColumns['Rcondition'][0].' AS id', $theTables['Rc
 	}
 \end{lstlisting}
 
+\subsubsection{Status on Database and Function Library}
+The database and the functions mentioned have all been made prior to when the decision of the rule's design changed. The functions which uses condition can now be further improved but this will not be done because it is not a priority since these functions still meet the requirements of the system.
 
+Up till now the rules could have several condition and action but late in the implementation of the Website we have decides to only allow one action and condition per rule to get a more user-friendly website, more about this decision can be found in section \vref{}\fixme{ref til rules website}. Most functions are still implemented on the first design so they can handle several conditions and actions. 
 
-\fixme{To be decided look below:}
-Decision to all:To be decided use the State Chart diagram \ref{fig:tilstandsdiagram} instead of code or both? Didn't feel sekvense diagram whould symbolize it better.
-
-\begin{figure}
-	\centering
-		\includegraphics[width=1.50\textwidth, angle=90]{images/tilstandsdiagram.jpg}
-	\caption{State Chart diagram for editCondition}
-	\label{fig:tilstandsdiagram}
-\end{figure}
-
+However, a few function can only work with one condition and action per rules. An example is the function that checks whether a user can use a media, called $db_rules_user_can_turn_device_on$. If the implementation of rules on the website is change a new version of these functions need to be made.
