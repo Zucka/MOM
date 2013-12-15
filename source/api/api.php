@@ -55,7 +55,7 @@ $app->get('/status/:cId', function($cId) {
 			}
 	    }
 	    //Check rules if controller should shut off
-	    if (db_rules_device_should_turn_off($cId,$row2['PId']))
+	    if (db_rules_device_should_turn_off($cId,$row2['PId']))//lisbeth:you get a timestamp to when it should shout down
 	    {
 	    	$action = 'RED';
 	    }
@@ -86,7 +86,7 @@ $app->get('/turnOn/:cId/:tId', function($cId,$tId) {
 	$cost = $row['cost']; //cost is points per minute
 
 	$row2 = $db->executeSQL("SELECT points,active FROM profile,tag WHERE tag.TSerieNo='$tId' AND tag.profileId=profile.PId LIMIT 1")->fetch_assoc();
-	if ($row2['active'] == 0)
+	if ($row2['active'] == 0) //this is unnessarry it is checked in db_rules_user_can_turn_device_on
 	{
 		return;
 	}
