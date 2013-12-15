@@ -1,0 +1,296 @@
+\section{Test Suite.}
+
+%%Tests to Perform.
+%%Test 1
+\begin{table}[h]
+	\centering
+		\begin{tabular*}{\textwidth}{|l|l|}
+		\hline
+		\hline
+		Name: & AT001A\\
+		\hline
+		Description: & Log in and out with the Arduino and a valid Tag.\\
+		\hline
+		Requirements: & \parbox{0.85\textwidth}{
+		\begin{itemize}
+		  \item A LED light connected to the Arduino which functions as the ``Device''.
+			\item Tag connected to a user with enough points and permission to use the Device.
+			\item The Arduino running the final software version.
+			\item Serial Connection to Arduino.
+			\item Web Browser with link to Status API for the device being used.
+		\end{itemize}}\\
+		\hline
+		Expected Results: & \parbox{.85\textwidth}{When the RFID antenna detects the tag, the LED light will turn on, The Serial will note that it is now running in State 1 and the web browser will report that the Status is green.
+		When swiping the tag a second time, the LED light will turn off, The Serial will report that the Arduino is running at State 0 and the webbrowser will confirm that the status is RED for not running.
+		After either swipe the Arduino will be ready for a new tag swipe.}\\
+		\hline
+		Steps: & \parbox{.85\textwidth}{
+		\begin{enumerate}
+			\item Turn on the Arduino. (Wait for Serial to confirm that the device is running.)
+			\item Swipe tag over RFID antenna and observe if the LED turns on.
+			\item On the Serial Output, note if the State changes from 0 to 1.
+			\item Confirm on the web browser that the device is marked status:GREEN  running.
+			\item Swipe tag over the RFID antenna again and observe if the LED turns off.
+			\item On the Serial output, note if the State changes from 1 to 0.
+			\item Confirm on the web browser.
+		\end{enumerate}}
+		\\
+
+		\hline
+		Result of Test: & \\
+		\hline
+		\end{tabular*}
+\end{table}
+
+%%Test 2.
+\begin{table}[h]
+	\centering
+		\begin{tabular*}{\textwidth}{|l|l|}
+		\hline
+		\hline
+		Name: & AT001B\\
+		\hline
+		Description: & Log in with the Arduino and a Tag that does not have the proper permissions.\\
+		\hline
+		Requirements: & \parbox{0.85\textwidth}{
+		\begin{itemize}
+		  \item A LED light connected to the Arduino which functions as the ``Device''.
+			\item Tag connected to a user without the permission to use the Device.
+			\item The Arduino running the final software version.
+			\item Serial Connection To the Arduino.
+			\item Web Browser with link to Status API for the device being used.
+		\end{itemize}}
+		\\
+		\hline
+		Expected Results: & \parbox{.85\textwidth}{When the RFID antenna detects the tag, the LED light will remain off, the state will remain 0 and the web browser will report that the Status is RED for not running.
+		The Arduino will return to waiting for a new tag swipe.}\\
+		\hline
+		Steps: & \parbox{.85\textwidth}{
+		\begin{enumerate}
+			\item Turn on the Arduino. (Wait for Serial to confirm that the device is running.)
+			\item Swipe tag over RFID antenna and observe if the LED turns on.
+			\item On the Serial Output, note if the Arduino changes state.
+			\item Confirm on the web browser that the device is marked status:RED for not running.
+		\end{enumerate}}
+		\\
+		Result of Test: & \\
+		\hline
+		\end{tabular*}
+\end{table}
+
+%%Test 3.
+\begin{table}[h]
+	\centering
+		\begin{tabular*}{\textwidth}{|l|l|}
+		\hline
+		\hline
+		Name: & AT001C\\
+		\hline
+		Description: & Log in with the Arduino and a Tag not supplied with enough points to run.\\
+		\hline
+		Requirements: & \parbox{0.85\textwidth}{
+		\begin{itemize}
+		  \item A LED light connected to the Arduino which functions as the ``Device''.
+			\item Tag connected to a user without enough points to use the Device.
+			\item A serial connection to the Arduino
+			\item The Arduino running the final software version.
+			\item Web Browser with link to Status API for the device being used.
+		\end{itemize}}
+		\\
+		\hline
+		Expected Results: & \parbox{.85\textwidth}{When the RFID antenna detects the tag, the LED light will remain off, the state of the arduino will not change and the web browser will report that the Status is RED.		
+		The Arduino will return to waiting for a new tag swipe.}\\
+		\hline
+		Steps: & \parbox{.85\textwidth}{
+		\begin{enumerate}
+			\item Turn on the Arduino. (Wait for Serial to confirm that the device is running.)
+			\item Swipe tag over RFID antenna and observe if the LED turns on.
+			\item Observe on the Serial Output if the state changes.
+			\item Confirm on the web browser that the device is marked status:RED for not running.
+		\end{enumerate}}
+		\\
+		\hline
+		Result of Test: & \\
+		\hline
+		\end{tabular*}
+\end{table}
+
+%%Test 4.
+\begin{table}[h]
+	\centering
+		\begin{tabular*}{\textwidth}{|l|l|}
+		\hline
+		\hline
+		Name: & AT001D\\
+		\hline
+		Description: & Log in with the Arduino and a Tag not recognized.\\
+		\hline
+		Requirements: &
+		\parbox{0.85\textwidth}{
+		\begin{itemize}
+		  \item A LED light connected to the Arduino which functions as the ``Device''.
+			\item A tag that has not been introduced to the system yet.
+			\item A Serial Connection to Arduino.
+			\item The Arduino running the final software version.
+			\item Web Browser with link to Status API for the device being used.
+		\end{itemize}}\\
+				\hline
+		Expected Results: & \parbox{.85\textwidth}{When the RFID antenna detects the tag, the LED light will remain off, the state of the arduino will not change and the web browser will report that the Status is RED.		
+		The Arduino will return to waiting for a new tag swipe.}\\
+		\hline
+		Steps: & \parbox{.85\textwidth}{
+		\begin{enumerate}
+			\item Turn on the Arduino. (Wait for Serial to confirm that the device is running.)
+			\item Swipe tag over RFID antenna and observe if the LED turns on.
+			\item Observe on the Serial Output if the state changes.
+			\item Confirm on the web browser that the device is marked status:RED for not running.
+		\end{enumerate}}
+		\\
+		\hline
+		Result of Test: & \\
+		\hline
+		\end{tabular*}
+\end{table}
+
+%%Test 5.
+\begin{table}[h]
+	\centering
+		\begin{tabular*}{\textwidth}{|l|l|}
+		\hline
+		\hline
+		Name: & AT002A\\
+		\hline
+		Description: & Swipe a valid Tag that has the right permissions and points, while another user is logged in with the Arduino.\\
+		\hline
+		Requirements: & \parbox{0.85\textwidth}{
+		\begin{itemize}
+		  \item A LED light connected to the Arduino which functions as the ``Device''.
+			\item Tag connected to a user with enough points and permission to use the Device.
+			\item A second Tag connected to a user with enough points and permission to use the Device.
+			\item The Arduino running the final software version.
+			\item Web Browser with link to Status API for the device being used.
+		\end{itemize}}
+		\\
+		\hline
+		Expected Results: & \parbox{.85\textwidth}{When the second tag is swiped while the first user is still active the LED should briefly flicker off and then on again as the new user logs back in.}\\
+		\hline
+		Steps: & \parbox{.85\textwidth}{
+		\begin{enumerate}
+			\item Turn on the Arduino. (Wait for Serial to confirm that the device is running.)
+			\item Swipe tag over RFID antenna and observe if the LED turns on.
+			\item Confirm on the web browser that the device is marked status:GREEEN for running.
+			\item Swipe tag over RFID antenna and observe if the LED Turns off and then on again.
+			\item Confirm on the web browser that the device is still marked status:GREEEN for running.
+		\end{enumerate}}
+		\\
+		\hline
+		Result of Test: & \\
+		\end{tabular*}
+\end{table}
+%%Test 6.
+\begin{table}[h]
+	\centering
+		\begin{tabular*}{\textwidth}{|l|l|}
+		\hline
+		\hline
+		Name: & AT003A\\
+		\hline
+		Description: & Let Arduino run until getStatus is called without logged in User.\\
+		\hline
+		Requirements: & \parbox{0.85\textwidth}{
+		\begin{itemize}
+			\item The Arduino running the final software version.
+			\item Web Browser with link to Status API for the device being used.
+			\item Serial Connection to Arduino.
+		\end{itemize}}
+		\\
+		\hline
+		Expected Results: & \parbox{.85\textwidth}{Run smoothly, remain in State 0, Remain turned off.}\\
+		\hline
+		Steps: & \parbox{.85\textwidth}{
+		\begin{enumerate}
+			\item Turn on the Arduino. (Wait for Serial to confirm that the device is running.)
+			\item Wait and confirm that the status has run with the Serial Watch and note if its Status:RED.
+			\item Confirm on the web browser that the device is still marked status:RED for running.
+		\end{enumerate}}
+		\\
+		\hline
+		Result of Test: & \\
+		\hline
+		\end{tabular*}
+\end{table}
+%%Test 7.
+\begin{table}[h]
+	\centering
+		\begin{tabular*}{\textwidth}{|l|l|}
+		\hline
+		\hline
+		Name: & AT003B\\
+		\hline
+		Description: & Let Arduino run until getStatus is called with logged in User.\\
+		\hline
+		Requirements: & \parbox{0.85\textwidth}{
+		\begin{itemize}
+			\item The Arduino running the final software version.
+			\item Tag connected to a user with enough points and permission to use the Device.
+			\item A serial connection to the Arduino.
+			\item Web Browser with link to Status API for the device being used.
+		\end{itemize}}\\
+		\hline
+		Expected Results: & \parbox{.85\textwidth}{The User will Remain logged in and the Arduino will not change from state 1.}
+		\\
+		\hline
+		Steps: & \parbox{.85\textwidth}{
+		\begin{enumerate}
+			\item Turn on the Arduino. (Wait for Serial to confirm that the device is running.)
+			\item Swipe tag over RFID antenna and observe if the LED turns on.
+			\item Wait and confirm that the status has run with the Serial Watch and note if its Status:GREEN.
+			\item Note if the Arduino changes state.
+			\item Confirm that the LED remains on.
+			\item Confirm on the web browser that the device is still marked status:GREEN for running.
+		\end{enumerate}}
+		\\
+		\hline
+		Result of Test: & \\
+		\hline
+		\end{tabular*}
+\end{table}
+%%Test 8.
+\begin{table}[h]
+	\centering
+		\begin{tabular*}{\textwidth}{|l|l|}
+		\hline
+		\hline
+		Name: & AT003C\\
+		\hline
+		Description: & Let Arduino run until getStatus is called with logged in User no longer permitted to use the Arduino.\\
+		\hline
+		Requirements: & \parbox{0.85\textwidth}{
+		\begin{itemize}
+			\item The Arduino running the final software version.
+			\item Tag connected to a user with enough points and permission to use the Device.
+			\item Access to the \fixme{stuff that controls permissions.}
+			\item A serial connection to the Arduino.
+			\item Web Browser with link to Status API for the device being used.
+		\end{itemize}}
+		\\
+		\hline
+		Expected Results: & \parbox{.85\textwidth}{The Arduino will run with user logged in state 1 and with the LED turned on until the timer is reached. 
+		Then the user will be logged out, the LED will turn off and the Arduino will move to state 0.}\\
+		\hline
+		Steps: & \parbox{.85\textwidth}{
+		\begin{enumerate}
+			\item Turn on the Arduino. (Wait for Serial to confirm that the device is running.)
+			\item Swipe tag  over RFID antenna and observe if the LED turns on.
+			\item Confirm on the web browser that the device is still marked status:GREEN for running.
+			\item Use the Web Service to rescind permission to the device.
+			\item Use browser to confirm that the device is marked as status:RED.
+			\item Wait and confirm that the status has run with the Serial Watch and note if its Status:RED.
+			\item Confirm that the LED turns off.
+		\end{enumerate}}
+		\\		
+		\hline
+		Result of Test: & \\
+		\hline
+		\end{tabular*}
+\end{table}
