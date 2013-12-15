@@ -98,5 +98,37 @@ This is done by pressing the checkbox in the left side of the tags overview, see
 
 
 \subsection{The Rules Page}
-%Database communication
-%JQuery
+The most advanced feature of the web interface is the rule page, therefor it is explained here.
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=1.00\textwidth]{images/createNewRule.png}
+	\caption{Create New Rule}
+	\label{fig:createNewRule}
+\end{figure}
+
+As mentioned in the General Design Concepts chapter, see \vref{chapter:concepts}, rules underwent some changes during development of the MOM system. The first layout was the development teams understanding and ideas about the concept, but as the web page was created it became apparent that the first layout was too advanced, with that reasoning the rule concept went from a many:to:many concept to a one:to:one concept.\\
+But that is not the only change made. The first layout was created with names for rules that fit into a computer science way of thinking. Names such as: ''permissionNone'', ''permissionAll'', ''true'' and so forth. These names have been rethought into ''Cannot access any controller'', ''Can access any controller'' and ''Infinite''\fixme{Check om Infinite stadig er ordet.}, to fit into a pure English language.\\
+Yet another change was that rules could not be set to start or end at a given time, they would simply be active constantly after creation and follow the conditional pattern give by the creator.\\
+In the final version a rule no longer consists of an action and a condition, at least not from the users viewpoint. Instead they choose an action, see \ref{fig:createNewRule} mark 1., and give that action a time constraint, see \ref{fig:createNewRule} mark 2..\\
+This means that conditions such as ''Controller is On'' and ''Controller is Off'' is now incorporated into special action names.\fixme{Evt. få navnet på disse actions.}
+This is done in order to reduce the amounts of steps in a rule and also to reduce the number of decisions for a user to take during rule creation.
+
+\subsubsection{How it works}
+The changes to rules have been made clear and next is an explanation of how the page is used.\\
+
+The flow can be seen from figure \ref{fig:CreateRuleFlowchart}. First the user selects an action, then by use of JQuery the user is meet with the right information boxes. They are hidden until they need to be filled out, this helps the user stay focused on the right info and also does not distract the user with information that is not needed.\\
+\\
+Next the user gives the rule a name, the name is only used in order for the user to recognize the rule at a later point, if it needs editing or removal.\\
+Next the user should select the user and/or controller for the rule to affect. Whether the user has to select a user and/or controller is decided by the action they first choose.\\
+Next the repeat pattern is selected. The repeat pattern changes the time constraint information boxes, such that it is possible for a user to create rules that only last for a single period of time, different sets of repeating periods of time or if the rule is to be always evaluated to true.\\
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=1.00\textwidth]{images/CreateRuleFlowchart.png}
+	\caption{Create Rule Flowchart}
+	\label{fig:CreateRuleFlowchart}
+\end{figure}
+
+Lastly the user enters the time constraint corresponding to the select repeat pattern, this is done by the use of graphical selectors, such that the user does not enter a wrong format of day, month, year, hour and minute.\\
+When the user then submits the rule, it is formatted to fit the database. 
