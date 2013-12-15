@@ -14,7 +14,7 @@
 			isset($_POST['userRole']) && 
 			isset($_POST['password']) && 
 			$_POST['password'] == $_POST['repeatPassword']) {
-			 $newUser = new Profile($_SESSION['CSId'],$_POST['name'],$_POST['userName'],$_POST['password'],$_POST['email'],NULL,NULL,$_POST['userRole'],$_POST['phone']);
+			 $newUser = new Profile($_SESSION['CSid'],$_POST['name'],$_POST['userName'],$_POST['password'],$_POST['email'],NULL,NULL,$_POST['userRole'],$_POST['phone']);
 			 if (simpleInsertIntoDB($newUser)) {
 				// echo (DEVELOPER ? "Accepted" : "" );
 				echo '<script type="text/javascript">alert("User created.");</script>';
