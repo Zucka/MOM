@@ -5,16 +5,17 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
 
 if ($action == 'give')
 {
-	if (isset($_POST['profile']) && isset($_POST['points']))
+	if (isset($_POST['profile']) && isset($_POST['points']) && isset($_GET['CId']))
 	{
 		$points = $_POST['points'];
 		$profile = $_POST['profile'];
+		$CId = $_GET['CId'];
 	}
 	else
 	{
 		header('location: ?page=chores&status=2');
 	}
-	if (db_points_add($profile,$points,true)) //todo add profile_did_chore
+	if (db_points_add($profile,$points,true) && addChoreToProfile($CId, $profile, $points)) //todo add profile_did_chore
 	{
 		header('location: ?page=chores&status=1');
 	}
@@ -23,6 +24,7 @@ if ($action == 'give')
 		//header('location: ?page=chores&status=2');
 		echo 'Points: '.$points;
 		echo 'Profile: '.$profile;
+		echo 'Chore ID: '.$CId;
 	}
 }
 elseif ($action == 'details')
@@ -72,7 +74,7 @@ switch ($status) {
 					echo '<tr>
 							<td>'.$chore['name'].'</td>
 							<td>'.$chore['description'].'</td>
-							<form action="?page=chores&action=give" method="post">
+							<form action="?page=chores&action=give&CId='.$chore['CId'].'" method="post">
 							<td><input type="text" name="points" class="form-control input-sm" value="'.$chore['defaultPoints'].'" /></td>
 							<td>'.$profileSelect.'</td>
 							<td><button type="submit" class="btn btn-success btn-xs">Give</button></td>
