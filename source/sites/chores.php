@@ -17,9 +17,15 @@ if ($action == 'give')
 		header('location: ?page=chore&status=2');
 	}
 }
+elseif ($action == 'details')
+{ //todo
+?>
+
+<?php
+}
 else
 {
-	$choreArray = choresByCSId($_SESSION['CSid']);
+	$choreArray = choresByCSID($_SESSION['CSid']);
 	$profileArray = profilesByCSId($_SESSION['CSid']);
 	$profileSelect = '<select name="profile">';
 	foreach ($profileArray as $profile)
@@ -70,8 +76,6 @@ switch ($status) {
 </table>
 
 <a href="?page=createChore"><button type="button" class="btn btn-devices btn-primary"><span class="glyphicon glyphicon-plus"></span> Add Chore</button></a>
-<div id="warningContainer">
-</div>
 
 <script>
 $(document).ready(function(){ 
