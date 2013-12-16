@@ -36,11 +36,9 @@
 			
 			//$CSId, $profileId = null, $name =null , $username = null, $password= null, $email=null, $points = null,  $role= null, $phoneNo = null) 
 			$updateProfile = new Profile($_SESSION['CSid'],$Pid, $name, $username, $password=null, $email, $points = null, $role, $phoneNo);
-			print_r($updateProfile);
 			$result = simpleUpdateDB($updateProfile);
-			print_r($result);
 			
-			if($result == true)
+			if($result === true)
 				echo "Success, your profile have now been updated.";
 			else
 				echo "ERROR: An error has occurred, please try again later.";
@@ -48,7 +46,15 @@
 			printUserForm($Pid);
 		}
 		elseif(isset($_POST['delete'])){
-			echo "delete";
+			$deletionProfile = new Profile($_SESSION['CSid'],$Pid);
+			$result = removeObjectFromDB($deletionProfile);
+			
+			if($result === true){
+				echo "Profile have been deleted.";
+			}
+			else{
+				echo "An error has occurred, please try again later.";
+			}
 		}
 		else{
 			printUserForm($Pid);

@@ -16,7 +16,7 @@
 		$updateTag = new Tag($_SESSION['CSid'],$_POST['id'],$user,$name);
 		$result = simpleUpdateDB($updateTag);
 		
-		if($result == true)
+		if($result === true)
 			echo "Success, your tag have now been updated.";
 		else
 			echo "ERROR: An error has occurred, please try again later.";
@@ -27,7 +27,7 @@
 		$deletionTag = new Tag($_SESSION['CSid'],$_POST['id']);
 		$result = removeObjectFromDB($deletionTag);
 		
-		if($result == true){
+		if($result === true){
 			echo "Tag have been deleted.";
 		}
 		else{

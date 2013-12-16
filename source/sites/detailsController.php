@@ -21,7 +21,7 @@
 		$updateController = new Controller($_SESSION['CSid'],$_POST['id'],$name,$location,$cost);
 		$result = simpleUpdateDB($updateController);
 		
-		if($result == true)
+		if($result === true)
 			echo "Success, your controller have now been updated.";
 		else
 			echo "ERROR: An error has occurred, please try again later.";
@@ -32,7 +32,7 @@
 		$deletionController = new Controller($_SESSION['CSid'],$_POST['id']);
 		$result = removeObjectFromDB($deletionController);
 		
-		if($result == true){
+		if($result === true){
 			echo "Controller have been deleted.";
 		}
 		else{
