@@ -101,3 +101,9 @@ input:-moz-placeholder { font-style:italic; }
 }
 
 /* End of Devices */
+
+/* Profile */
+.pointEdit-button{
+	float:right;
+}
+/* End of Profile */

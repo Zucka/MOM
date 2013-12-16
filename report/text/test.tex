@@ -47,12 +47,53 @@ The test persons also need to know the user. So the test person(s) need a genera
 Before the test is conducted some test cases should be made the development team. This should cover several cases in the system such that the test person(s) is presented to every aspect of the system. The test cases of MOM can be found in section \vref{} \fixme{ref to be inserted}. \\
 
 
-(- choose the Heuristics which it should be evaluated against) \fixme{to do}
+(- choose the Heuristics which it should be evaluated against, ) \fixme{TODO (Visibility, Consistency, Control, Feedback, Familiarity is lisbeths suggestion)}
+
 
 \subsection{Presenting the Results}
 \fixme{to do}
 
 %testcases
-\input{text/testCases.tex}
+\section{Testcases}
 
+%%Test 9.
+\begin{table}[h]
+	\centering
+		\begin{tabular*}{\textwidth}{|l|l|}
+		\hline
+		\hline
+		Name: & \parbox{0.6\textwidth}{WS001}\\
+		\hline
+		Description: & \parbox{0.70\textwidth}{Setup a complete system with a managing user, a regular user,  a `TV Controller' and the accompanying rights to use it.}\\
+		\hline
+		Requirements: & \parbox{0.70\textwidth}{
+		\begin{itemize}
+			\item A computer with Internet access.
+			\item The MOM website.
+			\item Two Tags prepared with a Tag ID.
+			\item An Arduino to function as the TV controller. 
+		\end{itemize}}
+		\\
+		\hline
+		Expected Results: & \parbox{0.70\textwidth}{A managing user capable of logging into the TV Controller without loosing points. A regular User able to log into the TV controller while loosing points.}\\
+		\hline
+		Steps: & \parbox{0.70\textwidth}{
+		\begin{enumerate}
+			\item Log into the MOM website.
+			\item Create a profile with appropriate personal information to act as a manager.
+			\item Attach the first Tag to the new Manager profile.
+			\item Add the permissions that enables the use of all devices without expending points.
+			\item Create a profile with the appropriate person information to act as a user.
+			\item Attach the second tag to the new user profile.
+			\item Add the permissions to log into the TV controller.
+			\item Perform Test AT001A on both profiles with addendum: Wait 3 minutes for both users and note if either expends points.
+		\end{enumerate}}
+		\\		
+		\hline
+		Result of Test: & \\
+		\hline
+		\end{tabular*}
+\end{table}
+
+See all testcases in appendix \vref{appen:testSuite}
 \section{Results of the Heuristic Evaluation}
