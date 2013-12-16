@@ -8,7 +8,7 @@ if ($action == 'give')
 	$points = isset($_GET['points']) ? $_GET['points'] : '';
 	$profile = isset($_GET['profile']) ? $_GET['profile'] : '';
 
-	if (db_points_add($profile,$points,true))
+	if (db_points_add($profile,$points,true)) //todo add profile_did_chore
 	{
 		header('location: ?page=chore&status=1');
 	}
