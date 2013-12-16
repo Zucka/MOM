@@ -25,16 +25,16 @@ if (Ethernet.begin(mac) == 0)
 Ethernet.maintain();
 \end{lstlisting}
 
-Whether the user tries to log in or out from the device he is interacting with, the arduino will have to access out target web server.
+Whether the user tries to log in or out from the device he is interacting with, the arduino will have to access the web server via the API.
 The process is almost identical in either case and can be divided into two parts:
 \begin{itemize}
 	\item Connecting to the API.
 	\item Parsing the servers Reply.
 \end{itemize}
 
-As seen in \autoref{pageConnect} the Device ID and the Tag ID is connected in a char array to form the url which complies with the action that is being performed. 
-The in return the Ethernet Shield receives the HTML Page, and in \autoref{pageDecipher} the Arduino reads this information one byte at the time where all but the JSON string is stripped and stored in a Char Pointer.
-When there is no more information to be received from the website, which is seen in  the connection is closed and the JSON string is parsed for the relevant information on whether or not the user was successful \autoref{pageJSON}.
+As seen in \autoref{pageConnect} the Device ID and the Tag ID is connected in a char array to form the url which complies with the action that is being performed. \fixme{connect this to the API implmentation}
+Then in return the Ethernet Shield receives the HTML Page, and in \autoref{pageDecipher} the Arduino reads this information one byte at the time where all but the JSON string is stripped and stored in a Char Pointer.
+When there is no more information to be received from the website, which is seen in  the connection is closed and the JSON string is parsed for the relevant information on whether or not the user was successful \autoref{pageJSON}.\fixme{sætningens sammenhæng giver ikke mening.dette for venter jeg: When ....then .....}
 \begin{lstlisting}[frame=single, label=pageConnect, caption=Connecting to the Server and creating an HTML request.]
 void turnOn(void)
 {
