@@ -56,6 +56,9 @@
 				echo "An error has occurred, please try again later.";
 			}
 		}
+		elseif(isset($_POST['doPoints'])){
+			
+		}
 		else{
 			printUserForm($Pid);
 		}
@@ -102,6 +105,43 @@
 				</script>
 			</head>
 			<body>
+				<!-- Modal -->
+				<div class="modal fade" id="pointEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				  <div class="modal-dialog">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">Point Add/Remove</h4>
+					  </div>
+					  <form class="form-createUserPoints form-horizontal" role="form" id="createUser" action="?page=profile&Pid=<?php echo $Pid;?>" method="post">
+						  <div class="modal-body">
+							
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Do: </label>
+								<div class="col-sm-8">
+									<select name="addOrDelete">
+										<option value="add">Add</option>
+										<option value="remove">Remove</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Points: </label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" value="0" name="name">
+								</div>
+							</div>
+							
+						  </div>
+						  <div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<input type="submit" class="btn btn-primary" value="Do Points" name="doPoints">
+						  </div>
+					  </form>
+					</div><!-- /.modal-content -->
+				  </div><!-- /.modal-dialog -->
+				</div><!-- /.modal -->
+			
 				<div class="container">
 					<h1>Profile Details</h1>
 				</br>
@@ -136,7 +176,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Points left: </label>
 								<div class="col-sm-8">
-									<p class="form-control-static"><?php echo $userDetails['points'] ?></p>
+									<span class="form-control-static"><?php echo $userDetails['points'] ?></span> <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#pointEdit">Edit Points</button>
 								</div>
 							</div>
 							<div class="form-group">
