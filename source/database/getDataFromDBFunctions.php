@@ -21,9 +21,37 @@
 		return $returnArray;
 		
 	}
-	
-	function getChoresLogFromCSID($csid, )
+	//output array(choreName=>value,profileName=>value,points=>value,time=>value)
+	function getChoresLogFromCSID($csid, $startFromIndex=null, $numberOfActivities=null)
 	{
+	//'Chores' =>array('CId', 'CSId', 'name', 'description', 'defaultPoints'), 
+	//'Profile_did_chores' =>array('PId', 'CId', 'actualPoints', 'timeOfCreation'),
+	//'Profile' =>array('PId', 'CSId', 'name', 'points', 'username', 'password', 'email','phone', 'role'),
+		$db= new MySQLHelper();
+		global $theTables;
+		global $theColumns;
+		$columnC = $theColumns['Chores'];
+		$columnPDC = $theColumns['Profile_did_chores'];
+		$columnUser = $theColumns['Profile'];
+		$otherSQL= null;
+		$table = $theTables['Chores'] .' chore, '.$theTables['Profile_did_chores'] . ' pdc,' . $theTables['Profile'] . ' pro';
+		$whereClause = 'chore.'. $columnC[1] .'='. $csid .
+						'AND pcd'.$columnPDC[0] .'= pro'.$columnUser[0] . 
+						'AND pcd.'. $columnPDC[1] . ' = chore.'. $columnC[0];
+		$ordering = 'timeOfCreation DESC';
+		if($startFromIndex===null && $numberOfActivities===null)
+		{
+		$otherSQL = 'LIMIT '. $startFromIndex . ', '. ($startFromIndex + $numberOfActivities) ;
+		}
+		$selectValues= 'chore.name AS choreName, pro.name AS profileName, pcd.actualPoints AS points, pcd.timeOfCreation AS time' 
+		
+		$result = $db->query( $selectValues , $table, $whereClause, $ordering , $otherSQL);
+		$returnArray = null;
+		while($row = mysqli_fetch_assoc($result))
+		{
+			$returnArray[] = $row;
+		}
+		return $returnArray;
 	}
 	
 	/*get all profiles from a system id*/
