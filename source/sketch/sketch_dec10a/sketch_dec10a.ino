@@ -179,7 +179,7 @@ boolean checkNoTimeLeft()
     
     unsigned long tempTime = (0xffffffff - lastTime) + millis();
     
-    if(tempTime > tempLeft ) //tempTime Larger than Five Minutes.
+    if(tempTime > tempLeft )
     {      
       return true;
     }

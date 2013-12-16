@@ -38,6 +38,8 @@
 				<title>Login</title>
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 				<meta http-equiv="X-UA-Compatible" content="IE=Edge"> <!-- Force document mode to IE9 standards -->
+				<!-- JQuery from Google -->
+				<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 				<!-- Bootstrap -->
 				<link href="assets/css/bootstrap.min.css" rel="stylesheet">
 				<script src="assets/js/bootstrap.min.js"></script>

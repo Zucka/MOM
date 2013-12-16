@@ -1,5 +1,6 @@
-\section{Test Suite.}
-
+\chapter{Test Suite}
+\label{appen:testSuite}
+This chapter contain all the testcases which has been tested in the Media-Online Management system.
 %%Tests to Perform.
 %%Test 1
 \begin{table}[h]
@@ -9,9 +10,9 @@
 		\hline
 		Name: & AT001A\\
 		\hline
-		Description: & Log in and out with the Arduino and a valid Tag.\\
+		Description: & \parbox{0.70\textwidth}{Log in and out with the Arduino and a valid Tag.}\\
 		\hline
-		Requirements: & \parbox{0.85\textwidth}{
+		Requirements: & \parbox{0.70\textwidth}{
 		\begin{itemize}
 		  \item A LED light connected to the Arduino which functions as the ``Device''.
 			\item Tag connected to a user with enough points and permission to use the Device.
@@ -20,11 +21,11 @@
 			\item Web Browser with link to Status API for the device being used.
 		\end{itemize}}\\
 		\hline
-		Expected Results: & \parbox{.85\textwidth}{When the RFID antenna detects the tag, the LED light will turn on, The Serial will note that it is now running in State 1 and the web browser will report that the Status is green.
+		Expected Results: & \parbox{.70\textwidth}{When the RFID antenna detects the tag, the LED light will turn on, The Serial will note that it is now running in State 1 and the web browser will report that the Status is green.
 		When swiping the tag a second time, the LED light will turn off, The Serial will report that the Arduino is running at State 0 and the webbrowser will confirm that the status is RED for not running.
 		After either swipe the Arduino will be ready for a new tag swipe.}\\
 		\hline
-		Steps: & \parbox{.85\textwidth}{
+		Steps: & \parbox{.70\textwidth}{
 		\begin{enumerate}
 			\item Turn on the Arduino. (Wait for Serial to confirm that the device is running.)
 			\item Swipe tag over RFID antenna and observe if the LED turns on.
@@ -50,9 +51,9 @@
 		\hline
 		Name: & AT001B\\
 		\hline
-		Description: & Log in with the Arduino and a Tag that does not have the proper permissions.\\
+		Description: & \parbox{0.70\textwidth}{Log in with the Arduino and a Tag that does not have the proper permissions.}\\
 		\hline
-		Requirements: & \parbox{0.85\textwidth}{
+		Requirements: & \parbox{0.70\textwidth}{
 		\begin{itemize}
 		  \item A LED light connected to the Arduino which functions as the ``Device''.
 			\item Tag connected to a user without the permission to use the Device.
@@ -62,10 +63,10 @@
 		\end{itemize}}
 		\\
 		\hline
-		Expected Results: & \parbox{.85\textwidth}{When the RFID antenna detects the tag, the LED light will remain off, the state will remain 0 and the web browser will report that the Status is RED for not running.
+		Expected Results: & \parbox{.70\textwidth}{When the RFID antenna detects the tag, the LED light will remain off, the state will remain 0 and the web browser will report that the Status is RED for not running.
 		The Arduino will return to waiting for a new tag swipe.}\\
 		\hline
-		Steps: & \parbox{.85\textwidth}{
+		Steps: & \parbox{.70\textwidth}{
 		\begin{enumerate}
 			\item Turn on the Arduino. (Wait for Serial to confirm that the device is running.)
 			\item Swipe tag over RFID antenna and observe if the LED turns on.
@@ -86,9 +87,9 @@
 		\hline
 		Name: & AT001C\\
 		\hline
-		Description: & Log in with the Arduino and a Tag not supplied with enough points to run.\\
+		Description: & \parbox{0.70\textwidth}{Log in with the Arduino and a Tag not supplied with enough points to run.}\\
 		\hline
-		Requirements: & \parbox{0.85\textwidth}{
+		Requirements: & \parbox{0.70\textwidth}{
 		\begin{itemize}
 		  \item A LED light connected to the Arduino which functions as the ``Device''.
 			\item Tag connected to a user without enough points to use the Device.
@@ -98,10 +99,10 @@
 		\end{itemize}}
 		\\
 		\hline
-		Expected Results: & \parbox{.85\textwidth}{When the RFID antenna detects the tag, the LED light will remain off, the state of the arduino will not change and the web browser will report that the Status is RED.		
+		Expected Results: & \parbox{.70\textwidth}{When the RFID antenna detects the tag, the LED light will remain off, the state of the arduino will not change and the web browser will report that the Status is RED.		
 		The Arduino will return to waiting for a new tag swipe.}\\
 		\hline
-		Steps: & \parbox{.85\textwidth}{
+		Steps: & \parbox{.70\textwidth}{
 		\begin{enumerate}
 			\item Turn on the Arduino. (Wait for Serial to confirm that the device is running.)
 			\item Swipe tag over RFID antenna and observe if the LED turns on.
@@ -123,10 +124,10 @@
 		\hline
 		Name: & AT001D\\
 		\hline
-		Description: & Log in with the Arduino and a Tag not recognized.\\
+		Description: & \parbox{0.70\textwidth}{Log in with the Arduino and a Tag not recognized.}\\
 		\hline
 		Requirements: &
-		\parbox{0.85\textwidth}{
+		\parbox{0.70\textwidth}{
 		\begin{itemize}
 		  \item A LED light connected to the Arduino which functions as the ``Device''.
 			\item A tag that has not been introduced to the system yet.
@@ -135,10 +136,10 @@
 			\item Web Browser with link to Status API for the device being used.
 		\end{itemize}}\\
 				\hline
-		Expected Results: & \parbox{.85\textwidth}{When the RFID antenna detects the tag, the LED light will remain off, the state of the arduino will not change and the web browser will report that the Status is RED.		
+		Expected Results: & \parbox{.70\textwidth}{When the RFID antenna detects the tag, the LED light will remain off, the state of the arduino will not change and the web browser will report that the Status is RED.		
 		The Arduino will return to waiting for a new tag swipe.}\\
 		\hline
-		Steps: & \parbox{.85\textwidth}{
+		Steps: & \parbox{.70\textwidth}{
 		\begin{enumerate}
 			\item Turn on the Arduino. (Wait for Serial to confirm that the device is running.)
 			\item Swipe tag over RFID antenna and observe if the LED turns on.
@@ -160,9 +161,9 @@
 		\hline
 		Name: & AT002A\\
 		\hline
-		Description: & Swipe a valid Tag that has the right permissions and points, while another user is logged in with the Arduino.\\
+		Description: & \parbox{0.70\textwidth}{Swipe a valid Tag that has the right permissions and points, while another user is logged in with the Arduino.}\\
 		\hline
-		Requirements: & \parbox{0.85\textwidth}{
+		Requirements: & \parbox{0.70\textwidth}{
 		\begin{itemize}
 		  \item A LED light connected to the Arduino which functions as the ``Device''.
 			\item Tag connected to a user with enough points and permission to use the Device.
@@ -172,9 +173,9 @@
 		\end{itemize}}
 		\\
 		\hline
-		Expected Results: & \parbox{.85\textwidth}{When the second tag is swiped while the first user is still active the LED should briefly flicker off and then on again as the new user logs back in.}\\
+		Expected Results: & \parbox{.70\textwidth}{When the second tag is swiped while the first user is still active the LED should briefly flicker off and then on again as the new user logs back in.}\\
 		\hline
-		Steps: & \parbox{.85\textwidth}{
+		Steps: & \parbox{.70\textwidth}{
 		\begin{enumerate}
 			\item Turn on the Arduino. (Wait for Serial to confirm that the device is running.)
 			\item Swipe tag over RFID antenna and observe if the LED turns on.
@@ -195,9 +196,9 @@
 		\hline
 		Name: & AT003A\\
 		\hline
-		Description: & Let Arduino run until getStatus is called without logged in User.\\
+		Description: & \parbox{0.70\textwidth}{Let Arduino run until getStatus is called without logged in User.}\\
 		\hline
-		Requirements: & \parbox{0.85\textwidth}{
+		Requirements: & \parbox{0.70\textwidth}{
 		\begin{itemize}
 			\item The Arduino running the final software version.
 			\item Web Browser with link to Status API for the device being used.
@@ -205,9 +206,9 @@
 		\end{itemize}}
 		\\
 		\hline
-		Expected Results: & \parbox{.85\textwidth}{Run smoothly, remain in State 0, Remain turned off.}\\
+		Expected Results: & \parbox{.70\textwidth}{Run smoothly, remain in State 0, Remain turned off.}\\
 		\hline
-		Steps: & \parbox{.85\textwidth}{
+		Steps: & \parbox{.70\textwidth}{
 		\begin{enumerate}
 			\item Turn on the Arduino. (Wait for Serial to confirm that the device is running.)
 			\item Wait and confirm that the status has run with the Serial Watch and note if its Status:RED.
@@ -227,9 +228,9 @@
 		\hline
 		Name: & AT003B\\
 		\hline
-		Description: & Let Arduino run until getStatus is called with logged in User.\\
+		Description: & \parbox{0.70\textwidth}{Let Arduino run until getStatus is called with logged in User.}\\
 		\hline
-		Requirements: & \parbox{0.85\textwidth}{
+		Requirements: & \parbox{0.70\textwidth}{
 		\begin{itemize}
 			\item The Arduino running the final software version.
 			\item Tag connected to a user with enough points and permission to use the Device.
@@ -237,10 +238,10 @@
 			\item Web Browser with link to Status API for the device being used.
 		\end{itemize}}\\
 		\hline
-		Expected Results: & \parbox{.85\textwidth}{The User will Remain logged in and the Arduino will not change from state 1.}
+		Expected Results: & \parbox{.70\textwidth}{The User will Remain logged in and the Arduino will not change from state 1.}
 		\\
 		\hline
-		Steps: & \parbox{.85\textwidth}{
+		Steps: & \parbox{.70\textwidth}{
 		\begin{enumerate}
 			\item Turn on the Arduino. (Wait for Serial to confirm that the device is running.)
 			\item Swipe tag over RFID antenna and observe if the LED turns on.
@@ -263,9 +264,9 @@
 		\hline
 		Name: & AT003C\\
 		\hline
-		Description: & Let Arduino run until getStatus is called with logged in User no longer permitted to use the Arduino.\\
+		Description: & \parbox{0.70\textwidth}{Let Arduino run until getStatus is called with logged in User no longer permitted to use the Arduino.}\\
 		\hline
-		Requirements: & \parbox{0.85\textwidth}{
+		Requirements: & \parbox{0.70\textwidth}{
 		\begin{itemize}
 			\item The Arduino running the final software version.
 			\item Tag connected to a user with enough points and permission to use the Device.
@@ -275,10 +276,10 @@
 		\end{itemize}}
 		\\
 		\hline
-		Expected Results: & \parbox{.85\textwidth}{The Arduino will run with user logged in state 1 and with the LED turned on until the timer is reached. 
+		Expected Results: & \parbox{.70\textwidth}{The Arduino will run with user logged in state 1 and with the LED turned on until the timer is reached. 
 		Then the user will be logged out, the LED will turn off and the Arduino will move to state 0.}\\
 		\hline
-		Steps: & \parbox{.85\textwidth}{
+		Steps: & \parbox{.70\textwidth}{
 		\begin{enumerate}
 			\item Turn on the Arduino. (Wait for Serial to confirm that the device is running.)
 			\item Swipe tag  over RFID antenna and observe if the LED turns on.
@@ -287,6 +288,112 @@
 			\item Use browser to confirm that the device is marked as status:RED.
 			\item Wait and confirm that the status has run with the Serial Watch and note if its Status:RED.
 			\item Confirm that the LED turns off.
+		\end{enumerate}}
+		\\		
+		\hline
+		Result of Test: & \\
+		\hline
+		\end{tabular*}
+\end{table}
+%%Test 9.
+\begin{table}[h]
+	\centering
+		\begin{tabular*}{\textwidth}{|l|l|}
+		\hline
+		\hline
+		Name: & WS001\\
+		\hline
+		Description: & \parbox{0.70\textwidth}{Setup a complete system with a managing user, a regular user, a `TV Controller' and the accompanying rights to use it.}\\
+		\hline
+		Requirements: & \parbox{0.70\textwidth}{
+		\begin{itemize}
+			\item A computer with Internet access.
+			\item The MOM website.
+			\item Two Tags prepared with a Tag ID.
+			\item An Arduino to function as the TV controller. 
+		\end{itemize}}
+		\\
+		\hline
+		Expected Results: & \parbox{.70\textwidth}{A managing user capable of logging into the TV Controller without loosing points. A regular User able to log into the TV controller while loosing points.}\\
+		\hline
+		Steps: & \parbox{.70\textwidth}{
+		\begin{enumerate}
+			\item Log into the MOM website.
+			\item Create a profile with appropriate personal information to act as a manager.
+			\item Attach the first Tag to the new Manager profile.
+			\item Add the permissions that enables the use of all devices without expending points.
+			\item Create a profile with the appropriate person information to act as a user.
+			\item Attach the second tag to the new user profile.
+			\item Add the permissions to log into the TV controller.
+			\item Perform Test AT001A on both profiles with addendum: Wait 3 minutes for both users and note if either expends points.
+		\end{enumerate}}
+		\\		
+		\hline
+		Result of Test: & \\
+		\hline
+		\end{tabular*}
+\end{table}
+
+%%Test 10.
+\begin{table}[h]
+	\centering
+		\begin{tabular*}{\textwidth}{|l|l|}
+		\hline
+		\hline
+		Name: & WS002\\
+		\hline
+		Description: & \parbox{0.70\textwidth}{Adding a rule to ensure that one device is turned on in order for another to be turned on.}\\
+		\hline
+		Requirements: & \parbox{0.70\textwidth}{
+		\begin{itemize}
+			\item A computer with Internet access.
+			\item The MOM website.
+			\item Web Browser with links to the API to simulate `TV' and `Playstation' devices.
+		\end{itemize}}
+		\\
+		\hline
+		Expected Results: & \parbox{.70\textwidth}{The simulated devices one will have to be turned on in order to turn on the Simulated controller 2.}\\
+		\hline
+		Steps: & \parbox{.70\textwidth}{
+		\begin{enumerate}
+			\item If a `TV' device has not been established from earlier Test, create this.
+			\item Create a `Playstation' device.
+			\item Establish the Rule that the `Playstation' device cannot be turned on unless the `TV' device is.
+			\item Use the browser to call turnOn for the `Playstation' and note if it turns on.
+			\item If the the `Playstation' did not turn on in step 4, turn on the `TV' and then try again to turn on the `Playstation'.
+		\end{enumerate}}
+		\\		
+		\hline
+		Result of Test: & \\
+		\hline
+		\end{tabular*}
+\end{table}
+%%Test 11.
+\begin{table}[h]
+	\centering
+		\begin{tabular*}{\textwidth}{|l|l|}
+		\hline
+		\hline
+		Name: & WS003\\
+		\hline
+		Description: & \parbox{0.70\textwidth}{Adding a rule to block a profile from using the 'TV' Device.}\\
+		\hline
+		Requirements: & \parbox{0.70\textwidth}{
+		\begin{itemize}
+			\item MOM Website.
+			\item TV Device.
+			\item Test Profile with Tag.
+			\item Web Browser with links to the API to simulate `TV' device.
+		\end{itemize}}
+		\\
+		\hline
+		Expected Results: & \parbox{.70\textwidth}{The user attatched to the profile will be unable to log into the `TV' device in accordance to the established Rule.}\\
+		\hline
+		Steps: & \parbox{.70\textwidth}{
+		\begin{enumerate}
+			\item Log into Mom Website.
+			\item Add Rule to block the profile.
+			\item Use the Web browser API to test if you can activate the Device.
 		\end{enumerate}}
 		\\		
 		\hline

@@ -1,0 +1,74 @@
+\section{Time Checking}
+Time checking in the in the Arduino Sketch is based on the native method called \verb|millis()|.
+The \verb|millis()| method returns a long value with the number of milliseconds since the Arduino was turned on.
+This number will continue to rise until the long overflows and the count starts once again from zero.\newline
+The ability to check how much time has passed is needed for two vital functions.
+\begin{itemize}
+	\item Determining if there has passed five minutes since the last time \verb|getStatus()| was called, and by extension, if its time to call it again. This is done with the method \verb|checkTimeStatus()|.
+	\item If the User has run out of available time to use, and the device needs to be turned off. This is done with the method \verb|checkNoTimeLeft()|.
+\end{itemize}
+
+
+\verb|checkTimeStatus()| can be seen in \autoref{CTS}, it uses the global variable |lastTime|, which is \verb|millis()| value from the last time that 5 minutes had passed and the \verb|getStatus()| method was called. In the off chance than \verb|millis()| has overflown and is a lower value than \verb|lastTime|, the code will establish the variable \verb|tempTime| to hold how many milliseconds was between \verb|lastTime| and the maximum unsigned Long value added together with the a amount of milliseconds passed since the overflow.
+
+\begin{lstlisting}[frame=single, label=CTS, caption=Checking if five minutes has passed since the last getStatus() call.]
+boolean checkTimeStatus()
+{
+  if(millis() < lastTime)
+  {
+    unsigned long tempTime = (0xffffffff - lastTime) + millis();
+		//Check if tempTime Larger than Five Minutes.
+    if(tempTime > 300000 )
+    {      
+      lastTime = millis();
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+  else if ((millis() - lastTime) > 300000)
+  {
+    lastTime = millis();
+    return true;
+  }
+  else
+  {
+    return false;  
+  }  
+}
+\end{lstlisting}
+
+The method \verb|checkNoTimeLeft()| in \autoref{CNTL} is very similar to the \verb|checkTimeStatus()| method. But rather than checking if five minutes have passed, it checks if there has passed more time than the user had left since the last time \verb|checkStatus()| was called, where the users \verb|timeleft| was last updated.
+
+\begin{lstlisting}[frame=single, label=CNTL, caption=Checking if the user has spendt all his allotted time.]
+boolean checkNoTimeLeft()
+{
+  
+  unsigned long tempLeft = timeLeft * 60000;
+  
+  if(millis() < lastTime)
+  {
+    
+    unsigned long tempTime = (0xffffffff - lastTime) + millis();
+    
+    if(tempTime > tempLeft )
+    {      
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+  else if ((millis() - lastTime) > tempLeft)
+  {
+    return true;
+  }
+  else
+  {
+    return false;  
+  }  
+}
+\end{lstlisting}

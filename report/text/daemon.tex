@@ -2,7 +2,14 @@
 \label{chap:daemon}
 This chapter will explain the design and implementation of the daemon of this project. A daemon is a computer program that runs in the background continuously without any input from a user.
 \section{Design}
-The daemon has a one main job, to activate rules that require action at a specific or recurring time. Right now there is only one such action, \texttt{Add points}, which when activated has to add points to a given users profile. This cannot be done using a normal website because of the time requirement that the points have to be added at the right time. Further things that the daemon should handle could be such things as \texttt{Activate tag} and \texttt{Block tag} if these were added as actions to the rule system.
+The daemon has a one main job, to activate rules that require action at a specific or recurring time. Right now there is only one such action, \texttt{Add points}, which when activated has to add points to a given users profile. This cannot be done using a normal website because of the time requirement that the points have to be added at the right time. Further things that the daemon should handle could be such things as \texttt{Activate tag} and \texttt{Block tag} if these were added as actions to the rule system. \autoref{fig:daemonflowchart} shows how the flow of the daemon should work. It should check rules every minute if they should activate, and activate those who should, doing the action specified.
+
+\begin{figure}[!h]
+	\centering
+		\includegraphics[width=0.65\textwidth]{images/daemonflowchart.png}
+	\caption{Flowchart showing how the daemon should work}
+	\label{fig:daemonflowchart}
+\end{figure}
 
 \section{Implementation}
 Because daemons usually run all of the time, it is not appropriate to be implemented in PHP, as PHP is not meant to run continuously. The choice has then fallen on Python as the programming language. The reason for this choice is that Python is a dynamic language like PHP that is quick to build prototypes in. Unlike PHP, Python is meant to run continuously while PHP is meant to run and exit. \\

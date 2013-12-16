@@ -38,6 +38,7 @@ function setMenuActive(menuId){
 			?><script>setMenuActive("users");</script><?php
 			break;
 		case "chores":
+			include "sites/chores.php";
 			?><script>setMenuActive("users");</script><?php
 			?><script>setMenuActive("chores");</script><?php
 			break;
