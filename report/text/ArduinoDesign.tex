@@ -55,11 +55,27 @@ This procedure have the advantage that the user will not have to cut off the med
 The disadvantage is that the user has the possible to exceed the time restriction if there has been a change in the rules or the user's remaining time. \fixme{if this has not been included in the implementation then it should be mentioned}
 		
 \section{Prototype Implemtation}
-The prototype is designed to prove the concept of a tag reader and the communication protocol between power control and server. Therefore  the Ardurino hardware should be seen as replaceable by another controller device in this system. The only requirement is that it is able to  to direct the power to and away from the media, it can control a tag reader, communicate with the server and it need to be a unique device. To prove the concept of the controller it need to be able to read and accept/decline tags, handle time usage and time restrictions. 
+The prototype is designed to prove the concept of the requirements to direct the power to and away from the media, control a tag reader, communicate with the server and it need to be a Embedded system. \newline
+To prove the requerments the system the to be able to: 
+
+\begin{itemize}
+	\item Read and accept/decline tags in communication with a server though a online connection.
+	\item Moniter the connection to server and handele the exseption op disconnected.
+	\item Regulate the power to a device recording to senario.
+	\item Manage the time usaged and user restigtions. 
+	\item Communicat system status to user though LED light indication. 
+\end{itemize}
+
+Before  
+
+
 
 \fixme{Indsæt flowchart}
 
 Flowchart is the current level of the prototype as is very similar to figure \ref{fig:Power&Tagdevice}.
+
+Therefore  the Ardurino hardware should be seen as replaceable by another controller device in this system. 
+
 
 
 
