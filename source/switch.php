@@ -72,6 +72,10 @@ function setMenuActive(menuId){
 			include "sites/calendar.php";
 			?><script>setMenuActive("calendar");</script><?php
 			break;	
+		case "createChore":
+			include "sites/createChore.php";
+			?><script>setMenuActive("chores");setMenuActive("createChore");</script><?php
+			break;
 		default:
 			include "sites/404.php";
 			break;
