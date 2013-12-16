@@ -82,7 +82,7 @@
 					}
 
 					echo '
-					<td><button class="btn btn-xs btn-warning" type="button" onclick="location.href="?page=rules&delete='.$rule['rulesVariable']['RId'].';">Delete</button></td>
+					<td><button class="btn btn-xs btn-warning" type="button" onclick="location.href=\'?page=rules&delete='.$rule['rulesVariable']['RId'].'\';">Delete</button></td>
 				</tr>';
 			}
 			?>
