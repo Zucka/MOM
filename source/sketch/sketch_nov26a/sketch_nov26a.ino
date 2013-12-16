@@ -3,7 +3,7 @@
 SoftwareSerial rfid(7, 8); //Sets up the Digital Pins 7 and 8 which the RFID reader Communicates through.
 
 //Remember to Adjust Checksum when the write input changes.
-char write_input[16] = { 0x32, 0x33, 0x34 }; //{ 0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x57, 0x6F, 0x72, 0x6C, 0x64 };
+char write_input[16] = { 0x32, 0x33, 0x35}; //{ 0x32, 0x33, 0x34 }; //{ 0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x57, 0x6F, 0x72, 0x6C, 0x64 };
 
 char rf_block_responce[23] = "";
 int block_length = 23;
@@ -84,6 +84,7 @@ void loop()
         {
           Serial.print(rf_block_responce[i]);
         }
+        Serial.println();
         Serial.println("Stop");
         while(true);
       }
@@ -161,7 +162,8 @@ void write_block_RFID(void)
   {
     rfid.write((uint8_t)write_input[i]);
   }
-  rfid.write((uint8_t)0x135);
+  rfid.write((uint8_t)0x136);
+  //rfid.write((uint8_t)0x135);
   //rfid.write((uint8_t)0x498); //The Message Checksum for the data { 0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x57, 0x6F, 0x72, 0x6C, 0x64 }
   delay(10); 
 }
