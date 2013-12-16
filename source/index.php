@@ -57,7 +57,9 @@
 				</ul>
 			</div>
 			<div class="col-md-10 col-md-offset-2 col-sm-6 col-sm-offset-2 " id="content">
-				';include 'switch.php'; echo '
+				<div class="container">
+					';include 'switch.php'; echo '
+				</div>
 			</div>
 		</div>
 	</div>
