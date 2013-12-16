@@ -22,7 +22,9 @@
 		
 	}
 	
-	//getChoresLogFromCSID()
+	function getChoresLogFromCSID($csid, )
+	{
+	}
 	
 	/*get all profiles from a system id*/
 	/*returns an array eg:
@@ -364,9 +366,8 @@
 	{
 		$db= new MySQLHelper();
 		$rules=getRulesFromPId($profileId);
-		$lastTimeActivated = null;
-		$lastTimeBlocked =null;
 		$timeNow =strtotime( $db->executeSQL("SELECT now() as time")->fetch_assoc()['time']);
+		$isblocked= false;
 		if($rules != null)
 		{foreach($rules as $rule)
 		{
@@ -376,54 +377,18 @@
 				{
 					foreach($rule['conditions'] as $cond)
 					{
-						if($cond['name'] == 'Timestamp')
+						if($cond['name'] == 'Timeperiod')
 						{
-							$array = $cond['ekstra_attribute'];
-							$timestamp=$array['onTimestamp'];
-							if(($lastTimeBlocked == null || $lastTimeBlocked < $timestamp ) && $timestamp <= $timeNow )
+							if(timeperiodIsValidNowInRule($rule) )
 							{
-								$lastTimeBlocked = strtotime($timestamp);
-							}
-						}
-					}
-				}
-				elseif($action['name'] == 'Activate user')
-				{
-					foreach($rule['conditions'] as $cond)
-					{
-						if($cond['name'] == 'Timestamp')
-						{
-							$array = $cond['ekstra_attribute'];
-							$timestamp=$array['onTimestamp'];
-							if(($lastTimeActivated == null || $lastTimeActivated < $timestamp ) && $timestamp <= $timeNow )
-							{
-								$lastTimeActivated = strtotime($timestamp);
+								$isblocked = true;
 							}
 						}
 					}
 				}
 			}
 		}}
-		if($lastTimeActivated == null && $lastTimeBlocked == null)
-		{
-			return true;
-		}
-		elseif($lastTimeBlocked == null)
-		{
-			return true;
-		}
-		elseif($lastTimeActivated == null)
-		{
-			return false;
-		}
-		elseif($lastTimeBlocked <= $lastTimeActivated )
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}		
+		return $isblocked;
 	}
 	
 	/* returns true if the tag is currently active and false otherwise*/
