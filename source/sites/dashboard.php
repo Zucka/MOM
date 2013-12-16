@@ -1,4 +1,23 @@
-﻿
+﻿<!-- SITE SPECIFIC STYLE -->
+<link href='assets/css/fullcalendar.2.css' rel='stylesheet' />
+<link href='assets/css/fullcalendar.print.2.css' rel='stylesheet' media='print' />
+<style type="text/css">
+.fc-widget-header, .fc-widget-content {
+	border: 1px solid #d1d1d1;
+}
+</style>
+
+<!-- SITE SPECIFIC JS -->
+<script src='assets/js/fullcalendar.min.js'></script>
+<script type="text/javascript">
+	var userID = '<?php echo $_SESSION['PId'] ?>';
+</script>
+<script src="assets/js/calendar.js"></script>
+<!-- SITE SPECIFIC CSS -->
+
+<script src="assets/js/calendar-dash.js"></script>
+
+
 <div class="col-md-4 dashboardContainer">
 	<div class="help">
 		<h2>Help</h2>
@@ -67,7 +86,6 @@
 	</div>
 </div>
 <div class="col-md-6 dashboardContainer">
-	<div class="calendar">
-		<h2>Calendar</h2>
+	<div class="fullCalendar">
 	</div>
 </div>
