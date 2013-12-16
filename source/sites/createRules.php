@@ -139,7 +139,7 @@
 						<option value="primo"		>First in a month</option>
 						<option value="ultimo"		>Last in a month</option> 
 						<option value="sWeek"		>Specific Week No.</option> 
-						<option value="noRepeat"	>Once / from</option>
+						<option value="noRepeat" hidden	>Once / from</option>
 					</select>
 				</div>
 			</div>

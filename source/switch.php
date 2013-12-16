@@ -53,6 +53,12 @@ function setMenuActive(menuId){
 			?><script>setMenuActive("rules");</script><?php
 			break;
 		case "permissions":
+			include "sites/permissions.php";
+			?><script>setMenuActive("users");</script><?php
+			?><script>setMenuActive("permissions");</script><?php
+			break;
+		case "permissionsAdd":
+			include "sites/createPermissions.php";
 			?><script>setMenuActive("users");</script><?php
 			?><script>setMenuActive("permissions");</script><?php
 			break;

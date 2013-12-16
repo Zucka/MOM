@@ -46,6 +46,7 @@ function repeatWeeklySelect () {
 		console.log(actionSelected);
 		console.log(repeatOptionSelected);
 		disableNoRepeat(false);
+		$('#repeatEach').find("option[value='noRepeat']").text("Once");
 		changeStateOfID(	"#repeatBetween", 'add');
 		changeStateOfID(	"#betweenTime"	, 'add');
 		changeStateOfID(	"#ruleName"		, 'add');
@@ -90,6 +91,9 @@ function repeatWeeklySelect () {
 		else if (actionSelected == 'Set maximum of point') {
 			changeStateOfAll('remove');
 			changeStateOfID(	"#SpecificTime"	, 'add');
+		}
+		else if (actionSelected == 'Block user') {
+			$('#repeatEach').find("option[value='noRepeat']").text("From");
 		}
 	});
 }
