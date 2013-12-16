@@ -34,7 +34,7 @@
 			// Add rule
 			$dbResult = addNewRuleToDB($nRule, $arrayCondition, $arrayAction);
 			if (is_numeric($dbResult)) {
-				addRuleToProfile($_POST['PId'] ,$dbResult);
+				addRuleToProfile($_POST['systemUserSelect'] ,$dbResult);
 			}
 			print_r($dbResult);
 					
