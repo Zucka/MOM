@@ -72,7 +72,10 @@
 					echo "Success, points have been removed.";
 			}
 			else{
-				echo "ERROR: An error has occurred, please try again later.";
+				if($result === "ERROR_To_Many_Points")
+					echo "ERROR: Removing too many points.";
+				else
+					echo "ERROR: An error has occurred, please try again later.";
 			}
 			printUserForm($Pid);
 		}

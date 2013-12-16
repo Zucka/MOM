@@ -553,14 +553,14 @@
 			{
 				
 				$OldPoints = $result['points'];
-				echo 'old: ' . $OldPoints . '<br>';
+				//echo 'old: ' . $OldPoints . '<br>';
 				if(($OldPoints + $points) > $maxpoints)
 				{
 					$points = $maxpoints - $OldPoints;
 				}
 			}
 		}
-		echo 'points: ' . $points. '<br>';
+		//echo 'points: ' . $points. '<br>';
 		$resultValue = $db->update('profile', "points = (points + ". $points . ')', 'PId =' . $profileId);
 		//$resultValue = $db->executeSQL("UPDATE profile  SET points = (points + 2) WHERE PId = 3" );
 		if(is_bool($resultValue))
