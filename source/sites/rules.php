@@ -1,6 +1,14 @@
 <?php
 	error_reporting(E_ALL);
 	ini_set('display_errors', 1);
+
+	if (isset($_GET['delete'])) {$delete = $_GET['delete'];} else {$delete = '';}
+
+	if ($delete != '' && is_numeric($delete)) {
+		$rule = new Rules($_SESSION['CSid'], null, null, $delete);
+		removeObjectFromDB($rule);
+		$delete = 1;
+	}
 	$rules = getRulesFromCSID($_SESSION['CSid']);
 	$accessIF = array();
 ?>
@@ -15,7 +23,7 @@
 		<table id="ruleTable" class="tablesorter">
 			<thead>
 				<tr>
-					<th>Name</th><th>Action</th><th>Repeat</th><th>From</th><th>To</th><th>Days</th><th>Points</th>
+					<th>Name</th><th>Action</th><th>Repeat</th><th>From</th><th>To</th><th>Days</th><th>Points</th><th>Delete</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -43,6 +51,7 @@
 					}echo '</td>
 					<td>'.$rule['conditions'][0]['ekstra_attribute']['weekdays'].'</td>
 					<td>'.$rule['actions'][0]['points'].'</td>
+					<td><button class="btn btn-xs btn-warning" type="button" onclick="location.href=\'?page=rules&delete='.$rule['rulesVariable']['RId'].'\';">Delete</button></td>
 				</tr>';
 			}
 			?>
@@ -52,7 +61,7 @@
 		<table id="accessIfTable" class="tablesorter">
 			<thead>
 				<tr>
-					<th>Name</th><th>Device</th><th>Action</th><th>Device</th><th>State</th>
+					<th>Name</th><th>Device</th><th>Action</th><th>Device</th><th>State</th><th>Delete</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -71,7 +80,9 @@
 					elseif ($rule['conditions'][0]['name'] == 'Controller off') {
 						echo '<td>is of</td>';
 					}
+
 					echo '
+					<td><button class="btn btn-xs btn-warning" type="button" onclick="location.href="?page=rules&delete='.$rule['rulesVariable']['RId'].';">Delete</button></td>
 				</tr>';
 			}
 			?>
@@ -80,6 +91,23 @@
 		</br>
 		<button class="btn btn-lg btn-primary" type="button" onclick="location.href='?page=rulesAdd';">Add rule</button>
 	</div> <!-- /container -->
+
+		<div class="modal fade" id="migrateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">Deletion Successfull</h4>
+					</div>
+					<div class="modal-body">
+						Rule is now deleted
+					</div>
+					<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 	<script type="text/javascript">
 	$(document).ready(function(){ 
         	$("#ruleTable").tablesorter(); 
@@ -87,5 +115,10 @@
     	} 
 	); 
 	</script>
+	<?php 
+	if ($delete == 1) {
+		echo '<script type="text/javascript">$("#migrateModal").modal("toggle");</script>';
+	}
+	?>
 </body>
 </html>
