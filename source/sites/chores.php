@@ -35,6 +35,7 @@ else
 switch ($status) {
 	case 1:
 		echo '<div class="alert alert-success">Successfully gave points</div>';
+		break;
 	case 2:
 		echo '<div class="alert alert-danger">Something went wrong while giving points</div>';
 		break;
