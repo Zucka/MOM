@@ -14,7 +14,12 @@
 			// Set action 
 			if (isset($_POST['amountOfPoints'])) {$amountOfPoints = $_POST['amountOfPoints'];} else {$amountOfPoints = null;}
 			if (isset($_POST['controllerNameIf'])) {$controllerNameIf = $_POST['controllerNameIf'];} else {$controllerNameIf = null;}
-			$nAction = new Action( 0, $_POST['actionName'], null, $controllerNameIf, $amountOfPoints );
+			if ($_POST['actionName'] == 'accessIf') {
+				$actionName = 'Access controller';
+			} elseif ($_POST['actionName'] == 'noAccessIf' ) {
+				$actionName = 'Cannot access controller';
+			} else {$actionName = $_POST['actionName'];}
+			$nAction = new Action( 0, $actionName, null, $controllerNameIf, $amountOfPoints );
 			$arrayAction = array('cond' => $nAction);
 			// Set condition 
 			$arrayCondition = setCondition($_POST);
@@ -131,7 +136,7 @@
 						<option value="primo"		>First in a month</option>
 						<option value="ultimo"		>Last in a month</option> 
 						<option value="sWeek"		>Specific Week No.</option> 
-						<option value="noRepeat"	>Once</option>
+						<option value="noRepeat"	>Once / from</option>
 					</select>
 				</div>
 			</div>

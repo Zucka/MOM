@@ -10,8 +10,8 @@
 		return $weekdays;
 	}
 	function setArrayOfRestAttributes($postData, $weekdays, $startTime, $endTime) {
-		return array('timeFrom'	=> $startTime,
-				'timeTo'		=> $endTime,
+		return array('timeFrom'	=> "'".$startTime."'",
+				'timeTo'		=> "'".$endTime."'",
 				'weekdays'		=> $weekdays,
 				'weekly'		=> ($postData['repeatEach'] == 'eachWekk' 	? 1 : 0),
 				'ndWeekly'		=> ($postData['repeatEach'] == 'biWeekly' 	? 1 : 0),
@@ -38,9 +38,12 @@
 						$endTime   = $postData['endDate']  .' '.$postData['endTime']  ;
 					}; break;
 					case 'sWeek': 		{
-						$weekdays  = setWeekdays($postData);
-						$startTime = new DateTime('NOW');
-						$endTime = new DateTime('NOW');
+						$weekdays  = "";
+						$startYear = new DateTime('NOW');
+						$week_start = new DateTime();
+						$week_start->setISODate($startYear->format('Y'), $postData['weekNo']);
+						$startTime = $week_start->format('Y-m-d H:i');
+						$endTime = $startTime;
 					}; break;
 					case 'noRepeat': 	{
 						$weekdays  = setWeekdays($postData);
@@ -68,9 +71,12 @@
 						$endTime   = $postData['endDate']  .' '.$postData['timeATHidden']  ;
 					}; break;
 					case 'sWeek': 		{
-						$weekdays  = setWeekdays($postData);
-						$startTime = new DateTime('NOW');
-						$endTime = new DateTime('NOW');
+						$weekdays  = "";
+						$startYear = new DateTime('NOW');
+						$week_start = new DateTime();
+						$week_start->setISODate($startYear->format('Y'), $postData['weekNo']);
+						$startTime = $week_start->format('Y-m-d H:i');
+						$endTime = $startTime;
 					}; break;
 				}
 			}; break;
@@ -101,9 +107,12 @@
 						$endTime   = $postData['endDate']  .' '.$postData['endTime']  ;
 					}; break;
 					case 'sWeek': 		{
-						$weekdays  = setWeekdays($postData);
-						$startTime = new DateTime('NOW');
-						$endTime = new DateTime('NOW');
+						$weekdays  = "";
+						$startYear = new DateTime('NOW');
+						$week_start = new DateTime();
+						$week_start->setISODate($startYear->format('Y'), $postData['weekNo']);
+						$startTime = $week_start->format('Y-m-d H:i');
+						$endTime = $startTime;
 					}; break;
 					case 'noRepeat': 	{
 						$weekdays  = setWeekdays($postData);
@@ -113,12 +122,13 @@
 					}; break;
 				}
 			}; break;
-			case 'Access controller if':
-			case 'Cannot access controller if':{
+			case 'accessIf':
+			case 'noAccessIf':{
 				$conditionType = $postData['controllerStatus'];
 				$weekdays  = "";
-				$startTime = new DateTime('NOW');
-				$endTime = new DateTime('NOW');
+				$now = new DateTime('NOW');
+				$startTime = $now->format('Y-m-d H:i');
+				$endTime = $startTime;
 			}; break;
 			default: break;
 		}

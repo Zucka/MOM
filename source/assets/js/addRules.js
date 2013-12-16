@@ -18,8 +18,8 @@ function actionNameSelect () {
 			case 'Cannot access any controller':{   setVisibility (0, 0, 0, 0, 1, 1); }break;
 			case 'Access controller':{  			setVisibility (0, 1, 0, 0, 1, 1); }break;
 			case 'Cannot access controller':{   	setVisibility (0, 1, 0, 0, 1, 1); }break;
-			case 'Access controller if':{  			setVisibility (0, 1, 0, 1, 0, 1); }break;
-			case 'Cannot access controller if':{   	setVisibility (0, 1, 0, 1, 0, 1); }break;
+			case 'Access controller if':{  			setVisibility (0, 1, 0, 1, 0, 0); }break;
+			case 'Cannot access controller if':{   	setVisibility (0, 1, 0, 1, 0, 0); }break;
 			default: break;
 		}
 	});
@@ -57,6 +57,8 @@ function repeatWeeklySelect () {
 		if (repeatOptionSelected == "sWeek") {
 			changeStateOfID("#selectWeekNo"	, 'add');
 			changeStateOfID("#repeatBetween", 'remove');
+			changeStateOfChkBox("#repeatDays"	, 'remove');
+			changeStateOfID(	"#betweenTime"	, 'remove');
 		} 
 		else if (repeatOptionSelected == "noRepeat" && actionSelected == 'Block user') {
 			changeStateOfID("#SpecificTime"	, 'add');
@@ -82,15 +84,12 @@ function repeatWeeklySelect () {
 		else if ($('#repeatEach').find("option[value='noRepeat']").attr("selected") == "selected") {
 			$('#repeatEach').find("option[value='noRepeat']").removeAttr("selected","selected");
 		}
+		else if (actionSelected == 'Access controller if' || actionSelected == 'Cannot access controller if') {
+			changeStateOfAll('remove');
+		}
 		else if (actionSelected == 'Set maximum of point') {
-			changeStateOfID(	"#specificDay"	, 'remove');
-			changeStateOfID(	"#repeatBetween", 'remove');
-			changeStateOfID(	"#betweenTime"	, 'remove');
-			changeStateOfChkBox("#repeatDays"	, 'remove');
-			changeStateOfID(	"#selectWeekNo"	, 'remove');
-			changeStateOfID(	"#ATTime"		, 'remove');
+			changeStateOfAll('remove');
 			changeStateOfID(	"#SpecificTime"	, 'add');
-
 		}
 	});
 }
@@ -157,12 +156,6 @@ function timeFromTo() {
 		pickerPosition: 'bottom-left',
 		forceParse: 0,
 		minuteStep: 5
-	});
-	$('.formStartTime').datetimepicker().on('hide', function(e){
-	    $('.formEndTime').datetimepicker('setStartDate', e.date);
-	});
-	$('.formEndTime').datetimepicker().on('hide', function(e){
-	    $('.formStartTime').datetimepicker('setEndDate', e.date);
 	});
 }
 function timeAT() {
