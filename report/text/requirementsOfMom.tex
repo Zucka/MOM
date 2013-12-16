@@ -34,7 +34,7 @@ There are also some requirements that is nice for the parents to use, but they a
 	\item present data from MOM in a calendar that shows rule and permission with profiles for whom this is relevant. The calendar should also show when a chore have been done and by who.
 \end{itemize}
 
-In chapter \fixme{insert ref} the design and implementation of the website will be presented in more detail. 
+In chapter \vref{chap:website} the design and implementation of the website will be presented in more detail. 
  
 
 \section{Tag and Controller}
@@ -50,7 +50,7 @@ The controller is an Arduino which is connected to a tag reader. Like the tag it
 	\item Keep track of the time spent between activation of the media to its end
 \end{itemize}
  
-The design and implementation of the controller will be explained further in chapter \fixme{insert chapter ref}. 
+The design and implementation of the controller will be explained further in chapter \vref{chap:controller}. 
 
 The controller must communicate with the server and this is done via a web service.
 
@@ -65,13 +65,13 @@ The API is used to parse the relevant data to the controller. Its requirements a
 	\item It should able to calculate when a controller should be turned off because of a rule, permission or point.
 \end{itemize}
 
-The web service's design and implementation is explained further in chapter \fixme{ref to chapter}.
+The web service's design and implementation is explained further in chapter \vref{chap:api}.
 
 
 \section{Daemon}
 The daemon is used to update data in the database from a rule which the user have made at some point. The daemon does not have any direct contact to a client. The daemon should handle any rule that is time determined so the condition is either Timestamp or Timeperiod. Then the daemon should do the appropriate action which could be add points to user or block a user.
 
-The design and implementation of the daemon is presented in detail in chapter \fixme{ref to chapter}. 
+The design and implementation of the daemon is presented in detail in chapter \vref{chap:daemon}. 
  
 \section{System Architecture}
 \label{sec:sysArchitecture}
