@@ -395,7 +395,7 @@
 		$db= new MySQLHelper();
 		$rules=getRulesFromPId($profileId);
 		$timeNow =strtotime( $db->executeSQL("SELECT now() as time")->fetch_assoc()['time']);
-		$isblocked= false;
+		$istrue= true;
 		if($rules != null)
 		{foreach($rules as $rule)
 		{
@@ -409,14 +409,14 @@
 						{
 							if(timeperiodIsValidNowInRule($rule) )
 							{
-								$isblocked = true;
+								$istrue = false;
 							}
 						}
 					}
 				}
 			}
 		}}
-		return $isblocked;
+		return $istrue;
 	}
 	
 	/* returns true if the tag is currently active and false otherwise*/
