@@ -9,8 +9,16 @@
 			header('location:?page=users');
 		}
 		elseif(isset($_POST['save'])){
-			if(isset($_POST['username']) && $_POST['username'] != "" )
-				$username = $_POST['username'];
+			if(isset($_POST['username']) && $_POST['username'] != "" ){
+				if(strpos($_POST['username'], " ") === false){
+					$username = $_POST['username'];
+				}
+				else{
+					echo "ERROR: Username is invalid.";
+					printUserForm($Pid);
+					die;
+				}
+			}
 			else
 				$username = null;
 			
@@ -77,6 +85,31 @@
 				else
 					echo "ERROR: An error has occurred, please try again later.";
 			}
+			printUserForm($Pid);
+		}
+		elseif(isset($_POST['editPassword'])){
+			if(isset($_POST['newPassword']) && isset($_POST['newPasswordRepeat']) && $_POST['newPassword'] != "" && $_POST['newPasswordRepeat'] != ""){
+				if($_POST['newPassword'] == $_POST['newPasswordRepeat']){
+					if(strpos($_POST['newPassword'], " ") === false){
+						//$CSId, $profileId = null, $name =null , $username = null, $password= null, $email=null, $points = null,  $role= null, $phoneNo = null) 
+						$updateProfile = new Profile($_SESSION['CSid'],$Pid, null, null, $_POST['newPassword'], null, null, null, null);
+						$result = simpleUpdateDB($updateProfile);
+						
+						if($result === true)
+							echo "Success, the password have now been updated.";
+						else
+							echo "ERROR: An error has occurred, please try again later.";
+					}
+					else{
+						echo "ERROR: Password contains invalid values.";
+					}
+				}
+				else
+					echo "ERROR: Passwords does not match.";
+			}
+			else
+				echo "ERROR: You have not entered any password.";
+				
 			printUserForm($Pid);
 		}
 		else{
@@ -161,6 +194,40 @@
 					</div><!-- /.modal-content -->
 				  </div><!-- /.modal-dialog -->
 				</div><!-- /.modal -->
+				
+				<!-- Modal -->
+				<div class="modal fade" id="passwordEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				  <div class="modal-dialog">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">Password Edit</h4>
+					  </div>
+					  <form class="form-createUserPoints form-horizontal" role="form" id="createUser" action="?page=profile&Pid=<?php echo $Pid;?>" method="post">
+						  <div class="modal-body">
+							
+							<div class="form-group">
+								<label class="col-sm-3 control-label">New Password: </label>
+								<div class="col-sm-8">
+									<input type="password" class="form-control" placeholder="********" name="newPassword">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">New Password Repeat: </label>
+								<div class="col-sm-8">
+									<input type="password" class="form-control" placeholder="********" name="newPasswordRepeat">
+								</div>
+							</div>
+							
+						  </div>
+						  <div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<input type="submit" class="btn btn-primary" value="Submit Password Change" name="editPassword">
+						  </div>
+					  </form>
+					</div><!-- /.modal-content -->
+				  </div><!-- /.modal-dialog -->
+				</div><!-- /.modal -->
 			
 				<div class="container">
 					<h1>Profile Details</h1>
@@ -179,6 +246,15 @@
 								<label class="col-sm-3 control-label">Username: </label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" value="<?php echo $userDetails['username'] ?>" name="username">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Password: </label>
+								<div class="col-sm-6">
+									<span class="form-control-static">* * * * * * * * *</span>
+								</div>
+								<div class="col-sm-2">
+									<button class="btn btn-primary btn-sm pointEdit-button" data-toggle="modal" data-target="#passwordEdit">Change</button>
 								</div>
 							</div>
 							<div class="form-group">
