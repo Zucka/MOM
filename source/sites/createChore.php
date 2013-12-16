@@ -41,15 +41,15 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="userName" class="col-sm-3 control-label">Description: </label>
+						<label for="description" class="col-sm-3 control-label">Description: </label>
 						<div class="col-sm-8">
 							<input type="text" class="form-control" name="description" id="description" placeholder="Description..." required>
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="email" class="col-sm-3 control-label">Default Points: </label>
+						<label for="defaultpoints" class="col-sm-3 control-label">Default Points: </label>
 						<div class="col-sm-8">
-							<input type="email" class="form-control" name="defaultpoints" id="defaultpoints" placeholder="10" required>
+							<input type="number" class="form-control" name="defaultpoints" id="defaultpoints" placeholder="10" required>
 						</div>
 					</div>
 			        </br>
