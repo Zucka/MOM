@@ -14,8 +14,6 @@ if ($action == 'give')
 	{
 		header('location: ?page=chores&status=2');
 	}
-	print_r($points);
-	print_r($profile);
 	if (db_points_add($profile,$points,true)) //todo add profile_did_chore
 	{
 		header('location: ?page=chores&status=1');
@@ -23,8 +21,8 @@ if ($action == 'give')
 	else
 	{
 		//header('location: ?page=chores&status=2');
-		echo $points;
-		echo $profile;
+		echo 'Points: '.$points;
+		echo 'Profile: '.$profile;
 	}
 }
 elseif ($action == 'details')
