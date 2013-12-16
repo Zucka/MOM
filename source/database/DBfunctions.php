@@ -214,9 +214,10 @@
 			$table=  $theTables['Profile'];
 			$columstemp= $theColumns['Profile'];
 			$columnValue = "" ;
+			//'PId', 'CSId', 'name', 'points', 'username', 'password', 'email','phone', 'role'),
 			if($object->name != null)
 			{
-				$columnValue .= $columstemp[2] . " = '" . $object->name ;
+				$columnValue .= $columstemp[2] . " = '" . $object->name . "'";
 			}
 			if($object->points != null)
 			{

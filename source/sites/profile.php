@@ -40,7 +40,7 @@
 			$result = simpleUpdateDB($updateProfile);
 			print_r($result);
 			
-			if($result == true)
+			if($result === true)
 				echo "Success, your profile have now been updated.";
 			else
 				echo "ERROR: An error has occurred, please try again later.";
