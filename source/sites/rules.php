@@ -18,7 +18,6 @@
 	<title>Rules</title>
 </head>
 <body>
-	<div class="container">
 		<h3 class="headder-rule">Rules</h3>
 		<table id="ruleTable" class="tablesorter">
 			<thead>
@@ -49,7 +48,8 @@
 					else {
 						echo $rule['conditions'][0]['ekstra_attribute']['timeTo'];
 					}echo '</td>
-					<td>'.$rule['conditions'][0]['ekstra_attribute']['weekdays'].'</td>
+					<td>'; if ($rule['conditions'][0]['ekstra_attribute']['weekdays'] == "monday,tuesday,wednesday,thursday,friday,saturday,sunday") {echo 'Every day';} 
+					else {echo $rule['conditions'][0]['ekstra_attribute']['weekdays'];} echo '</td>
 					<td>'.$rule['actions'][0]['points'].'</td>
 					<td><button class="btn btn-xs btn-warning" type="button" onclick="location.href=\'?page=rules&delete='.$rule['rulesVariable']['RId'].'\';">Delete</button></td>
 				</tr>';
@@ -90,7 +90,6 @@
 		</table>
 		</br>
 		<button class="btn btn-lg btn-primary" type="button" onclick="location.href='?page=rulesAdd';">Add rule</button>
-	</div> <!-- /container -->
 
 		<div class="modal fade" id="migrateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
