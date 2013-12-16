@@ -15,7 +15,6 @@ On the centralized server there are five components: the Website, API, Daemon, F
 \end{figure}
 
 
-
 Before going explaining the testing of MOM, we are going to summarize some of the conclusion that the previous chapters came to.
 
 \subsection*{The Database and the function library}
@@ -24,8 +23,14 @@ The database is able to store all relevant data that are to be used by different
 The function library consist of several functions that are able to manipulate the data in the database. The database and many of the functions support that a rule can have several actions and conditions, but some of the functions only support one condition and action.
  
 \subsection*{The API}
+In the API there are three functions turn on, turn off and status. Turn on checks whether a user is allowed to turn on a media, if it is then it calculate the time remaining, update the controller status in the database, and send a turn on message to the controller. Turn off will update the controller status in the database and withdraw the points used. Status checks up on if there have been any changes in time remaining for the user.
+
 \subsection*{The Daemon}
+The daemon is a background process on the server which add points to the profiles when the time period is valid. 
+
 \subsection*{The Website}
+
+
 \subsection*{The Arduino}
 The Arduino is the implemented solution for controlling interaction with media devices and it has been issued with both the software and extension in hardware to function in this capacity.
 To turn on a device the user must swipe his tag over the RFID antenna.
