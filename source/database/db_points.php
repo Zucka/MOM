@@ -14,10 +14,11 @@ function db_points_remove($tId,$points)
 	}
 	else
 	{
-		$db->executeSQL("UPDATE profile SET points='$currentPoints' WHERE PId='$pId'");
+		$result = $db->executeSQL("UPDATE profile SET points='$currentPoints' WHERE PId='$pId'");
 	}
 	$db->commit();
 	$db->autocommit(TRUE);
+	return $result;
 }
 
 function db_points_add($tId,$points)
@@ -27,11 +28,12 @@ function db_points_add($tId,$points)
 	$row = $db->executeSQL("SELECT points,PId FROM profile,tag WHERE tag.TSerieNo='$tId' AND tag.profileId=profile.PId")->fetch_assoc();
 	//$currentPoints = $row['points']+$points;
 	$pId = $row['PId'];
-	addPointsToProfile($pId, $points);//From lisbeth use addPointsToProfile($profileId, $points) in DBfunction it takes max point into account
+	$result = addPointsToProfile($pId, $points);//From lisbeth use addPointsToProfile($profileId, $points) in DBfunction it takes max point into account
 	//$db->executeSQL("UPDATE profile SET points='$currentPoints' WHERE PId='$pId'"); //need to change to take point ceiling into account
 	
 	$db->commit();
 	$db->autocommit(TRUE);
+	return $result;
 }
 
 ?>
