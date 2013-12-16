@@ -38,6 +38,15 @@ input:-moz-placeholder { font-style:italic; }
 
 /* End of Index */
 
+/* Dashboard */
+
+.dashboardContainer{
+	height:50%;
+	overflow:auto;
+}
+
+/* End of Dashboard */
+
 /* Login */
 .form-signin {
   max-width: 300px;
