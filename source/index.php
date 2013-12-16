@@ -7,9 +7,10 @@
         header('location: login.php');
 	}
 	else
-	{ echo "
+	{
+?>
 <head>
-	";include "include/headInclude.php"; echo '
+	<?php include "include/headInclude.php"; ?>
 </head>
 
 <body>
@@ -29,39 +30,39 @@
 	  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav navbar-right">
 		  <li><a href="#">Help</a></li>
-		  <li><a href="?page=profile&Pid='.$_SESSION['PId'].'">Profile</a></li>
+		  <li><a href="?page=profile&Pid=<?php echo $_SESSION['PId']?>">Profile</a></li>
 		  <li><a href="#">Web-Shop</a></li>
 		  <li><a href="logout.php">Log Out</a></li>
 		</ul>
 	  </div><!-- /.navbar-collapse -->
 	</nav>
-	<div id="wrapper">
-		<div class="row" id="lowerWrapper" style="width:100%;">
-			<div class="col-md-2 col-sm-2" id="leftMenu" style="position:fixed;">
-				<ul class="nav nav-pills nav-stacked navba">
-				  <li id="dashboard"><a href="?page=dashboard"><span class="glyphicon glyphicon-home"></span> Dashboard</a></li>
-				  <li id="devices"><a href="?page=devices"><span class="glyphicon glyphicon-hdd"></span> Devices</a></li>
-				  <li class="dropdown" id="users">
-					<a class="dropdown-toggle" data-toggle="dropdown" href="?page=users">
-					  <span class="glyphicon glyphicon-user"></span> Users <span class="caret"></span>
-					</a>
-					<ul class="dropdown-menu">
-					  <li id="users"><a href="?page=users"><span class="glyphicon glyphicon-user"></span> Users</a></li>
-					  <li id="chores"><a href="?page=chores"><span class="glyphicon glyphicon-list-alt"></span> Chores</a></li>
-					  <li id="rules"><a href="?page=rules"><span class="glyphicon glyphicon-tower"></span> Rules</a></li>
-					  <li id="permissions"><a href="?page=permissions"><span class="glyphicon glyphicon-lock"></span> Permissions</a></li>
-					</ul>
-				  </li>
-				  <li id="graf"><a href="?page=graf"><span class="glyphicon glyphicon-stats"></span> Graf</a></li>
-				  <li id="calendar"><a href="?page=calendar"><span class="glyphicon glyphicon-calendar"></span> Calendar</a></li>
-				</ul>
-			</div>
-			<div class="col-md-10 col-md-offset-2 col-sm-6 col-sm-offset-2 " id="content">
-				<div class="container">
-					';include 'switch.php'; echo '
-				</div>
-			</div>
+	
+	<div class="col-md-2 col-sm-2" id="leftMenu">
+		<ul class="nav nav-pills nav-stacked navba">
+		  <li id="dashboard"><a href="?page=dashboard"><span class="glyphicon glyphicon-home"></span> Dashboard</a></li>
+		  <li id="devices"><a href="?page=devices"><span class="glyphicon glyphicon-hdd"></span> Devices</a></li>
+		  <li class="dropdown" id="users">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="?page=users">
+			  <span class="glyphicon glyphicon-user"></span> Users <span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu">
+			  <li id="users"><a href="?page=users"><span class="glyphicon glyphicon-user"></span> Users</a></li>
+			  <li id="chores"><a href="?page=chores"><span class="glyphicon glyphicon-list-alt"></span> Chores</a></li>
+			  <li id="rules"><a href="?page=rules"><span class="glyphicon glyphicon-tower"></span> Rules</a></li>
+			  <li id="permissions"><a href="?page=permissions"><span class="glyphicon glyphicon-lock"></span> Permissions</a></li>
+			</ul>
+		  </li>
+		  <li id="graf"><a href="?page=graf"><span class="glyphicon glyphicon-stats"></span> Graf</a></li>
+		  <li id="calendar"><a href="?page=calendar"><span class="glyphicon glyphicon-calendar"></span> Calendar</a></li>
+		</ul>
+	</div>
+	<div class="col-md-10  col-sm-6 " id="content">
+		<div class="container">
+			<?php include 'switch.php'; ?>
 		</div>
 	</div>
-</body>';}
+	
+</body>
+<?php
+	}
 ?>

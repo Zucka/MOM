@@ -10,7 +10,7 @@ function setMenuActive(menuId){
 	switch($page){
 		case "":
 		case "dashboard":
-			//include "";
+			include "sites/dashboard.php";
 			?><script>setMenuActive("dashboard");</script><?php
 			break;
 		case "devices":

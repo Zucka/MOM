@@ -1,6 +1,6 @@
 body {
 	background-color:#E0E0E0;
-	padding-top: 50px;
+	padding-top: 51px;
 }
 
 /* all */
@@ -28,14 +28,12 @@ input:-moz-placeholder { font-style:italic; }
 	background-color:rgb(51, 51, 51);
 	border-right-color: rgb(16, 16, 16);
 	height:100%;
+	
 }
 
 #content{	
 	height:100%;
-}
-
-#wrapper{
-	height:100%;
+	overflow:auto;
 }
 
 /* End of Index */
