@@ -10,11 +10,11 @@ if ($action == 'give')
 
 	if (db_points_add($profile,$points,true)) //todo add profile_did_chore
 	{
-		header('location: ?page=chore&status=1');
+		header('location: ?page=chores&status=1');
 	}
 	else
 	{
-		header('location: ?page=chore&status=2');
+		header('location: ?page=chores&status=2');
 	}
 }
 elseif ($action == 'details')
@@ -64,7 +64,7 @@ switch ($status) {
 					echo '<tr>
 							<td>'.$chore['name'].'</td>
 							<td>'.$chore['description'].'</td>
-							<form action="?page=chore&action=give" method="post">
+							<form action="?page=chores&action=give" method="post">
 							<td><input type="text" name="points" class="form-control input-sm" value="'.$chore['defaultPoints'].'" /></td>
 							<td>'.$profileSelect.'</td>
 							<td><button type="submit" class="btn btn-success btn-xs">Give</button></td>
