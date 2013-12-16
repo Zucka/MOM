@@ -22,7 +22,7 @@
 		
 	}
 	//output array(choreName=>value,profileName=>value,points=>value,time=>value)
-	function getChoresLogFromCSID($csid, $startFromIndex=null, $numberOfActivities=null)
+/*	function getChoresLogFromCSID($csid, $startFromIndex=null, $numberOfActivities=null)
 	{
 	//'Chores' =>array('CId', 'CSId', 'name', 'description', 'defaultPoints'), 
 	//'Profile_did_chores' =>array('PId', 'CId', 'actualPoints', 'timeOfCreation'),
@@ -52,7 +52,7 @@
 			$returnArray[] = $row;
 		}
 		return $returnArray;
-	}
+	}*/
 	
 	/*get all profiles from a system id*/
 	/*returns an array eg:
