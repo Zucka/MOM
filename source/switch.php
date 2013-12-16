@@ -46,13 +46,8 @@ function setMenuActive(menuId){
 			?><script>setMenuActive("users");</script><?php
 			?><script>setMenuActive("rules");</script><?php
 			break;
-		case "rulesControllerAdd":
-			include "sites/createRulesController.php";
-			?><script>setMenuActive("users");</script><?php
-			?><script>setMenuActive("rules");</script><?php
-			break;
-		case "rulesUserAdd":
-			include "sites/createRulesUser.php";
+		case "rulesAdd":
+			include "sites/createRules.php";
 			?><script>setMenuActive("users");</script><?php
 			?><script>setMenuActive("rules");</script><?php
 			break;

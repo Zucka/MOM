@@ -10,8 +10,7 @@
 <body>
 	<div class="container">
 		</br>
-		<button class="btn btn-lg btn-primary" type="button" onclick="location.href='?page=rulesControllerAdd';">Add controller rule</button>
-		<button class="btn btn-lg btn-primary" type="button" onclick="location.href='?page=rulesUserAdd';">Add user rule</button>
+		<button class="btn btn-lg btn-primary" type="button" onclick="location.href='?page=rulesAdd';">Add rule</button>
 	</div> <!-- /container -->
 </body>
 </html>
