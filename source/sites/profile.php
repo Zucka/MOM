@@ -196,7 +196,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Points left: </label>
 								<div class="col-sm-8">
-									<span class="form-control-static"><?php echo $userDetails['points'] ?></span> <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#pointEdit">Edit Points</button>
+									<span class="form-control-static"><?php echo $userDetails['points'] ?></span> <button class="btn btn-primary btn-sm pointEdit-button" data-toggle="modal" data-target="#pointEdit">Edit Points</button>
 								</div>
 							</div>
 							<div class="form-group">
