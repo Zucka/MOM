@@ -1,0 +1,138 @@
+\section{Programming Basics for Arduino}
+
+An Arduino code file is referred to as a Sketch. At is very core the Arduino sketch has two components, \verb|setup()| and \verb|loop()|, which are filled by the programmer to apply functionality.
+The \verb|setup()| method is called on start up only to initialize the Single-board micro-controller, while the \verb|loop()| method runs repeatedly, making the Arduino perform its designated task.
+\subsection*{Implementation of Setup() And Loop()}
+In our \verb|setup()| we initialize The Serial Communication, some global variables, connect the Ethernet shield to the internet along with configuring 3 pins needed for RFID and LED communication.\newline
+The Arduino has 3 states which is used to dictate what happens in \verb|loop()|. These states are:
+\begin{itemize}
+	\item State 0: ``No User Logged in''. The arduino is looking for a user to log in.
+	\item State 1: ``User Logged in''. The Arduino is waiting for a user to log out.
+	\item State 2: ``Connection Error trying to \verb|turnOff()|''. A temporary solution to avoid the complication of a user trying to log into a device before the previous had been logged out properly.
+\end{itemize}
+Depending on what state the Arduino, there are 3 important method calls that is either invoked by the user or called automatically as the \verb|loop()| runs, these are:
+\begin{itemize}
+	\item \verb|getStatus()| retrieves the server's view of the device on whether its supposed to be in use or off, it updates the users remaining time if its the prior and removes access by changing from state 1 to 0 when it is the latter.
+	\item \verb|turnOn()| checks if the user is allowed to turn on the device. If he is it turns the device from state 0 to state 1. However, if he isn't or the Arduino couldn't connect to the server, it removes the user trying to log in and remains in state 0.
+	\item \verb|turnOff()| turns off the device by first informing the server of this and then actively turns off the device by removing the user ID, turning off the LED and changing from state 1 to 0. \verb|turnOff()|, unlike the other two, does not recieve feedback from the server. However, if there is an issue connecting to the server to log off, the Arduino will change to state 2, repeatedly trying to log off untill it successfully gets a connection.
+	\item The way all 3 methods connect to the server and parse the responce is similar and will be described in \autoref{ethernetshield}.
+\end{itemize}
+However, before the Arduino checks for any user interaction with the \verb|loop()|, it performs two checks.
+The first check is named \verb|checkConnection()|, this method evaluates the native method \verb|Ethernet.Maintain()|.
+If needed, \verb|Ethernet.Maintain()| tries to renew the DHCP lease and reports back the result.\newline
+The second check is named \verb|CheckTimeStatus|. Because the servers require a frequent \verb|getStatus()| to contact the status API, this check assures that one is performed approximately every 5 minutes unless the arduino is in state 2.
+\verb|CheckTimeStatus| will be explained detail at \autoref{timecheck}.
+
+\begin{lstlisting}[frame=single, label=loopy, caption=The Arduino loop.]
+void loop()
+{  
+  checkConnection();
+  delay(10);
+  if(checkTimeStatus())
+  {
+    switch(state)
+    {
+      case 0: 
+              getStatus();
+              break;
+              
+      case 1: 
+              getStatus();
+              break;
+             
+      case 2: 
+              break;           
+    }
+  }
+    
+  switch (state)
+  {
+    case 0: Serial.println(F("State 0"));
+            stateZero();
+            break;
+            
+    case 1: Serial.println(F("State 1"));
+            if(checkNoTimeLeft())
+            {
+              turnOff();
+              break;
+            }
+            else
+            {
+              stateOne();
+              break;
+            }
+            
+    case 2: Serial.println(F("State 2"));
+            turnOff();
+            if(state == 0)
+            {
+              getStatus();
+            }
+            break;             
+  }
+}
+\end{lstlisting}
+
+As seen in \autoref{loopy} there are two methods that depends on the state. \verb|stateOne()| and \verb|stateZero()|. They are extremely similar, differing only in the need to compare the tag ID in use with the one being swiped which occours in \verb|stateOne()| which can be seen in \autoref{staty}. The Code block shows a series of method calls related to the RFID functionality which is described in \autoref{rfidsect}.\newline To a point, the code finds, authenticates and reads an RFID tag. If the tag has the same ID as the one already used to log in, the Arduino will log him out. However, if it is a new tag, the old tag will be logged out, and the new tag logged in.
+\begin{lstlisting}[frame=single, label=staty, caption=The Arduino state one code.]
+  seek();
+  delay(10);
+  parse_response(rf_block_response, seek_length);
+  delay(10);
+  if(rf_block_response[2] == 6)
+  {
+    Serial.println(F("Authenticating."));
+    authenticate();
+    parse_response(rf_block_response, authenticate_length);
+    delay(10);
+    if(rf_block_response[4] == 0x4C)
+    {
+      Serial.println(F("Reading."));
+      read_block_RFID();
+      delay(10);
+      parse_response(rf_block_response, block_length);
+      delay(10);
+      if(rf_block_response[2] == 0x12)
+      {
+        char tempID[4];
+        Serial.println(F("Read Successfull:  "));
+        for(int i = 5; i < 8; i++) //TODO: Length of ID.
+        {        
+          tempID[i-5] = rf_block_response[i];
+        } 
+        
+        if(tempID == useID)
+        {
+          turnOff();
+          strcpy(useID,"");
+        }
+        else
+        {
+          turnOff();
+          strcpy(useID,tempID);
+          turnOn();
+        }
+        delay(10);
+        Serial.println(F("Stop"));
+      }
+      else{
+        Serial.println(F("Read Failed"));
+      }
+    }
+    else
+    {
+      Serial.println(F("Authentication failed"));
+    }
+  }
+  else
+  {
+    for(int i=1;i<11;i++)
+    {
+      Serial.println(rf_block_response[i], HEX);
+    }
+    
+    Serial.println(F("Wait for it"));  
+    delay(2500);
+  }
+\end{lstlisting}
