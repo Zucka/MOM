@@ -104,7 +104,7 @@ The function to update a rule is called editRule and it also used some other fun
 
 The editRule has three inputs a Rule object, an array with Condition objects, and an array with Action objects. First the rule data will be update and then each condition and action must also be updated. 
 
-However, when updating an action and especially a condition the changes can have different characteristics as listed below.
+However, when updating an action and especially a condition the changes can have different characteristics as listed below. This is also in the decision diagram in figure \ref{fig:updateRule}.
 
 \begin{itemize}
 	\item a new condition or action is add.
@@ -115,53 +115,63 @@ However, when updating an action and especially a condition the changes can have
 
 With a structural change it is meant that the name of the condition or action has been changes and this change can influence e.g. whether cond\_timeperiod or cond\_timestamp should be used. As a result it have been decided that in this case the old condition should be deleted and the new be added anew. A structural change should not happen for an action, but the function are still able to handle it in the same way as a condition.
 
-The code sample in \ref{code:UpdateRules} is from the update handling of condition and the it is similar to handle the actions. First the old conditions id are need such that they can be compared to the ids of the Condition objects from the array \$arrayOfCondition, see line $2$. 
-Then foreach old condition id we will look thourgh the new id and if it found and the name are not to be changed then we call editcondition with the updated condition object and remove this object from the array of condition, see line $4-20$. 
-From line $22-26$ it is shown that the tuple with the old id is removed if no match was found among conditions in the array or if a match was found but the name are to changed. Now all the condition that was intended to be deleted is gone and finally the remain objects is then add or re-add from the array with addCondition, see line $28-40$.
+\begin{figure}
+	\centering
+		\includegraphics[width=0.75\textwidth]{images/updateRule.jpg}
+	\caption{updateRule}
+	\label{fig:updateRule}
+\end{figure}
 
 
-\begin{lstlisting}[language=PHP, label=code:UpdateRules, caption=editRule code sample]
-//SELECT condId AS id FROM rcondition WHERE RId = ($ruleData->RId)
-$CondIdResult = $db->query($theColumns['Rcondition'][0].' AS id', $theTables['Rcondition'], $theColumns['Rcondition'][1] . " = " . $ruleData->RId );
-				
-	while($row = mysqli_fetch_assoc($CondIdResult))
-	{
-		$StillExists = false;
-		foreach($arrayOfCondition as $key => $cond)
-		{
-			if($row['id'] == $cond->condId && $cond->name == null)				//edit the condition in db
-			{
-				$StillExists = true;
-				$tempresults = editCondition($cond);
-				unset($arrayOfCondition[$key]);
-				if(is_string($tempresults))
-				{
-				//if not bool then it is an error message
-					return $tempresults;
-				}
-			}	
-		}
-		//row id is not among the updated condition or cond_name not null so delete 
-		if(!$StillExists)
-		{
-			$db->delete($theTables['Rcondition'], $theColumns['Rcondition'][0] . " = " .$row['id']);
-		}
-	}
-	//add the remaining condition to db
-	if($arrayOfCondition != null )
-	{
-		foreach($arrayOfCondition as $cond)
-		{
-			//if a new condition should be added then make condition here
-			$tempresults = addCondition($ruleData->RId, $cond);
-			if(is_string($tempresults))
-			{
-			//if not bool then it is an error message
-				return $tempresults;
-			}
-		}
-	}
-\end{lstlisting}
+
+%
+%The code sample in \ref{code:UpdateRules} is from the update handling of condition and the it is similar to handle the actions. First the old conditions id are need such that they can be compared to the ids of the Condition objects from the array \$arrayOfCondition, see line $2$. 
+%Then foreach old condition id we will look thourgh the new id and if it found and the name are not to be changed then we call editcondition with the updated condition object and remove this object from the array of condition, see line $4-20$. 
+%From line $22-26$ it is shown that the tuple with the old id is removed if no match was found among conditions in the array or if a match was found but the name are to changed. Now all the condition that was intended to be deleted is gone and finally the remain objects is then add or re-add from the array with addCondition, see line $28-40$.
+%
+%
+%\begin{lstlisting}[language=PHP, label=code:UpdateRules, caption=editRule code sample]
+%//SELECT condId AS id FROM rcondition WHERE RId = ($ruleData->RId)
+%$CondIdResult = $db->query($theColumns['Rcondition'][0].' AS id', $theTables['Rcondition'], $theColumns['Rcondition'][1] . " = " . $ruleData->RId );
+				%
+	%while($row = mysqli_fetch_assoc($CondIdResult))
+	%{
+		%$StillExists = false;
+		%foreach($arrayOfCondition as $key => $cond)
+		%{
+			%if($row['id'] == $cond->condId && $cond->name == null)				//edit the condition in db
+			%{
+				%$StillExists = true;
+				%$tempresults = editCondition($cond);
+				%unset($arrayOfCondition[$key]);
+				%if(is_string($tempresults))
+				%{
+				%//if not bool then it is an error message
+					%return $tempresults;
+				%}
+			%}	
+		%}
+		%//row id is not among the updated condition or cond_name not null so delete 
+		%if(!$StillExists)
+		%{
+			%$db->delete($theTables['Rcondition'], $theColumns['Rcondition'][0] . " = " .$row['id']);
+		%}
+	%}
+	%//add the remaining condition to db
+	%if($arrayOfCondition != null )
+	%{
+		%foreach($arrayOfCondition as $cond)
+		%{
+			%//if a new condition should be added then make condition here
+			%$tempresults = addCondition($ruleData->RId, $cond);
+			%if(is_string($tempresults))
+			%{
+			%//if not bool then it is an error message
+				%return $tempresults;
+			%}
+		%}
+	%}
+%\end{lstlisting}
 
 \subsubsection{Status on Database and Function Library}
 
