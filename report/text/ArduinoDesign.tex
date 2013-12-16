@@ -45,21 +45,21 @@ In between those calls the PCD will check for a tag from the DD. If the PCD is d
 \textbf{Logon/logoff media divice.} \newline
 When a tag is read by the DD the PCD will receive the tag id which is then formed into a log-in message and send to the web servers API. however this is only if no one is all ready logged on the media in the system. The PCD will then get a message about whether the user has permission to use the media from the API. If the user has permission then the PCD should direct power to the media, then save the tag id in local memory and receive the remaining time from the API. The DD should indicate whether the user is approved to use the media.\newline 
 To log-off the PCD receive the same tag id that is stored in the local memory. The PCD will then switch off the power to the media and send a log-off message to the API. \newline
-If another user wants to take over the usage of the media then the PCD should try to log-in with the new tag. If this is declined then the DD should then signal this and keep the old user logged on. If it is accepted then the server should overwrite the previous user and PCD will receive the information for the new user with out turning the power off and then on again.\fix{if this has not been included in the implementation then it should be mentioned}\newline
+If another user wants to take over the usage of the media then the PCD should try to log-in with the new tag. If this is declined then the DD should then signal this and keep the old user logged on. If it is accepted then the server should overwrite the previous user and PCD will receive the information for the new user with out turning the power off and then on again.\newline \fixme{if this has not been included in the implementation then it should be mentioned}
 
 
 \textbf{Server disconnection under use.} \newline
 A disconnection from the server is either found under the regular status call after each five minutes or at a log-on/log-off call. A disconnection will lock the device so only the current user can use the media until the PCD is reconnected with the server. The server discovers the lack of connection when there have not been a status call from the device in five minutes. The disconnection is translated to a log-off the media at the server side. 
 The user will not be logged off by the controller but will be able to use his time according to the last status. If the user want to log-off in a period where there is a disconnection a time stamp is saved and will be sent to the server when the connection is reestablished. The media can also first be used again when the connection is reestablished. 
 This procedure have the advantage that the user will not have to cut off the media in use if the connection is unstable. The user will also be able to use a another media with connection to the server.
-The disadvantage is that the user has the possible to exceed the time restriction if there has been a change in the rules or the user's remaining time. 
+The disadvantage is that the user has the possible to exceed the time restriction if there has been a change in the rules or the user's remaining time. \fixme{if this has not been included in the implementation then it should be mentioned}
 		
 \section{Prototype Implemtation}
 The prototype is designed to prove the concept of a tag reader and the communication protocol between power control and server. Therefore  the Ardurino hardware should be seen as replaceable by another controller device in this system. The only requirement is that it is able to  to direct the power to and away from the media, it can control a tag reader, communicate with the server and it need to be a unique device. To prove the concept of the controller it need to be able to read and accept/decline tags, handle time usage and time restrictions. 
 
 \fixme{Indsæt flowchart}
 
-Flowchart is the current level of the prototype as is very similar to figure \ref{fig:Power&Tagdevice} 
+Flowchart is the current level of the prototype as is very similar to figure \ref{fig:Power&Tagdevice}.
 
 
 
