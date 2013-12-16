@@ -14,7 +14,9 @@ if ($action == 'give')
 	}
 	else
 	{
-		header('location: ?page=chores&status=2');
+		//header('location: ?page=chores&status=2');
+		echo $points;
+		echo $profile;
 	}
 }
 elseif ($action == 'details')
