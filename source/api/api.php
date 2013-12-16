@@ -24,7 +24,6 @@ $app->get('/status/:cId', function($cId) {
     $status = $row['status'];
     $data = array('status' => $status);
     $cost = $row['cost'];
-    $action = 'none';
 
     //get data for later
     $result = $db->executeSQL("SELECT points,UNIX_TIMESTAMP(controller_used_by_tag.starttime) as starttime,UNIX_TIMESTAMP(now()) as now,profile.PId as PId FROM profile,tag,controller_used_by_tag WHERE controller_used_by_tag.CSerieNo='$cId' AND controller_used_by_tag.endtime IS NULL AND controller_used_by_tag.TSerieNo=tag.TSerieNo AND tag.profileId=profile.PId LIMIT 1");
@@ -61,7 +60,6 @@ $app->get('/status/:cId', function($cId) {
 	    	$data['timeRemaining'] = floor((strtotime($row2['now'])-strtotime($turnOff))/60);
 	    }
 	}
-	$data['action'] = $action;
     echo json_encode($data);
 });
 
