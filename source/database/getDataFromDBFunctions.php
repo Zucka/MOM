@@ -559,7 +559,7 @@ weekNumber: 23
 			if($tempresult!=null){
 			while($condition = mysqli_fetch_assoc($tempresult))
 			{	
-				if($condition['name'] == "Timeperiod")
+				if($condition['name'] == "Timeperiod" || $condition['name'] == "True" )
 				{
 					$tables = $theTables['Cond_timeperiod'] ; 
 					$whereClause = $columnCondTP[0] . "=" . $condition['condId'] ;
