@@ -55,7 +55,7 @@ switch ($status) {
 <table id="choreTable" class="tablesorter">
 	<thead>
 		<tr>
-			<th>Name</th><th>Description</th><th>Points</th><span class="col-xs-2"><th>To</th></span><th>Give</th>
+			<th>Name</th><th>Description</th><th class="col-xs-1">Points</th><th class="col-xs-2">To</th><th class="col-xs-1">Give</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -65,7 +65,7 @@ switch ($status) {
 							<td>'.$chore['name'].'</td>
 							<td>'.$chore['description'].'</td>
 							<form action="?page=chore&action=give" method="post">
-							<td><span class="col-xs-2"><input type="text" name="points" class="form-control input-xs" value="'.$chore['defaultPoints'].'" /></span></td>
+							<td><input type="text" name="points" class="form-control input-xs" value="'.$chore['defaultPoints'].'" /></td>
 							<td>'.$profileSelect.'</td>
 							<td><button type="submit" class="btn btn-success btn-xs">Give</button></td>
 							</form>
