@@ -49,15 +49,16 @@ $app->get('/status/:cId', function($cId) {
 			    $pointsRemaining = $points-($timeElapsed*$cost);
 			    $data['timeRemaining'] = strval($pointsRemaining/$cost);
 			}
-			else
+			else //cost is 0 so we give static 60 minutes
 			{
 				$data['timeRemaining'] = 60;
 			}
 	    }
 	    //Check rules if controller should shut off
-	    if (db_rules_device_should_turn_off($cId,$row2['PId']))//lisbeth:you get a timestamp to when it should shout down
+	    $turnOff = db_rules_device_should_turn_off($cId,$row2['PId']);
+	    if ($turnOff != false)
 	    {
-	    	$action = 'RED';
+	    	$data['timeRemaining'] = floor((strtotime($row2['now'])-strtotime($turnOff))/60);
 	    }
 	}
 	$data['action'] = $action;
