@@ -21,10 +21,7 @@ if ($action == 'give')
 	}
 	else
 	{
-		//header('location: ?page=chores&status=2');
-		echo 'Points: '.$points;
-		echo 'Profile: '.$profile;
-		echo 'Chore ID: '.$CId;
+		header('location: ?page=chores&status=2');
 	}
 }
 elseif ($action == 'details')
