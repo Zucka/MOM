@@ -1,4 +1,27 @@
 <?php
+	/*burde virke*/
+	/*get all chores from a system id*/
+	function getChoresFromCSID($csid)
+	{
+		$db= new MySQLHelper();
+		global $theTables;
+		global $theColumns;
+		$columnCon =  $theColumns['Chores']; //'Chores' =>array('CId', 'CSId', 'name', 'description', 'defaultPoints'), 
+		
+
+		$table =  $theTables['Chores'];
+		$whereClause = $columnCon[1] .' = '. $csid;
+		
+		$result = $db->query( '*' , $table, $whereClause);
+		$returnArray = null;
+		while($row = mysqli_fetch_assoc($result))
+		{
+			$returnArray[] = $row;
+		}
+		return $returnArray;
+		
+	}
+	
 	/*get all profiles from a system id*/
 	/*returns an array eg:
 		PId: 1
@@ -686,5 +709,25 @@ weekNumber: 23
 			$returnArray[] = $row; 
 		}
 		return $returnArray;
+	}
+	
+	function getChoresFromCSID($csid)
+	{
+		$db= new MySQLHelper();
+		global $theTables;
+		global $theColumns;
+		$columnCon =  $theColumns['Chores']; //'Chores' =>array('CId', 'CSId', 'name', 'description', 'defaultPoints'), 
+		
+
+		$table =  $theTables['Chores'].;
+		$whereClause = $columnCon['CSId'] .' = '. $csid;
+		$result = $db->query( '*' , $table, $whereClause, $ordering , $otherSQL);
+		$returnArray = null;
+		while($row = mysqli_fetch_assoc($result))
+		{
+			$returnArray[] = $row;
+		}
+		return $returnArray;
+		
 	}
 ?>
