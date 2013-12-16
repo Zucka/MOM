@@ -1,12 +1,35 @@
 \chapter{Future Work}
-LARS: We should write a bit about how the system could try to learn habits. Or how registereing the use of different media, could turn out to be valuable information, both in relation to marketing and in relation to improving our health by raising awareness about habits.\\
-\\
-LARS: We should think about if it could be nice for the parents to instead of writing rules, simply make the system learn habits based on when the parents turn of the device with their special tag?
+In this chapter we discuss some improvement that could be made to the Media-Online Management system.\\
 
-\text{Database and functions Lib}
-\textbf{Website}
-\textbf{Daemon}
-\textbf{API}
-\textbf{Controller}
+\textbf{Rules}\\
+The rules have been changed during the implementation. Now the web site can only add one rule to one profile, but it should be possible to add a rule or permission to several profiles. On the website a rule can only have one condition and action it would be nice if a web interface at least could support several conditions. Such that a rule like the following to be created: Peter may not watch television from 8:00 to 14:00 and 19:00 to 23:59. However if this change should not happen then the functions working with rules can be simplified. \\
+
+\textbf{Chores}\\
+It would be nice if the points for doing a chore would be more automatized such that the parents should be less involved. This could be done by a special device where the child could choose a chore and scan his tag, which then register the chore has been made. However, a parent should still approve that the chore has been done by the profile such that the child do not misuse this.\\
+
+\textbf{Learn habits}\\
+It would be nice to implement a learning algorithm that could detect a pattern in the users behavior an example if a user regularly add points to the same user then the learning algorithm can detect a pattern and make a rule that will do this. 
+
+The data collected from this system could also be valuable statistics for studies with the users permission of course. So a data warehouse could be made to analysis the data. This data could also be used to marketing purposes. \\
+
+\textbf{Setup of controller}\\
+In section \vref{subsec:senarioD} we discussed how the system should be setup. The controller's internet connection is currently a wired connection. To make it more user friendly the controller should have WiFi connection. Then the setup of a controller will be more difficult because it is done manually. However this should be automatized such that it would be more user friendly. It could be that the user has a USB connector which can setup the wireless internet connection and add the controller to the database. 
+
+Another possible improvement of the controller would be a wireless connection between the tag reader and the power controller device. Such that the user can scan his tag from the couch. This require some other hardware than what we had access to.\\
+
+\textbf{Error handling}\\
+The error handling for when connection between the controller and server is lost has not been fully design and implemented.  --More someone--\\
+
+\textbf{Calendar}\\
+Implement the calendar functionality fully. Where all the time bound rules are presented and the user should be able to make a rule in the calendar. It should be possible to show a calendar for one, some or all users. Other possible functionality could be import and export this calendar.\\
+
+\textbf{Mobile application}\\
+Another improvement of MOM could be to make a mobile application.\\
+
+
+
+
+
+  
 
 
