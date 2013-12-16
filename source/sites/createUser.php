@@ -14,8 +14,8 @@
 			isset($_POST['userRole']) && 
 			isset($_POST['password']) && 
 			$_POST['password'] == $_POST['repeatPassword']) {
-			 $newUser = new Profile($_SESSION['CSid'],$_POST['name'],$_POST['userName'],$_POST['password'],$_POST['email'],NULL,NULL,$_POST['userRole'],$_POST['phone']);
-			 if (simpleInsertIntoDB($newUser)) {
+			 $newUser = new Profile($_SESSION['CSid'],null,$_POST['name'],$_POST['userName'],$_POST['password'],$_POST['email'],NULL,$_POST['userRole'],$_POST['phone']);
+			 if (simpleInsertIntoDB($newUser) === true) {//Stricly True, because an array with some value is also true in PHP.
 				// echo (DEVELOPER ? "Accepted" : "" );
 				echo '<script type="text/javascript">alert("User created.");</script>';
 			 }
