@@ -6,6 +6,8 @@ We use the Ethernet shield along with a JSON parser in order to make HTML reques
 The Ethernet Shield comes with an MAC address printed on the side which is used to automatically obtain an IP Address.
 This along with the target server is established as global variables as seen in \autoref{EthStart} along with the Method call in \verb|Setup()| that establishes a connection with the LAN. All supplied from the Arduino Library \verb|Ethernet.h|.
 \fixme{kunne være korte statement på sær funktioner for eksemple F står for når du printer} 
+\fixme{linje 22, Hvad sker der så, er det bare en død Audrino?}
+\fixme{linje 18 mangler vist et ord.}
 \begin{lstlisting}[frame=single, label=EthStart, caption=The Method Calls used to establish and maintain a connection.]
 //The Mac Address declared.
 byte mac[] = { 0x90, 0xA2, 0xDA, 0x0E, 0xC5, 0x94 };
@@ -13,12 +15,10 @@ byte mac[] = { 0x90, 0xA2, 0xDA, 0x0E, 0xC5, 0x94 };
 //Our target Server that the API is called on
 char server[] = "spcadmin.tk";
 
-\fixme{mangler vist et ord.}
 //When this statement is evaluated the  Arduino to the LAN.
 //This happens during Setup();
 if (Ethernet.begin(mac) == 0) 
 {
-	\fixme{Hvad sker der så, er det bare en død Audrino?}
   //If the Evaluation returns 0 it fails and stops doing anything.
 	Serial.println(F("Failed to configure Ethernet using DHCP"));
 	while(true); 
