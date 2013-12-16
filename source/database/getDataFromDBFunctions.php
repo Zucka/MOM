@@ -21,8 +21,8 @@
 		return $returnArray;
 		
 	}
-	//output array(choreName=>value,profileName=>value,points=>value,time=>value)
-/*	function getChoresLogFromCSID($csid, $startFromIndex=null, $numberOfActivities=null)
+	//outputarray( array(choreName=>value,profileName=>value,points=>value,time=>value ), ...)
+	function getChoresLogFromCSID($csid, $startFromIndex=null, $numberOfActivities=null)
 	{
 	//'Chores' =>array('CId', 'CSId', 'name', 'description', 'defaultPoints'), 
 	//'Profile_did_chores' =>array('PId', 'CId', 'actualPoints', 'timeOfCreation'),
@@ -34,17 +34,17 @@
 		$columnPDC = $theColumns['Profile_did_chores'];
 		$columnUser = $theColumns['Profile'];
 		$otherSQL= null;
-		$table = $theTables['Chores'] .' chore, '.$theTables['Profile_did_chores'] . ' pdc,' . $theTables['Profile'] . ' pro';
-		$whereClause = 'chore.'. $columnC[1] .'='. $csid .
-						'AND pcd'.$columnPDC[0] .'= pro'.$columnUser[0] . 
-						'AND pcd.'. $columnPDC[1] . ' = chore.'. $columnC[0];
-		$ordering = 'timeOfCreation DESC';
-		if($startFromIndex===null && $numberOfActivities===null)
+
+		$table = $theTables['Chores'] .' c, '.$theTables['Profile_did_chores'] . ' q,' . $theTables['Profile'] . ' p';
+		$whereClause = 'c.'. $columnC[1] .'='. $csid .
+						' AND q.'.$columnPDC[0] .'= p.'.$columnUser[0] . 
+						' AND q.'. $columnPDC[1] . ' = c.'. $columnC[0];
+		$ordering = 'time DESC';
+		if(!$startFromIndex==null && !$numberOfActivities==null)
 		{
 		$otherSQL = 'LIMIT '. $startFromIndex . ', '. ($startFromIndex + $numberOfActivities) ;
 		}
-		$selectValues= 'chore.name AS choreName, pro.name AS profileName, pcd.actualPoints AS points, pcd.timeOfCreation AS time' 
-		
+		$selectValues= 'c.name AS choreName, p.name AS profileName, q.actualPoints AS points, q.timeOfCreation AS time' ;
 		$result = $db->query( $selectValues , $table, $whereClause, $ordering , $otherSQL);
 		$returnArray = null;
 		while($row = mysqli_fetch_assoc($result))
@@ -52,7 +52,7 @@
 			$returnArray[] = $row;
 		}
 		return $returnArray;
-	}*/
+	}
 	
 	/*get all profiles from a system id*/
 	/*returns an array eg:
