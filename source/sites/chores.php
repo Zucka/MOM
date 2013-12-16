@@ -55,7 +55,7 @@ switch ($status) {
 <table id="choreTable" class="tablesorter">
 	<thead>
 		<tr>
-			<th>Name</th><th>Description</th><th>Points</th><th>To</th><th>Give</th>
+			<th>Name</th><th>Description</th><th>Points</th><span class="col-xs-2"><th>To</th></span><th>Give</th>
 		</tr>
 	</thead>
 	<tbody>
