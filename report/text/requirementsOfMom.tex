@@ -69,7 +69,7 @@ The web service's design and implementation is explained further in chapter \vre
 
 
 \section{Daemon}
-The daemon is used to update data in the database from a rule which the user have made at some point. The daemon does not have any direct contact to a client. The daemon should handle any rule that is time determined so the condition is either Timestamp or Timeperiod. Then the daemon should do the appropriate action which could be add points to user or block a user.
+The daemon is used to update data in the database from a rule which the user have made at some point. The daemon does not have any direct contact to a client. The daemon should handle any rule that is time determined so the condition is a Timeperiod. Then the daemon should do the appropriate action which could be add points to user or block a user.
 
 The design and implementation of the daemon is presented in detail in chapter \vref{chap:daemon}. 
  
