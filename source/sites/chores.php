@@ -25,7 +25,7 @@ elseif ($action == 'details')
 }
 else
 {
-	$choreArray = choresByCSID($_SESSION['CSid']);
+	$choreArray = getChoresFromCSID($_SESSION['CSid']);
 	$profileArray = profilesByCSId($_SESSION['CSid']);
 	$profileSelect = '<select name="profile">';
 	foreach ($profileArray as $profile)
