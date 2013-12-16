@@ -28,7 +28,7 @@ input:-moz-placeholder { font-style:italic; }
 	background-color:rgb(51, 51, 51);
 	border-right-color: rgb(16, 16, 16);
 	height:100%;
-	
+	padding:0px;
 }
 
 #content{	

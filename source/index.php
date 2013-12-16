@@ -37,7 +37,7 @@
 	  </div><!-- /.navbar-collapse -->
 	</nav>
 	
-	<div class="col-md-2" id="leftMenu">
+	<div class="col-md-2" id="leftMenu" style="position:static;">
 		<ul class="nav nav-pills nav-stacked navba">
 		  <li id="dashboard"><a href="?page=dashboard"><span class="glyphicon glyphicon-home"></span> Dashboard</a></li>
 		  <li id="devices"><a href="?page=devices"><span class="glyphicon glyphicon-hdd"></span> Devices</a></li>
