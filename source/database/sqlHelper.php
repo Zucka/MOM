@@ -9,6 +9,7 @@ class MySQLHelper
 	{
 
 		$this->con = new mysqli($GLOBALS['db_server'], $GLOBALS['db_username'], $GLOBALS['db_password'], $GLOBALS['db_database']);
+		$this->con->set_charset("utf8");
 		//check connection
 		if(mysqli_connect_errno())
 		{
