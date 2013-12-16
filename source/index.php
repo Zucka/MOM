@@ -37,7 +37,7 @@
 	  </div><!-- /.navbar-collapse -->
 	</nav>
 	
-	<div class="col-md-2 col-sm-2" id="leftMenu">
+	<div class="col-md-2" id="leftMenu">
 		<ul class="nav nav-pills nav-stacked navba">
 		  <li id="dashboard"><a href="?page=dashboard"><span class="glyphicon glyphicon-home"></span> Dashboard</a></li>
 		  <li id="devices"><a href="?page=devices"><span class="glyphicon glyphicon-hdd"></span> Devices</a></li>
@@ -56,10 +56,10 @@
 		  <li id="calendar"><a href="?page=calendar"><span class="glyphicon glyphicon-calendar"></span> Calendar</a></li>
 		</ul>
 	</div>
-	<div class="col-md-10  col-sm-6 " id="content">
-		<div class="container">
+	<div class="col-md-10" id="content">
+		
 			<?php include 'switch.php'; ?>
-		</div>
+		
 	</div>
 	
 </body>
