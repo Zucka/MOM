@@ -19,7 +19,7 @@ function db_points_remove($id,$points,$isPId = false)
 	if ($currentPoints < 0) 
 	{
 		//something wrong, this should not happen!
-		$result = false;
+		$result = "ERROR_To_Many_Points";
 	}
 	else
 	{
