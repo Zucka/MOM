@@ -65,7 +65,7 @@ switch ($status) {
 							<td>'.$chore['name'].'</td>
 							<td>'.$chore['description'].'</td>
 							<form action="?page=chore&action=give" method="post">
-							<td><input type="text" name="points" class="form-control" value="'.$chore['defaultPoints'].'" /></td>
+							<td><span class="col-xs-2"><input type="text" name="points" class="form-control input-xs" value="'.$chore['defaultPoints'].'" /></span></td>
 							<td>'.$profileSelect.'</td>
 							<td><button type="submit" class="btn btn-success btn-xs">Give</button></td>
 							</form>
