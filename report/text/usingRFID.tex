@@ -56,7 +56,7 @@ void read_block_RFID(void)
   rfid.write((uint8_t)0x00); //Reserved: 1 byte, must always be 0x00.  
   rfid.write((uint8_t)0x02); //Message Length: 1 byte, both for Command and Data (Here: 2 bytes).
   rfid.write((uint8_t)0x86); //Command: 1 byte, 0x86 is the Read Block Command
-  rfid.write((uint8_t)0x01); //Data(Block Number): 1 byte, read block nr 0x01. 
+  rfid.write((uint8_t)0x01); //Data(Block Number): 1 byte, read block no 0x01. 
   rfid.write((uint8_t)0x89); //The Message Checksum.
   delay(10); 
 }													
@@ -92,57 +92,4 @@ void parse_response(char PH[], int length)
 \end{lstlisting}
 
 
-\fixme{Ryk tabelen længere op da det vil give mere mening til alle henvisninger til bytes.}
-\begin{tabular}{|l|l|}
-\hline
-\hline
-& The RFID output in UART for seeking for tag:\\
-&  On 'Tag Found'. (The length would be 0x06.)\\
-\hline
-Slot 0-3 & Contains the message "Header", "Reserved", "Length" and\\
-& "Command".\\
-Slot 4 & Contains the tag type. \\
-Slot 5-8 & Contains the data stored in the block.\\
-Slot 9 & Contains the Checksum.\\
-\hline
-&On 'no tag found'. (The Length is 0x02.)\\
-\hline
-Slot 0-3 & Contains the message "Header", "Reserved", "Length" and\\
-& "Command".\\
-Slot 4 & Contains the Error Code.\\
-& \indent - 0x4C: `L' Command in progress.\\
-& \indent - 0x55: `U' Command in progress but RF field is off.\\
-Slot 5 & Contains the Checksum.\\
-\hline
-\hline
-&The RFID output in UART for Authenticating a Data block.\\
-\hline
-Slot 0-3 & Contains the message "Header", "Reserved", "Length" and\\
-& "Command".\\
-Slot 4 & Contains the Status/Error Code.\\
-& \indent - 0x4C: `L' - Login Successfull.\\
-& \indent - 0x4E: `N' - No Tag Present or Login Failed.\\
-& \indent - 0x55: `U' - Login Failed.\\
-& \indent - 0x45: `E' - Invalid Key format in E2PROM.\\
-Slot 5 & Contains the Checksum.\\
-\hline
-\hline 
-& The RFID output in UART for reading a block: On a success.\\
-& (The length would be 0x12.) \\
-\hline
-Slot 0-3 & Contains the message "Header", "Reserved", "Length" and\\
-& "Command".\\
-Slot 4 & Contains the number of the block read. \\
-Slot 5-20 & contains the data stored in the block.\\
-Slot 21 & Contains the Checksum.\\
-\hline
-&On a Fail (The length is 0x02.)\\
-\hline
-Slot 0-3 & Contains the message "Header", "Reserved", "Length" and\\
-& "Command".\\
-Slot 4 & Contains the error code:\\
-& \indent - 0x4E: `N' No tag present.\\
-& \indent - 0x46: `F' Failed to read.\\
-Slot 5 & Contains the Checksum.\\
-\hline
-\end{tabular}
+\fixme{the table with byte code is moved to appendix ref is append:bytecode}
