@@ -532,6 +532,7 @@
 		$db = new MySQLHelper();
 		if(isProfileActive($profileId)!=true)
 		{
+			echo 'profile is not active'
 			return false;
 		}
 		$rules = getRulesFromPId($profileId);
