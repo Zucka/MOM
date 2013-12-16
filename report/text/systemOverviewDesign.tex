@@ -1,22 +1,22 @@
-\chapter{Overall System Design} \fixme{igen meget datid}
+\chapter{Overall System Design}
 In this chapter the challenges from the problem statement are looked upon, and an overview of what will be needed to overcome these challenges, will be formulated.
 
 %In this chapter we present the overall design of Media-Online Management(MOM). First we will present how we intend the users to use MOM. Then general concepts will be introduced which is an essential part of the system and will be mentioned several times hereafter. Thirdly the requirements of MOM will be explained in more detail. Finally the system architecture will be presented.    
 
 \section{Designing a solution}
-During the design of the system was deciding, on what type of hardware was needed to accommodate the challenges of the problem, one of the first things to be considered.\\
+During the design of the system it was decided, what type of hardware that would be needed to accommodate the challenges of the problem.\\
 In order to know what hardware was needed, was a design of the overall solution and designate functionality to components needed.\\
 
 \subsection{Identify Unique Users}
 %How do we identify unique users in a subtle and child friendly way.
 The first challenge in the problem statement was: ''How do we identify unique users in a subtle and child friendly way.''.\\
-As mentioned in the analysis was there several different ways to do this, including fingerprints and NFC tags. Common for them all is that they require some sort of scanning device to be used. For the choice of hardware see chapter \ref{chap:hardware}.\\
+As mentioned in the analysis there are several different ways to do this, including fingerprints and NFC tags. Common for them all is that they require some sort of scanning device to be used. For the choice of hardware see chapter \ref{chap:hardware}.\\
 In order to verify that the user is actually a user on this families system this scanner must have a way to contact some sort of database or an overview of members. Which leads us to the next challenge.
 
 \subsection{Enforce Restrictions on Media Devices}
 %How do we enforce restrictions on media devices.
 As mentioned in the analysis, see section \ref{section:pcHowToExtend}, it is necessary to find a way to physically restrict the usage of medias. We first thought that the best solution would be to implement it directly into all media, but this would result in an endless amount of coding, since a code base would be needed to be implemented for each device it would run on.\\
-Instead we took the restriction a bit further. Most media today run on electricity and without batteries, meaning if the power is cut to the media, it will be restricted.\\
+Instead we will take the restriction a bit further. Most media today run on electricity and without batteries, meaning if the power is cut to the media, it will be restricted.\\
 The idea developed into a combination with the solution for the previous challenge and resulted into what we like to call a ''controller''. It is a device equipped with a relay, an internet connection and a scanner.\\
 Using the relay to control the power to media, using the scanner to identify users and the internet connection to look up in a sub-global\footnote{Global in the scope of each families system.} register of users, which again leads us to the next and final challenge in the problem statement. Here we already have three different devices communicating, on their own, emphasizing the idea of Internet Of Things.
 
