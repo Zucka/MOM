@@ -12,7 +12,7 @@
 			isset($_POST['defaultpoints']) &&
 			is_numeric($_POST['defaultpoints']))
 			 {
-			 $newChore = new Chore($_SESSION['CSId'],null,$_POST['name'],$_POST['description'],$_POST['defaultpoints']);
+			 $newChore = new Chores($_SESSION['CSId'],null,$_POST['name'],$_POST['description'],$_POST['defaultpoints']);
 			 if (simpleInsertIntoDB($newChore) === true) {//Stricly True, because an array with some value is also true in PHP.
 				// echo (DEVELOPER ? "Accepted" : "" );
 				echo '<script type="text/javascript">alert("Chore created.");</script>';
