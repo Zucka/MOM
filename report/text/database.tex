@@ -115,7 +115,7 @@ However, when updating an action and especially a condition the changes can have
 
 With a structural change it is meant that the name of the condition or action has been changes and this change can influence e.g. whether cond\_timeperiod or cond\_timestamp should be used. As a result it have been decided that in this case the old condition should be deleted and the new be added anew. A structural change should not happen for an action, but the function are still able to handle it in the same way as a condition.
 
-The code sample in \ref{code:UpdateRules} is from the update handling of condition and the it is similar to handle the actions. First the old conditions id are need such that they can be compared to the ids of the Condition objects from the array \$arrayOfCondition, see line $2$\fixme{check line no}. 
+The code sample in \ref{code:UpdateRules} is from the update handling of condition and the it is similar to handle the actions. First the old conditions id are need such that they can be compared to the ids of the Condition objects from the array \$arrayOfCondition, see line $2$. 
 Then foreach old condition id we will look thourgh the new id and if it found and the name are not to be changed then we call editcondition with the updated condition object and remove this object from the array of condition, see line $4-20$. 
 From line $22-26$ it is shown that the tuple with the old id is removed if no match was found among conditions in the array or if a match was found but the name are to changed. Now all the condition that was intended to be deleted is gone and finally the remain objects is then add or re-add from the array with addCondition, see line $28-40$.
 
@@ -169,4 +169,4 @@ The database and the functions mentioned have all been made prior to when the de
 
 Up till now the rules could have several condition and action but late in the implementation of the Website we have decides to only allow one action and condition per rule to get a more user-friendly website, more about this decision can be found in section \vref{subsec:rulesWEB}. Most functions are still implemented on the first design so they can handle several conditions and actions. 
 
-However, a few function can only work with one condition and action per rules. An example is the function that checks whether a user can use a media, called $db_rules_user_can_turn_device_on$. If the implementation of rules on the website is change a new version of these functions need to be made.
+However, a few function can only work with one condition and action per rules. An example is the function that checks whether a user can use a media, called $db\_rules\_user\_can\_turn\_device\_on$. If the implementation of rules on the website is change a new version of these functions need to be made.
