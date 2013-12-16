@@ -57,7 +57,24 @@
 			}
 		}
 		elseif(isset($_POST['doPoints'])){
+			require_once("database/db_points.php");
+			if($_POST['addOrRemove'] == "add"){
+				$result = db_points_add($Pid,$_POST['pointsAmount'],true);
+			}
+			else{
+				$result = db_points_remove($Pid,$_POST['pointsAmount'],true);
+			}
 			
+			if($result === true){
+				if($_POST['addOrRemove'] == "add")
+					echo "Success, points have been added.";
+				else
+					echo "Success, points have been removed.";
+			}
+			else{
+				echo "ERROR: An error has occurred, please try again later.";
+			}
+			printUserForm($Pid);
 		}
 		else{
 			printUserForm($Pid);
@@ -119,7 +136,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Do: </label>
 								<div class="col-sm-8">
-									<select name="addOrDelete">
+									<select name="addOrRemove">
 										<option value="add">Add</option>
 										<option value="remove">Remove</option>
 									</select>
@@ -128,7 +145,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Points: </label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" value="0" name="name">
+									<input type="text" class="form-control" value="0" name="pointsAmount">
 								</div>
 							</div>
 							

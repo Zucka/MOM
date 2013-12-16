@@ -294,3 +294,109 @@
 		\hline
 		\end{tabular*}
 \end{table}
+%%Test 9.
+\begin{table}[h]
+	\centering
+		\begin{tabular*}{\textwidth}{|l|l|}
+		\hline
+		\hline
+		Name: & WS001\\
+		\hline
+		Description: & Setup a complete system with a managing user, a regular user, a `TV Controller' and the accompanying rights to use it.\\
+		\hline
+		Requirements: & \parbox{0.85\textwidth}{
+		\begin{itemize}
+			\item A computer with Internet access.
+			\item The MOM website.
+			\item Two Tags prepared with a Tag ID.
+			\item An Arduino to function as the TV controller. 
+		\end{itemize}}
+		\\
+		\hline
+		Expected Results: & \parbox{.85\textwidth}{A managing user capable of logging into the TV Controller without loosing points. A regular User able to log into the TV controller while loosing points.}\\
+		\hline
+		Steps: & \parbox{.85\textwidth}{
+		\begin{enumerate}
+			\item Log into the MOM website.
+			\item Create a profile with appropriate personal information to act as a manager.
+			\item Attach the first Tag to the new Manager profile.
+			\item Add the permissions that enables the use of all devices without expending points.
+			\item Create a profile with the appropriate person information to act as a user.
+			\item Attach the second tag to the new user profile.
+			\item Add the permissions to log into the TV controller.
+			\item Perform Test AT001A on both profiles with addendum: Wait 3 minutes for both users and note if either expends points.
+		\end{enumerate}}
+		\\		
+		\hline
+		Result of Test: & \\
+		\hline
+		\end{tabular*}
+\end{table}
+
+%%Test 10.
+\begin{table}[h]
+	\centering
+		\begin{tabular*}{\textwidth}{|l|l|}
+		\hline
+		\hline
+		Name: & WS002\\
+		\hline
+		Description: & Adding a rule to ensure that one device is turned on in order for another to be turned on.\\
+		\hline
+		Requirements: & \parbox{0.85\textwidth}{
+		\begin{itemize}
+			\item A computer with Internet access.
+			\item The MOM website.
+			\item Web Browser with links to the API to simulate `TV' and `Playstation' devices.
+		\end{itemize}}
+		\\
+		\hline
+		Expected Results: & \parbox{.85\textwidth}{The simulated devices one will have to be turned on in order to turn on the Simulated controller 2.}\\
+		\hline
+		Steps: & \parbox{.85\textwidth}{
+		\begin{enumerate}
+			\item If a `TV' device has not been established from earlier Test, create this.
+			\item Create a `Playstation' device.
+			\item Establish the Rule that the `Playstation' device cannot be turned on unless the `TV' device is.
+			\item Use the browser to call turnOn for the `Playstation' and note if it turns on.
+			\item If the the `Playstation' did not turn on in step 4, turn on the `TV' and then try again to turn on the `Playstation'.
+		\end{enumerate}}
+		\\		
+		\hline
+		Result of Test: & \\
+		\hline
+		\end{tabular*}
+\end{table}
+%%Test 11.
+\begin{table}[h]
+	\centering
+		\begin{tabular*}{\textwidth}{|l|l|}
+		\hline
+		\hline
+		Name: & WS003\\
+		\hline
+		Description: & Adding a rule to block a profile from using the 'TV' Device.\\
+		\hline
+		Requirements: & \parbox{0.85\textwidth}{
+		\begin{itemize}
+			\item MOM Website.
+			\item TV Device.
+			\item Test Profile with Tag.
+			\item Web Browser with links to the API to simulate `TV' device.
+		\end{itemize}}
+		\\
+		\hline
+		Expected Results: & \parbox{.85\textwidth}{The user attatched to the profile will be unable to log into the `TV' device in accordance to the established Rule.}\\
+		\hline
+		Steps: & \parbox{.85\textwidth}{
+		\begin{enumerate}
+			\item Log into Mom Website.
+			\item Add Rule to block the profile.
+			\item Use the Web browser API to test if you can activate the Device.
+		\end{enumerate}}
+		\\		
+		\hline
+		Result of Test: & \\
+		\hline
+		\end{tabular*}
+\end{table}
