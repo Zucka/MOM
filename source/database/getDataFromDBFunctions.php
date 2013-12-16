@@ -22,7 +22,7 @@
 		
 	}
 	
-	getChoresLogFromCSID()
+	//getChoresLogFromCSID()
 	
 	/*get all profiles from a system id*/
 	/*returns an array eg:
