@@ -80,11 +80,11 @@ function db_rules_user_can_turn_device_on($cId,$tId)
 				}
 			}
 		}
+
 	}
-	else
-	{
+
 		return true;
-	}
+	
 	
 
 }
