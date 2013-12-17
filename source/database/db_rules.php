@@ -239,10 +239,6 @@ function checkRulesTrueAndTimeperiod($rules, $cId)
 					$NotAllAccController=$rule;
 				}
 			}
-			else
-			{
-				return false;
-			}
 		}
 		
 		if( $AccController != null && $NotAccController != null)
