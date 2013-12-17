@@ -157,7 +157,9 @@ These cases only uses the controller:
 		\\
 
 		\hline
-		Result of Test: & \\
+		Result of Test: & \parbox{.70\textwidth}{First Iteration: Upon the first swipe the Arduino successfully logged in and changed state to 1 as expected. Confirmation also proved that to be status:GREEN. However, on the second swipe the Arduino would log out, but then immediately try to log in again with a corrupted Tag ID. All further attempts to log in would likewise fail do to Tag ID corruption.\\
+		We traced the problem of the corrupted tag ID to the lack of a null character '\0' in the char array that held the ID's. However the Arduino would still try to log in again, which was resolved by implementing a strcmp(newID, oldID) to evaluate if the tag was different.\\
+		Second Iteration: The Arduino performed as expected, succeding in logging users in and out.} \\
 		\hline
 		\end{tabular*}
 \end{table}
@@ -193,7 +195,7 @@ These cases only uses the controller:
 			\item Confirm on the web browser that the device is marked status:RED for not running.
 		\end{enumerate}}
 		\\
-		Result of Test: & \\
+		Result of Test: & The Arduino performed as expected and successfully declined logging in.\\
 		\hline
 		\end{tabular*}
 \end{table}
@@ -230,7 +232,7 @@ These cases only uses the controller:
 		\end{enumerate}}
 		\\
 		\hline
-		Result of Test: & \\
+		Result of Test: & The Arduino performed as expected successfully declined logging in.\\
 		\hline
 		\end{tabular*}
 \end{table}
@@ -267,7 +269,7 @@ These cases only uses the controller:
 		\end{enumerate}}
 		\\
 		\hline
-		Result of Test: & \\
+		Result of Test: & The Arduino performed as expected and successfully declined logging in.\\
 		\hline
 		\end{tabular*}
 \end{table}
@@ -304,7 +306,7 @@ These cases only uses the controller:
 		\end{enumerate}}
 		\\
 		\hline
-		Result of Test: & \\
+		Result of Test: & The Arduino performed as expected and successfully logged user 1 off before logging user 2 in due to the corrections performed after Test AT001A.\\
 		\end{tabular*}
 \end{table}
 %%Test 6.
@@ -335,7 +337,7 @@ These cases only uses the controller:
 		\end{enumerate}}
 		\\
 		\hline
-		Result of Test: & \\
+		Result of Test: & Initially we believed there was a bug where the Arduino would freeze after the getStatus being called the second time, but we have not since been able to reproduce it and after seeing the Arduino run unhindered for a hours at the time we conclude that it is running as expected.\\
 		\hline
 		\end{tabular*}
 \end{table}
@@ -371,7 +373,7 @@ These cases only uses the controller:
 		\end{enumerate}}
 		\\
 		\hline
-		Result of Test: & \\
+		Result of Test: & The Arduino performed as expected and remained logged in after the getStatus had been called.\\
 		\hline
 		\end{tabular*}
 \end{table}
@@ -383,7 +385,7 @@ These cases only uses the controller:
 		\hline
 		Name: & AT003C\\
 		\hline
-		Description: & \parbox{0.70\textwidth}{Let Arduino run until getStatus is called with logged in User no longer permitted to use the Arduino.}\\
+		Description: & \parbox{0.70\textwidth}{Let Arduino run until getStatus is called with logged in User, who has since logging in changed to not being permitted to use the Arduino.}\\
 		\hline
 		Requirements: & \parbox{0.70\textwidth}{
 		\begin{itemize}
@@ -410,7 +412,7 @@ These cases only uses the controller:
 		\end{enumerate}}
 		\\		
 		\hline
-		Result of Test: & \\
+		Result of Test: & \parbox{.70\textwidth}{First Iteration: It turned out that the back end API did not actually support this feature. This has since been rectified. \\Second Iteration: The Arduino now performs as expected.}\\
 		\hline
 		\end{tabular*}
 \end{table}
