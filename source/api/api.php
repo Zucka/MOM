@@ -99,7 +99,7 @@ $app->get('/turnOn/:cId/:tId', function($cId,$tId) {
 	}
 	$status = '';
 	$error = '';
-		echo'i get here';
+		
 	switch ($row['status']) {
 		case 'RED': //device is currently off and is able to be turned on
 			if (floor($timeRemaining) > 0)
