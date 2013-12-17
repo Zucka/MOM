@@ -1,10 +1,7 @@
 <?php
-	error_reporting(E_ALL);
-	ini_set('display_errors', 1);
 	if (isset($_GET['action'])) {$action = $_GET['action'];} else {$action = '';}
 
 	if ($action == "create") {
-		// print_r($_POST); // DEVELOPER 
 		if (isset($_POST['systemUserSelect']) && isset($_POST['controllerName']) ) {
 			// Set rule name & control system
 			$systemUser = explode(",", $_POST['systemUserSelect']);
@@ -25,22 +22,6 @@
 				'firstInMonth'	=> 0,
 				'lastInMonth'	=> 0));
 			$arrayCondition = array('cond' => $nCondition);
-			// echo "</br>"; // DEVELOPER 
-			// echo "</br>"; // DEVELOPER 
-			// print_r($systemUser); // DEVELOPER 
-			// echo "</br>"; // DEVELOPER 
-			// print_r($userFirstName); // DEVELOPER 
-			// echo "</br>"; // DEVELOPER 
-			// print_r($controllerName); // DEVELOPER 
-			// echo "</br>"; // DEVELOPER 
-			// echo "</br>"; // DEVELOPER 
-			// print_r($nRule); // DEVELOPER 
-			// echo "</br>"; // DEVELOPER 
-			// print_r($arrayCondition); // DEVELOPER 
-			// echo "</br>"; // DEVELOPER 
-			// print_r($arrayAction); // DEVELOPER 
-			// echo "</br>"; // DEVELOPER 
-			// Add rule
 			$dbResult = addNewRuleToDB($nRule, $arrayCondition, $arrayAction);
 			if (is_numeric($dbResult)) {
 				addRuleToProfile($systemUser[0] ,$dbResult);
