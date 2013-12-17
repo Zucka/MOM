@@ -41,7 +41,7 @@ The controller system have follow functionality:
 
 The development was done by asking and answering questions to the system in different scenarios.\newline
 
-\paragraph{Setting up and turning on the system.} \newline
+\paragraph{Setting up and turning on the system.}
 In the intended design the PCD will receive the information about the Wi-Fi connection from a USB pen.
 If the information on the USB is wrong or not received then a restart button is included to redo the procedure.  \newline
 If no error occours, the PCD will connect to the Wi-Fi network and add the controller to the database in the according MOM system. If the connection is not found a message is send to the DD. \newline 
@@ -49,13 +49,14 @@ DD indicates that there is no connection by showing a constant red light. The co
 
 However, this design will not be implemented in this project. Due to limitations of available hardware. Instead there is a wired connection to the internet and the controller need to be manually added into the database.
 
-\paragraph{Detection of connection issues and status changes.} \newline
+\paragraph{Detection of connection issues and status changes.}
 The connection to the sever is tested by a routine call every five minutes from the PCD to the server. In this call the PCD will receive information on when the media should shutdown based on a rule or the user's remaining time. This insures that if any changes occurs to the remaining time or the rules which will influences when the media should shut down will still be handled.
 %This insure that there is a connection each five minutes and if any changes in rules or in the time the user may spend on the media. 
 In between those calls the PCD will check for a tag from the DD. If the PCD is disconnected from the server the DD is informed so this can be communicated to the user, by use of LED's mounted on the DD.  \newline
 	
 	
-\paragraph{Logon/logoff media device.} \newline
+
+\paragraph{Logon/logoff media device.}
 \label{Logonlogoffmedia}
 When a tag is read by the DD, the PCD will receive the tag id which is then formed into a log-in message and send to the web servers API. however this is only if no one is already logged on the media device in the MOM system.\\
 The PCD will then get a message from the API, about whether the user has permission or not, to use the media. If the user has permission then the PCD should direct power to the media, then save the tag id in local memory and receive the remaining time from the API.\\
@@ -67,7 +68,9 @@ The PCD will receive the information for the new user without turning the power 
 The functionality of switch users is not implemented in the current prototype. Instead it is simply not allowed to logout with another tag, then what was logged in with.\\
 %However as a failsafe the system is designed such that if the server does not receive a status update from the controller every five minutes, it will autocratically log the user out, assuming the controller has lost internet connection.
 
-\paragraph{Server disconnection under use.} \newline
+
+\paragraph{Server disconnection under use.}
+\label{sec:ServerDisconnectionUnderUse}
 A disconnection from the server is either found under the regular status call after each five minutes or at a log-on/log-off call. A disconnection will lock the device so only the current user can use the media until the PCD is reconnected with the server. The server discovers the lack of connection when there have not been a status call from the device in five minutes. The disconnection is translated to a log-off from the media at the server side. 
 The user will not be logged off by the controller but will be able to use his time according to the last status. If the user want to logged off in a period where there is a disconnection, a time stamp is saved and will be sent to the server when the connection is reestablished. The media can also first be used again when the connection is reestablished. 
 This procedure have the advantage that the user will not have to cut off the media in use if the connection is unstable. The user will also be able to use another media if it has connection to the server.
