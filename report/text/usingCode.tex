@@ -73,30 +73,28 @@ The second check is named \verb|CheckTimeStatus|. Because the servers require a 
 
 %As seen in \autoref{loopy} 
 %There are two methods that depends on the state \verb|stateOne()| and \verb|stateZero()|. They are extremely similar, differing only in the need to compare the tag ID in use with the one being swiped which occurs in \verb|stateOne()| which can be seen in \autoref{staty}.
-\verb|stateOne()| is a function that is run when a user is log-in and this code is shown in \autoref{staty}.
-The Code block shows a series of method calls related to the RFID functionality which is described in \autoref{rfidsect}.\newline To a point, the code finds, authenticates and reads an RFID tag. If the tag has the same ID as the one already used to log in, the Arduino will log him out. However, if it is a new tag, the old tag will be logged out, and the new tag logged in.
+\verb|stateOne()| is a function that is run when a user is logged in and this code is shown in \autoref{staty} and is very similar to the code used for state 0.
+The Code block shows a series of method calls related to the RFID functionality which is described in \autoref{rfidsect}.\newline To a point, the Arduino uses \verb|seek()| to look for a tag and \verb|parse_response(char in\[\])| to check the antenna output to see if one has been found and adding the data to the char array \verb|rf_block_response|. 
+If found the Arduino uses \verb|authenticate()| to assure the tag has a valid datablock and once again the result of the action is parsed. Finally the RFID tag is read using \verb|read_block_RFID()|, the result is parsed and if successful the tag ID can be read on \verb|rf_block_response|.\newline
+If the tag has the same ID as the one already used to log in, the Arduino will log him out. However, if it is a new tag, the old tag will be logged out, and the new tag logged in.
 \begin{lstlisting}[frame=single, label=staty, caption=The Arduino state one code.]
   seek();
   delay(10);
   parse_response(rf_block_response, seek_length);
   delay(10);
   if(rf_block_response[2] == 6)
-  {
-    Serial.println(F("Authenticating."));
+	{
     authenticate();
     parse_response(rf_block_response, authenticate_length);
     delay(10);
     if(rf_block_response[4] == 0x4C)
-    {
-      Serial.println(F("Reading."));
+		{
       read_block_RFID();
       delay(10);
       parse_response(rf_block_response, block_length);
       delay(10);
-      if(rf_block_response[2] == 0x12)
-      {
+      if(rf_block_response[2] == 0x12){
         char tempID[4];
-        Serial.println(F("Read Successfull:  "));
         for(int i = 5; i < 8; i++) //TODO: Length of ID.
         {        
           tempID[i-5] = rf_block_response[i];
@@ -114,25 +112,14 @@ The Code block shows a series of method calls related to the RFID functionality 
           turnOn();
         }
         delay(10);
-        Serial.println(F("Stop"));
       }
       else{
-        Serial.println(F("Read Failed"));
       }
     }
-    else
-    {
-      Serial.println(F("Authentication failed"));
+    else{
     }
   }
-  else
-  {
-    for(int i=1;i<11;i++)
-    {
-      Serial.println(rf_block_response[i], HEX);
-    }
-    
-    Serial.println(F("Wait for it"));  
+  else{ 
     delay(2500);
   }
 \end{lstlisting}
