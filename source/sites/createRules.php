@@ -25,7 +25,7 @@
 			if (is_numeric($dbResult)) {
 				addRuleToProfile($_POST['systemUserSelect'] ,$dbResult);
 			}
-			print_r($dbResult);
+			// print_r($dbResult);
 					
 		} else {echo '<script type="text/javascript">alert("You are missing something..");</script>';}
 	} 
@@ -128,7 +128,7 @@
 						<option value="primo"		>First in a month</option>
 						<option value="ultimo"		>Last in a month</option> 
 						<option value="sWeek"		>Specific Week No.</option> 
-						<option value="noRepeat" hidden	>Once / from</option>
+						<option value="noRepeat"	>Once / from</option>
 					</select>
 				</div>
 			</div>
