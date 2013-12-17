@@ -143,7 +143,7 @@
 				<script type="text/javascript">
 					$(document).ready(function() { 
 						$.ajax({
-							url: 'ajax/json-charts1.php?chart=useStatistics&PId=1',
+							url: 'ajax/json-charts1.php?chart=useStatistics&PId=<?php echo $Pid ?>',
 							success: function(data) {
 								var $graph = data;
 								var obj = $.parseJSON($graph);

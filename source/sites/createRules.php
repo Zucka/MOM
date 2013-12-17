@@ -119,7 +119,7 @@
 				</div>
 			</div>
 			<div class="form-group" id="repeatEach" style="display:none;">
-				<label for="repeatEach" class="col-sm-3 control-label">Repeat each: </label>
+				<label for="repeatEach" class="col-sm-3 control-label">Rule Applies: </label>
 				<div class="col-sm-8">
 					<select name="repeatEach" id="repeatEach" class="form-control"  onchange="repeatWeeklySelect();" >
 						<option value="eachWekk"	>Every Week</option>

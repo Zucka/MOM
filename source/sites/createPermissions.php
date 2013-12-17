@@ -26,7 +26,7 @@
 			if (is_numeric($dbResult)) {
 				addRuleToProfile($systemUser[0] ,$dbResult);
 			}
-			print_r($dbResult);
+			// print_r($dbResult);
 					
 		} else {echo '<script type="text/javascript">alert("You are missing something..");</script>';}
 	} 
