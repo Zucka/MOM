@@ -6,6 +6,7 @@
 		// print_r($_POST); // DEVELOPER 
 		if (isset($_POST['actionName']) &&
 			isset($_POST['name']) &&
+			isset($_POST['systemUserSelect']) &&
 			isset($_POST['repeatEach'])) {
 			// Set rule name & control system
 			$nRule = new Rules($_SESSION['CSid'], $_POST['name']);
