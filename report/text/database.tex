@@ -16,7 +16,7 @@ In the parent control system there are seven essential objects; control system, 
 	\item[Rule] is representing other restrictions or rules that cannot be expressed by the permission. A rule consist of some conditions that need to be meet before some actions should be taken as explained previously in section \vref{sec:rule}. 
 \end{description}
 
-From the former description the database design is made. It is represented in an ER-diagram in figure \ref{fig:ERdiagram} where the cardinality ratio is expressed in Chen notation\citep{DatabaseKilde}. It should be mentioned that the design of a rule in the database is based on the first design of the rules, which can be found in appendix \vref{appendixFirstRuleDesign}. The reason for not using the final design is that it was changed fare into the implementation phase and the first database design does still support the final design of rule. 
+From the former description the database design is made. It is represented in an ER-diagram in figure \ref{fig:ERdiagram} where the cardinality ratio is expressed in Chen notation\citep{DatabaseKilde}. It should be mentioned that the design of a rule in the database is based on the first design of the rules, which can be found in appendix \vref{appendixFirstRuleDesign}. The reason for not using the final design is that it was changed far into the implementation phase and the first database design does still support the final design of rule. 
 
 \begin{figure}
 	\centering
@@ -83,7 +83,7 @@ The website and API for the controllers connect to the database by using a PHP c
   
 It is also possible to control the transactions through this class by disabling the auto-commit of transactions and then manually commit when it is necessary. \\\\
 
-This class is used by several functions that are connected to the website, API and Daemon. In the following section we present the more interesting of them, how to update rules. 
+This class is used by several functions that are connected to the website and API. In the following section we present the more interesting of them, how to update rules. 
 
 \subsection{EditRule from the Function Library}
 \label{subsec:dbRule}
