@@ -15,7 +15,7 @@ if ($action == 'give')
 	{
 		header('location: ?page=chores&status=2');
 	}
-	if (db_points_add($profile,$points,true) && addChoreToProfile($CId, $profile, $points))
+	if ( addChoreToProfile($CId, $profile, $points))
 	{
 		header('location: ?page=chores&status=1');
 	}
