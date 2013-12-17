@@ -17,7 +17,7 @@ function db_rules_user_can_turn_device_on($cId,$tId)
 	//check Timeperiod and True contrains 
 	$rules = getRulesFromPId($pId,false);
 	$result = checkRulesTrueAndTimeperiod($rules, $cId);
-	echo $result. '<br>';
+
 	if($result==false)
 	{
 		return false;
@@ -80,11 +80,11 @@ function db_rules_user_can_turn_device_on($cId,$tId)
 				}
 			}
 		}
+
 	}
-	else
-	{
+
 		return true;
-	}
+	
 	
 
 }
@@ -321,7 +321,7 @@ function checkRulesTrueAndTimeperiod($rules, $cId)
 		}
 		
 	}
-	return 'error';
+	return 'null';
 }
 	
 function ruleHasActionWithName($rule, $name)
