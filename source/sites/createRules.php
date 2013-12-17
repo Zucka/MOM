@@ -3,7 +3,7 @@
 	if (isset($_GET['action'])) {$action = $_GET['action'];} else {$action = '';}
 
 	if ($action == "create") {
-		print_r($_POST); // DEVELOPER 
+		// print_r($_POST); // DEVELOPER 
 		if (isset($_POST['actionName']) &&
 			isset($_POST['name']) &&
 			isset($_POST['systemUserSelect']) &&
@@ -22,11 +22,11 @@
 			$arrayAction = array('cond' => $nAction);
 			// Set condition 
 			$arrayCondition = setCondition($_POST);
-			print_r($arrayCondition);
-			// $dbResult = addNewRuleToDB($nRule, $arrayCondition, $arrayAction);
-			// if (is_numeric($dbResult)) {
-			// 	addRuleToProfile($_POST['systemUserSelect'] ,$dbResult);
-			// }
+			// print_r($arrayCondition);
+			$dbResult = addNewRuleToDB($nRule, $arrayCondition, $arrayAction);
+			if (is_numeric($dbResult)) {
+				addRuleToProfile($_POST['systemUserSelect'] ,$dbResult);
+			}
 			// print_r($dbResult);
 					
 		} else {echo '<script type="text/javascript">alert("You are missing something..");</script>';}
