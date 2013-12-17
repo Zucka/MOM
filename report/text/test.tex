@@ -58,17 +58,14 @@ We want to primarily be validated on....
 \label{sec:testcase}
 In table \ref{tab:testcase} is one of the test cases that we made for testing the entire Media-Online Management. In the test case both apart of the Website and a controller are tested. The change been done in the web site should affect the controller.\\ 
  All test cases can be found in appendix \vref{appen:testSuite}.
-%%Test 9.
 \begin{table}[h]
-\label{tab:testcase}
-\caption{Example of a test cases}
 	\centering
 		\begin{tabular*}{\textwidth}{|l|l|}
 		\hline
 		\hline
-		Name: & \parbox{0.6\textwidth}{WS001}\\
+		Name: & WS001\\
 		\hline
-		Description: & \parbox{0.70\textwidth}{Setup a complete system with a managing user, a regular user,  a `TV Controller' and the accompanying rights to use it.}\\
+		Description: & \parbox{0.70\textwidth}{Setup a complete system with a managing user, a regular user, a `TV Controller' and the accompanying rights to use it.}\\
 		\hline
 		Requirements: & \parbox{0.70\textwidth}{
 		\begin{itemize}
@@ -79,18 +76,18 @@ In table \ref{tab:testcase} is one of the test cases that we made for testing th
 		\end{itemize}}
 		\\
 		\hline
-		Expected Results: & \parbox{0.70\textwidth}{A managing user capable of logging into the TV Controller without loosing points. A regular User able to log into the TV controller while loosing points.}\\
+		Expected Results: & \parbox{.70\textwidth}{A managing user capable of logging into the TV Controller without loosing points. A regular User able to log into the TV controller while loosing points.}\\
 		\hline
-		Steps: & \parbox{0.70\textwidth}{
+		Steps: & \parbox{.70\textwidth}{
 		\begin{enumerate}
-			\item Log into the MOM website.
-			\item Create a profile with appropriate personal information to act as a manager.
-			\item Attach the first Tag to the new Manager profile.
+			\item Log into the MOM website with lniel10 and test.
+			\item Attach the first Tag to the lniel10 profile.
 			\item Add the permissions that enables the use of all devices without expending points.
-			\item Create a profile with the appropriate person information to act as a user.
-			\item Attach the second tag to the new user profile.
+			\item Create a profile 'Kevin' with the appropriate person information to act as a user.
+			\item Attach the second tag to Kevin.
+			\item Add controller TV into the system.
 			\item Add the permissions to log into the TV controller.
-			\item Perform Test AT001A on both profiles with addendum: Wait 3 minutes for both users and note if either expends points.
+			\item Perform Test AT001A from appendix \vref{appen:testSuite} on both profiles with addendum: Wait 3 minutes for both users and note if either expends points.
 		\end{enumerate}}
 		\\		
 		\hline
