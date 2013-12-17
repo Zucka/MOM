@@ -12,13 +12,13 @@
 			$nRule = new Rules($_SESSION['CSid'], $_POST['name']);
 			// Set action 
 			if (isset($_POST['amountOfPoints'])) {$amountOfPoints = $_POST['amountOfPoints'];} else {$amountOfPoints = null;}
-			if (isset($_POST['controllerNameIf'])) {$controllerNameIf = $_POST['controllerNameIf'];} else {$controllerNameIf = null;}
+			if (isset($_POST['controllerName'])) {$controllerName = $_POST['controllerName'];} else {$controllerName = null;}
 			if ($_POST['actionName'] == 'accessIf') {
 				$actionName = 'Access controller';
 			} elseif ($_POST['actionName'] == 'noAccessIf' ) {
 				$actionName = 'Cannot access controller';
 			} else {$actionName = $_POST['actionName'];}
-			$nAction = new Action( 0, $actionName, null, $controllerNameIf, $amountOfPoints );
+			$nAction = new Action( 0, $actionName, null, $controllerName, $amountOfPoints );
 			$arrayAction = array('cond' => $nAction);
 			// Set condition 
 			$arrayCondition = setCondition($_POST);

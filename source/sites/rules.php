@@ -66,8 +66,8 @@
 			<tbody>
 				<?php 
 				foreach($accessIF as $rule){
-					$thisif = getControllerByControllerId($rule['conditions'][0]['controllerId']);
-					$ifthis = getControllerByControllerId($rule['actions'][0]['controllerId']);
+					$thisif = getControllerByControllerId($rule['actions'][0]['controllerId']);
+					$ifthis = getControllerByControllerId($rule['conditions'][0]['controllerId']);
 					echo '<tr>';
 					echo '<td>'.$rule['rulesVariable']['name'].'</td>';
 						echo '<td>'.$thisif[0]['name'].'</td>';

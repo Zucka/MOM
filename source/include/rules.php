@@ -136,8 +136,8 @@
 		}
 			// Set condition
 			$arrayOfRestAttributes = setArrayOfRestAttributes($postData, $weekdays, $startTime, $endTime);
-			if (isset($postData['controllerName'])) {$controllerName = $postData['controllerName'];} else {$controllerName = null;}
-			$nCondition = new Condition(0 , $conditionType, null, $controllerName, $arrayOfRestAttributes);
+			if (isset($postData['controllerNameIf'])) {$controllerNameIf = $postData['controllerNameIf'];} else {$controllerNameIf = null;}
+			$nCondition = new Condition(0 , $conditionType, null, $controllerNameIf, $arrayOfRestAttributes);
 			$arrayCondition = array('cond' => $nCondition);
 		return  $arrayCondition;
 	}
