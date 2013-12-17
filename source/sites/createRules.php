@@ -26,7 +26,8 @@
 			$dbResult = addNewRuleToDB($nRule, $arrayCondition, $arrayAction);
 			if (is_numeric($dbResult)) {
 				addRuleToProfile($_POST['systemUserSelect'] ,$dbResult);
-			}
+				echo '<script type="text/javascript">alert("Rule added");</script>';
+			} else {echo '<script type="text/javascript">alert("Something went wrong..");</script>';}
 			// print_r($dbResult);
 					
 		} else {echo '<script type="text/javascript">alert("You are missing something..");</script>';}
