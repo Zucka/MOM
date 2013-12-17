@@ -67,7 +67,6 @@ function db_rules_user_can_turn_device_on($cId,$tId)
 		}
 
 	}
-	echo 'permission ture<br>';
 		return true;
 	
 	
@@ -84,7 +83,7 @@ function db_rules_device_should_turn_off($cId, $pId)
 	
 	$lowestTime= null;
 	if($rules != null)
-	{echo 'in rule <br>';
+	{
 	foreach($rules as $rule)
 	{
 		$timeTo=null;
@@ -233,7 +232,6 @@ function checkRulesTrueAndTimeperiod($rules, $cId)
 				}
 				elseif(ruleHasActionWithName($rule, 'Access any controller') == true )
 				{
-					echo 'access any';
 					$AllAccController=$rule;
 				}
 				elseif(ruleHasActionWithName($rule, 'Cannot access any controller') )
@@ -398,7 +396,6 @@ function timeperiodIsValidNowInRule($rule)
 				if($weekValid && (strpos($array['weekdays'], $timeNowFormatDay ) || $timeNowFormatDay == $array['weekdays'])
 					&& $timeFrom <= $timeNowFormatHMS  && $timeNowFormatHMS <= $timeTo )
 				{
-					echo 'im here';
 					return true;
 				}
 			}
@@ -411,8 +408,7 @@ function timeperiodIsValidNowInRule($rule)
 			$toTime = date("d M Y H:i:s", strtotime($array['timeTo']));
 			$timeNow = date("d M Y H:i:s",$timeNow );								
 			if( $fromTime <= $timeNow && $timeNow <= $toTime )
-			{			
-echo'is valid';			
+			{				
 				return true;
 			}
 		}
