@@ -80,18 +80,26 @@ $app->get('/turnOn/:cId/:tId', function($cId,$tId) {
 		echo json_encode(array('status' => 'ERROR', 'error' => 'User does not have the rights to turn on this device'));
 		return;
 	}
+
 	$row = $db->executeSQL("SELECT status,cost FROM controller WHERE controller.CSerieNo='$cId' LIMIT 1")->fetch_assoc();
 	$cost = $row['cost']; //cost is points per minute
 
-	$row2 = $db->executeSQL("SELECT points,active FROM profile,tag WHERE tag.TSerieNo='$tId' AND tag.profileId=profile.PId LIMIT 1")->fetch_assoc();
+	$row2 = $db->executeSQL("SELECT profileId, points,active FROM profile,tag WHERE tag.TSerieNo='$tId' AND tag.profileId=profile.PId LIMIT 1")->fetch_assoc();
 	if ($row2['active'] == 0) //this is unnessarry it is checked in db_rules_user_can_turn_device_on
 	{
 		return;
 	}
 	$points = $row2['points'];
+	if(db_rules_user_has_unlimited_points($row2$['profileId'])){
 	$timeRemaining = $cost > 0 ? $points/$cost : 60; //time remaining in minutes, check for cost > 0 so that we don't devide by zero
+	}
+	else
+	{
+	$timeRemaining = 60;
+	}
 	$status = '';
 	$error = '';
+		echo'i get here';
 	switch ($row['status']) {
 		case 'RED': //device is currently off and is able to be turned on
 			if (floor($timeRemaining) > 0)
