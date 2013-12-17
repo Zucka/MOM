@@ -25,12 +25,13 @@ $app->get('/status/:cId', function($cId) {
     $cost = $row['cost'];
 
     //get data for later
-    $result = $db->executeSQL("SELECT points,UNIX_TIMESTAMP(controller_used_by_tag.starttime) as starttime,UNIX_TIMESTAMP(now()) as now,profile.PId as PId FROM profile,tag,controller_used_by_tag WHERE controller_used_by_tag.CSerieNo='$cId' AND controller_used_by_tag.endtime IS NULL AND controller_used_by_tag.TSerieNo=tag.TSerieNo AND tag.profileId=profile.PId LIMIT 1");
+    $result = $db->executeSQL("SELECT points,UNIX_TIMESTAMP(controller_used_by_tag.starttime) as starttime,UNIX_TIMESTAMP(now()) as now,profile.PId as PId, tag.TSerieNO as tag FROM profile,tag,controller_used_by_tag WHERE controller_used_by_tag.CSerieNo='$cId' AND controller_used_by_tag.endtime IS NULL AND controller_used_by_tag.TSerieNo=tag.TSerieNo AND tag.profileId=profile.PId LIMIT 1");
     
     if ($result->num_rows > 0) //only do certain things if the controller is active
     {
     	$row2 = $result->fetch_assoc();
-		echo $row2['now'];
+		 $timeNow = $row2['now'];
+		 
 	    //check rules if user has unlimited points
 	    if (db_rules_user_has_unlimited_points($row2['PId']))
 	    {
@@ -38,37 +39,40 @@ $app->get('/status/:cId', function($cId) {
 	    }
 	    else
 	    {
-	    	//calculate timeRemaining and return it
-	    	if ($cost > 0)
-	    	{
-			    $points = $row2['points'];
-			    $timeNow = $row2['now'];
-			    $startTime = $row2['starttime'];
-			    $timeElapsed = floor(($timeNow-$startTime)/60);
-			    $pointsRemaining = $points-($timeElapsed*$cost);
-			    $data['timeRemaining'] = strval($pointsRemaining/$cost);
+				//Check rules if controller should shut off
+			$hasStillPermission=db_rules_user_can_turn_device_on($cId,$row2['tag']);
+			if($hasStillPermission == true)
+			{			
+				$RuleTimeLeft=null;
+				$PointTimeLeft= null;
+				$turnOff = db_rules_device_should_turn_off($cId,$row2['PId']);
+				if ($turnOff != false)
+				{
+					$RuleTimeLeft =  floor((strtotime($turnOff)-$timeNow)/60);
+				}
+					    	//calculate timeRemaining and return it
+				if ($cost > 0)
+				{
+					$points = $row2['points'];
+					$startTime = $row2['starttime'];
+					$timeElapsed = floor(($timeNow-$startTime)/60);
+					$pointsRemaining = $points-($timeElapsed*$cost);
+					$PointTimeLeft = strval($pointsRemaining/$cost);
+				}
+				else //cost is 0 so we give static 60 minutes
+				{
+					$PointTimeLeft = 60;
+				}
+				$RuleTimeLeft<=$PointTimeLeft ? $data['timeRemaining']=$RuleTimeLeft :$data['timeRemaining']=$PointTimeLeft ;
+				
+				
 			}
-			else //cost is 0 so we give static 60 minutes
+			else
 			{
-				$data['timeRemaining'] = 60;
+				$data['timeRemaining'] = 0;
 			}
 	    }
-	    //Check rules if controller should shut off
-		$hasStillPermission=db_rules_user_can_turn_device_on($cId,$row2['PId']);
-
-		if($hasStillPermission == true)
-		{
-
-			$turnOff = db_rules_device_should_turn_off($cId,$row2['PId']);
-			if ($turnOff != false)
-			{
-				$data['timeRemaining'] = floor((strtotime($row2['now'])-strtotime($turnOff))/60);
-			}
-		}
-		else
-		{
-			$data['timeRemaining'] = 0;
-		}
+	    
 	}
     echo json_encode($data);
 });
