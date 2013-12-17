@@ -90,7 +90,7 @@ $app->get('/turnOn/:cId/:tId', function($cId,$tId) {
 		return;
 	}
 	$points = $row2['points'];
-	if(db_rules_user_has_unlimited_points($row2$['profileId'])){
+	if(db_rules_user_has_unlimited_points($row2['profileId'])){
 	$timeRemaining = $cost > 0 ? $points/$cost : 60; //time remaining in minutes, check for cost > 0 so that we don't devide by zero
 	}
 	else
