@@ -30,6 +30,7 @@ $app->get('/status/:cId', function($cId) {
     if ($result->num_rows > 0) //only do certain things if the controller is active
     {
     	$row2 = $result->fetch_assoc();
+		echo $row2['now'];
 	    //check rules if user has unlimited points
 	    if (db_rules_user_has_unlimited_points($row2['PId']))
 	    {
@@ -54,8 +55,10 @@ $app->get('/status/:cId', function($cId) {
 	    }
 	    //Check rules if controller should shut off
 		$hasStillPermission=db_rules_user_can_turn_device_on($cId,$row2['PId']);
-		if($hasStillPermission)
+
+		if($hasStillPermission == true)
 		{
+
 			$turnOff = db_rules_device_should_turn_off($cId,$row2['PId']);
 			if ($turnOff != false)
 			{
