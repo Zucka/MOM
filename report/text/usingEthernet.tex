@@ -2,7 +2,7 @@
 \label{sec:ethernetshield}
 %\fixme{Mangler kort kommentar om hvorfor Ethernat er brugt istedet for en Wifi connection} Er håndteret tidligere, i design afsnittet.
 The Ethernet shield is the primary component in accessing the API as it allows for the Arduino to access the internet as a client.
-We use the Ethernet shield along with a JSON parser in order to make HTML requests on the web site that contains the system API and decode its responce.
+We use the Ethernet shield along with a JSON parser in order to make HTML requests on the web site that contains the system API and decode its response.
 
 The Ethernet Shield comes with a MAC address printed on the side which is used to automatically obtain an IP Address.
 This along with the target server is established as global variables as seen in \autoref{EthStart} along with the Method call in \verb|Setup()| that establishes a connection with the LAN. All supplied from the Arduino Library \verb|Ethernet.h|.
