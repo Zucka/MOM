@@ -2,7 +2,7 @@
 \label{sec:rfidsect}
 The tag reader device explained in the start of Design of the Controller, see \vref{chap:controller}, is in our current implementation an RFID Shield for the Arduino.
 The Arduino board utilizes the SM130 by sending it commands and receiving replies through Digital Pins 7 and 8.
-These pins are initialized using the library \verb|SoftwareSerial.h|.\\
+These pins are initialized using the library \verb|SoftwareSerial.h|\fixme{måske burde vi have noget refferance til dette}.\\
 \begin{lstlisting}
 SoftwareSerial rfid(7, 8); //Sets up the Digital Pins 7 and 8 '
                            //Which the RFID reader Communicates through.
@@ -14,7 +14,7 @@ rfid.begin(19200); //This Method is called in the Setup() phase
 %//rate of 19200 bps, N, 8, 1.
 %\fixme{enten skal vi forklare hvad "`baud"' og hvad 19200 bps, N, 8, 1 står for.}		
 
-These messages are a series of bytes sent one at the time in the form of Hexadecimals and in the context of an UART\fixme{What is UART? Maybe make a footnote} framed message. \newline
+These messages are a series of bytes sent one at the time in the form of Hexadecimals and in the context of an UART\footnote{UART is a communication interface used by SM130} framed message. \newline
 \begin{tabular}{|l|l|l|}
 \hline \hline
 Header: & 1 Byte & Must always be 0xFF.\\ \hline
@@ -89,6 +89,4 @@ void parse_response(char PH[], int length)
 }
 }													
 \end{lstlisting}
-
-
-\fixme{the table with byte code is moved to appendix ref is append:bytecode}
+To see the RFID output in UART when seeking for a tag go to appendix \vref{append:bytecode}.
