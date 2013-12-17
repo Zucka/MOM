@@ -117,9 +117,9 @@
 					case 'noRepeat': 	{
 						$weekdays  = setWeekdays($postData);
 						$startTime = $postData['startDate'].' '.$postData['startTime'];
-						if ($postData['endDate'] == '') {$postData['endDate'] = $postData['startDate'];}
+						if ($postData['endDate'] == '' && $postData['endTime'] != '') {$postData['endDate'] = $postData['startDate'];}
 						$endTime   = $postData['endDate']  .' '.$postData['endTime']  ;
-						if ($endTime == '') {$endTime = $startTime;}
+						if ($endTime == ' ') {$endTime = $startTime;}
 						if ($startTime == $endTime) {$conditionType = "True";}
 					}; break;
 				}
