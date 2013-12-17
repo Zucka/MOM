@@ -67,6 +67,7 @@ switch ($status) {
 	</thead>
 	<tbody>
 			<?php
+			if($choreArray !==null){
 				foreach($choreArray as $chore){
 					echo '<tr>
 							<td>'.$chore['name'].'</td>
@@ -77,7 +78,7 @@ switch ($status) {
 							<td><button type="submit" class="btn btn-success btn-xs">Give</button></td>
 							</form>
 						</tr>';
-				}
+				}}
 			?>
 	</tbody>	
 </table>

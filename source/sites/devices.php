@@ -47,6 +47,7 @@
 	</thead>
 	<tbody>
 			<?php 
+			if($controllerArray != null){
 				foreach($controllerArray as $controller){
 					echo "<tr>
 							<td>".printStatus($controller['status'])."</td>
@@ -65,7 +66,7 @@
 							echo'</td>
 							<td><a href="?page=detailsController&controller='.$controller['CSerieNo'].'"><button type="button" class="btn btn-default btn-xs">Details</button></a></td>
 						</tr>';
-				}
+				}}
 			?>
 	</tbody>	
 </table>
@@ -79,6 +80,7 @@
 	</thead>
 	<tbody>
 			<?php 			
+			if($tagArray !==null){
 				foreach($tagArray as $tag){ //Add a link to profilename with the use of array entry 'PId'
 					echo "<tr>
 							<td>".printActiveTag($tag['active'],$tag['TSerieNo'])."</td>
@@ -97,7 +99,7 @@
 							echo'</td>
 							<td><a href="?page=detailsTag&tag='.$tag['TSerieNo'].'"><button type="button" class="btn btn-default btn-xs">Details</button></a></td>
 						</tr>';
-				}
+				}}
 			?>
 		
 	</tbody>

@@ -26,13 +26,14 @@
 			</thead>
 			<tbody>
 				<?php 
+				if($rules != null){
 				foreach($rules as $rule){
 					echo '<tr>';
 					echo '<td>'.$rule['rulesVariable']['name'].'</td>';
 					echo '
 					<td><button class="btn btn-xs btn-warning" type="button" onclick="location.href=\'?page=permissions&delete='.$rule['rulesVariable']['RId'].'\';">Delete</button></td>
 				</tr>';
-			}
+			}}
 			?>
 			</tbody>	
 		</table>

@@ -25,6 +25,7 @@
 			</thead>
 			<tbody>
 				<?php 
+				if($rules!==null){
 				foreach($rules as $rule){
 					if ($rule['conditions'][0]['name'] == 'Controller on' || $rule['conditions'][0]['name'] == 'Controller off') {
 						$accessIF[] = $rule;
@@ -51,7 +52,7 @@
 					<td>'.$rule['actions'][0]['points'].'</td>
 					<td><button class="btn btn-xs btn-warning" type="button" onclick="location.href=\'?page=rules&delete='.$rule['rulesVariable']['RId'].'\';">Delete</button></td>
 				</tr>';
-			}
+			}}
 			?>
 			</tbody>	
 		</table>
