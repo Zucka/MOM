@@ -53,11 +53,19 @@ $app->get('/status/:cId', function($cId) {
 			}
 	    }
 	    //Check rules if controller should shut off
-	    $turnOff = db_rules_device_should_turn_off($cId,$row2['PId']);
-	    if ($turnOff != false)
-	    {
-	    	$data['timeRemaining'] = floor((strtotime($row2['now'])-strtotime($turnOff))/60);
-	    }
+		$hasStillPermission=db_rules_user_can_turn_device_on($cId,$row2['PId']);
+		if($hasStillPermission)
+		{
+			$turnOff = db_rules_device_should_turn_off($cId,$row2['PId']);
+			if ($turnOff != false)
+			{
+				$data['timeRemaining'] = floor((strtotime($row2['now'])-strtotime($turnOff))/60);
+			}
+		}
+		else
+		{
+			$data['timeRemaining'] = 0;
+		}
 	}
     echo json_encode($data);
 });
