@@ -10,7 +10,7 @@ In the analysis we came to the conclusion that the following items is necessary 
 
 
 The first item is called controller in this system, the second is the tag and the last is the website on the computer. But also new components of the system is necessary. 
-As the expanding of the rule concept went on, it became apparent that some of the rules needed to be handled autocratically when the conditions held. For this a daemon can be used, and in our case it was.\\
+As the expanding of the rule concept went on, it became apparent that some of the rules needed to be handled automatically when the conditions held. For this a daemon can be used, and in our case it was.\\
 \\
 Also during the following sections we find that a web service is needed. 
 
@@ -72,13 +72,13 @@ The web service's design and implementation is explained further in chapter \vre
 
 
 \section{Daemon}
-The daemon is used to update data in the database from a rule which the user have made at some point. The daemon does not have any direct contact to a client. The daemon should handle any rule that is time determined so the condition is a Timeperiod. Then the daemon should do the appropriate action which could be add points to user or block a user.
+The daemon is used to update data in the database from a rule which the user have made at some point. The daemon does not have any direct contact to a client. The daemon should handle any rule that is time determined so the condition is a Timeperiod. Then the daemon should do the appropriate action which could be add points to user.
 
 The design and implementation of the daemon is presented in detail in chapter \vref{chap:daemon}. 
  
 \section{System Architecture}
 \label{sec:sysArchitecture}
-Now that all subsystem of the Media-Online Management have been presented the overall system architecture can be explained. MOM is using the client server architecture which is shown in the figure \ref{fig:serveroverview} \citep{OOAD}. This system has two types of clients the first is a controller and the second is a computer where the user manages the system via the web site. The controller is depended on the web service on the server and the computer is depended on the web site. On the server there is the web site, web service and daemon which all are depended on the functions component, MySQLHelper class and data component. In the function component there are several functions to work on the data in the database and this component is depended on MySQLHelper because it should establish the database connection and parse the quires on to the database. 
+Now that all subsystem of the Media-Online Management have been presented the overall system architecture can be explained. MOM is using the client server architecture which is shown in the figure \ref{fig:serveroverview} \citep{OOAD}. This system has two types of clients the first is a controller and the second is a computer where the user manages the system via the web site. The controller is depended on the web service on the server and the computer is depended on the web site. On the server there is the web site, web service and daemon which all are depended on the functions component, MySQLHelper class and data component. In the function component there are several functions to work on the data in the database and this component is depended on MySQLHelper because it should establish the database connection and parse the queries on to the database. 
 
 \begin{figure}
 	\centering
