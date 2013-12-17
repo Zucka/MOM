@@ -5,7 +5,7 @@
 #include <SoftwareSerial.h>
 
 //Setting up the Arduino
-char devID[4] = "123"; //Device ID. Limited to 3 bytes.
+char devID[4] = "222"; //Device ID. Limited to 3 bytes.
 char useID[4];  //ID of logged in User, Limited to 3.
 int timeLeft;
 unsigned long lastTime;
