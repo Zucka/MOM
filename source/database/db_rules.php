@@ -26,22 +26,10 @@ function db_rules_user_can_turn_device_on($cId,$tId)
 		if($permission!=null){
 			foreach($permission as $per)
 			{
-				/*$timeNow =strtotime( $db->executeSQL("SELECT now() as time")->fetch_assoc()['time']);
-				$timeNowFormatHMS = date("H:i:s",$timeNow );
-				$timeNowFormatDay = strtolower(date("l", $timeNow));
-				$timeTo =  date("H:i:s", strtotime( $per['timeTo'] ));
-				$timeFrom =   date("H:i:s", strtotime( $per['timeFrom'] ));
-				$week = date('W',strtotime( $per['timeFrom'] ));
-				$timeNowFormatWeekNo = date("W",$timeNow );	
-				$weekValid = true;
-				if ($array['ndWeekly'] == true) {$weekValid = ($timeNowFormatWeekNo-$week) % 2 == 0;}					
-				if ($array['rdWeekly'] == true) {$weekValid = ($timeNowFormatWeekNo-$week) % 3 == 0;}
-				if($per['controllerId'] == $cId && $weekValid && strpos($per['weekdays'], strtolower($timeNowFormatDay)) 
-						&& $timeFrom <= $timeNowFormatHMS && $timeNowFormatHMS <= $timeTo)
-				$timeNowFormatWeekNo = date("W",$timeNow );	*/
-				if($per['conditions'][0]['controllerId'] == $cId) /*&& $timeNowFormatWeekNo == $per['weekNumber'] && strpos($per['weekdays'], strtolower($timeNowFormatDay)) 
+				if(ruleHasAActControllerWithID($per, $cId)) /*&& $timeNowFormatWeekNo == $per['weekNumber'] && strpos($per['weekdays'], strtolower($timeNowFormatDay)) 
 						&& $timeFrom <= $timeNowFormatHMS && $timeNowFormatHMS <= $timeTo)*/
 				{
+				
 					$permissionGiving = true;
 					break;
 				}
@@ -318,7 +306,6 @@ function checkRulesTrueAndTimeperiod($rules, $cId)
 		}
 		
 	}
-	echo 'retuirn null';
 	return 'null';
 }
 	
