@@ -118,6 +118,7 @@
 						$weekdays  = setWeekdays($postData);
 						$startTime = $postData['startDate'].' '.$postData['startTime'];
 						$endTime   = $postData['endDate']  .' '.$postData['endTime']  ;
+						if ($endTime = '') {$endTime = $startTime;}
 						if ($startTime == $endTime) {$conditionType = "True";}
 					}; break;
 				}
