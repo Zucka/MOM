@@ -22,7 +22,7 @@ However, before the Arduino checks for any user interaction with the \verb|loop(
 The first check is named \verb|checkConnection()|, this method evaluates the native method \verb|Ethernet.Maintain()|.
 If needed, \verb|Ethernet.Maintain()| tries to renew the DHCP lease and reports back the result.\newline
 The second check is named \verb|CheckTimeStatus|. Because the servers require a frequent \verb|getStatus()| to contact the status API, this check assures that one is performed approximately every 5 minutes unless the arduino is in state 2.
-\verb|CheckTimeStatus| will be explained detail at \autoref{timecheck}.\fixme{Make Propper ref}
+%\verb|CheckTimeStatus| will be explained detail at \autoref{timecheck}.\fixme{Make Propper ref}
 
 %\fixme{lisbeth - I think this listing can be removed without losing anything}
 %\begin{lstlisting}[frame=single, label=loopy, caption=The Arduino loop.]
@@ -72,7 +72,9 @@ The second check is named \verb|CheckTimeStatus|. Because the servers require a 
 %\end{lstlisting}
 
 %As seen in \autoref{loopy} 
-There are two methods that depends on the state. \verb|stateOne()| and \verb|stateZero()|. They are extremely similar, differing only in the need to compare the tag ID in use with the one being swiped which occurs in \verb|stateOne()| which can be seen in \autoref{staty}\fixme{What does the other one do? Since they differ.}. The Code block shows a series of method calls related to the RFID functionality which is described in \autoref{rfidsect}.\newline To a point, the code finds, authenticates and reads an RFID tag. If the tag has the same ID as the one already used to log in, the Arduino will log him out. However, if it is a new tag, the old tag will be logged out, and the new tag logged in.
+%There are two methods that depends on the state \verb|stateOne()| and \verb|stateZero()|. They are extremely similar, differing only in the need to compare the tag ID in use with the one being swiped which occurs in \verb|stateOne()| which can be seen in \autoref{staty}.
+\verb|stateOne()| is a function that is run when a user is log-in and this code is shown in \autoref{staty}.
+The Code block shows a series of method calls related to the RFID functionality which is described in \autoref{rfidsect}.\newline To a point, the code finds, authenticates and reads an RFID tag. If the tag has the same ID as the one already used to log in, the Arduino will log him out. However, if it is a new tag, the old tag will be logged out, and the new tag logged in.
 \begin{lstlisting}[frame=single, label=staty, caption=The Arduino state one code.]
   seek();
   delay(10);
