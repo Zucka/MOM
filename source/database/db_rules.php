@@ -1,9 +1,6 @@
 <?php
-/*require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/sqlHelper.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/sqlHelper.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/getDataFromDBFunctions.php');
-*/
-	include_once "sqlHelper.php";
-	include_once "getDataFromDBFunctions.php";
 
 /*This assumes that one rule has at most 1 condition and 1 action*/
 function db_rules_user_can_turn_device_on($cId,$tId)
@@ -321,6 +318,7 @@ function checkRulesTrueAndTimeperiod($rules, $cId)
 		}
 		
 	}
+	echo 'retuirn null';
 	return 'null';
 }
 	
