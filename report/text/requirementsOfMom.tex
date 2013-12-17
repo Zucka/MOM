@@ -9,7 +9,10 @@ In the analysis we came to the conclusion that the following items is necessary 
 \end{itemize} 
 
 
-The first item is called controller in this system, the second is the tag and the last is the website on the computer. But also new components of the system is necessary. As explained in the previous section a daemon is needed to check the relevant rules and perform the appropriate actions if the conditions holds. Also during the following sections we find that a web service is needed. 
+The first item is called controller in this system, the second is the tag and the last is the website on the computer. But also new components of the system is necessary. 
+As the expanding of the rule concept went on, it became apparent that some of the rules needed to be handled autocratically when the conditions held. For this a daemon can be used, and in our case it was.\\
+\\
+Also during the following sections we find that a web service is needed. 
 
 In the following sections the specification of the website, controller and tag, web service and daemon will be explained, before the design and implementation will be presented for each of them in the following chapters.  
 
@@ -18,7 +21,7 @@ In the following sections the specification of the website, controller and tag, 
 A Media-Online Management (MOM) owner needs a way to manage the system and for this a website will be made. There are several requirements for this website:
 
 \begin{itemize}
-	\item Register a new MOM together with a user profile which is a manager of this system
+	\item Register a new MOM together with a user profile which is a manager of this system\fixme{Not for the user}
 	\item Make it possible to add, edit and delete user profiles in an existing MOM 
 	\item Make it possible to add, edit and delete Controllers from an existing MOM
 	\item There should be a way to add, edit and delete Tags to the system. Also a tag should be connected to a user profile
@@ -27,7 +30,7 @@ A Media-Online Management (MOM) owner needs a way to manage the system and for t
 	\item When a chore is done in the real world by a child profile then by connecting this profile to a chore, points should be added to his profile
 \end{itemize}
 
-There are also some requirements that is nice for the parents to use, but they are not essential for MOM system:
+There are also some requirements that is nice for the parents to use, but they are not essential for the MOM system:
 
 \begin{itemize}
 	\item present the media consumption data as graphs or logs such that the parents easy can get an overview of their children's media consumption 
@@ -40,7 +43,7 @@ In chapter \vref{chap:website} the design and implementation of the website will
 \section{Tag and Controller}
 The tag used in this system is using Radio-frequency Identification (RFID). The tag need to be uniquely identified in MOM and it must uniquely identify its user. The tag is used in combination with the controller.
 
-The controller is an Arduino which is connected to a tag reader. Like the tag it need to be uniquely identified in MOM. The controller must be able to do the following.
+The controller is an Arduino which is connected to an RFID reader. Like the tag it need to be uniquely identified in MOM. The controller must be able to do the following.
 
 \begin{itemize}
 	\item Read the data from the tag
@@ -62,7 +65,7 @@ The API is used to parse the relevant data to the controller. Its requirements a
 	\item Receive and send messages to the controller
 	\item From a tag and controller it should be able to determine whether a user may use the media which is connected to the controller
 	\item It must be able to subtract points from a user after he has been using a media
-	\item It should able to calculate when a controller should be turned off because of a rule, permission or point.
+	\item It should be able to calculate when a controller should be turned off because of a rule, permission or point.
 \end{itemize}
 
 The web service's design and implementation is explained further in chapter \vref{chap:api}.

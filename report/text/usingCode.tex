@@ -1,77 +1,78 @@
 \subsection{Programming Basics for Arduino}
 
-An Arduino code file is referred to as a Sketch. At is very core the Arduino sketch has two components, \verb|setup()| and \verb|loop()|, which are filled by the programmer to apply functionality.
+An Arduino code file is referred to as a Sketch. At its very core the Arduino sketch has two components, \verb|setup()| and \verb|loop()|, which are filled by the programmer to apply functionality.
 The \verb|setup()| method is called on start up only to initialize the Single-board micro-controller, while the \verb|loop()| method runs repeatedly, making the Arduino perform its designated task.
 
 \subsubsection*{Implementation of Setup() And Loop()}
 In our \verb|setup()| we initialize The Serial Communication, some global variables, connect the Ethernet shield to the internet along with configuring 3 pins needed for RFID and LED communication.\newline
-The Arduino has 3 states which is used to dictate what happens in \verb|loop()|. These states are:
+We have 3 states in the Arduino which is used to dictate what happens in \verb|loop()|. These states are:
 \begin{itemize}
 	\item State 0: ``No User Logged in''. The arduino is looking for a user to log in.
 	\item State 1: ``User Logged in''. The Arduino is waiting for a user to log out.
 	\item State 2: ``Connection Error trying to \verb|turnOff()|''. A temporary solution to avoid the complication of a user trying to log into a device before the previous had been logged out properly.
 \end{itemize}
-Depending on what state the Arduino, there are 3 important method calls that is either invoked by the user or called automatically as the \verb|loop()| runs, these are:
+Depending on what state the Arduino is in, there are 3 important method calls that is either invoked by the user or called automatically as the \verb|loop()| runs, these are:
 \begin{itemize}
 	\item \verb|getStatus()| retrieves the server's view of the device on whether its supposed to be in use or off, it updates the users remaining time if its the prior and removes access by changing from state 1 to 0 when it is the latter.
 	\item \verb|turnOn()| checks if the user is allowed to turn on the device. If he is it turns the device from state 0 to state 1. However, if he is not or the Arduino could not connect to the server, it removes the user trying to log in and remains in state 0.
-	\item \verb|turnOff()| turns off the device by first informing the server of this and then actively turns off the device by removing the user ID, turning off the LED and changing from state 1 to 0. \verb|turnOff()|, unlike the other two, does not receive feedback from the server. However, if there is an issue connecting to the server to log off, the Arduino will change to state 2, repeatedly trying to log off until it successfully gets a connection.
-	\item The way all 3 methods connect to the server and parse the response is similar and will be described in \autoref{ethernetshield}.
+	\item \verb|turnOff()| turns off the device by first informing the server of this and then actively turns off the device by removing the user ID, turning off the media and changing from state 1 to 0. \verb|turnOff()|, unlike the other two, does not receive feedback from the server. However, if there is an issue connecting to the server to log off, the Arduino will change to state 2, repeatedly trying to log off until it successfully gets a connection.
+	\item The way all 3 methods connect to the server and parse the response is similar and will be described in \autoref{sec:ethernetshield}.
 \end{itemize}
 However, before the Arduino checks for any user interaction with the \verb|loop()|, it performs two checks.
 The first check is named \verb|checkConnection()|, this method evaluates the native method \verb|Ethernet.Maintain()|.
 If needed, \verb|Ethernet.Maintain()| tries to renew the DHCP lease and reports back the result.\newline
 The second check is named \verb|CheckTimeStatus|. Because the servers require a frequent \verb|getStatus()| to contact the status API, this check assures that one is performed approximately every 5 minutes unless the arduino is in state 2.
-\verb|CheckTimeStatus| will be explained detail at \autoref{timecheck}.
+\verb|CheckTimeStatus| will be explained detail at \autoref{timecheck}.\fixme{Make Propper ref}
 
-\fixme{lisbeth - I think this listing can be removed without losing anything}
-\begin{lstlisting}[frame=single, label=loopy, caption=The Arduino loop.]
-void loop()
-{  
-  checkConnection();
-  delay(10);
-  if(checkTimeStatus())
-  {
-    switch(state)
-    {
-      case 0: 
-              getStatus();
-              break;      
-      case 1: 
-              getStatus();
-              break;
-      case 2: 
-              break;           
-    }
-  }
-  switch (state)
-  {
-    case 0: Serial.println(F("State 0"));
-            stateZero();
-            break;         
-    case 1: Serial.println(F("State 1"));
-            if(checkNoTimeLeft())
-            {
-              turnOff();
-              break;
-            }
-            else
-            {
-              stateOne();
-              break;
-            }
-    case 2: Serial.println(F("State 2"));
-            turnOff();
-            if(state == 0)
-            {
-              getStatus();
-            }
-            break;             
-  }
-}
-\end{lstlisting}
+%\fixme{lisbeth - I think this listing can be removed without losing anything}
+%\begin{lstlisting}[frame=single, label=loopy, caption=The Arduino loop.]
+%void loop()
+%{  
+%  checkConnection();
+%  delay(10);
+%  if(checkTimeStatus())
+%  {
+%    switch(state)
+%    {
+%      case 0: 
+%              getStatus();
+%              break;      
+%      case 1: 
+%              getStatus();
+%              break;
+%      case 2: 
+%              break;           
+%    }
+%  }
+%  switch (state)
+%  {
+%    case 0: Serial.println(F("State 0"));
+%            stateZero();
+%            break;         
+%    case 1: Serial.println(F("State 1"));
+%            if(checkNoTimeLeft())
+%            {
+%              turnOff();
+%              break;
+%            }
+%            else
+%            {
+%              stateOne();
+%              break;
+%            }
+%    case 2: Serial.println(F("State 2"));
+%            turnOff();
+%            if(state == 0)
+%            {
+%              getStatus();
+%            }
+%            break;             
+%  }
+%}
+%\end{lstlisting}
 
-As seen in \autoref{loopy} there are two methods that depends on the state. \verb|stateOne()| and \verb|stateZero()|. They are extremely similar, differing only in the need to compare the tag ID in use with the one being swiped which occurs in \verb|stateOne()| which can be seen in \autoref{staty}. The Code block shows a series of method calls related to the RFID functionality which is described in \autoref{rfidsect}.\newline To a point, the code finds, authenticates and reads an RFID tag. If the tag has the same ID as the one already used to log in, the Arduino will log him out. However, if it is a new tag, the old tag will be logged out, and the new tag logged in.
+%As seen in \autoref{loopy} 
+There are two methods that depends on the state. \verb|stateOne()| and \verb|stateZero()|. They are extremely similar, differing only in the need to compare the tag ID in use with the one being swiped which occurs in \verb|stateOne()| which can be seen in \autoref{staty}\fixme{What does the other one do? Since they differ.}. The Code block shows a series of method calls related to the RFID functionality which is described in \autoref{rfidsect}.\newline To a point, the code finds, authenticates and reads an RFID tag. If the tag has the same ID as the one already used to log in, the Arduino will log him out. However, if it is a new tag, the old tag will be logged out, and the new tag logged in.
 \begin{lstlisting}[frame=single, label=staty, caption=The Arduino state one code.]
   seek();
   delay(10);

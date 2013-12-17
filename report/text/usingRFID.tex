@@ -1,6 +1,6 @@
 \subsection{Using RFID With The Arduino}
 \label{sec:rfidsect}
-\fixme{Mangler lidt mere start som der var i Using the ethernet shield.}
+The tag reader device explained in the start of Design of the Controller, see \vref{chap:controller}, is in our current implementation an RFID Shield for the Arduino.
 The Arduino board utilizes the SM130 by sending it commands and receiving replies through Digital Pins 7 and 8.
 These pins are initialized using the library \verb|SoftwareSerial.h|.\\
 \begin{lstlisting}
@@ -9,13 +9,12 @@ SoftwareSerial rfid(7, 8); //Sets up the Digital Pins 7 and 8 '
 													
 rfid.begin(19200); //This Method is called in the Setup() phase 
                    //of the Arduino Startup.
-									 //It starts the Communication on the standard baud
-									 //rate of 19200 bps, N, 8, 1.
-											
+									 //It starts the Communication on the standard baud rate
 \end{lstlisting}
-\fixme{enten skal vi forklare hvad "`baud"' og hvad 19200 bps, N, 8, 1 står for.}		
+%//rate of 19200 bps, N, 8, 1.
+%\fixme{enten skal vi forklare hvad "`baud"' og hvad 19200 bps, N, 8, 1 står for.}		
 
-These messages are a series of bytes sent one at the time in the form of Hexadecimals and in the context of an UART framed message. \newline
+These messages are a series of bytes sent one at the time in the form of Hexadecimals and in the context of an UART\fixme{What is UART? Maybe make a footnote} framed message. \newline
 \begin{tabular}{|l|l|l|}
 \hline \hline
 Header: & 1 Byte & Must always be 0xFF.\\ \hline

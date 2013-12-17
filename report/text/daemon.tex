@@ -2,7 +2,7 @@
 \label{chap:daemon}
 This chapter will explain the design and implementation of the daemon of this project. A daemon is a computer program that runs in the background continuously without any input from a user.
 \section{Design}
-The daemon has a one main job, to activate rules that require action at a specific or recurring time. Right now there is only one such action, \texttt{Add points}, which when activated has to add points to a given users profile. This cannot be done using a normal website because of the time requirement that the points have to be added at the right time. Further things that the daemon should handle could be such things as \texttt{Activate tag} and \texttt{Block tag} if these were added as actions to the rule system. \autoref{fig:daemonflowchart} shows how the flow of the daemon should work. It should check rules every minute if they should activate, and activate those who should, doing the action specified.
+The daemon has one main job, to activate rules that require action at a specific or recurring time. Right now there is only one such action, \texttt{Add points}, which when activated has to add points to a given users profile. This cannot be done using a normal website because of the time requirement that the points have to be added at the right time. Further things that the daemon should handle could be such things as \texttt{Activate tag} and \texttt{Block tag} if these were added as actions to the rule system. \autoref{fig:daemonflowchart} shows how the flow of the daemon should work. It should check rules every minute if they should activate, and activate those who should, doing the action specified.
 
 \begin{figure}[!h]
 	\centering

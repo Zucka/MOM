@@ -1,7 +1,7 @@
 \chapter{General Design Concepts}
 \label{chapter:concepts}
 %Go into detail about rules, permission, chores
-In the Media-Online Management there are a few concepts that will be used through out the report. These are chore, permission and rules. The meaning of each will be explain in following sections.
+In the Media-Online Management there are a few concepts that will be used through out the report. These are chore, permission and rules. The meaning of each will be explain in the following sections.
 
 \section{Chore}
 A chore in MOM is a representation of a house chore that is to be done regularly. We have included chore into this system to encourage children to help with the house chores which gives more time for media as a reward. Therefore each chore needs a number of points which will be given when the child has done the house chore. 
@@ -31,7 +31,7 @@ A rule should be connected to one or more user profiles since the rules otherwis
 To see a quick overview of the different conditions and their name:
 
 \begin{description}
-	\item[Timeperiod] the action can be done in this time period. 
+	\item[Timeperiod] the action can be done in this time period. \fixme{Does this still exist?}
 	\item[Controller on] the action can be done if a specific controller is turn on. 
 	\item[Controller off] the action can be done if a specific controller is turn off. 
 	\item[True] The action can always be taken. This is actually kind of a time period but there is no time bounds.
@@ -51,13 +51,13 @@ An overview of the actions and their name is listed below:
 	\item[Cannot access controller] it will block the user from using a specific media. 
 \end{description}
 
-Two designs have been made over rule. The first design is explained in the appendix \vref{appendixFirstRuleDesign}. The final design is of the rule is explain later in this section. The main difference is that in the first design is an extra type of condition timestamp. But late into the implementation of MOM we found that it would not be needed and then we have made this design.   
-
-The rule's structure is presented in a grammar in listing	\ref{grammar} expressed in Extended Backus-Naur Form(EBNF) \citep{CoPL}.
-In a nonterminal is en-captured in $<>$ and a terminal is just a word or en-captured in "". 
+Two designs have been made over rule. The first design is explained in the appendix \vref{appendixFirstRuleDesign}. The final design is of the rule is explained later in this section. The main difference is that in the first design is an extra type of condition timestamp. But late into the implementation of MOM we found that it would not be needed and therefor reworked the design, into what follows.\\
+\\
+The rule's structure is presented in a grammar in listing	\ref{grammar}\fixme{wrong refference?} expressed in Extended Backus-Naur Form(EBNF) \citep{CoPL}.
+A nonterminal is en-captured in $<>$ and a terminal is just a word or en-captured in "". 
 Also the grouping is used represented in $()$, the replica symbol is $*$, comments is $(**)$ and alternative is $|$. 
 
-A rule consist of a name and one of five action and condition sets which determine which actions and conditions can be combined. A rule can have several actions and conditions but only from the same set, see line 1-7. The action set is presented from 9-23 where all has a specific name, some have a specific Controller represented as a number and some has points which is a number. The condition set likewise represented from 9-23 and the condition types are presented from 25-30. There are Three types but they each have a specific name. One type has a Controller, another only the name 'True' and the last has a timeperiod. The timeperiod has with two timestamps and if it is repeatable it has a string representation of the weekdays and a representation of then it is repeatable. 
+A rule consist of a name and one of five action and condition sets which determine which actions and conditions can be combined. A rule can have several actions and conditions but only from the same set, see line 1-7. The action set is presented from 9-23 where all has a specific name, some have a specific Controller represented as a number and some has points which is a number. The condition set likewise represented from 9-23 and the condition types are presented from 25-30. There are three types but they each have a specific name. One type has a Controller, another only the name 'True' and the last has a timeperiod. The timeperiod has two timestamps and if it is repeatable it has a string representation of the weekdays and a representation of how it is repeatable. 
 
 \begin{lstlisting}[label=grammar, caption=Grammar of a rule in EBNF]
 <Rule>:= <name> (
@@ -100,7 +100,7 @@ A rule consist of a name and one of five action and condition sets which determi
 
 \subsection{Permission and Rules Precedence}
 It should be possible to override permissions and rules with another rule, but then some priority rules  need to be established. 
-For the overriding of the two to be relevant they need to overlap in time which mean that the condition should use Timeperiod or True. Also if it is a rule then it should have an action with the name 'Cannot access controller', 'Access controller', 'Cannot access any controller' or 'Access any controller' to be relevant. So from the grammar \ref{grammar} it is the rule sets $<name> <ActionsetSet4><ConditionSet4>$  and $<name> <ActionsetSet5><ConditionSet5>$ that need the priority.
+For the overriding of the two to be relevant they need to overlap in time which mean that the condition should use Timeperiod or True. Also if it is a rule then it should have an action with the name 'Cannot access controller', 'Access controller', 'Cannot access any controller' or 'Access any controller' to be relevant. So from the grammar \ref{grammar} \fixme{Again, is this the right reference?} it is the rule sets $<name> <ActionsetSet4><ConditionSet4>$  and $<name> <ActionsetSet5><ConditionSet5>$ that need the priority.
 
 We came to the conclusion that rules always have precedence over permissions. But if the conflict is among two rules it is a more complex set of precedence rules. First to determine the precedence we look at the action's name. See figure \ref{fig:precendence} where the precedence graph is shown. Notice that the precedence for 'Cannot access controller' and 'Access controller' can be either way depending on the condition. Otherwise both of them has priority over 'Access any controller' which also has priority over 'Cannot access any controller'. 
   
@@ -118,7 +118,7 @@ When the condition determines the precedence we have different combinations:
 	\item If both is True then Access controller has the precedence.
 	\item If both is Timeperiod:
 		\begin{itemize}
-			\item If both is repeatable or non-repeatable then Access controller has the precedence
+			\item If both is repeatable or non-repeatable\fixme{First time we talk about non-repeatable} then Access controller has the precedence
 			\item If one is repeatable and the other is nonrepeatable then the rule with the nonrepeatable Timeperiod has the higher precedence.
 		\end{itemize}
 \end{itemize}
@@ -133,9 +133,7 @@ The first example could be that the profile Peter gets point for each football t
 The second example could be that Susan is grounded from the 2nd December. In the system there will be a condition with Timestamp which is 2nd December 2013 18:00
 and an action that is 'Block user' such that she cannot use any media or gain points in this period. \\
 
-If the parents should make a rule which give themselves unlimited time and access to any media. The condition would be True and the actions would be 'Unlimited time' and 'Access any controller'.\\\\
-
-This conclude the general concepts that will be used through out the remainder of the report. Next further details about the requirements of MOM is described.  
+If the parents should make a rule which give themselves unlimited time and access to any media. The condition would be True and the actions would be 'Unlimited time' and 'Access any controller'.\\\\  
 
 %
 %\section{General Design Concepts}
@@ -245,3 +243,5 @@ This means that permissions is only an abstraction making an easier understandin
 %\end{itemize}
 %
 %An example of a permission is Peter is allowed to use the TV each weekendy in the time period 17:00 to 19:00. The permission in the system would then have a time 17:00 (FromTime), a time 19:00 (ToTime), the day representation 'Saturday, Sunday', and it's repeated weekly.
+
+This conclude the general concepts that will be used through out the remainder of the report. Next further details about the requirements of MOM is described.

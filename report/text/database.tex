@@ -1,6 +1,6 @@
 \chapter{The Database}
 \label{chap:database} 
-In this chapter the database design and implementation are explained. We will presents the ER-shema with our design and explain some of the design decision. Then we will shown the database scheme created from the implementation and explain some of the implementation decisions there have been made. We will shown code samples from the function that update the simpler objects and finally there will be code from updating a rule.  
+In this chapter the database design and implementation hereof are explained. We will presents the ER-schema with our design and explain some of the design decision. Then we will shown the database scheme created from the implementation and explain some of the implementation decisions there have been made. Code samples will be shown from the function that update the simpler objects and finally there will be code from updating a rule.  
   
 \section{Design}
 \label{sec:DBdesign}
@@ -8,15 +8,15 @@ In the parent control system there are seven essential objects; control system, 
 
 \begin{description}
 	\item[Control system] is identifying the individual system and all of the other objects are connected to a control system.
-	\item[Profile] is a representation of a specific person in the control system. The person can both be a child or the parent, but this should be distinguishable.
+	\item[Profile] is a representation of a specific person in the control system. The person can either be a child or the parent, but this should be distinguishable.
 	\item[Tag] identifies the physical tag that a profile uses to activate the controllers. A tag is identified by the serial number of the physical tag.
-	\item[Controller]	is a object representation of the physical controller and like the tag it is identified by the serial number of the physical controller.
-	\item[Chore] is a representation of a house chore which can be carried out by a child (profile) which then gets point as a reward.
-	\item[Permission] is representing time restrictions on the controllers which some of the profiles need to abide by. 
-	\item[Rule] is representing other restriction or rules that cannot be expressed by the permission. A rule consist of some conditions that need to meet before some actions should be taken as explained previously in \vref{sec:rule}. 
+	\item[Controller]	is an object representation of the physical controller and like the tag it is identified by the serial number of the physical controller.
+	\item[Chore] is a representation of a house chore which can be carried out by a child (profile) which then gets points as a reward.
+	\item[Permission] is representing time restrictions on the controllers which some of the profiles need to abide by. \fixme{Does this still fit?}
+	\item[Rule] is representing other restrictions or rules that cannot be expressed by the permission. A rule consist of some conditions that need to be meet before some actions should be taken as explained previously in section \vref{sec:rule}. 
 \end{description}
 
-From the former description the database design is made. It is represented in a ER-diagram in figure \ref{fig:ERdiagram} where the cardinality ratio is expressed in Chen notation\citep{DatabaseKilde}. It should be mentioned that the design of a rule in the database is based on the first design of the rules, which can be found in appendix \vref{appendixFirstRuleDesign}. The reason for not using the final design is that it was changed fare into the implementation phase and the first database design does still support the final design of rule. 
+From the former description the database design is made. It is represented in an ER-diagram in figure \ref{fig:ERdiagram} where the cardinality ratio is expressed in Chen notation\citep{DatabaseKilde}. It should be mentioned that the design of a rule in the database is based on the first design of the rules, which can be found in appendix \vref{appendixFirstRuleDesign}. The reason for not using the final design is that it was changed fare into the implementation phase and the first database design does still support the final design of rule. 
 
 \begin{figure}
 	\centering
@@ -27,10 +27,10 @@ From the former description the database design is made. It is represented in a 
 
 In the ER-diagram it should be noticed that Permission is absent. The reason is for every permission that could be made then there is an equivalent rule. Therefore the data representation of Permission is the same as Rule. However, on the website the two should be represented differently and so the attribute \texttt{isPermission} have been added to Rule which will differentiate the two.
 
-Another observation from the diagram is the condition of a rule. The condition can be one of three representations. The first is the simplest because it is just the Condition. The second is Condition and a timestamp which is the \texttt{cond\_timestamp} in the design in \ref{fig:ERdiagram}. The last representation is Condition, a time period, and a representation of when it is valid, which in the ER-diagram is \texttt{cond\_timeperiod}. The type of condition that should be used, can be distinguished by the condition name. If the name is \texttt{Timestamp} it should be cond\_timestamp, if it is \texttt{Timeperiode} then it is cond\_timeperiod and any other name it is only the Condition. 
+Another observation from the diagram is the condition of a rule. The condition can be one of three representations. The first is the simplest because it is just the Condition. The second is Condition and a timestamp which is the \texttt{cond\_timestamp} in the design in figure \ref{fig:ERdiagram}. The last representation is Condition, a time period, and a representation of when it is valid, which in the ER-diagram is \texttt{cond\_timeperiod}. The type of condition that should be used, can be distinguished by the condition name. If the name is \texttt{Timestamp} it should be cond\_timestamp, if it is \texttt{Timeperiode} then it is cond\_timeperiod and any other name it is only the Condition. 
 
-Notice if the database design had been design from the final design then the table \texttt{cond\_timestamp} would not have been in the design.
-After the database design has been completed it was implemented into a MySQL database.  
+Notice if the database design had been designed from the final design then the table \texttt{cond\_timestamp} would not have been in the design.
+After the database design had been completed it was implemented into a MySQL database.  
 
 \section{Implementation}
 
@@ -47,7 +47,7 @@ The mapping from the ER-diagram to the relation representation in the database i
 \subsection{Mapping of Condition}
 \label{subsec:mappRule}
 %sql or diagram
-The relational modeling of Condition is more advanced because it uses generalization and as such there are a implementation choice that should be made. There are four typical method of how to deal with generalization and a solution of using each method is described below.\citep{DatabaseKilde}
+The relational modeling of Condition is more advanced because it uses generalization and as such there is a implementation choice to be made. There are four typical methods of how to deal with generalization and a solution of using each method is described below.\citep{DatabaseKilde}
 
 \begin{description}
 	\item[Using main classes,] then Condition is split up into three tables rcondition, cond\_timestamp and cond\_timeperiod where all attributes in Condition are repeated in each table. An disadvantage of using this method is in querying because it is possible to go though all three before finding the wanted data.
@@ -62,44 +62,43 @@ There have also been made an important decision about how to deal with deletion 
  
 \subsection{Deleting in the database}
 %delete cascade
-When a tuple in one of the tables control\_system, profile, tag, controller, chore, and rule should be deleted it will likely affect data from another table because of the foreign keys. We have made an intentionally decision to use \texttt{ON DELETE CASCASED} with all foreign keys, because in any case when deleting a tuple from the essential tables its history is irrelevant and should be deleted.
-
-
-As an consequence of this decision if a control system is deleted then every profile, tag, controller, chore, and rule that is connected to control system will be deleted. If a profile is deleted then this profile's tags will be deleted including all of its history, such as when the tag have been used to activate the controllers, or when the user have done a chore.
- So it is very important that when data are to be deleted then it would not be regretted later.  \\\\
+When a tuple in one of the tables control\_system, profile, tag, controller, chore, and rule should be deleted it will likely affect data from another table because of the foreign keys. We have made an intentionally decision to use \texttt{ON DELETE CASCASED} with all foreign keys, because in any case when deleting a tuple from the essential tables its history is irrelevant and should be deleted.\\
+\\
+As a consequence of this decision if a control system is deleted then every profile, tag, controller, chore, and rule that is connected to control system will be deleted. If a profile is deleted then this profile's tags will be deleted including all of its history, such as when the tag have been used to activate the controllers, or when the user have done a chore.
+ So it is very important that when data is to be deleted then it should not be regretted later.  \\\\
 
 However, for anything to be added, updated or deleted by the user the website need a connection to the database which is done through the class MySQLHelper. 
 
 %sql Helper class
 \subsection{MySQLHelper class}
-The website and API for the controllers connect to the database by using a PHP class MySQLHelper, which establish a connection and send queries to it. The class have a construct and destruct that respectively establish the connection and close the connection to the database. The queries goes also through this class in at least one of these method:
+The website and API for the controllers connect to the database by using a PHP class MySQLHelper, which establish a connection and send queries to it. The class have a construct and destruct that respectively establish the connection and close the connection to the database. The queries also go through this class in at least one of these methods:
 
 \begin{description}
-	\item[insertInto] this make a SQL string to insert into the database.
+	\item[insertInto] this makes a SQL string to insert into the database.
 	\item[update] this make a SQL string to update data in the database.	
 	\item[delete] this make a SQL string to delete data in the database.
 	\item[query] this make a SQL query string.
-	\item[executeSQL] this send the query to the database and return the result. All of the above uses this method.
+	\item[executeSQL] this sends the query to the database and returns the result. All of the above uses this method.
 \end{description}
   
 It is also possible to control the transactions through this class by disabling the auto-commit of transactions and then manually commit when it is necessary. \\\\
 
-This class is used by several functions that are connected to the website, API and Daemon in the following section we present the more interesting of them how to update rules. 
+This class is used by several functions that are connected to the website, API and Daemon. In the following section we present the more interesting of them, how to update rules. 
 
 \subsection{EditRule from the Function Library}
 \label{subsec:dbRule}
 %if someday our repport gets to long this can be cut out or reduced
-This system also have a function library which get, insert, update or delete data from the database. Among these function are e.g. \texttt{simpleInsertIntoDB} and \texttt{simpleUpdateDB} that is used to insert and update the essential tables with the exception of Rule. Insert and updating a rule is similar but the latter is the more interesting so it will be this sections focus. 
+This system also have a function library which can get, insert, update or delete data from the database. Among these functions are e.g. \texttt{simpleInsertIntoDB} and \texttt{simpleUpdateDB} that is used to insert and update the essential tables with the exception of Rule. Insert and updating a rule is similar but the latter is the more interesting so it will be this sections focus. 
 
-As stated previously in mapping of a rule in \vref{subsec:mappRule}, there would be some challenges to make the insert and update functions. This is partly due to the fact that the data of a condition  is one of two alternative: condition, condition plus timestamp  or condition plus timeperiod as was explained in \vref{sec:DBdesign}. However, in the newer design of a rule the condition plus timestamp is removed which makes it easier but the problem still exist. In update it is also a challenge that each condition and action can be removed, add or updated which all should be handled together and this will be explained further in this section. 
+As stated previously in mapping of a rule in subsection \vref{subsec:mappRule}, there would be some challenges to make the insert and update functions. This is partly due to the fact that the data of a condition  is one of two alternative: condition, condition plus timestamp  or condition plus timeperiod as was explained in section \vref{sec:DBdesign}. However, in the newer design of a rule the condition plus timestamp is removed which makes it easier, but the problem still exists. In update it is also a challenge that each condition and action can be removed, add or updated which all should be handled together and this will be explained further in this section. 
 
-The function to update a rule is called editRule and it also used some other function as described below:
+The function to update a rule is called editRule and it also uses some other function as described below:
 
 \begin{description}
-	\item[addAction] from a rule id and a object of type Action it adds an action to the rule.
-	\item[editAction] from a object of type Action it updates the attributes in the database.   
-	\item[addCondition] from a rule id and a object of type Condition adds a condition to the rule.
-	\item[editcondition] from a object of type Condition it updates the attributes in the database.   
+	\item[addAction] from a rule id and an object of type Action it adds an action to the rule.
+	\item[editAction] from an object of type Action it updates the attributes in the database.   
+	\item[addCondition] from a rule id and an object of type Condition adds a condition to the rule.
+	\item[editcondition] from an object of type Condition it updates the attributes in the database.   
 \end{description}
 
 The editRule has three inputs a Rule object, an array with Condition objects, and an array with Action objects. First the rule data will be update and then each condition and action must also be updated. 
@@ -107,13 +106,13 @@ The editRule has three inputs a Rule object, an array with Condition objects, an
 However, when updating an action and especially a condition the changes can have different characteristics as listed below. This is also in the decision diagram in figure \ref{fig:updateRule}.
 
 \begin{itemize}
-	\item a new condition or action is add.
+	\item a new condition or action is added.
 	\item a condition or action need to be deleted.
 	\item an existing condition or action is to be updated with no structural change in the database.
 	\item an existing condition or action is to be updated but with a structural change in the database.
 \end{itemize}
 
-With a structural change it is meant that the name of the condition or action has been changes and this change can influence e.g. whether cond\_timeperiod or cond\_timestamp should be used. As a result it have been decided that in this case the old condition should be deleted and the new be added anew. A structural change should not happen for an action, but the function are still able to handle it in the same way as a condition.
+With a structural change it is meant that the name of the condition or action has been changes and this change can influence e.g. whether cond\_timeperiod or cond\_timestamp should be used. As a result it have been decided that in this case the old condition should be deleted and the new be added anew. A structural change should not happen for an action, but the functions are still able to handle it in the same way as a condition.
 
 \begin{figure}
 	\centering
@@ -177,6 +176,6 @@ With a structural change it is meant that the name of the condition or action ha
 
 The database and the functions mentioned have all been made prior to when the decision of the rule's design changed. The functions which uses condition can now be further improved but this will not be done because it is not a priority since these functions still meet the requirements of the system.
 
-Up till now the rules could have several condition and action but late in the implementation of the Website we have decides to only allow one action and condition per rule to get a more user-friendly website, more about this decision can be found in section \vref{subsec:rulesWEB}. Most functions are still implemented on the first design so they can handle several conditions and actions. 
+Up till now the rules could have several conditions and actions but late in the implementation of the Website we have decided to only allow one action and condition per rule to get a more user-friendly website, more about this decision can be found in section \vref{subsec:rulesWEB}. Most functions are still implemented on the first design so they can handle several conditions and actions. 
 
-However, a few function can only work with one condition and action per rules. An example is the function that checks whether a user can use a media, called $db\_rules\_user\_can\_turn\_device\_on$. If the implementation of rules on the website is change a new version of these functions need to be made.
+However, a few functions can only work with one condition and action per rule. An example is the function that checks whether a user can use a media, called $db\_rules\_user\_can\_turn\_device\_on$. If the implementation of rules on the website is changed a new version of these functions need to be made.

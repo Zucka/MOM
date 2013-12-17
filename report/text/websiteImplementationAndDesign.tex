@@ -35,8 +35,8 @@ Chores will also have a subsite for creating chores.\\
 \\
 \textbf{Users - Rules} is where parents can get an overview of rules and create them for their system. We have taken great care to help users in creating rules, by making a step by step procedure. Starting with making the user choose what sort of action they want to achieve and thereafter choose the sort of condition they want to set, since actions only match certain conditions. This should limit some of the confusion about the rules. For more information about rules, actions and conditions see subsection \vref{sec:rule}.\\
 \\
-\textbf{Users - Permissions} is designed for an easier way to think of rules, in relation to what devices which child is allowed to use in which time slots of the days.\\
-We decided to create this permissions page, because permissions is an essential part of even the smallest of systems. This tool gives the parents an easy way to limit their child’s usage, by deciding devices can not be turned on after a certain time.\\
+\textbf{Users - Permissions} is designed for an easier way to think of rules, in relation to what devices which child is allowed to use.\\
+We decided to create this permissions page, because permissions is an essential part of even the smallest of systems, you can create a system without rules, but not without permissions.\\ %This tool gives the parents an easy way to limit their child’s usage, by deciding devices can not be turned on after a certain time.\\
 \\
 \textbf{Graf} page is intended for viewing statistics, such as how much have a controller been active, how is a users usage of media divided and so forth.\\
 \\
@@ -109,7 +109,7 @@ The most advanced feature of the web interface is the rule page, therefor it is 
 	\label{fig:createNewRule}
 \end{figure}
 
-As mentioned in the Database chapter, see \vref{chap:database}, rules underwent some changes during development of the MOM system. In the design of rule we decided that a rule could have several actions and conditions (1:many relationship), but during the development of the web page we found the that it would be too advanced for the user. Therefore it was decided that in the website a rule can have up to one condition and action (1:1 relationship).\fixme{lisbeth: dette er min version, jeg synes det er bere}\\ 
+As mentioned in the Database chapter, see \vref{chap:database}, rules underwent some changes during development of the MOM system. In the design of rule we decided that a rule could have several actions and conditions (1:many relationship), but during the development of the web page we found that it would be too advanced for the user. Therefore it was decided that in the website a rule can have only one condition and action (1:1 relationship).\\%\fixme{lisbeth: dette er min version, jeg synes det er bere}\\ 
 %As mentioned in the Database chapter, see \vref{chap:database}, rules underwent some changes during development of the MOM system. The first layout was the development teams understanding and ideas about the concept, but as the web page was created it became apparent that the first layout was too advanced, with that reasoning the rule concept went from a one:to:many concept to a one:to:one concept.\\
 But that is not the only change made. The first layout was created with names for rules that fit into a computer science way of thinking. Names such as: ''permissionNone'', ''permissionAll'', ''true'' and so forth. These names have been rethought into ''Cannot access any controller'', ''Can access any controller'' and ''Infinite''\fixme{Check om Infinite stadig er ordet.}, to fit into a pure English language.\\
 Yet another change was that rules could not be set to start or end at a given time, they would simply be active constantly after creation and follow the conditional pattern give by the creator.\\

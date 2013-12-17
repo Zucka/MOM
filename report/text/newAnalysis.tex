@@ -2,16 +2,16 @@
 Today children spend more and more time watching TV and playing video games. Research shows that there has been an increase in children's use of electronic media in later years. \citep{sundhedsstyrelsen}\\
 Research also shows that this increase in media usage have consequences for the children. It has been linked to sleep deprivation\citep{bmcPublicHealth} and lack of physical exercise\citep{bmcPublicHealth}.\\
 \\
-In this report we give a suggestion towards a solution to control this problem, by extending \fixme{expanding on} the concept of Parental Control over electronic devices.
+In this report we give a suggestion towards a solution to control this problem, by expanding on the concept of Parental Control over electronic devices.
 
-\section{Words}
+\section{Terms}
 In this section keywords are explained, in order to easier understand the report.\\
 \\
 \textbf{Smart Home} can refer to multiple forms of improvement on a home. Most commonly is: home automation, environment friendly improvements and power saving improvements. In this report we will only regard Smart Home in relation to home automation.\\
 \\
 \textbf{Parental Control} is a concept most commonly found in televisions, computers and internet-browsers. They all serve to limit the access to inappropriate content, either in the form of adult content, or advanced features that should not be touched.\\
 \\
-\textbf{Internet of Things} is the subject of this project and is a concept where our society is going towards a greater deal of automation. The concept is based on different entities being able to adjust and act on their own and with each other. An example could be your coffee machine automatic reacting to you opening the front door and pours a cop of coffee for when you enter the kitchen, but if you do not pick up the coffee, or drink it in time, the coffee machine will start to register this, see patterns and modify its behavior accordingly.\citep{internetOfThings}\\
+\textbf{Internet of Things} is the subject of this project and is a concept where our society is going towards a greater deal of automation. The concept is based on different entities being able to adjust and act on their own and with each other. An example could be your coffee machine automatically reacting to you opening the front door and pours a cop of coffee for when you enter the kitchen, but if you do not pick up the coffee, or drink it in time, the coffee machine will start to register this, see patterns and modify its behavior accordingly.\citep{internetOfThings}\\
 In this project, we focus on the ability for different entities to act with each other. \\
 \\
 \textbf{Media} is a term to cover any media, from tablet, phone, television, computer to gaming consoles.
@@ -40,20 +40,20 @@ This, coupled with the subject of this report, ''Internet of Things'' have lead 
 	\item A way to inspire children to physical activity
 \end{enumerate}
 
-After having figuring out what the key features of the system should be, we started brainstorming how to implement them.\\
+After having figured out what the key features of the system should be, we started brainstorming how to implement them.\\
 The 1st and 2nd feature is best maintained from a website with a graphical interface. This is due to the complexity of the idea and the realization that simplifying permissions and rules into something a machine would understand is a hard task and an even harder one for non-computer graduate, more information on how we implemented rules can be read in section \vref{sec:rule}.\\
 Among other solutions could have been a desktop- or phone application.\\
 \\
-For the 3rd feature has a few different solutions. One solution was to write code for a bunch of media, that then would be able to work directly with the administration web-site, but this would force us to write code for every media device from every fabricator.\\
+The 3rd feature has a few different solutions. One solution was to write code for a bunch of media, that then would be able to work directly with the administration web-site, but this would force us to write code for every media device from every fabricator.\\
 A better alternative is to create a device that can turn the power on and off for a media instead. We are aware that this solution might influence some media in a bad way, but most media today is setup to handle a sudden disappearance of electrical power.\\
 More about the chosen device can be found in chapter \vref{chap:hardware}.\\
 \\
-For the 5th feature there are different ways to identify child users. Mobile phones, fingerprints and NFC tags are only a few potential directions. What is important is that we need a way for the device from feature no.3 to uniquely identify each user, such that the rules from the 1st and 2nd feature can be upheld.\\
+For the 4th feature there are different ways to identify child users. Mobile phones, fingerprints and NFC tags are only a few potential choices. What is important is that we need a way for the device from feature no. 3 to uniquely identify each user, such that the rules from the 1st and 2nd feature can be upheld.\\
 More about the chosen identification can be found in chapter \vref{chap:hardware}.\\
 We have also taken into account that we want the system to be able to decide if a media device is to be allowed to turn on, without having to involve a parent. This means that the identification of a child will have to be sufficient information to make that decision.\\
 %we discussed if a mobile phone would be a good way to identify children, but this would encourage children to further use of electronic media, simply by giving them a mobile phone in the first place. We therefor came up with the idea to use RFID or NFC, to create small tags, which could be embedded into jewelry or key chains to identify the child.\\
 \\
-For feature no.5 we have seriously considered how to motivate children in a way that will go along with the idea of the parental control system. We have come up with the idea of implementing chores into the system. We believe that if a sort of point system is used to determine how much time a child will be able to use on electronic media per week. Then a way to obtain extra points could be to do chores. Meaning if the child has a habit of spending a lot of time using electronic media, the only way to obtain more time will be to do chores. Chores that could consist of moving the lawn or other physical exercises.\\
+For feature no. 5 we made serious considerations about how to motivate children in a way that will go along with the idea of the parental control system. We have come up with the idea of implementing chores into the system. We believe that if a sort of point system is used to determine how much time a child will be able to use on electronic media per week. Then a way to obtain extra points could be to do chores. Meaning if the child has a habit of spending a lot of time using electronic media, the only way to obtain more time will be to do chores. Chores that could consist of moving the lawn or other physical exercises.\\
 
 This idea then boils down to these 3 key aspects:
 
