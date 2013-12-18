@@ -540,13 +540,14 @@
 		if($rules != null){
 		foreach($rules as $rule)
 		{
+			if($rule['actions'] != null){
 			foreach($rule['actions'] as $action)
 			{
 				if($action['name'] == 'Set maximum of point')
 				{
 					$maxpoints = $action['points'];
 				}
-			}
+			}}
 		}}
 		if($maxpoints !=null)
 		{
