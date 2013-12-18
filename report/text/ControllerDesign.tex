@@ -48,7 +48,7 @@ If no error occours, the PCD will connect to the Wi-Fi network and add the contr
 DD indicates that there is no connection by showing a constant red light. The communication protocol can be found in the appendix \vref{appen:lights}.\newline When the connection is established then the DD is ready to read user tags.\newline
 
 However, this design will not be implemented in this project. Due to limitations of available hardware. Instead there is a wired connection to the internet and the controller need to be manually added into the database.
-
+\\
 \paragraph{Detection of connection issues and status changes.}
 The connection to the sever is tested by a routine call every five minutes from the PCD to the server. In this call the PCD will receive information on when the media should shutdown based on a rule or the user's remaining time. This insures that if any changes occurs to the remaining time or the rules which will influences when the media should shut down will still be handled.
 %This insure that there is a connection each five minutes and if any changes in rules or in the time the user may spend on the media. 
@@ -81,5 +81,3 @@ Currently the PCD stores the available amount of time the user currently logged 
 If the user tries to log out while being disconnected from the server, the PCD keeps trying to log out for five minutes, if this does not succeed it resets itself, knowing the server have handled the problem.\\
 However, the last user or a new user can still not log in before the connection is reestablished.\\
 \\
-
-Next is a deeper look into how the Arduino works and is setup in our system.
