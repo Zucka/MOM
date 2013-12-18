@@ -5,8 +5,8 @@ An Arduino code file is referred to as a Sketch. At its very core the Arduino sk
 The \verb|setup()| method is called on start up only to initialize the Single-board micro-controller, while the \verb|loop()| method runs repeatedly, making the Arduino perform its designated task.
 
 \subsubsection*{Implementation of Setup() And Loop()}
-In our \verb|setup()| we initialize The Serial Communication, some global variables, connect the Ethernet shield to the internet along with configuring 3 pins needed for RFID and LED communication. Certain global variables are already initialized, such as the Device ID and pinnumber for the LED, which are hardcoded into the system.\newline
-We have 3 states in the Arduino which is used to dictate what happens in \verb|loop()|. These states are:
+In the \verb|setup()| The Serial Communication is initialized, some global variables, connect the Ethernet shield to the internet along with configuring 3 pins needed for RFID and LED communication. Certain global variables are already initialized, such as the Device ID and pinnumber for the LED, which are hardcoded into the system.\newline
+There are three states in the Arduino which is used to dictate what happens in \verb|loop()|. These states are:
 \begin{itemize}
 	\item State 0: ``No User Logged in''. The arduino is looking for a user to log in.
 	\item State 1: ``User Logged in''. The Arduino is waiting for a user to log out.

@@ -24,7 +24,7 @@ Command: & 1 Byte & The Hexadecimal value of the command in question.\\ \hline
 Data: & n Bytes & The bytes containing the data needed for the command.\\ \hline
 Checksum: & 1 Byte & The combined value of all above hexadecimals.\\ \hline
 \end{tabular} \\
-The command messages needed we need to allow logging in with a tag are: 
+The command messages needed that is needed to allow logging in with a tag are: 
 \begin{itemize}
 	\item Seek: The Module activates `anti-collision' and `Select Tag' so that it can catch a tag when it comes in range.
 	\begin{itemize}
@@ -36,7 +36,7 @@ The command messages needed we need to allow logging in with a tag are:
 		\item Message Length: The authenticate command message is 3 bytes long as it needs 2 databytes.
 		\item Command: 0x85 is the Authenticate Command.
 		\item Data Byte 1 (Block Number): Tells the SM130 which data block on the tag is to be authenticated.
-		\item Data Byte 2 (Key Type): Informs which type of key should be used to authenticate with. The SM130 has 2 Key types to authenticate with (A and B), and 15 slots for each to store individual keys. We use the build in 0xFF which authenticates with Type A and the transport key ``FF FF FF FF FF FF''.
+		\item Data Byte 2 (Key Type): Informs which type of key should be used to authenticate with. The SM130 has 2 Key types to authenticate with (A and B), and 15 slots for each to store individual keys. The build in 0xFF is used, which authenticates with Type A and the transport key ``FF FF FF FF FF FF''.
 	\end{itemize}
 	\item Read Block: Reads a previously Authenticated block of data on the RFID Tag, The data contains the Tag ID.
 	\begin{itemize}
@@ -64,7 +64,7 @@ void read_block_RFID(void)
 
 On being given a command the SM130 will send a response from which you can tell if the command has been successfully performed or not.
 In the code this information is saved on a char array by the parse method seen in \autoref{arduinoparse}. 
-On `Seek' and `Read Block' we determine the success by reading the slot containing the length of the Message, while on the Authenticate command the Data slot is read to determine success.
+On `Seek' and `Read Block' the success is determined by reading the slot containing the length of the Message, while on the Authenticate command the Data slot is read to determine success.
 
 \begin{lstlisting} [frame=single, label=arduinoparse, language=C, caption=The method used to read the SM130's response.]
 void read_block_RFID(void)
