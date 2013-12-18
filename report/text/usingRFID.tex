@@ -67,8 +67,6 @@ In the code this information is saved on a char array by the parse method seen i
 On `Seek' and `Read Block' the success is determined by reading the slot containing the length of the Message, while on the Authenticate command the Data slot is read to determine success.
 
 \begin{lstlisting} [frame=single, label=arduinoparse, language=C, caption=The method used to read the SM130's response.]
-void read_block_RFID(void)
-{
 void parse_response(char PH[], int length)
 {
   for(int i=1;i<length;i++)
@@ -84,9 +82,6 @@ void parse_response(char PH[], int length)
       {
         PH[i]= rfid.read(); //For the Length of the expected UART message, Add bytes to the Array.
       }
-    }
-  }
-}
-}													
+}}}												
 \end{lstlisting}
 To see the RFID output in UART when seeking for a tag go to appendix \vref{append:bytecode}.
