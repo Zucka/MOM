@@ -62,7 +62,7 @@ There have also been made an important decision about how to deal with deletion 
  
 \subsection{Deleting in the database}
 %delete cascade
-When a tuple in one of the tables control\_system, profile, tag, controller, chore, and rule should be deleted it will likely affect data from another table because of the foreign keys. We have made an intentionally decision to use \texttt{ON DELETE CASCASED} with all foreign keys, because in any case when deleting a tuple from the essential tables its history is irrelevant and should be deleted.\\
+When a tuple in one of the tables control\_system, profile, tag, controller, chore, and rule should be deleted it will likely affect data from another table because of the foreign keys. An intentionally decision was made to use \texttt{ON DELETE CASCASED} with all foreign keys, because in any case when deleting a tuple from the essential tables its history is irrelevant and should be deleted.\\
 \\
 As a consequence of this decision if a control system is deleted then every profile, tag, controller, chore, and rule that is connected to control system will be deleted. If a profile is deleted then this profile's tags will be deleted including all of its history, such as when the tag have been used to activate the controllers, or when the user have done a chore.
  So it is very important that when data is to be deleted then it should not be regretted later.  \\\\
@@ -83,7 +83,7 @@ The website and API for the controllers connect to the database by using a PHP c
   
 It is also possible to control the transactions through this class by disabling the auto-commit of transactions and then manually commit when it is necessary. \\\\
 
-This class is used by several functions that are connected to the website and API. In the following section we present the more interesting of them, how to update rules. 
+This class is used by several functions that are connected to the website and API. The following section presents the more interesting of them, how to update rules. 
 
 \subsection{EditRule from the Function Library}
 \label{subsec:dbRule}
@@ -176,6 +176,6 @@ With a structural change it is meant that the name of the condition or action ha
 
 The database and the functions mentioned have all been made prior to when the decision of the rule's design changed. The functions which uses condition can now be further improved but this will not be done because it is not a priority since these functions still meet the requirements of the system.
 
-Up till now the rules could have several conditions and actions but late in the implementation of the Website we have decided to only allow one action and condition per rule to get a more user-friendly website, more about this decision can be found in section \vref{subsec:rulesWEB}. Most functions are still implemented on the first design so they can handle several conditions and actions. 
+Up till now the rules could have several conditions and actions but late in the implementation of the Website it was have decided to only allow one action and condition per rule to get a more user-friendly website, more about this decision can be found in section \vref{subsec:rulesWEB}. Most functions are still implemented on the first design so they can handle several conditions and actions. 
 
 However, a few functions can only work with one condition and action per rule. An example is the function that checks whether a user can use a media, called $db\_rules\_user\_can\_turn\_device\_on$. If the implementation of rules on the website is changed a new version of these functions need to be made.
