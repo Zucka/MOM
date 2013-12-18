@@ -1,13 +1,13 @@
 \chapter{Future Work}
-In this chapter we discuss some improvement that could be made to the Media-Online Management system.\\
+In this chapter we discuss some improvements that could be made to the Media-Online Management system.\\
 
-\textbf{Error's from the test}\\
+\textbf{Errors from the test}\\
 In section \vref{sec:resultHE} the results from the system test was explained, these need to be corrected.\\
  
 \textbf{Rules and database re-design}\\
-During the final development of the system we really wanted to redesign rules again such that e.g. a true rule can have a start date. After all these change that have been made to the rule and that are to be made then it would be a good idea to redesign a part of the database design. \\
+During the final development of the system we really wanted to redesign rules again such that e.g. a true rule can have a start date. After all these changes that have been made to the rule and that are to be made, it would be a good idea to redesign a part of the database design. \\
 
-The web site can only add one rule to one profile, but it would be an improvement to make it possible to add a rule or permission to several profiles. On the website a rule can only have one condition and action it would be nice if a web interface at least could support several conditions. Such that a rule like the following to be created: Peter may not watch television from 8:00 to 14:00 and 19:00 to 23:59. However, if this change should not happen then the functions working with rules can be simplified. \\
+The website can only add one rule to one profile, but it would be an improvement to make it possible to add a rule or permission to several profiles. On the website a rule can only have one condition and action. It would be nice if the web interface at least could support several conditions. Such that a rule like the following to be created: Peter may not watch television from 8:00 to 14:00 and 19:00 to 23:59. However, if this change is decided never to be implemented, then the functions working with rules can be simplified. \\
 
 \textbf{Chores}\\
 It would be nice if the points for doing a chore would be more automatized such that the parents should be less involved. This could be done by a special device where the child could choose a chore and scan his tag, which then register the chore has been made. However, a parent should still approve that the chore has been done by the profile such that the child do not misuse this.\\
@@ -23,7 +23,8 @@ In section \vref{subsec:senarioD} we discussed how the system should be setup. T
 Another possible improvement of the controller would be a wireless connection between the tag reader and the power controller device. Such that the user can scan his tag from the couch. This require some other hardware than what we had access to.\\
 
 \textbf{Error handling}\\
-The error handling for when connection between the controller and server is lost has not been fully design and implemented. \fixme{ --More someone--}\\
+The error handling for when connection between the controller and server is lost has not been fully implemented. A proper solution is however discussed in chapter \vref{chap:controller}.\\
+Currently the user will be logged off if the internet connection is lost. But a better solution would be to handle the loss of connection and somehow correctly bill the user, for spent time when the connection re-enters.
 
 \textbf{Calendar}\\
 Implement the calendar functionality fully. Where all the time bound rules are presented and the user should be able to make a rule in the calendar. It should be possible to show a calendar for one, some or all users. Other possible functionality could be import and export this calendar.\\
@@ -31,5 +32,8 @@ Implement the calendar functionality fully. Where all the time bound rules are p
 \textbf{Mobile application}\\
 Another improvement of MOM could be to make a mobile application.\\
 
-\textbf{The Daemon}
+\textbf{The Daemon}\\
 The daemon should detect when a controller has not contacted the service in a while and do some disciplinary actions against the user. There could also be more real time rules added which would need to be implemented in the daemon. Also other real time things such as daily/weekly reports sent via email or SMS could be implemented to give parents automatic statistics about their childs media usage. 
+
+\textbf{Media Integration}\\
+For future implementation it would be nice if normal parental control could be implemented into the MOM system, such that media could be controlled with normal media parental control through the MOM webinterface.
