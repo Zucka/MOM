@@ -1,11 +1,11 @@
 \chapter{Future Work}
-In this chapter we discuss some improvements that could be made to the Media-Online Management system.\\
+This chapter discusses some improvements that could be made to the Media-Online Management system.\\
 
 \textbf{Errors from the test}\\
 In section \vref{sec:resultHE} the results from the system test was explained, these need to be corrected.\\
  
 \textbf{Rules and database re-design}\\
-During the final development of the system we really wanted to redesign rules again such that e.g. a true rule can have a start date. After all these changes that have been made to the rule and that are to be made, it would be a good idea to redesign a part of the database design. \\
+During the final development of the system a redesign of the rules was really needed such that e.g. a true rule can have a start date. After all these changes that have been made to the rule and that are to be made, it would be a good idea to redesign a part of the database design. \\
 
 The website can only add one rule to one profile, but it would be an improvement to make it possible to add a rule or permission to several profiles. On the website a rule can only have one condition and action. It would be nice if the web interface at least could support several conditions. Such that a rule like the following to be created: Peter may not watch television from 8:00 to 14:00 and 19:00 to 23:59. However, if this change is decided never to be implemented, then the functions working with rules can be simplified. \\
 
@@ -18,9 +18,9 @@ It would be nice to implement a learning algorithm that could detect a pattern i
 The data collected from this system could also be valuable statistics for studies with the users permission of course. So a data warehouse could be made to analysis the data. This data could also be used for marketing purposes. \\
 
 \textbf{Setup of controller}\\
-In section \vref{subsec:senarioD} we discussed how the system should be setup. The controller's internet connection is currently a wired connection. To make it more user friendly the controller should have WiFi connection. Then the setup of a controller will be more difficult because it is done manually. However this should be automatized such that it would be more user friendly. It could be that the user has a USB connector which can setup the wireless internet connection and add the controller to the database. Currently the controller id is hardcode into the controller there should also be found a better solution to this. 
+In section \vref{subsec:senarioD} it was discussed how the system should be setup. The controller's internet connection is currently a wired connection. To make it more user friendly the controller should have WiFi connection. Then the setup of a controller will be more difficult because it is done manually. However this should be automatized such that it would be more user friendly. It could be that the user has a USB connector which can setup the wireless internet connection and add the controller to the database. Currently the controller id is hardcode into the controller there should also be found a better solution to this. 
 
-Another possible improvement of the controller would be a wireless connection between the tag reader and the power controller device. Such that the user can scan his tag from the couch. This require some other hardware than what we had access to.\\
+Another possible improvement of the controller would be a wireless connection between the tag reader and the power controller device. Such that the user can scan his tag from the couch. This require some other hardware than what was available.\\
 
 \textbf{Error handling}\\
 The error handling for when connection between the controller and server is lost has not been fully implemented. A proper solution is however discussed in chapter \vref{chap:controller}.\\
