@@ -4,10 +4,10 @@
 In the Media-Online Management there are a few concepts that will be used through out the report. These are chore, permission and rules. The meaning of each will be explain in the following sections.
 
 \section{Chore}
-A chore in MOM is a representation of a house chore that is to be done regularly. We have included chore into this system to encourage children to help with the house chores which gives more time for media as a reward. Therefore each chore needs a number of points which will be given when the child has done the house chore. 
-An example on a house chore could be to take out the garbage, then the chore in MOM would have a name: 'take out garbage', possible a bigger description of the chore: 'remember to sort the garbage into the correct trash cans' and when the chore is done some points is given: '10'.  
+A chore in MOM is a representation of a house chore that is to be done regularly. We have included chore into this system to encourage children to help with the house chores which gives more time for media as a reward. Therefore each chore needs a number of points which will be given when the child has done the chore. 
+An example on a house chore could be to take out the garbage, then the chore in MOM would have a name: ``take out garbage'', possible a bigger description of the chore: ``remember to sort the garbage into the correct trash cans'' and when the chore is done a number of points are given: ``10''.  
 
-One disadvantage about the chore design is that the parent needs to use the website to award the child with points for doing a chore. We would have liked to automate it further, but to limit the scope of the project this would be future work.  
+One disadvantage about the chore design is that the parent needs to use the website to award the child with points for doing a chore. It would have been better to automate it further, but to limit the scope of the project this would be future work.  
   
 %is a subtype of rules. But we like to differentiate on rules not being necessary for the usage of the system, where permissions is. Permissions is only used to tell the system the normal allowed usage of media and rules is there to overwrite these permissions in special cases, or if the user wants to customize the system.\\
 
@@ -15,7 +15,7 @@ One disadvantage about the chore design is that the parent needs to use the webs
 
 \section{Rule}
 \label{sec:rule}
-In the system a rule can be many things the following is just a few examples of rules:
+In the system a rule can be many things. The following are just a few examples of rules:
 
 \begin{itemize}
 	\item Susan has access to use the PC from 15:00 to 17:00 each day.
@@ -23,7 +23,7 @@ In the system a rule can be many things the following is just a few examples of 
 	\item Mom and Dad's profiles have unlimited time and unrestricted access to any media
 \end{itemize}
 
-The rule has been included because it gives the parents a more powerful method to control their children's use of medias. 
+The rule is included because it gives the parents a more powerful method to control their children's use of medias. 
 But there is one disadvantage with rules, it might be complicated for the user to understand how to use them. 
 This means we must take care to design the concept of rules, so that it is easy to use and understand their effects.
 
@@ -32,17 +32,17 @@ To see a quick overview of the different conditions and their name:
 
 \begin{description}
 	\item[Timeperiod] the action can be done in this time period.% \fixme{Does this still exist?} yes
-	\item[Controller on] the action can be done if a specific controller is turn on. 
-	\item[Controller off] the action can be done if a specific controller is turn off. 
-	\item[True] The action can always be taken. This is actually kind of a time period but there is no time bounds.
+	\item[Controller on] the action can be done if a specific controller is turned on. 
+	\item[Controller off] the action can be done if a specific controller is turned off. 
+	\item[True] The action can always be taken. This is actually kind of a time period that matches all of the time.
 \end{description}
 
 An overview of the actions and their name is listed below:
 
 \begin{description}
-	\item[Block user] it will block the profiles of all profiles connected to the rule. 
-	\item[Add points] it will add points to the profiles' points.
-	\item[Delete points]  it will delete points to the profiles' points.  
+	\item[Block user] it will block all of the profiles connected to the rule. 
+	\item[Add points] it will add points to the profile.
+	\item[Delete points]  it will delete points from the profile.  
 	\item[Set maximum of point] it will set a maximum number of points that a profile can have. 
 	\item[Unlimited time] it will give the profile unlimited time to be spend on any media. 
 	\item[Access any controller] it will give the profile access to any media in the system. 
@@ -54,10 +54,10 @@ An overview of the actions and their name is listed below:
 Two designs have been made over rule. The first design is explained in the appendix \vref{appendixFirstRuleDesign}. The final design is of the rule is explained later in this section. The main difference is that in the first design is an extra type of condition timestamp. But late into the implementation of MOM we found that it would not be needed and therefor reworked the design, into what follows.\\
 \\
 The rule's structure is presented in a grammar in listing	\ref{grammar2} expressed in Extended Backus-Naur Form(EBNF) \citep{CoPL}.
-A nonterminal is en-captured in $<>$ and a terminal is just a word or en-captured in "". 
+A nonterminal is en-captured in $<>$ and a terminal is just a word or en-captured in ``''. 
 Also the grouping is used represented in $()$, the replica symbol is $*$, comments is $(**)$ and alternative is $|$. 
 
-A rule consist of a name and one of five action and condition sets which determine which actions and conditions can be combined. A rule can have several actions and conditions but only from the same set, see line 1-7. The action set is presented from 9-23 where all has a specific name, some have a specific Controller represented as a number and some has points which is a number. The condition set likewise represented from 9-23 and the condition types are presented from 25-30. There are three types but they each have a specific name. One type has a Controller, another only the name 'True' and the last has a timeperiod. The timeperiod has two timestamps and if it is repeatable it has a string representation of the weekdays and a representation of how it is repeatable. 
+A rule consist of a name and one of five action and condition sets which determine which actions and conditions can be combined. A rule can have several actions and conditions but only from the same set, see line 1-7. The action set is presented from 9-23 where all has a specific name, some have a specific Controller represented as a number and some has points which is a number. The condition set likewise represented from 9-23 and the condition types are presented from 25-30. There are three types but they each have a specific name. One type has a Controller, another only the name ``True'' and the last has a timeperiod. The timeperiod has two timestamps and if it is repeatable it has a string representation of the weekdays and a representation of how it is repeatable. 
 
 \begin{lstlisting}[label=grammar2, caption=Grammar of a rule in EBNF]
 <Rule>:= <name> (
@@ -100,12 +100,12 @@ A rule consist of a name and one of five action and condition sets which determi
 \subsection{Examples of Rules}
 In this section some examples of rules for a profile will be given.
 
-The first example could be that the profile Peter gets point for each football training and the football training is Monday and Thursday from 18:00 to 19:30 each week. Then the action could be add 25 points to Peter when condition holds. The condition is from 19:30 to 19:30 where the day is 'Monday, Thursday' and it is repeated weekly. \\
+The first example could be that the profile Peter gets point for each football training and the football training is Monday and Thursday from 18:00 to 19:30 each week. Then the action could be to add 25 points to Peter when condition holds. The condition is from 19:30 to 19:30 where the day is ``Monday, Thursday'' and it is repeated weekly. \\
 
 The second example could be that Susan is grounded from the 2nd December to the 6th December both at 6 p.m.. In the system there will be a condition with a Timeperiod which is 2nd December 2013 18:00 to 6th December 18:00.
-and an action that is 'Block user' such that she cannot use any media or gain points in this period. \\
+and an action that is ``Block user'' such that she cannot use any media or gain points in this period. \\
 
-If the parents should make a rule which give themselves unlimited time and access to any media. The condition would be True and the actions would be 'Unlimited time' and 'Access any controller'.\\\\  
+If the parents should make a rule which give themselves unlimited time and access to any media. The condition would be True and the actions would be ``Unlimited time'' and ``Access any controller''.\\
 
 
 \section{Permission}
@@ -113,15 +113,15 @@ Permission in this system is whether a user have access to a given media. Permis
 
 A permission need a user and a controller. When a user then is connected to a permission it means this user has permission to use the media which is connected to this controller. An example could be that Peter has permission to use the TV. 
 
-A permission is different from a rule in two ways according to the data structure. First, a permission does not need a condition, it is always true. Secondly a permission is always of the action type ''Access Controller''.\\
+A permission is different from a rule in two ways according to the data structure. First, a permission does not need a condition, it is always true. Secondly a permission is always of the action type ``Access Controller''.\\
 This means that permissions is only an abstraction making an easier understanding for the user.
 
 
 \section{Permission and Rules Precedence}
 It should be possible to override permissions and rules with another rule, but then some priority rules  need to be established. 
-For the overriding of the two to be relevant they need to overlap in time which mean that the condition should use Timeperiod or True. Also if it is a rule then it should have an action with the name 'Cannot access controller', 'Access controller', 'Cannot access any controller' or 'Access any controller' to be relevant. So from the grammar \ref{grammar2} it is the rule sets $<name> <ActionsetSet4><ConditionSet4>$  and $<name> <ActionsetSet5><ConditionSet5>$ that need the priority.
+For the overriding of the two to be relevant they need to overlap in time which mean that the condition should use Timeperiod or True. Also if it is a rule then it should have an action with the name ``Cannot access controller'', ``Access controller'', ``Cannot access any controller'' or ``Access any controller'' to be relevant. So from the grammar \ref{grammar2} it is the rule sets $<name> <ActionsetSet4><ConditionSet4>$  and $<name> <ActionsetSet5><ConditionSet5>$ that need the priority.
 
-We came to the conclusion that rules always have precedence over permissions. But if the conflict is among two rules it is a more complex set of precedence rules. First to determine the precedence we look at the action's name. See figure \ref{fig:precendence} where the precedence graph is shown. Notice that the precedence for 'Cannot access controller' and 'Access controller' can be either way depending on the condition. Otherwise both of them has priority over 'Access any controller' which also has priority over 'Cannot access any controller'. 
+It was decided that rules should always have precedence over permissions. But if the conflict is among two rules it is a more complex set of precedence rules. First to determine the precedence we look at the action's name. See figure \ref{fig:precendence} where the precedence graph is shown. Notice that the precedence for ``Cannot access controller'' and ``Access controller'' can be either way depending on the condition. Otherwise both of them has priority over ``Access any controller'' which also has priority over ``Cannot access any controller''. 
   
 \begin{figure}
 	\centering

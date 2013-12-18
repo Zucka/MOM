@@ -1,6 +1,6 @@
 \chapter{The Database}
 \label{chap:database} 
-In this chapter the database design and implementation hereof are explained. We will presents the ER-schema with our design and explain some of the design decision. Then we will shown the database scheme created from the implementation and explain some of the implementation decisions there have been made. Code samples will be shown from the function that update the simpler objects and finally there will be code from updating a rule.  
+In this chapter the database design and implementation hereof are explained. The ER-schema design will be presented and some of the design decision will be explained. Then the database scheme created from the implementation will be shown and some of the implementation decisions that have been made will be explained. Code samples will be shown from the function that update the simpler objects and finally there will be code from updating a rule.  
   
 \section{Design}
 \label{sec:DBdesign}
@@ -8,7 +8,7 @@ In the parent control system there are seven essential objects; control system, 
 
 \begin{description}
 	\item[Control system] is identifying the individual system and all of the other objects are connected to a control system.
-	\item[Profile] is a representation of a specific person in the control system. The person can either be a child or the parent, but this should be distinguishable.
+	\item[Profile] is a representation of a specific person in the control system. The person can either be a child or a parent, but this should be distinguishable.
 	\item[Tag] identifies the physical tag that a profile uses to activate the controllers. A tag is identified by the serial number of the physical tag.
 	\item[Controller]	is an object representation of the physical controller and like the tag it is identified by the serial number of the physical controller.
 	\item[Chore] is a representation of a house chore which can be carried out by a child (profile) which then gets points as a reward.
@@ -47,13 +47,13 @@ The mapping from the ER-diagram to the relation representation in the database i
 \subsection{Mapping of Condition}
 \label{subsec:mappRule}
 %sql or diagram
-The relational modeling of Condition is more advanced because it uses generalization and as such there is a implementation choice to be made. There are four typical methods of how to deal with generalization and a solution of using each method is described below.\citep{DatabaseKilde}
+The relational modeling of \texttt{Condition} is more advanced because it uses generalization and as such there is a implementation choice to be made. There are four typical methods of how to deal with generalization and a solution of using each method is described below.\citep{DatabaseKilde}
 
 \begin{description}
-	\item[Using main classes,] then Condition is split up into three tables rcondition, cond\_timestamp and cond\_timeperiod where all attributes in Condition are repeated in each table. An disadvantage of using this method is in querying because it is possible to go though all three before finding the wanted data.
-	\item[Using partitioning,] there are three tables rcondition, cond\_timestamp and cond\_timeperiod. The common attributes are in Condition and via an id the possible additional data can be found in either cond\_timestamp or cond\_timeperiod.
-	\item[Using full redundancy,] it is much like the first, but all conditions from cond\_timestamp and cond\_timeperiod are also represented in Condition, without the additional data. As the name suggest this causes redundancy which is best to be avoided.
-	\item[Using a single relation,] such that there will be a single table with all attributes from Condition, cond\_timestamp and cond\_timeperiod in the ER-diagram. It is easy to use but it will increase the number of null values. 
+	\item[Using main classes,] then \texttt{Condition} is split up into three tables \texttt{rcondition}, \texttt{cond\_timestamp} and \texttt{cond\_timeperiod} where all attributes in \texttt{Condition} are repeated in each table. An disadvantage of using this method is in querying because it is possible to go though all three before finding the wanted data.
+	\item[Using partitioning,] there are three tables \texttt{rcondition}, \texttt{cond\_timestamp} and \texttt{cond\_timeperiod}. The common attributes are in Condition and via an id the possible additional data can be found in either \texttt{cond\_timestamp} or \texttt{cond\_timeperiod}.
+	\item[Using full redundancy,] it is much like the first, but all conditions from \\ \texttt{cond\_timestamp} and \texttt{cond\_timeperiod} are also represented in \texttt{Condition}, without the additional data. As the name suggest this causes redundancy which is best to be avoided.
+	\item[Using a single relation,] such that there will be a single table with all attributes from \texttt{Condition}, \texttt{cond\_timestamp} and \texttt{cond\_timeperiod} in the ER-diagram. It is easy to use but it will increase the number of null values. 
 \end{description}
 
 As can be see in the figure \ref{fig:databaseDiagram} the partitioning option is used in our implementation since it does not causes any redundancy or null values and it is easier to search for conditions compared to using the main classes. However, using partitioning there will be some challenges in making the functions to insert, update and get data about the rules, as will be explained in section \vref{subsec:dbRule}.\\\\
