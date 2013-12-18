@@ -49,13 +49,13 @@ Before the test is conducted some test cases should be made by the development t
 We want to primarily be validated on Visibility, Consistency, Control and Feedback which we find to be the more important for the Media online Management system.
 
 \subsection{Presenting the Results}
-When presenting the results from the test cases it will be separated in two part. First the errors and irregularities of the program is presented. Then the Heuristic errors will be presented.\\
+When presenting the results from the test cases it will be separated in two parts. First the errors and irregularities of the program is presented. Then the Heuristic errors will be presented.\\
 Both will use the ranking of severity as is listed below:
 
 \begin{itemize}
     \item Minor - Minor cosmetic or consistency issue.
     \item Moderate - system can succeeded without loss of data but it would course irritation for the user. 
-		\item Severe - system loss functionality or data.
+		\item Severe - system losses functionality or data.
     \item Critical - system failure.
 \end{itemize}
 
@@ -64,7 +64,7 @@ This ranking can then help priorities and identify the problems that should be c
 %testcases
 \section{Testcases}
 \label{sec:testcase}
-In table \ref{tab:testcase} is one of the test cases that we made for testing the entire Media-Online Management. In the test case both apart of the Website and a controller are tested. The change been done in the web site should affect the controller.\\ 
+In table \ref{tab:testcase} is one of the test cases that we made for testing the entire Media-Online Management. In the test case both a part of the Website and a controller are tested. The changes being done in the web site should affect the controller.\\ 
  All test cases can be found in appendix \vref{appen:testSuite}.
 \begin{table}[h]
 	\centering
@@ -117,8 +117,8 @@ Before presenting the results from the test cases it need to be pointed out that
 		\parbox{0.10\textwidth}{WS001} & The tag could not activate controller even though it should have access & critical & fixed \\ \hline
 		WS002 & Find out how to block a user using a true condition & moderate & unsolved\\ \hline
 		WS002 & Adding a rule to block a profile with a true condition, failed & severe & fixed\\ \hline
-		WS003 & It was not possible to create a rule to ensures that the media TV is turned on before the media Playstation is able to turn on. In the website there are a form to fill which suggest it can be done but when saving it an error occurs and it is blaming the user.  & severe & unsolved\\ \hline
-		AT001A &  After a user had log-in and out of a controller, this controller would try to log-in again not waiting for a user to swap his tag. & Critical & fixed.\\ \hline
+		WS003 & It was not possible to create a rule to ensure that the media TV is turned on before the media Playstation is able to turn on. In the website there are a form to fill which suggest it can be done, but when saving it an error occurs and it is blaming the user.  & severe & unsolved\\ \hline
+		AT001A &  After a user had logged in and out of a controller, this controller would try to log-in again not waiting for a user to swap his tag. & Critical & fixed.\\ \hline
 		AT003A & The controller seemed to freeze during the first run of this test but it did not repeat & moderate/minor & unsolved \\ \hline
 		AT003C & If a permission has granted access to a media and the parent then deletes this permission then the controller should have cut the power to the media upon next status call to the API, but this did not happen. & moderate & fixed   \\
 		\hline
