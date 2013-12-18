@@ -1,11 +1,12 @@
 \chapter{Conclusion}
-THIS IS IN PROGRESS
+The system implementation have been explained and tested, this chapter concludes on the final product of this report.
 
 First we need to take a look at the problem statement again.
 \begin{verse}
 \textit{Parents are not able to help their children administer their IT/TV consumption.\\
 This results in their children getting a lessened learning ability, a bad sleeping pattern and a higher risk of type 2 diabetes.\\
-How can hardware identification and webservices give parents the tools to help their children manage their media consumption?}
+How can hardware identification and webservices give parents the tools to help their children manage their media consumption?}\\
+To address this problem, we face the following technical challenges:
 	\begin{itemize}
 		\item How do we identify unique users in a subtle and child friendly way.
 		\item How do we enforce restrictions on media devices.
@@ -13,18 +14,32 @@ How can hardware identification and webservices give parents the tools to help t
 	\end{itemize}
 \end{verse}
 
-\section{How do we identify unique users in a subtle and child friendly way}
-A user is identified by a tag. 
+As a whole the project gives a suggestion that is ready, with some minor updates, to be tested in a real life scenario. But the product of this project is not ready to be fully implemented in daily use or commercialized yet.\\
+Before this can happen, the controller must be constructed into a state that corresponds to the specifications discussed in chapter \vref{chap:controller} and the bugs/errors found during testing must be fixed.\\
+\\
+However we can conclude on the technical challenges:
 
+\section*{How do we identify unique users in a subtle and child friendly way}
+%A user is identified by a tag. 
+As explained in chapter \vref{chap:hardware}, we wanted to use NFC tags to identify users. However we ended up implementing this prototype with RFID, a similar technology.\\
+We think that this is a concept children will be able to identify with and understand that their tag is to be used as a sort of key for the television, console or what other media connected to the controller. However this is unproven and should therefor be tested, we were not able to find any studies that show children (age 4-6) can understand and use NFC or RFID tags.\\
+But in contrast to the children having to type in a password through some obscure touch- or key-interface, we think that tags is a solid implementation.
 
-\section{How do we facilitate concepts as rules, permissions and chores without parents interaction}
-The parent interaction has been limited to only the adding, editing and deleting of rules and permission on the website. They do not have to keep count on the time the children have been using the media, since this is automatically calculated. The rules and permission is enforced by the controller. 
+\section*{How do we facilitate concepts as rules, permissions and chores without parents interaction}
+%The parent interaction has been limited to only the adding, editing and deleting of rules and permission on the website. They do not have to keep count on the time their children have been using electronic medias, since this is automatically calculated. The rules and permission is enforced by the controller. 
+As explained in the Solution part we created a website to give the parents an interface to construct rules and permissions as well as keep an overview of their children's media consumption. This takes a step forward from what technology was available before this project. With this website we both try to centralize all parental control as well as strive for making it fully automatic, meaning the parents won't have to be involved after the setup is complete.\\
+The automation comes in the form of the controller, see chapter \vref{chap:controller}, being able to contact the server and confirm through the API, see chapter \vref{chap:api}, that the user (child) has access to this media and points enough to spend time on it.\\
+The automation also comes in the form of the daemon, see chapter \vref{chap:daemon}, which in the current implementation makes sure the users of the system is rewarded their weekly amount of points.\\
+\\
+The chores, however, still require that the parents know that the child has done a chore and then manually give points to this child's profile, via the webinterface. There might be a way to improve upon this, which will be discussed in the next chapter.\\
+\\
+This means that we have made it possible for rules and permissions to be facilitated without further parent interaction, after the setup. Which means we have succeeded in 2/3 of this challenge.
+%rules and permission, website, daemon.
 
-The chores, however, require that the parents know that the child has done a chore and the manually give points to this child's profile. 
+\section*{How do we enforce restrictions on media devices}
+As explained above, we have implemented a solution that after setup results in a close to fully automatic parental control system. We have created a controller that with the help of predefined rules from the parents and an API, can restrict the usage of media devices. However during development we have not used a relay connected to the Arduino. \\
+But instead we used a single LED, the code however does not need any changes for this to be used in the full scenario of the controller (Arduino and RFID reader) controlling a real TV. It is only a matter of changing the hardware connected to the pin on the Arduino.\\
+\\
+We therefore say that this challenge have been completed.
 
-
-rules and permission, website, daemon.
-
-\section{How do we enforce restrictions on media devices}
-controller, api
-
+\section*{Concluding on Test}
