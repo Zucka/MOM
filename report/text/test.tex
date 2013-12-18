@@ -36,11 +36,11 @@ Typically the test is done by 1-3 test persons\citep{HeuristicEvaluation}. The t
 Before performing a Heuristic evaluation we need to determine what is needed before the evaluation is done and how the results should be presented\citep{HeuristicEvaluationGuide}.
 
 \subsection{Planning the Evaluation}
-When planing the evaluation the test persons need to get test persons. They need to get a small description of the user and some test cases. They should also get a list of the heuristics from which the system need to be evaluated from. This should all be made prior to the evaluation. \\
+When planing the evaluation some test persons are needed. They need to get a small description of the user and some test cases. They should also get a list of the heuristics from which the system need to be evaluated from. This should all be made prior to the evaluation. \\
 
 The evaluation of Media-online Management system is being done by test persons in the group which have been highly involved in the development of the system. This is not optimal in this test where the test persons should be an usability expert from outside the development group\citep{DIEB}.\\
 
-The test persons also need to know the user. So the test persons need a general description of the user and their technology capabilities. The user of MOM is parents and children. The children is only in contact with the controller and the parents are both using the controller and the website. The parents has a general experience with the internet, but they are not experts. However we expect them to be able to at least set up an e-mail account with Google or Hotmail. The children has few technology skills but we expect our target group to be able to turn on a normal television. \\
+The test persons also need to know the user. So the test persons need a general description of the user and their technology capabilities. The users of MOM are parents and children. The children is only in contact with the controller and the parents are both using the controller and the website. The parents has a general experience with the internet, but they are not experts. However it is expected they are able to at least set up an e-mail account with Google or Hotmail. The children has fewer technology skills but we expect our target group to be able to turn on a normal television. \\
 
 Before the test is conducted some test cases should be made by the development team. This should cover several cases in the system such that the test persons is presented to every aspect of the system. The test cases of MOM can be found in section \vref{sec:testcase}.\\ 
 
@@ -54,7 +54,7 @@ Both will use the ranking of severity as is listed below:
 \begin{itemize}
     \item Minor - Minor cosmetic or consistency issue.
     \item Moderate - system can succeeded without loss of data but it would course irritation for the user. 
-		\item Severe - system losses functionality or data.
+	\item Severe - system losses functionality or data.
     \item Critical - system failure.
 \end{itemize}
 
@@ -63,7 +63,7 @@ This ranking can then help priorities and identify the problems that should be c
 %testcases
 \section{Testcases}
 \label{sec:testcase}
-In table \ref{tab:testcase} is one of the test cases that we made for testing the entire Media-Online Management. In the test case both a part of the Website and a controller are tested. The changes being done in the web site should affect the controller.\\ 
+Shown in \autoref{tab:testcase} is one of the test cases that was made for testing the entire Media-Online Management. In the test case both a part of the Website and a controller are tested. The changes being done in the web site should affect the controller.\\ 
  All test cases can be found in appendix \vref{appen:testSuite}.
 \begin{table}[h]
 	\centering
@@ -72,7 +72,7 @@ In table \ref{tab:testcase} is one of the test cases that we made for testing th
 		\hline
 		Name: & WS001\\
 		\hline
-		Description: & \parbox{0.70\textwidth}{Setup a complete system with a managing user, a regular user, a `TV Controller' and the accompanying rights to use it.}\\
+		Description: & \parbox{0.70\textwidth}{Setup a complete system with a managing user, a regular user, a ``TV Controller'' and the accompanying rights to use it.}\\
 		\hline
 		Requirements: & \parbox{0.70\textwidth}{
 		\begin{itemize}
@@ -90,7 +90,7 @@ In table \ref{tab:testcase} is one of the test cases that we made for testing th
 			\item Log into the MOM website with lniel10 and test.
 			\item Attach the first Tag to the lniel10 profile.
 			\item Add the permissions that enables the use of all devices without expending points.
-			\item Create a profile 'Kevin' with 60 points and other appropriate person information to act as a user.
+			\item Create a profile ``Kevin'' with 60 points and other appropriate person information to act as a user.
 			\item Attach the second tag to Kevin.
 			\item Add controller TV into the system.
 			\item Add the permissions to log into the TV controller.
@@ -104,10 +104,10 @@ In table \ref{tab:testcase} is one of the test cases that we made for testing th
 
 \section{Collected Results of the Heuristic Evaluation}
 \label{sec:resultHE}
-In this section we present the errors discovered in connection with the test. The errors have group in to three categories program errors, Heuristic error and other errors and missing functionality.
+In this section we present the errors discovered in connection with the test. The errors have been grouped in to three categories program errors, Heuristic error and other errors and missing functionality.
 
 \subsection{Program Error from Testcases}
-Before presenting the results from the test cases it need to be pointed out that during the test some critical errors was discovered and fixed such that the test was able to be completed. The most critical was an error in the validation of whether a valid tag could log-in from a valid controller. Some other error with another severity have also been fixed and they were retested to confirm it. These errors is mentioned in the result and marked as fixed. 
+Before presenting the results from the test cases it needs to be pointed out that during the test some critical errors was discovered and fixed such that the test was able to be completed. The most critical was an error in the validation of whether a valid tag could log-in from a valid controller. Some other error with another severity have also been fixed and they were retested to confirm it. These errors is mentioned in the result and marked as fixed. 
 
 \begin{table}
 	\centering
@@ -135,9 +135,9 @@ A larger description of the test cases and the results can be found in Appendix 
 
 
 \subsubsection{Consistency}
-There are several consistency problem on the website which could cause confusion adn irritation for the user. The errors in it self is only a minor problem but do to the number of errors and their occurrence it is a moderate problem.   
+There are several consistency problems on the website which could cause confusion and irritation for the user. The errors in it self is only a minor problem but due to the number of errors and their occurrence it is a moderate problem.   
 
-The first example is the add button on the different page that has different coloring and placement compared to the table in which it will be shown. The problem is shown in figure \ref{fig:consistencyButton}.
+The first example is the add button on the different pages that has different coloring and placement compared to the table in which it will be shown. The problem is shown in figure \ref{fig:consistencyButton}.
 
 \begin{figure}
 	\centering
@@ -147,12 +147,12 @@ The first example is the add button on the different page that has different col
 \end{figure}
 
 
-Another example is the feedback representation from the system if the user did something wrong, a confirmation message or just a alert for the user. As is shown in figure \ref{fig:afteraddConsistency} there is inconsistencies in where and how the message is provided to the user and it is both feedback after adding something to the system. There are also inconsistencies in where the website redirect the user after adding.
+Another example is the feedback representation from the system if the user did something wrong, a confirmation message or just a alert for the user. As is shown in figure \ref{fig:afteraddConsistency} there is inconsistencies in where and how the message is provided to the user and feedback after adding something to the system. There are also inconsistencies in where the website redirect the user after adding.
 
 \begin{figure}
 	\centering
 		\includegraphics[width=0.75\textwidth]{images/afteraddConsistency.png}
-	\caption{Feedback in consistency}
+	\caption{Consistency in feedback}
 	\label{fig:afteraddConsistency}
 \end{figure}
 
@@ -169,10 +169,10 @@ The last example that will be shown is the inconsistency of how the user is guid
 \subsection{Control}
 The control is relative good on the website. The user is in control of making the permissions, rules and chores which will affect the profiles and their media consumption. Permissions is clear that it give the user permission to use a media. In chores the user can increase the point of a profile when he has done a house chore. Rules create a rule which should be applied to the user. 
 
-However, it is not clear what happen if two rules or a permission and a rule conflicts. This can be a irritation point for the user because they except that their child do not have access in a time period but they really has access. It is a severe problem since the user can experience a loss of functionality.     
+However, it is not clear what happen if two rules or a permission and a rule conflicts. This can be a irritation point for the user because they expect that their child do not have access in a time period but in actuality they have access. It is a severe problem since the user can experience a loss of functionality.     
 
 \subsubsection{Visibility and Feedback}
-Currently there is a visibility and feedback problem in what the controller is doing. When a user is trying to log-in the reader do not symbolize that the tag has been read. Also if a user have been granted access or not is currently not clearly indicated. The only indication is whether the power has been directed to the media in our case a LED. It would be an improvement to add lights, sound or a display to inform the user that is happening in the system. This is a moderate error since it does not cause any system errors, but before a user should try this system some sort of feedback is needed.
+Currently there is a visibility and feedback problem in what the controller is doing. When a user is trying to log-in the reader do not symbolize that the tag has been read. Also if a user have been granted access or not is currently not clearly indicated. The only indication is whether the power has been directed to the media in our case an LED. It would be an improvement to add lights, sound or a display to inform the user that is happening in the system. This is a moderate error since it does not cause any system errors, but before a user should try this system some sort of feedback is needed.
 
 The problem with feedback consistency was also mentioned in consistency.    
 
@@ -182,10 +182,6 @@ The Media Online Management system's website had not been completed before testi
 
 Currently the user cannot edit a chore, permission or rule. In addition the chores created cannot be deleted. This should be fixed such that it works similar to the other elements in the system. This is a moderate error which is easily fixed.
 
-Another moderate problem is then a profile is deleted and this profile had permissions or rules then these are not delete. The reason is that only delete on cascade is used to delete where it would not reach the rule table but the profile\_has\_rule. As a consequence the rule is still shown in the rule overview but it will not be used by any else in the system.\\\\
+Another moderate problem is when a profile is deleted and the profile has permissions or rules then these are not deleted. The reason is that only delete on cascade is used to delete which does not reach the profile\_has\_rule table. As a consequence the rule is still shown in the rule overview but it will not be used by anything else in the system.\\\\
 
-This concluded the testing of the Media Online Management system. Now the reflections of the system remains. 
- 
-
-   
-
+This concludes the testing of the Media Online Management system. Now the reflection of the system remains. 
