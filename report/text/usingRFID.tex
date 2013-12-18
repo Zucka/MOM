@@ -2,7 +2,7 @@
 \label{sec:rfidsect}
 The tag reader device explained in the start of Design of the Controller, see \vref{chap:controller}, is in our current implementation an RFID Shield for the Arduino.
 The Arduino board utilizes the SM130 by sending it commands and receiving replies through Digital Pins 7 and 8.
-These pins are initialized using the library \verb|SoftwareSerial.h|\fixme{måske burde vi have noget refferance til dette}.\\
+These pins are initialized using the library \verb|SoftwareSerial.h|\citep{softlib}.\\
 \begin{lstlisting}[frame=single, language=C, label=pageRFID, caption=The RFID Code Initialization.]
 SoftwareSerial rfid(7, 8); //Sets up the Digital Pins 7 and 8 '
                            //Which the RFID reader Communicates through.
