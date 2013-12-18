@@ -7,7 +7,7 @@
 		if (isset($_POST['actionName']) &&
 			isset($_POST['name']) &&
 			isset($_POST['systemUserSelect']) &&
-			isset($_POST['repeatEach'])) {
+			isset($_POST['repeatEach'])) { //PROBLEM WITH "Access Controller if"
 			// Set rule name & control system
 			$nRule = new Rules($_SESSION['CSid'], $_POST['name']);
 			// Set action 
