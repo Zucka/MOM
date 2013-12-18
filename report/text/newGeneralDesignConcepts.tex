@@ -121,7 +121,7 @@ This means that permissions is only an abstraction making an easier understandin
 It should be possible to override permissions and rules with another rule, but then some priority rules  need to be established. 
 For the overriding of the two to be relevant they need to overlap in time which mean that the condition should use Time-period or True. Also if it is a rule then it should have an action with the name ``Cannot access controller'', ``Access controller'', ``Cannot access any controller'' or ``Access any controller'' to be relevant. So from the grammar \ref{grammar2} it is the rule sets $<name> <ActionsetSet4><ConditionSet4>$  and $<name> <ActionsetSet5><ConditionSet5>$ that need the priority.
 
-It was decided that rules should always have precedence over permissions. But if the conflict is among two rules it is a more complex set of precedence rules. First to determine the precedence we look at the action's name. See figure \ref{fig:precendence} where the precedence graph is shown. Notice that the precedence for ``Cannot access controller'' and ``Access controller'' can be either way depending on the condition. Otherwise both of them has priority over ``Access any controller'' which also has priority over ``Cannot access any controller''. 
+It was decided that rules should always have precedence over permissions. But if the conflict is among two rules it is a more complex set of precedence rules. First to determine the precedence it looks at the action's name. See figure \ref{fig:precendence} where the precedence graph is shown. Notice that the precedence for ``Cannot access controller'' and ``Access controller'' can be either way depending on the condition. Otherwise both of them has priority over ``Access any controller'' which also has priority over ``Cannot access any controller''. 
   
 \begin{figure}
 	\centering
@@ -130,7 +130,7 @@ It was decided that rules should always have precedence over permissions. But if
 	\label{fig:precendence}
 \end{figure}
 
-When the condition determines the precedence we have different combinations:
+When the condition determines the precedence it has different combinations:
 
 \begin{itemize}
 	\item If one is True and the other is Time-period then the rule with the Time-period has the higher precedence
