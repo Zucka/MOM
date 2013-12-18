@@ -23,15 +23,15 @@ However we can conclude on the technical challenges:
 %A user is identified by a tag. 
 As explained in chapter \vref{chap:hardware}, we wanted to use NFC tags to identify users. However we ended up implementing this prototype with RFID, a similar technology.\\
 We think that this is a concept children will be able to identify with and understand that their tag is to be used as a sort of key for the television, console or what other media connected to the controller. However this is unproven and should therefor be tested, we were not able to find any studies that show children (age 4-6) can understand and use NFC or RFID tags.\\
-But in contrast to the children having to type in a password through some obscure touch- or key-interface, we think that tags is a solid implementation.
+But in contrast to the children having to type in a password through some obscure touch- or key-interface, we think that tags are a solid implementation.
 
 \section*{How do we facilitate concepts as rules, permissions and chores without parents interaction}
 %The parent interaction has been limited to only the adding, editing and deleting of rules and permission on the website. They do not have to keep count on the time their children have been using electronic medias, since this is automatically calculated. The rules and permission is enforced by the controller. 
-As explained in the Solution part we created a website to give the parents an interface to construct rules and permissions as well as keep an overview of their children's media consumption. This takes a step forward from what technology was available before this project. With this website we both try to centralize all parental control as well as strive for making it fully automatic, meaning the parents won't have to be involved after the setup is complete.\\
+As explained in the Solution part is a website created to give the parents an interface to construct rules and permissions as well as keep an overview of their children's media consumption. This takes a step forward from what parental control technologies have been available before this project. With this website we try to centralize all parental control as well as strive for making it fully automatic, meaning the parents will not have to be involved after the setup is complete.\\
 The automation comes in the form of the controller, see chapter \vref{chap:controller}, being able to contact the server and confirm through the API, see chapter \vref{chap:api}, that the user (child) has access to this media and points enough to spend time on it.\\
 The automation also comes in the form of the daemon, see chapter \vref{chap:daemon}, which in the current implementation makes sure the users of the system is rewarded their weekly amount of points.\\
 \\
-The chores, however, still require that the parents know that the child has done a chore and then manually give points to this child's profile, via the webinterface. There might be a way to improve upon this, which will be discussed in the next chapter.\\
+The chores, however, still require that the parents know that the child has done a chore and then manually give points to this child's profile, via the web interface. There might be a way to improve upon this, which will be discussed in the next chapter.\\
 \\
 This means that we have made it possible for rules and permissions to be facilitated without further parent interaction, after the setup. Which means we have succeeded in 2/3 of this challenge.
 %rules and permission, website, daemon.
@@ -40,6 +40,10 @@ This means that we have made it possible for rules and permissions to be facilit
 As explained above, we have implemented a solution that after setup results in a close to fully automatic parental control system. We have created a controller that with the help of predefined rules from the parents and an API, can restrict the usage of media devices. However during development we have not used a relay connected to the Arduino. \\
 But instead we used a single LED, the code however does not need any changes for this to be used in the full scenario of the controller (Arduino and RFID reader) controlling a real TV. It is only a matter of changing the hardware connected to the pin on the Arduino.\\
 \\
-We therefore say that this challenge have been completed.
+Therefore we say that this challenge have been completed.
 
 \section*{Concluding on Test}
+In the section with the test results, see section\vref{sec:resultHE}, multiple errors have been found with different severities. The more severe errors need to be handled before deployment is possible. The consistency problems on the website should also be taken care of before a user tries the system in a real life scenario. It should be done due to the gain of user friendliness compared to the workload. \\
+\\
+To summarize, the system is very close to functionally ready for real life testing. Only a few small bugs needs work before it is tested by a real user.\\
+We have shown that there is a solution to the challenges of this problem, but there is still room for improvement, which the next chapter will go over.

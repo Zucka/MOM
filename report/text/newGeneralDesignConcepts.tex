@@ -118,6 +118,7 @@ This means that permissions is only an abstraction making an easier understandin
 
 
 \section{Permission and Rules Precedence}
+\label{sec:permissionAndRulesPrecedence}
 It should be possible to override permissions and rules with another rule, but then some priority rules  need to be established. 
 For the overriding of the two to be relevant they need to overlap in time which mean that the condition should use Timeperiod or True. Also if it is a rule then it should have an action with the name ``Cannot access controller'', ``Access controller'', ``Cannot access any controller'' or ``Access any controller'' to be relevant. So from the grammar \ref{grammar2} it is the rule sets $<name> <ActionsetSet4><ConditionSet4>$  and $<name> <ActionsetSet5><ConditionSet5>$ that need the priority.
 
