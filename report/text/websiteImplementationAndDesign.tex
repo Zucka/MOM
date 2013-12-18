@@ -114,7 +114,7 @@ As mentioned in the Database chapter, see \vref{chap:database}, rules underwent 
 But that is not the only change made. The first layout was created with names for rules that fit into a computer science way of thinking. Names such as: \texttt{permissionNone}, \texttt{permissionAll}, \texttt{true} and so forth. These names have been rethought into \texttt{Cannot access any controller}, \texttt{Can access any controller} and \texttt{Unlimted points}, to fit into a pure English language.\\
 Yet another change was that rules could not be set to start or end at a given time, they would simply be active constantly after creation and follow the conditional pattern give by the creator.\\
 In the final version a rule no longer consists of an action and a condition, at least not from the users viewpoint. Instead they choose an action, see \ref{fig:createNewRule} mark 1., and give that action a time constraint, see \ref{fig:createNewRule} mark 2..\\
-This means that conditions such as \texttt{Controller is On} and \texttt{Controller is Off} is now incorporated into special action names.\fixme{Evt. få navnet på disse actions.}
+This means that conditions such as \texttt{Controller On} and \texttt{Controller Off} is now incorporated into special action names.
 This is done in order to reduce the amounts of steps in a rule and also to reduce the number of decisions for a user to take during rule creation.
 
 \subsubsection{How it works}
