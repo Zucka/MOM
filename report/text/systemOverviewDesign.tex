@@ -15,15 +15,15 @@ In order to verify that the user is actually a user on this families system this
 
 \subsection{Enforce Restrictions on Media Devices}
 %How do we enforce restrictions on media devices.
-As mentioned in the analysis, see section \ref{section:pcHowToExtend}, it is necessary to find a way to physically restrict the usage of medias. We first thought that the best solution would be to implement it directly into all media, but this would result in an endless amount of coding, since a code base would be needed to be implemented for each device it would run on.\\
-Instead we will take the restriction a bit further. Most media today run on electricity and without batteries, meaning if the power is cut to the media, it will be restricted.\\
+As mentioned in the analysis, see section \ref{section:pcHowToExtend}, it is necessary to find a way to physically restrict the usage of medias. The first thought was that the best solution would be to implement it directly into all media, but this would result in an endless amount of coding, since a code base would be needed to be implemented for each device it would run on.\\
+Instead restriction is taken a bit further. Most media today run on electricity and without batteries, meaning if the power is cut to the media, it will be restricted.\\
 The idea developed into a combination with the solution for the previous challenge and resulted into a ``controller''. It is a device equipped with a relay, an internet connection and a scanner.\\
 Using the relay to control the power to media, using the scanner to identify users and the internet connection to look up in a sub-global\footnote{Global in the scope of each families system.} register of users, which again leads us to the next and final challenge in the problem statement. Here there is already three different devices communicating, on their own, emphasizing the idea of Internet Of Things.
 
 \subsection{Facilitate Rules, Permissions and Chores}
 %How do we facilitate concepts as rules, permission and chores without parents interaction.
 Rules, permissions and chores are complicated concepts to explain which will be explained in further detail in chapter \ref{chapter:concepts}. The short version however is:\\
-\textbf{Rules} is a combination of an action and a condition. Where actions could be to allow the usage of a device, give points\footnote{Points is the currency we intend to use in the system to pay for media usage.} to a user or block a user. A condition could be a period of time or a repeating event such as every Monday in every week.\\
+\textbf{Rules} is a combination of an action and a condition. Where actions could be to allow the usage of a device, give points\footnote{Points is the currency in the system that is intended to pay for media usage.} to a user or block a user. A condition could be a period of time or a repeating event such as every Monday in every week.\\
 \textbf{Permissions} is a subtype of rules. Permissions is only used to tell the system the normal allowed usage of media and rules is there to overwrite these permissions in special cases, or if the user wants to customize the system.\\
 \textbf{Chores} is intended as an idea to get the children to do physical activities. Parents create chores and designate a set of points that can be earned by doing this chore.\\
 \\
@@ -31,7 +31,7 @@ By now there already is a lot of information in the system. There are users, rul
 This is more information than should ever be put into a simple hardcoded text sheet. Meaning the system will need a database and considering that the devices has to independently be able to fetch the information they will need a good solution which would be to store the information on a server accessible by the controller.\\
 Also considering the advanced concepts of rules, permissions and chores it is very likely that a graphical interface will be needed and since there already is the need for a server in our system it would make sense to make a web-site for the user to maintain edit or add these rules.\\
 \\
-With all these required features we still need to specify how they communicate and this should implement a structure that allows for changes later on. Simply because this is a prototype system and will most likely need improvements if it was to ever be commercialized or extended, which is easiest done if the system is build for it from the start.\\
+With all these required features there is still need for specifying how they communicate and this should implement a structure that allows for changes later on. Simply because this is a prototype system and will most likely need improvements if it was to ever be commercialized or extended, which is easiest done if the system is build for it from the start.\\
 \\
 Next follows a section that puts the finishing touches on the system design and finally gives it a name.
 
