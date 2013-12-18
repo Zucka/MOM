@@ -79,7 +79,7 @@ The Code block shows a series of method calls related to the RFID functionality 
 If a tag is found, line 5 evaluates true and the Arduino uses \verb|authenticate()| (line 7) to assure the tag has a valid datablock.
 In line 8 the result of the action is parsed and evaluated in line 10. If successfully authenticated the RFID tag is attemted read in line 12 by using \verb|read_block_RFID()|. From line 14 to 20 the result is parsed and if successfully read the tag ID can be found on \verb|rf_block_response|.\newline
 In line 23 to 32 the Arduino checks if the tag has the same ID as the one already used to log in. If that is the case the Arduino will log him out. However, if it is a new tag, the old tag will be logged out, and the new tag logged in.
-\begin{lstlisting}[frame=single, label=staty, caption=The Arduino state one code.]
+\begin{lstlisting}[frame=single, language=C, label=staty, caption=The Arduino state one code.]
   seek();
   delay(10);
   parse_response(rf_block_response, seek_length);

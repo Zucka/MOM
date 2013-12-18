@@ -1,12 +1,12 @@
-\chapter{Admin Web Interface} \fixme{mention somewhere that dashbaord, calendar and graf has static data}
+\chapter{Admin Web Interface} %\fixme{mention somewhere that dashbaord, calendar and graf has static data}
 \label{chap:website}
 This chapter goes into details about the design and implementation of the website used to administrate Media-Online Management (MOM).
 
 \section{Design}
 %Interface Design
 %What you can do from the website, and how
-As mentioned in the design overview, see subsection \vref{section:momswebsite}, we know what the website is required to do for the system.
-These requirements made the basis for deciding what pages should be created and what each page's functionality should be. During the designing of the website we aimed to fit all relevant information into each page.\\
+The requirements for the website is discussed in \autoref{section:momswebsite}.
+These requirements made the basis for deciding what pages should be created and what each page's functionality should be. During the designing of the website it was aimed to fit all relevant information into each page.\\
 All pages have been designed on the blackboards, where inconsistencies was discovered, new navigation paths and learn about how concepts such as rules should be implemented.\\
 Next is a short overview of what pages were designed and their purposes.\\
 \\
@@ -33,7 +33,7 @@ However it has not currently implemented this way of validation, but it would be
 \textbf{Users - Chores} is used to get an overview of available chores, and for easy rewarding of already created chores. When a chore is done, the parent should go to this site, and simply select a child and press a button to give them the assigned reward of the chore.\\
 Chores will also have a subsite for creating chores.\\
 \\
-\textbf{Users - Rules} is where parents can get an overview of rules and create them for their system. We have taken great care to help users in creating rules, by making a step by step procedure. Starting with making the user choose what sort of action they want to achieve and thereafter choose the sort of condition they want to set, since actions only match certain conditions. This should limit some of the confusion about the rules. For more information about rules, actions and conditions see subsection \vref{sec:rule}.\\
+\textbf{Users - Rules} is where parents can get an overview of rules and create them for their system. Great care has been taken to help users in creating rules, by making a step by step procedure. Starting with making the user choose what sort of action they want to achieve and thereafter choose the sort of condition they want to set, since actions only match certain conditions. This should limit some of the confusion about the rules. For more information about rules, actions and conditions see subsection \vref{sec:rule}.\\
 \\
 \textbf{Users - Permissions} is designed for an easier way to think of rules, in relation to what devices which child is allowed to use.\\
 We decided to create this permissions page, because permissions is an essential part of even the smallest of systems, you can create a system without rules, but not without permissions.\\ %This tool gives the parents an easy way to limit their child’s usage, by deciding devices can not be turned on after a certain time.\\
@@ -46,8 +46,8 @@ It also serves to provide a shortcut to create rules, from other calendars. For 
 Every page have been explained and in the next section the navigation is explained.
 %Navigation
 \subsection{Navigation}
-When the user has logged in, they are navigated to the dashboard. From here and every other page they can navigate to the main pages: Dashboard, Devices, Users, Permissions, Rules, Chores, Graf and Calendar, see figure \ref{fig:navigationOfWebsite}.\\
-We decided to keep our navigation as simple as possible. In the design there is 5 head menus, Dashboard, Devices, Users, Graf and Calendar. Meaning Permissions, Rules and Chores are sub-menus and these are all listed under Users.\\
+When the user has logged in, they are redirected to the dashboard. From here and on every other page they can navigate to the main pages: Dashboard, Devices, Users, Permissions, Rules, Chores, Graf and Calendar, see figure \ref{fig:navigationOfWebsite}.\\
+It was decided to keep our navigation as simple as possible. In the design there is 5 head menus, Dashboard, Devices, Users, Graf and Calendar. Meaning Permissions, Rules and Chores are sub-menus and these are all listed under Users.\\
 
 
 \begin{figure}[htbp]
@@ -58,12 +58,12 @@ We decided to keep our navigation as simple as possible. In the design there is 
 \end{figure}
 
 
-We also designed the system such that no other menu or functionality is any more than 2 clicks away, every add or detail function can be accessed directly from one of the head menus.\\
+The system was also designed such that no other menu or functionality is any more than 2 clicks away, every add or detail function can be accessed directly from one of the head menus.\\
 
 \subsection{Color Scheme and Layout Design}
 %Color Schemes
 %Bootstrap and other inspiration sources
-Our color scheme and layout design was inspired by both bootstrap and a website which utilizes bootstrap, called SB Admin\citep{sbadmin}. A standard bootstrap color scheme have been used, and added in a little blue, we wanted to keep the colors simple but no further thought was put into it.\\
+The color scheme and layout design was inspired by both bootstrap and a website which utilizes bootstrap, called SB Admin\citep{sbadmin}. A standard bootstrap color scheme have been used, with a little blue added in, because of the need to keep the colors simple but no further thought was put into it.\\
 The most of the design is based on standard tools from bootstrap. With exception of the table sorter functionality. Which is a JQuery tool that allows for sorting of tables.\\
 Bootstrap has been chosen since it gives an okay design and it is easy to implement prototypes in bootstrap.	
 
@@ -109,18 +109,18 @@ The most advanced feature of the web interface is the rule page, therefor it is 
 	\label{fig:createNewRule}
 \end{figure}
 
-As mentioned in the Database chapter, see \vref{chap:database}, rules underwent some changes during development of the MOM system. In the design of rule we decided that a rule could have several actions and conditions (1:many relationship), but during the development of the web page we found that it would be too advanced for the user. Therefore it was decided that in the website a rule can have only one condition and action (1:1 relationship).\\%\fixme{lisbeth: dette er min version, jeg synes det er bere}\\ 
+As mentioned in the Database chapter, see \vref{chap:database}, rules underwent some changes during development of the MOM system. In the design of rule it was decided that a rule could have several actions and conditions (1:many relationship), but during the development of the web page it was found that it would be too advanced for the user. Therefore it was decided that in the website a rule can have only one condition and action (1:1 relationship).\\%\fixme{lisbeth: dette er min version, jeg synes det er bere}\\ 
 %As mentioned in the Database chapter, see \vref{chap:database}, rules underwent some changes during development of the MOM system. The first layout was the development teams understanding and ideas about the concept, but as the web page was created it became apparent that the first layout was too advanced, with that reasoning the rule concept went from a one:to:many concept to a one:to:one concept.\\
-But that is not the only change made. The first layout was created with names for rules that fit into a computer science way of thinking. Names such as: ''permissionNone'', ''permissionAll'', ''true'' and so forth. These names have been rethought into ''Cannot access any controller'', ''Can access any controller'' and ''Infinite''\fixme{Check om Infinite stadig er ordet.}, to fit into a pure English language.\\
+But that is not the only change made. The first layout was created with names for rules that fit into a computer science way of thinking. Names such as: \texttt{permissionNone}, \texttt{permissionAll}, \texttt{true} and so forth. These names have been rethought into \texttt{Cannot access any controller}, \texttt{Can access any controller} and \texttt{Unlimted points}, to fit into a pure English language.\\
 Yet another change was that rules could not be set to start or end at a given time, they would simply be active constantly after creation and follow the conditional pattern give by the creator.\\
 In the final version a rule no longer consists of an action and a condition, at least not from the users viewpoint. Instead they choose an action, see \ref{fig:createNewRule} mark 1., and give that action a time constraint, see \ref{fig:createNewRule} mark 2..\\
-This means that conditions such as ''Controller is On'' and ''Controller is Off'' is now incorporated into special action names.\fixme{Evt. få navnet på disse actions.}
+This means that conditions such as \texttt{Controller is On} and \texttt{Controller is Off} is now incorporated into special action names.\fixme{Evt. få navnet på disse actions.}
 This is done in order to reduce the amounts of steps in a rule and also to reduce the number of decisions for a user to take during rule creation.
 
 \subsubsection{How it works}
 The changes to rules have been made clear and next is an explanation of how the page is used.\\
 
-The flow can be seen from figure \ref{fig:CreateRuleFlowchart}. First the user selects an action, then by use of JQuery the user is meet with the right information boxes. They are hidden until they need to be filled out, this helps the user stay focused on the right info and also does not distract the user with information that is not needed.\\
+The flow can be seen in figure \ref{fig:CreateRuleFlowchart}. First the user selects an action, then by use of JQuery the user is meet with the right information boxes. They are hidden until they need to be filled out, this helps the user stay focused on the right info and also does not distract the user with information that is not needed.\\
 \\
 Next the user gives the rule a name, the name is only used in order for the user to recognize the rule at a later point, if it needs editing or removal.\\
 Next the user should select the user and/or controller for the rule to affect. Whether the user has to select a user and/or controller is decided by the action they first choose.\\

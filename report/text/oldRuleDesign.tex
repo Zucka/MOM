@@ -27,11 +27,11 @@ An overview of the actions and their name is listed below:
 \end{description}
 
 The rule's structure is presented in a grammar in listing	\ref{grammar} expressed in Extended Backus-Naur Form(EBNF) \citep{CoPL}.
-In a nonterminal is en-captured in $<>$ and a terminal is just a word or en-captured in "". 
+In a nonterminal is en-captured in $<>$ and a terminal is just a word or en-captured in ``''. 
 Also the grouping is used represented in $()$, the replica symbol is $*$, comments is $(**)$ and alternative is $|$. 
 
 A rule consist of a name and one of five action and condition sets which determine which actions and conditions can be combined. A rule can have several actions and conditions but only from the same set, see line 1-7. The action set is presented from 9-23 where all has a specific name, some have a specific Controller represented as a number and some has points which is a number. The condition set likewise represented from 9-23 and the condition types are presented from 25-30. There are four types but they each have a specific name. One type has Timestamp, another a Controller, the third only the name and the last is a timeperiod. The timeperiod has with two timestamp and if it is repeatable it has a string representation of the weekdays and a representation of then it is repeatable. 
-\begin{lstlisting}[label=grammar, caption=Grammar of a rule in EBNF]
+\begin{lstlisting}[frame=single, label=grammar, caption=Grammar of a rule in EBNF]
 <Rule>:= <name> (
 	 	  (<ActionsetSet1><ConditionSet1>)*
 		| (<ActionsetSet2><ConditionSet2>)*

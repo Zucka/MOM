@@ -31,7 +31,7 @@ The first cases are both using the website and the controller after that it is p
 			\item Log into the MOM website with lniel10 and test.
 			\item Attach the first Tag to the lniel10 profile.
 			\item Add the permissions that enables the use of all media without expending points.
-			\item Create a profile 'Kevin' with 60 points and other appropriate person information to act as a user.
+			\item Create a profile `Kevin' with 60 points and other appropriate person information to act as a user.
 			\item Attach the second tag to Kevin.
 			\item Add controller TV into the system.
 			\item Add the permissions to log into the TV controller.
@@ -54,7 +54,7 @@ The first cases are both using the website and the controller after that it is p
 		\hline
 		Name: & WS002\\
 		\hline
-		Description: & \parbox{0.70\textwidth}{Adding a rule to block a profile from using the 'TV' media.}\\
+		Description: & \parbox{0.70\textwidth}{Adding a rule to block a profile from using the `TV' media.}\\
 		\hline
 		Requirements: & \parbox{0.70\textwidth}{
 		\begin{itemize}
@@ -69,7 +69,7 @@ The first cases are both using the website and the controller after that it is p
 		\hline
 		Steps: & \parbox{.70\textwidth}{
 		\begin{enumerate}
-			\item Log into Mom Website with 'lniel10' and 'test'.
+			\item Log into Mom Website with `lniel10' and `test'.
 			\item Add Rule to block the profile, try both with a timeperiod and true.
 			\item Use the controller to test if you can activate the media.
 		\end{enumerate}}
@@ -108,12 +108,12 @@ The first cases are both using the website and the controller after that it is p
 			\item If a `TV' controller has not been established from earlier Test, create this.
 			\item Create a `Playstation' controller.
 			\item Establish the Rule that the `Playstation' controller cannot be turned on unless the `TV' controller is.
-			\item Use the browser to call turnOn for the `TV' and turn on the 'Playstation'. \footnote{The test controller have been made to the Playstation in the mean time}
+			\item Use the browser to call turnOn for the `TV' and turn on the `Playstation'. \footnote{The test controller have been made to the Playstation in the mean time}
 			\item If the the `Playstation' did not turn on in step 4, turn on the `TV' and then try again to turn on the `Playstation'.
 		\end{enumerate}}
 		\\		
 		\hline
-		Result of Test: & \parbox{.70\textwidth}{This test was a complete failure since the rule could not be made and when trying the user gets the message 'you are missing something'. This could cause much confusion for the user that would believe it was their mistake. There are no other way to make this kind of restriction so it is a severe error but the system could function without such a rule.}\\
+		Result of Test: & \parbox{.70\textwidth}{This test was a complete failure since the rule could not be made and when trying the user gets the message `you are missing something'. This could cause much confusion for the user that would believe it was their mistake. There are no other way to make this kind of restriction so it is a severe error but the system could function without such a rule.}\\
 		\hline
 		\end{tabular*}
 \end{table}
@@ -170,7 +170,7 @@ The first cases are both using the website and the controller after that it is p
 		Description: & \parbox{0.74\textwidth}{Log in and out with the Arduino and a valid Tag.}\\
 		\hline
 		Result of Test: & \parbox{.74\textwidth}{First Iteration: Upon the first swipe the Arduino successfully logged in and changed state to 1 as expected. Confirmation also proved that to be status:GREEN. However, on the second swipe the Arduino would log out, but then immediately try to log in again with a corrupted Tag ID. All further attempts to log in would likewise fail due to Tag ID corruption.
-		We traced the problem of the corrupted tag ID to the lack of a null character '\textbackslash 0' in the char array that held the ID's. However the Arduino would still try to log in again, which was resolved by implementing a strcmp(newID, oldID) to evaluate if the tag was different. This error is a critical problem since it is expected of the controller that it should be able to receive multiple log-ins and log-outs during the day.\\
+		We traced the problem of the corrupted tag ID to the lack of a null character `\textbackslash 0' in the char array that held the ID's. However the Arduino would still try to log in again, which was resolved by implementing a strcmp(newID, oldID) to evaluate if the tag was different. This error is a critical problem since it is expected of the controller that it should be able to receive multiple log-ins and log-outs during the day.\\
 	Second Iteration: The Arduino performed as expected, succeeding in logging users in and out.} \\
 		\hline
 		\end{tabular*}

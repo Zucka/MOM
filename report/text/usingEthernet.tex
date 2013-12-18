@@ -8,8 +8,7 @@ The Ethernet Shield comes with a MAC address printed on the side which is used t
 This along with the target server is established as global variables as seen in \autoref{EthStart} along with the Method call in \verb|Setup()| that establishes a connection with the LAN. All supplied from the Arduino Library \verb|Ethernet.h|.
 %\fixme{kunne være korte statement på sær funktioner for eksemple F står for når du printer} Fjernet print linjen.
 %\fixme{linje 22, Hvad sker der så, er det bare en død Audrino?} Forældet kommentar
-
-\begin{lstlisting}[frame=single, label=EthStart, caption=The Method Calls used to establish and maintain a connection.]
+\begin{lstlisting}[frame=single,language=C, label=EthStart, caption=The Method Calls used to establish and maintain a connection.]
 //The Mac Address declared.
 byte mac[] = { 0x90, 0xA2, 0xDA, 0x0E, 0xC5, 0x94 };
 
@@ -39,7 +38,7 @@ The process is almost identical in either case and can be divided into two parts
 As seen in \autoref{pageConnect} the Device ID and the Tag ID is connected in a char array to form the url which complies with the action that is being performed. For more information on the API see chapter \vref{chap:api}.
 Then in return the Ethernet Shield receives the HTML Page, and in \autoref{pageDecipher} the Arduino reads this information one byte at the time where all but the JSON string is stripped and stored in a char pointer.
 When all the bytes have been through this process the connection is closed and the JSON string is parsed the result of the action. This can be seen in \autoref{pageJSON}.
-\begin{lstlisting}[frame=single, label=pageConnect, caption=Connecting to the Server and creating an HTML request.]
+\begin{lstlisting}[frame=single, language=C, label=pageConnect, caption=Connecting to the Server and creating an HTML request.]
 void turnOn(void)
 {
   if(client.connect(server, 80))
@@ -54,11 +53,9 @@ void turnOn(void)
     client.println(F("Host: spcadmin.tk"));
     client.println(F("Connection: close"));
     client.println();
-    
-    //Message Sent
 \end{lstlisting}
 
-\begin{lstlisting}[frame=single, label=pageDecipher, caption=Removing all but the important information from the website.]
+\begin{lstlisting}[frame=single, language=C, label=pageDecipher, caption=Removing all but the important information from the website.]
 while (client.connected())
 {
   //Builds the JSON string from the data passed by the website.
@@ -87,7 +84,7 @@ while (client.connected())
 client.stop();
 \end{lstlisting}
 
-\begin{lstlisting}[frame=single, label=pageJSON, caption=The JSON Code Getting a value with a Token.]
+\begin{lstlisting}[frame=single, language=C, label=pageJSON, caption=The JSON Code Getting a value with a Token.]
 aJsonObject* json = aJson.parse(on);
 aJsonObject* statJson = aJson.getObjectItem(json,"status");
 char * stat = statJson->valuestring;
