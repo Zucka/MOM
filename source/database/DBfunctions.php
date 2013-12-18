@@ -537,6 +537,7 @@
 		}
 		$rules = getRulesFromPId($profileId);
 		$maxpoints = null;
+		if($rules != null){
 		foreach($rules as $rule)
 		{
 			foreach($rule['actions'] as $action)
@@ -546,7 +547,7 @@
 					$maxpoints = $action['points'];
 				}
 			}
-		}
+		}}
 		if($maxpoints !=null)
 		{
 			$result = $db->query('points', 'profile', 'PId ='. $profileId);
