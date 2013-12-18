@@ -27,7 +27,7 @@ But in contrast to the children having to type in a password through some obscur
 
 \section*{How do we facilitate concepts as rules, permissions and chores without parents interaction}
 %The parent interaction has been limited to only the adding, editing and deleting of rules and permission on the website. They do not have to keep count on the time their children have been using electronic medias, since this is automatically calculated. The rules and permission is enforced by the controller. 
-As explained in the Solution part  isa website created to give the parents an interface to construct rules and permissions as well as keep an overview of their children's media consumption. This takes a step forward from what parental control technologies have been available before this project. With this website we try to centralize all parental control as well as strive for making it fully automatic, meaning the parents will not have to be involved after the setup is complete.\\
+As explained in the Solution part is a website created to give the parents an interface to construct rules and permissions as well as keep an overview of their children's media consumption. This takes a step forward from what parental control technologies have been available before this project. With this website we try to centralize all parental control as well as strive for making it fully automatic, meaning the parents will not have to be involved after the setup is complete.\\
 The automation comes in the form of the controller, see chapter \vref{chap:controller}, being able to contact the server and confirm through the API, see chapter \vref{chap:api}, that the user (child) has access to this media and points enough to spend time on it.\\
 The automation also comes in the form of the daemon, see chapter \vref{chap:daemon}, which in the current implementation makes sure the users of the system is rewarded their weekly amount of points.\\
 \\
@@ -43,3 +43,7 @@ But instead we used a single LED, the code however does not need any changes for
 Therefore we say that this challenge have been completed.
 
 \section*{Concluding on Test}
+In the section with the test results, see section\vref{sec:resultHE}, multiple errors have been found with different severities. The more severe errors need to be handled before deployment is possible. The consistency problems on the website should also be taken care of before a user tries the system in a real life scenario. It should be done due to the gain of user friendliness compared to the workload. \\
+\\
+To summarize, the system is very close to functionally ready for real life testing. Only a few small bugs needs work before it is tested by a real user.\\
+We have shown that there is a solution to the challenges of this problem, but there is still room for improvement, which the next chapter will go over.
