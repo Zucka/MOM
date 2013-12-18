@@ -8,25 +8,25 @@ The first cases are both using the website and the controller after that it is p
 %%Test 9.
 \begin{table}[h]
 	\centering
-		\begin{tabular*}{\textwidth}{|l|l|}
+		\begin{tabular}{|l|p{9cm}|}
 		\hline
 		\hline
 		Name: & WS001\\
 		\hline
-		Description: & \parbox{0.70\textwidth}{Setup a complete system with a managing user, a regular user, a `TV Controller' and the accompanying rights to use it.}\\
+		Description: & Setup a complete system with a managing user, a regular user, a `TV Controller' and the accompanying rights to use it.\\
 		\hline
-		Requirements: & \parbox{0.70\textwidth}{
+		Requirements: & 
 		\begin{itemize}
 			\item A computer with Internet access.
 			\item The MOM website.
 			\item Two Tags prepared with a Tag ID.
 			\item An Arduino to function as the TV controller. 
-		\end{itemize}}
+		\end{itemize}
 		\\
 		\hline
-		Expected Results: & \parbox{.70\textwidth}{Adding of a regular user,tags, a `TV Controller' and the accompanying rights to use it..}\\
+		Expected Results: & Adding of a regular user,tags, a `TV Controller' and the accompanying rights to use it..\\
 		\hline
-		Steps: & \parbox{.70\textwidth}{
+		Steps: & 
 		\begin{enumerate}
 			\item Log into the MOM website with lniel10 and test.
 			\item Attach the first Tag to the lniel10 profile.
@@ -36,86 +36,84 @@ The first cases are both using the website and the controller after that it is p
 			\item Add controller TV into the system.
 			\item Add the permissions to log into the TV controller.
 			\item Perform Test AT001A on both profiles with addendum: Wait 3 minutes for both users and note if either expends points.
-		\end{enumerate}}
+		\end{enumerate}
 		\\		
 		\hline
-		Result of Test: & \parbox{.70\textwidth}{The adding of controller, tag and profile were done with ease and without error. However when trying to run it with the controller it coursed several problems due to the evaluation of rules which had been out date. This is a critical error which would prevent any real communication between the controller and API. So before continuing the test this need to be fixed. When the test was resumed it worked and the results from step 8 can be found in Test AT001A.} \\
+		Result of Test: & The adding of controller, tag and profile were done with ease and without error. However when trying to run it with the controller it coursed several problems due to the evaluation of rules which had been out date. This is a critical error which would prevent any real communication between the controller and API. So before continuing the test this need to be fixed. When the test was resumed it worked and the results from step 8 can be found in Test AT001A. \\
 		\hline
-		\end{tabular*}
+		\end{tabular}
 \end{table}
-
-
 
 %%Test 10.
 \begin{table}[h]
 	\centering
-		\begin{tabular*}{\textwidth}{|l|l|}
+		\begin{tabular}{|l|p{9cm}|}
 		\hline
 		\hline
 		Name: & WS002\\
 		\hline
-		Description: & \parbox{0.70\textwidth}{Adding a rule to block a profile from using the `TV' media.}\\
+		Description: & Adding a rule to block a profile from using the `TV' media.\\
 		\hline
-		Requirements: & \parbox{0.70\textwidth}{
+		Requirements: & 
 		\begin{itemize}
 			\item MOM Website.
 			\item TV Media.
 			\item Test Profile with Tag.
 			\item A controller for media `TV'.
-		\end{itemize}}
+		\end{itemize}
 		\\
 		\hline
-		Expected Results: & \parbox{.70\textwidth}{The user attached to the profile will be unable to log into the `TV' media in accordance to the established Rule.}\\
+		Expected Results: & The user attached to the profile will be unable to log into the `TV' media in accordance to the established Rule.\\
 		\hline
-		Steps: & \parbox{.70\textwidth}{
+		Steps: & 
 		\begin{enumerate}
 			\item Log into Mom Website with `lniel10' and `test'.
 			\item Add Rule to block the profile, try both with a timeperiod and true.
 			\item Use the controller to test if you can activate the media.
-		\end{enumerate}}
+		\end{enumerate}
 		\\		
 		\hline
-		Result of Test: &  \parbox{.70\textwidth}{This test failed at first when making the condition true, but it succeeded with a time period. The reason for the failure was due to some changes which happened late in the implementation in connection with the rules. It is a severe error because the user expect the user to be blocked, however the severity of the problem is lessened because of how likely users would use it or even find it. This lead to another observation as it is not clear how a rule can be made true which is a moderate error since it would be a waste of time for the user but they could find a way around it.}\\
+		Result of Test: &  This test failed at first when making the condition true, but it succeeded with a time period. The reason for the failure was due to some changes which happened late in the implementation in connection with the rules. It is a severe error because the user expect the user to be blocked, however the severity of the problem is lessened because of how likely users would use it or even find it. This lead to another observation as it is not clear how a rule can be made true which is a moderate error since it would be a waste of time for the user but they could find a way around it.\\
 		\hline
-		\end{tabular*}
+		\end{tabular}
 \end{table}
 
 
 %%Test 11.
 \begin{table}[h]
 	\centering
-		\begin{tabular*}{\textwidth}{|l|l|}
+		\begin{tabular}{|l|p{9cm}|}
 		\hline
 		\hline
 		Name: & WS003\\
 		\hline
-		Description: & \parbox{0.70\textwidth}{Adding a rule to ensure that one media is turned on in order for another to be turned on.}\\
+		Description: & Adding a rule to ensure that one media is turned on in order for another to be turned on.\\
 		\hline
-		Requirements: & \parbox{0.70\textwidth}{
+		Requirements: &
 		\begin{itemize}
 			\item A computer with Internet access.
 			\item The MOM website.
 			\item Web Browser with links to the API to simulate `TV'.
 			\item A controller for media `Playstation'.
 			\item A Tag prepared with a Tag ID.
-		\end{itemize}}
+		\end{itemize}
 		\\
 		\hline
-		Expected Results: & \parbox{.70\textwidth}{The simulated controller 1 will have to be turned on in order to turn on the simulated controller 2.}\\
+		Expected Results: & The simulated controller 1 will have to be turned on in order to turn on the simulated controller 2.\\
 		\hline
-		Steps: & \parbox{.70\textwidth}{
+		Steps: & 
 		\begin{enumerate}
 			\item If a `TV' controller has not been established from earlier Test, create this.
 			\item Create a `Playstation' controller.
 			\item Establish the Rule that the `Playstation' controller cannot be turned on unless the `TV' controller is.
 			\item Use the browser to call turnOn for the `TV' and turn on the `Playstation'. \footnote{The test controller have been made to the Playstation in the mean time}
 			\item If the the `Playstation' did not turn on in step 4, turn on the `TV' and then try again to turn on the `Playstation'.
-		\end{enumerate}}
+		\end{enumerate}
 		\\		
 		\hline
-		Result of Test: & \parbox{.70\textwidth}{This test was a complete failure since the rule could not be made and when trying the user gets the message `you are missing something'. This could cause much confusion for the user that would believe it was their mistake. There are no other way to make this kind of restriction so it is a severe error but the system could function without such a rule.}\\
+		Result of Test: & This test was a complete failure since the rule could not be made and when trying the user gets the message `you are missing something'. This could cause much confusion for the user that would believe it was their mistake. There are no other way to make this kind of restriction so it is a severe error but the system could function without such a rule.\\
 		\hline
-		\end{tabular*}
+		\end{tabular}
 \end{table}
 
 
@@ -123,27 +121,27 @@ The first cases are both using the website and the controller after that it is p
 %%Test 1
 \begin{table}[h]
 	\centering
-		\begin{tabular*}{\textwidth}{|l|l|}
+		\begin{tabular}{|l|p{9cm}|}
 		\hline
 		\hline
 		Name: & AT001A\\
 		\hline
-		Description: & \parbox{0.70\textwidth}{Log in and out with the Arduino and a valid Tag.}\\
+		Description: & Log in and out with the Arduino and a valid Tag.\\
 		\hline
-		Requirements: & \parbox{0.70\textwidth}{
+		Requirements: & 
 		\begin{itemize}
 		  \item A LED light connected to the Arduino which functions as the ``media''.
 			\item Tag connected to a user with enough points and permission to use the media.
 			\item The Arduino running the final software version.
 			\item Serial Connection to Arduino.
 			\item Web Browser with link to Status API for the media being used.
-		\end{itemize}}\\
+		\end{itemize}\\
 		\hline
-		Expected Results: & \parbox{.70\textwidth}{When the RFID antenna detects the tag, the LED light will turn on, The Serial will note that it is now running in State 1 and the web browser will report that the Status is green.
+		Expected Results: & When the RFID antenna detects the tag, the LED light will turn on, The Serial will note that it is now running in State 1 and the web browser will report that the Status is green.
 		When swiping the tag a second time, the LED light will turn off, The Serial will report that the Arduino is running at State 0 and the webbrowser will confirm that the status is RED for not running.
-		After either swipe the Arduino will be ready for a new tag swipe.}\\
+		After either swipe the Arduino will be ready for a new tag swipe.\\
 		\hline
-		Steps: & \parbox{.70\textwidth}{
+		Steps: & 
 		\begin{enumerate}
 			\item Turn on the Arduino. (Wait for Serial to confirm that the device is running.)
 			\item Swipe tag over RFID antenna and observe if the LED turns on.
@@ -152,232 +150,231 @@ The first cases are both using the website and the controller after that it is p
 			\item Swipe tag over the RFID antenna again and observe if the LED turns off.
 			\item On the Serial output, note if the State changes from 1 to 0.
 			\item Confirm on the web browser.
-		\end{enumerate}}
+		\end{enumerate}
 		\\
 		\hline
 		Result of Test: & see next page.\\
 		\hline
-		\end{tabular*}
+		\end{tabular}
 \end{table}
 		
 \begin{table}[h]
 	\centering
-		\begin{tabular*}{\textwidth}{|l|l|}
+		\begin{tabular}{|l|p{9cm}|}
 		\hline
 		\hline
 		Name: & AT001A\\
 		\hline
-		Description: & \parbox{0.74\textwidth}{Log in and out with the Arduino and a valid Tag.}\\
+		Description: & Log in and out with the Arduino and a valid Tag.\\
 		\hline
-		Result of Test: & \parbox{.74\textwidth}{First Iteration: Upon the first swipe the Arduino successfully logged in and changed state to 1 as expected. Confirmation also proved that to be status:GREEN. However, on the second swipe the Arduino would log out, but then immediately try to log in again with a corrupted Tag ID. All further attempts to log in would likewise fail due to Tag ID corruption.
-		We traced the problem of the corrupted tag ID to the lack of a null character `\textbackslash 0' in the char array that held the ID's. However the Arduino would still try to log in again, which was resolved by implementing a strcmp(newID, oldID) to evaluate if the tag was different. This error is a critical problem since it is expected of the controller that it should be able to receive multiple log-ins and log-outs during the day.\\
-	Second Iteration: The Arduino performed as expected, succeeding in logging users in and out.} \\
+		Result of Test: & First Iteration: Upon the first swipe the Arduino successfully logged in and changed state to 1 as expected. Confirmation also proved that to be status:GREEN. However, on the second swipe the Arduino would log out, but then immediately try to log in again with a corrupted Tag ID. All further attempts to log in would likewise fail due to Tag ID corruption.
+		We traced the problem of the corrupted tag ID to the lack of a null character `\textbackslash 0' in the char array that held the ID's. However the Arduino would still try to log in again, which was resolved by implementing a strcmp(newID, oldID) to evaluate if the tag was different. This error is a critical problem since it is expected of the controller that it should be able to receive multiple log-ins and log-outs during the day.
+	Second Iteration: The Arduino performed as expected, succeeding in logging users in and out.  \\
 		\hline
-		\end{tabular*}
+		\end{tabular}
 \end{table}
 
 %%Test 2.
 \begin{table}[h]
 	\centering
-		\begin{tabular*}{\textwidth}{|l|l|}
+		\begin{tabular}{|l|p{9cm}|}
 		\hline
 		\hline
 		Name: & AT001B\\
 		\hline
-		Description: & \parbox{0.70\textwidth}{Log in with the Arduino and a Tag that does not have the proper permissions.}\\
+		Description: & Log in with the Arduino and a Tag that does not have the proper permissions.\\
 		\hline
-		Requirements: & \parbox{0.70\textwidth}{
+		Requirements: &
 		\begin{itemize}
 		  \item A LED light connected to the Arduino which functions as the ``media''.
 			\item Tag connected to a user without the permission to use the media.
 			\item The Arduino running the final software version.
 			\item Serial Connection To the Arduino.
 			\item Web Browser with link to Status API for the media being used.
-		\end{itemize}}
+		\end{itemize}
 		\\
 		\hline
-		Expected Results: & \parbox{.70\textwidth}{When the RFID antenna detects the tag, the LED light will remain off, the state will remain 0 and the web browser will report that the Status is RED for not running.
-		The Arduino will return to waiting for a new tag swipe.}\\
+		Expected Results: & When the RFID antenna detects the tag, the LED light will remain off, the state will remain 0 and the web browser will report that the Status is RED for not running.
+		The Arduino will return to waiting for a new tag swipe.\\
 		\hline
-		Steps: & \parbox{.70\textwidth}{
+		Steps: & 
 		\begin{enumerate}
 			\item Turn on the Arduino. (Wait for Serial to confirm that the device is running.)
 			\item Swipe tag over RFID antenna and observe if the LED turns on.
 			\item On the Serial Output, note if the Arduino changes state.
 			\item Confirm on the web browser that the media is marked status:RED for not running.
-		\end{enumerate}}
+		\end{enumerate}
 		\\
 		\hline
-		Result of Test: & \parbox{.70\textwidth}{The Arduino performed as expected and successfully declined logging in.}\\
+		Result of Test: & The Arduino performed as expected and successfully declined logging in.\\
 		\hline
-		\end{tabular*}
+		\end{tabular}
 \end{table}
 
 %%Test 3.
 \begin{table}[h]
 	\centering
-		\begin{tabular*}{\textwidth}{|l|l|}
+		\begin{tabular}{|l|p{9cm}|}
 		\hline
 		\hline
 		Name: & AT001C\\
 		\hline
-		Description: & \parbox{0.70\textwidth}{Log in with the Arduino and a Tag not supplied with enough points to run.}\\
+		Description: & Log in with the Arduino and a Tag not supplied with enough points to run.\\
 		\hline
-		Requirements: & \parbox{0.70\textwidth}{
+		Requirements: &
 		\begin{itemize}
 		  \item A LED light connected to the Arduino which functions as the ``media''.
 			\item Tag connected to a user without enough points to use the media.
 			\item A serial connection to the Arduino
 			\item The Arduino running the final software version.
 			\item Web Browser with link to Status API for the media being used.
-		\end{itemize}}
+		\end{itemize}
 		\\
 		\hline
-		Expected Results: & \parbox{.70\textwidth}{When the RFID antenna detects the tag, the LED light will remain off, the state of the arduino will not change and the web browser will report that the Status is RED.		
-		The Arduino will return to waiting for a new tag swipe.}\\
+		Expected Results: & When the RFID antenna detects the tag, the LED light will remain off, the state of the arduino will not change and the web browser will report that the Status is RED.		
+		The Arduino will return to waiting for a new tag swipe.\\
 		\hline
-		Steps: & \parbox{.70\textwidth}{
+		Steps: & 
 		\begin{enumerate}
 			\item Turn on the Arduino. (Wait for Serial to confirm that the device is running.)
 			\item Swipe tag over RFID antenna and observe if the LED turns on.
 			\item Observe on the Serial Output if the state changes.
 			\item Confirm on the web browser that the media is marked status:RED for not running.
-		\end{enumerate}}
+		\end{enumerate}
 		\\
 		\hline
-		Result of Test: & \parbox{.70\textwidth}{The Arduino performed as expected successfully declined logging in.}\\
+		Result of Test: & The Arduino performed as expected successfully declined logging in.\\
 		\hline
-		\end{tabular*}
+		\end{tabular}
 \end{table}
 
 %%Test 4.
 \begin{table}[h]
 	\centering
-		\begin{tabular*}{\textwidth}{|l|l|}
+		\begin{tabular}{|l|p{9cm}|}
 		\hline
 		\hline
 		Name: & AT001D\\
 		\hline
-		Description: & \parbox{0.70\textwidth}{Log in with the Arduino and a Tag not recognized.}\\
+		Description: & Log in with the Arduino and a Tag not recognized.\\
 		\hline
 		Requirements: &
-		\parbox{0.70\textwidth}{
 		\begin{itemize}
 		  \item A LED light connected to the Arduino which functions as the ``Device''.
 			\item A tag that has not been introduced to the system yet.
 			\item A Serial Connection to Arduino.
 			\item The Arduino running the final software version.
 			\item Web Browser with link to Status API for the media being used.
-		\end{itemize}}\\
+		\end{itemize}\\
 				\hline
-		Expected Results: & \parbox{.70\textwidth}{When the RFID antenna detects the tag, the LED light will remain off, the state of the arduino will not change and the web browser will report that the Status is RED.		
-		The Arduino will return to waiting for a new tag swipe.}\\
+		Expected Results: & When the RFID antenna detects the tag, the LED light will remain off, the state of the arduino will not change and the web browser will report that the Status is RED.		
+		The Arduino will return to waiting for a new tag swipe.\\
 		\hline
-		Steps: & \parbox{.70\textwidth}{
+		Steps: & 
 		\begin{enumerate}
 			\item Turn on the Arduino. (Wait for Serial to confirm that the device is running.)
 			\item Swipe tag over RFID antenna and observe if the LED turns on.
 			\item Observe on the Serial Output if the state changes.
 			\item Confirm on the web browser that the media is marked status:RED for not running.
-		\end{enumerate}}
+		\end{enumerate}
 		\\
 		\hline
-		Result of Test: & \parbox{.70\textwidth}{The Arduino performed as expected and successfully declined logging in.}\\
+		Result of Test: & The Arduino performed as expected and successfully declined logging in.\\
 		\hline
-		\end{tabular*}
+		\end{tabular}
 \end{table}
 
 %%Test 5.
 \begin{table}[h]
 	\centering
-		\begin{tabular*}{\textwidth}{|l|l|}
+		\begin{tabular}{|l|p{9cm}|}
 		\hline
 		\hline
 		Name: & AT002A\\
 		\hline
-		Description: & \parbox{0.70\textwidth}{Swipe a valid Tag that has the right permissions and points, while another user is logged in with the Arduino.}\\
+		Description: & Swipe a valid Tag that has the right permissions and points, while another user is logged in with the Arduino.\\
 		\hline
-		Requirements: & \parbox{0.70\textwidth}{
+		Requirements: & 
 		\begin{itemize}
 		  \item A LED light connected to the Arduino which functions as the ``media''.
 			\item Tag connected to a user with enough points and permission to use the media.
 			\item A second Tag connected to a user with enough points and permission to use the media.
 			\item The Arduino running the final software version.
 			\item Web Browser with link to Status API for the media being used.
-		\end{itemize}}
+		\end{itemize}
 		\\
 		\hline
-		Expected Results: & \parbox{.70\textwidth}{When the second tag is swiped while the first user is still active the LED should briefly flicker off and then on again as the new user logs back in.}\\
+		Expected Results: & When the second tag is swiped while the first user is still active the LED should briefly flicker off and then on again as the new user logs back in.\\
 		\hline
-		Steps: & \parbox{.70\textwidth}{
+		Steps: & 
 		\begin{enumerate}
 			\item Turn on the Arduino. (Wait for Serial to confirm that the device is running.)
 			\item Swipe tag over RFID antenna and observe if the LED turns on.
 			\item Confirm on the web browser that the media is marked status:GREEEN for running.
 			\item Swipe tag over RFID antenna and observe if the LED Turns off and then on again.
 			\item Confirm on the web browser that the media is still marked status:GREEEN for running.
-		\end{enumerate}}
+		\end{enumerate}
 		\\
 		\hline
-		Result of Test: & \parbox{.70\textwidth}{The Arduino performed as expected and successfully logged user 1 off before logging user 2 in due to the corrections performed after Test AT001A.}\\
+		Result of Test: & The Arduino performed as expected and successfully logged user 1 off before logging user 2 in due to the corrections performed after Test AT001A.\\
 		\hline
-		\end{tabular*}
+		\end{tabular}
 \end{table}
 %%Test 6.
 \begin{table}[h]
 	\centering
-		\begin{tabular*}{\textwidth}{|l|l|}
+		\begin{tabular}{|l|p{9cm}|}
 		\hline
 		\hline
 		Name: & AT003A\\
 		\hline
-		Description: & \parbox{0.70\textwidth}{Let Arduino run until getStatus is called without logged in User.}\\
+		Description: & Let Arduino run until getStatus is called without logged in User\\
 		\hline
-		Requirements: & \parbox{0.70\textwidth}{
+		Requirements: & 
 		\begin{itemize}
 			\item The Arduino running the final software version.
 			\item Web Browser with link to Status API for the media being used.
 			\item Serial Connection to Arduino.
-		\end{itemize}}
+		\end{itemize}
 		\\
 		\hline
-		Expected Results: & \parbox{.70\textwidth}{Run smoothly, remain in State 0, Remain turned off.}\\
+		Expected Results: & Run smoothly, remain in State 0, Remain turned off.\\
 		\hline
-		Steps: & \parbox{.70\textwidth}{
+		Steps: & 
 		\begin{enumerate}
 			\item Turn on the Arduino. (Wait for Serial to confirm that the device is running.)
 			\item Wait and confirm that the status has run with the Serial Watch and note if its Status:RED.
 			\item Confirm on the web browser that the media is still marked status:RED for running.
-		\end{enumerate}}
+		\end{enumerate}
 		\\
 		\hline
-		Result of Test: & \parbox{.70\textwidth}{Initially we believed there was a bug where the Arduino would freeze after the getStatus being called the second time, but we have not since been able to reproduce it and after seeing the Arduino run unhindered for hours at the time we conclude that it is running as expected.}\\
+		Result of Test: & Initially we believed there was a bug where the Arduino would freeze after the getStatus being called the second time, but we have not since been able to reproduce it and after seeing the Arduino run unhindered for hours at the time we conclude that it is running as expected.\\
 		\hline
-		\end{tabular*}
+		\end{tabular}
 \end{table}
 
 %%Test 7.
 \begin{table}[h]
 	\centering
-		\begin{tabular*}{\textwidth}{|l|l|}
+		\begin{tabular}{|l|p{9cm}|}
 		\hline
 		\hline
 		Name: & AT003B\\
 		\hline
-		Description: & \parbox{0.70\textwidth}{Let Arduino run until getStatus is called with logged in User.}\\
+		Description: & Let Arduino run until getStatus is called with logged in User.\\
 		\hline
-		Requirements: & \parbox{0.70\textwidth}{
+		Requirements: & 
 		\begin{itemize}
 			\item The Arduino running the final software version.
 			\item Tag connected to a user with enough points and permission to use the media.
 			\item A serial connection to the Arduino.
 			\item Web Browser with link to Status API for the media being used.
-		\end{itemize}}\\
+		\end{itemize}\\
 		\hline
-		Expected Results: & \parbox{.70\textwidth}{The User will Remain logged in and the Arduino will not change from state 1.}
+		Expected Results: & The User will Remain logged in and the Arduino will not change from state 1.
 		\\
 		\hline
-		Steps: & \parbox{.70\textwidth}{
+		Steps: & 
 		\begin{enumerate}
 			\item Turn on the Arduino. (Wait for Serial to confirm that the device is running.)
 			\item Swipe tag over RFID antenna and observe if the LED turns on.
@@ -385,38 +382,38 @@ The first cases are both using the website and the controller after that it is p
 			\item Note if the Arduino changes state.
 			\item Confirm that the LED remains on.
 			\item Confirm on the web browser that the media is still marked status:GREEN for running.
-		\end{enumerate}}
+		\end{enumerate}
 		\\
 		\hline
-		Result of Test: & \parbox{.70\textwidth}{The Arduino performed as expected and remained logged in after the getStatus had been called.}\\
+		Result of Test: & The Arduino performed as expected and remained logged in after the getStatus had been called.\\
 		\hline
-		\end{tabular*}
+		\end{tabular}
 \end{table}
 
 %%Test 8.
 \begin{table}[h]
 	\centering
-		\begin{tabular*}{\textwidth}{|l|l|}
+		\begin{tabular}{|l|p{9cm}|}
 		\hline
 		\hline
 		Name: & AT003C\\
 		\hline
-		Description: & \parbox{0.70\textwidth}{Let Arduino run until getStatus is called with logged in User, who has since logging in have his rights to use the media revoked.}\\
+		Description: & Let Arduino run until getStatus is called with logged in User, who has since logging in have his rights to use the media revoked.\\
 		\hline
-		Requirements: & \parbox{0.70\textwidth}{
+		Requirements: & 
 		\begin{itemize}
 			\item The Arduino running the final software version.
 			\item Tag connected to a user with enough points and permission to use the media.
 			\item Access to the website MOM
 			\item A serial connection to the Arduino.
 			\item Web Browser with link to Status API for the media being used.
-		\end{itemize}}
+		\end{itemize}
 		\\
 		\hline
-		Expected Results: & \parbox{.70\textwidth}{The Arduino will run with user logged in, state 1, and with the LED turned on until the timer is reached. 
-		Then the user will be logged out, the LED will turn off and the Arduino will move to state 0.}\\
+		Expected Results: & The Arduino will run with user logged in, state 1, and with the LED turned on until the timer is reached. 
+		Then the user will be logged out, the LED will turn off and the Arduino will move to state 0.\\
 		\hline
-		Steps: & \parbox{.70\textwidth}{
+		Steps: & 
 		\begin{enumerate}
 			\item Turn on the Arduino. (Wait for Serial to confirm that the device is running.)
 			\item Swipe tag  over RFID antenna and observe if the LED turns on.
@@ -425,11 +422,11 @@ The first cases are both using the website and the controller after that it is p
 			\item Use browser to confirm that the media is marked as status:RED.
 			\item Wait and confirm that the status has run with the Serial Watch and note if its Status:RED.
 			\item Confirm that the LED turns off.
-		\end{enumerate}}
+		\end{enumerate}
 		\\		
 		\hline
-		Result of Test: & \parbox{.70\textwidth}{First Iteration: It turned out that the API did not actually support any aspect of this feature. The error was if a permission granted the access then it was not checked whether he still had that permission. It is a moderate error since this can only happen once per permission lifetime. This has since been rectified. \\Second Iteration: The Arduino now performs as expected.}\\
+		Result of Test: & First Iteration: It turned out that the API did not actually support any aspect of this feature. The error was if a permission granted the access then it was not checked whether he still had that permission. It is a moderate error since this can only happen once per permission lifetime. This has since been rectified. Second Iteration: The Arduino now performs as expected.\\
 		\hline
-		\end{tabular*}
+		\end{tabular}
 \end{table}
 
