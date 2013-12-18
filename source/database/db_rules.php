@@ -26,22 +26,10 @@ function db_rules_user_can_turn_device_on($cId,$tId)
 		if($permission!=null){
 			foreach($permission as $per)
 			{
-				/*$timeNow =strtotime( $db->executeSQL("SELECT now() as time")->fetch_assoc()['time']);
-				$timeNowFormatHMS = date("H:i:s",$timeNow );
-				$timeNowFormatDay = strtolower(date("l", $timeNow));
-				$timeTo =  date("H:i:s", strtotime( $per['timeTo'] ));
-				$timeFrom =   date("H:i:s", strtotime( $per['timeFrom'] ));
-				$week = date('W',strtotime( $per['timeFrom'] ));
-				$timeNowFormatWeekNo = date("W",$timeNow );	
-				$weekValid = true;
-				if ($array['ndWeekly'] == true) {$weekValid = ($timeNowFormatWeekNo-$week) % 2 == 0;}					
-				if ($array['rdWeekly'] == true) {$weekValid = ($timeNowFormatWeekNo-$week) % 3 == 0;}
-				if($per['controllerId'] == $cId && $weekValid && strpos($per['weekdays'], strtolower($timeNowFormatDay)) 
-						&& $timeFrom <= $timeNowFormatHMS && $timeNowFormatHMS <= $timeTo)
-				$timeNowFormatWeekNo = date("W",$timeNow );	*/
-				if($per['conditions'][0]['controllerId'] == $cId) /*&& $timeNowFormatWeekNo == $per['weekNumber'] && strpos($per['weekdays'], strtolower($timeNowFormatDay)) 
+				if(ruleHasAActControllerWithID($per, $cId)) /*&& $timeNowFormatWeekNo == $per['weekNumber'] && strpos($per['weekdays'], strtolower($timeNowFormatDay)) 
 						&& $timeFrom <= $timeNowFormatHMS && $timeNowFormatHMS <= $timeTo)*/
 				{
+				
 					$permissionGiving = true;
 					break;
 				}
@@ -79,7 +67,6 @@ function db_rules_user_can_turn_device_on($cId,$tId)
 		}
 
 	}
-
 		return true;
 	
 	
@@ -96,7 +83,7 @@ function db_rules_device_should_turn_off($cId, $pId)
 	
 	$lowestTime= null;
 	if($rules != null)
-	{echo 'in rule <br>';
+	{
 	foreach($rules as $rule)
 	{
 		$timeTo=null;
@@ -214,6 +201,7 @@ function db_rules_user_has_unlimited_points($pId)
 /*This assumes that one rule has atmost 1 condition and 1 action*/
 function checkRulesTrueAndTimeperiod($rules, $cId)
 {
+
 	if($rules !=null)
 	{
 		$AccController =null;
@@ -224,8 +212,10 @@ function checkRulesTrueAndTimeperiod($rules, $cId)
 		{
 			$isTimeP=ruleHasConditionWithName($rule, 'Timeperiod');
 			$isTrue=ruleHasConditionWithName($rule, 'True');
+			
 			if($isTrue || ($isTimeP && timeperiodIsValidNowInRule($rule)))//check time rules
 			{
+			
 				if(ruleHasActionWithName($rule, 'Access controller')  )
 				{	
 					if( ruleHasAActControllerWithID($rule, $cId))
@@ -246,13 +236,8 @@ function checkRulesTrueAndTimeperiod($rules, $cId)
 				}
 				elseif(ruleHasActionWithName($rule, 'Cannot access any controller') )
 				{
-					echo 'Cannot access any<br>';
 					$NotAllAccController=$rule;
 				}
-			}
-			else
-			{
-				return false;
 			}
 		}
 		
@@ -313,12 +298,10 @@ function checkRulesTrueAndTimeperiod($rules, $cId)
 		}
 		elseif($NotAllAccController != null)
 		{
-			echo"I'm in the right corner <br>";
 			return false;
 		}
 		
 	}
-	echo 'retuirn null';
 	return 'null';
 }
 	
@@ -382,38 +365,56 @@ function timeperiodIsValidNowInRule($rule)
 
 	foreach($rule['conditions'] as $condition)
 	{
+	
 		$array = $condition['ekstra_attribute'];
 		$repeateble = conditionRepeatable($condition);
 		if($condition['name'] == 'Timeperiod' && $repeateble)
 		{
-			$timeNowFormatHMS = date("H:i:s",$timeNow );
-			$timeNowFormatDay = strtolower(date("l", $timeNow));
-			$timeTo =  date("H:i:s", strtotime( $array['timeTo'] ));
-			$timeFrom =   date("H:i:s", strtotime( $array['timeFrom'] ));
-			$week = date('W', strtotime( $array['timeFrom'] ));
-			$weekDelta = floor(($timeNow-$timeFrom) / 60 / 60 / 24 / 7); //seconds to weeks
-			$weekValid = true;
-			if ($array['ndWeekly'] == true) {$weekValid = $weekDelta % 2 == 0;}					
-			if ($array['rdWeekly'] == true) {$weekValid = $weekDelta % 3 == 0;}					
-			if($weekValid && strpos($array['weekdays'], $timeNowFormatDay) 
-				&& $timeFrom <= $timeNowFormatHMS && $timeNowFormatHMS <= $timeTo )
-			{
-				return true;
+			$timeTo1 =  date("Y:m:d", strtotime( $array['timeTo'] ));
+			$timeFrom1 =   date("Y:m:d", strtotime( $array['timeFrom'] ));
+			$timeNow1 =   date("Y:m:d", $timeNow );
+
+			//check date now is between from time and to time 			
+			if($timeFrom1 <= $timeNow1 && $timeNow1 <=$timeTo1 ){
+			
+				$timeNowFormatHMS = date("H:i:s",$timeNow );
+				$timeNowFormatDay = strtolower(date("l", $timeNow));
+				$timeTo =  date("H:i:s", strtotime( $array['timeTo'] ));
+				$timeFrom =   date("H:i:s", strtotime( $array['timeFrom'] ));
+				$week = date('W', strtotime( $array['timeFrom'] ));
+				
+				$weekDelta = floor(($timeNow-$timeFrom) / 60 / 60 / 24 / 7); //seconds to weeks
+				$weekValid = true;
+				if ($array['ndWeekly'] == true) {$weekValid = $weekDelta % 2 == 0;}					
+				if ($array['rdWeekly'] == true) {$weekValid = $weekDelta % 3 == 0;}	
+			
+				
+				if($weekValid && (strpos($array['weekdays'], $timeNowFormatDay ) || $timeNowFormatDay == $array['weekdays'])
+					&& $timeFrom <= $timeNowFormatHMS  && $timeNowFormatHMS <= $timeTo )
+				{
+					return true;
+				}
 			}
+			
 		}
 		elseif($condition['name'] == 'Timeperiod' && !$repeateble)
 		{
+		
 			$fromTime = date("d M Y H:i:s", strtotime($array['timeFrom']));
 			$toTime = date("d M Y H:i:s", strtotime($array['timeTo']));
 			$timeNow = date("d M Y H:i:s",$timeNow );								
 			if( $fromTime <= $timeNow && $timeNow <= $toTime )
-			{								
+			{				
 				return true;
 			}
 		}
 	}
 	return false;
 }
+
+
+
+
 function conditionRepeatable($condition)
 {
 	

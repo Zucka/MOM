@@ -46,18 +46,25 @@ The test persons also need to know the user. So the test persons need a general 
 Before the test is conducted some test cases should be made by the development team. This should cover several cases in the system such that the test persons is presented to every aspect of the system. The test cases of MOM can be found in section \vref{sec:testcase}.\\ 
 
 
-We want to primarily be validated on....
-(- choose the Heuristics which it should be evaluated against,
-(Visibility, Consistency, Control, Feedback, Familiarity is lisbeths suggestion) ) \fixme{TODO }
-
+We want to primarily be validated on Visibility, Consistency, Control and Feedback which we find to be the more important for the Media online Management system.
 
 \subsection{Presenting the Results}
-\fixme{to do} THIS IS IN PROGRESS
+When presenting the results from the test cases it will be separated in two parts. First the errors and irregularities of the program is presented. Then the Heuristic errors will be presented.\\
+Both will use the ranking of severity as is listed below:
+
+\begin{itemize}
+    \item Minor - Minor cosmetic or consistency issue.
+    \item Moderate - system can succeeded without loss of data but it would course irritation for the user. 
+		\item Severe - system losses functionality or data.
+    \item Critical - system failure.
+\end{itemize}
+
+This ranking can then help priorities and identify the problems that should be corrected first.
 
 %testcases
 \section{Testcases}
 \label{sec:testcase}
-In table \ref{tab:testcase} is one of the test cases that we made for testing the entire Media-Online Management. In the test case both apart of the Website and a controller are tested. The change been done in the web site should affect the controller.\\ 
+In table \ref{tab:testcase} is one of the test cases that we made for testing the entire Media-Online Management. In the test case both a part of the Website and a controller are tested. The changes being done in the web site should affect the controller.\\ 
  All test cases can be found in appendix \vref{appen:testSuite}.
 \begin{table}[h]
 	\centering
@@ -77,18 +84,18 @@ In table \ref{tab:testcase} is one of the test cases that we made for testing th
 		\end{itemize}}
 		\\
 		\hline
-		Expected Results: & \parbox{.70\textwidth}{A managing user capable of logging into the TV Controller without loosing points. A regular User able to log into the TV controller while loosing points.}\\
+		Expected Results: & \parbox{.70\textwidth}{Adding of a regular user,tags, a `TV Controller' and the accompanying rights to use it.}\\
 		\hline
 		Steps: & \parbox{.70\textwidth}{
 		\begin{enumerate}
 			\item Log into the MOM website with lniel10 and test.
 			\item Attach the first Tag to the lniel10 profile.
 			\item Add the permissions that enables the use of all devices without expending points.
-			\item Create a profile 'Kevin' with the appropriate person information to act as a user.
+			\item Create a profile 'Kevin' with 60 points and other appropriate person information to act as a user.
 			\item Attach the second tag to Kevin.
 			\item Add controller TV into the system.
 			\item Add the permissions to log into the TV controller.
-			\item Perform Test AT001A from appendix \vref{appen:testSuite} on both profiles with addendum: Wait 3 minutes for both users and note if either expends points.
+			\item Perform Test AT001A on both profiles with addendum: Wait 3 minutes for both users and note if either expends points.
 		\end{enumerate}}
 		\\		
 		\hline
@@ -97,4 +104,41 @@ In table \ref{tab:testcase} is one of the test cases that we made for testing th
 
 
 \section{Collected Results of the Heuristic Evaluation}
-THIS IS IN PROGRESS
+
+\subsection{Program Error from Testcases}
+Before presenting the results from the test cases it need to be pointed out that during the test some critical errors was discovered and fixed such that the test was able to be completed. The most critical was an error in the validation of whether a valid tag could log-in from a valid controller. Some other error with another severity have also been fixed and they were retested to confirm it. These errors is mentioned in the result and marked as fixed. 
+
+\begin{table}
+	\centering
+		\begin{tabular}{|p {0.10\textwidth}|p{0.6\textwidth}|p{0.2\textwidth}|p{0.1\textwidth}|}
+		\hline
+		Test name & The problem &  Rating the severity & Status\\
+		\hline
+		\parbox{0.10\textwidth}{WS001} & The tag could not activate controller even though it should have access & critical & fixed \\ \hline
+		WS002 & Find out how to block a user using a true condition & moderate & unsolved\\ \hline
+		WS002 & Adding a rule to block a profile with a true condition, failed & severe & fixed\\ \hline
+		WS003 & It was not possible to create a rule to ensure that the media TV is turned on before the media Playstation is able to turn on. In the website there are a form to fill which suggest it can be done, but when saving it an error occurs and it is blaming the user.  & severe & unsolved\\ \hline
+		AT001A &  After a user had logged in and out of a controller, this controller would try to log-in again not waiting for a user to swap his tag. & Critical & fixed.\\ \hline
+		AT003A & The controller seemed to freeze during the first run of this test but it did not repeat & moderate/minor & unsolved \\ \hline
+		AT003C & If a permission has granted access to a media and the parent then deletes this permission then the controller should have cut the power to the media upon next status call to the API, but this did not happen. & moderate & fixed   \\
+		\hline
+		\end{tabular}
+	\caption{Errors found running the testcases}
+	\label{tab:ResultsFromTryingOutTheTestcases}
+\end{table}
+
+A larger description of the test cases and the results can be found in Appendix \label{appen:testSuite}.
+
+\subsection{Heuristic Errors}
+ 
+\subsubsection{consistency}
+here we have many but generally (Minor-moderate)
+
+\subsubsection{Visibility}
+this is ok if any (minor)
+
+\subsection{control}
+control could be better(Severe)
+
+\subsubsection{Feedback}
+ok (but consistency in feed back is missing) moderate-minor

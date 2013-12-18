@@ -6,13 +6,40 @@
 	include_once "../database/DBfunctions.php";
 	switch ($chart) {
 		case 'useStatistics': {
-			$chartData = getUsageByPId($PId, 'device');
+			$chartData = getUsageByPId($PId, 'useStatistics');
 			foreach ($chartData as $row) {
 				$data = array('label' => $row['name'], 'value' => $row['percentage'] );
 				$printData[] = $data;
 			}
-		}
-			break;
+		} break;
+		case 'systemUsage': {
+			$chartData = getUsageByPId($PId, 'systemUsage');
+			foreach ($chartData as $row) {
+				$data = array('label' => $row['name'], 'value' => $row['percentage'] );
+				$printData[] = $data;
+			}
+		} break;
+		case 'totalPoints': {
+			$chartData = getUsageByPId($PId, 'totalPoints');
+			foreach ($chartData as $row) {
+				$data = array('d' => $row['date'], 'point' => $row['point'] );
+				$printData[] = $data;
+			}
+		} break;
+		case 'userOverview': {
+			$chartData = getUsageByPId($PId, 'userOverview');
+			foreach ($chartData as $row) {
+				$data = array('label' => $row['name'], 'point' => $row['point'] );
+				$printData[] = $data;
+			}
+		} break;
+		case 'pointPrDay': {
+			$chartData = getUsageByPId($PId, 'pointPrDay');
+			foreach ($chartData as $row) {
+				$data = array('day' => $row['day'], 'point' => $row['point'] );
+				$printData[] = $data;
+			}
+		} break;
 		
 		default:
 			# code...

@@ -6,26 +6,29 @@
 		// print_r($_POST); // DEVELOPER 
 		if (isset($_POST['actionName']) &&
 			isset($_POST['name']) &&
+			isset($_POST['systemUserSelect']) &&
 			isset($_POST['repeatEach'])) {
 			// Set rule name & control system
 			$nRule = new Rules($_SESSION['CSid'], $_POST['name']);
 			// Set action 
 			if (isset($_POST['amountOfPoints'])) {$amountOfPoints = $_POST['amountOfPoints'];} else {$amountOfPoints = null;}
-			if (isset($_POST['controllerNameIf'])) {$controllerNameIf = $_POST['controllerNameIf'];} else {$controllerNameIf = null;}
+			if (isset($_POST['controllerName'])) {$controllerName = $_POST['controllerName'];} else {$controllerName = null;}
 			if ($_POST['actionName'] == 'accessIf') {
 				$actionName = 'Access controller';
 			} elseif ($_POST['actionName'] == 'noAccessIf' ) {
 				$actionName = 'Cannot access controller';
 			} else {$actionName = $_POST['actionName'];}
-			$nAction = new Action( 0, $actionName, null, $controllerNameIf, $amountOfPoints );
+			$nAction = new Action( 0, $actionName, null, $controllerName, $amountOfPoints );
 			$arrayAction = array('cond' => $nAction);
 			// Set condition 
 			$arrayCondition = setCondition($_POST);
+			// print_r($arrayCondition);
 			$dbResult = addNewRuleToDB($nRule, $arrayCondition, $arrayAction);
 			if (is_numeric($dbResult)) {
 				addRuleToProfile($_POST['systemUserSelect'] ,$dbResult);
-			}
-			print_r($dbResult);
+				echo '<script type="text/javascript">alert("Rule added");</script>';
+			} else {echo '<script type="text/javascript">alert("Something went wrong..");</script>';}
+			// print_r($dbResult);
 					
 		} else {echo '<script type="text/javascript">alert("You are missing something..");</script>';}
 	} 
@@ -119,7 +122,7 @@
 				</div>
 			</div>
 			<div class="form-group" id="repeatEach" style="display:none;">
-				<label for="repeatEach" class="col-sm-3 control-label">Repeat each: </label>
+				<label for="repeatEach" class="col-sm-3 control-label">Rule Applies: </label>
 				<div class="col-sm-8">
 					<select name="repeatEach" id="repeatEach" class="form-control"  onchange="repeatWeeklySelect();" >
 						<option value="eachWekk"	>Every Week</option>
@@ -128,7 +131,7 @@
 						<option value="primo"		>First in a month</option>
 						<option value="ultimo"		>Last in a month</option> 
 						<option value="sWeek"		>Specific Week No.</option> 
-						<option value="noRepeat" hidden	>Once / from</option>
+						<option value="noRepeat"	>Once / from</option>
 					</select>
 				</div>
 			</div>

@@ -228,6 +228,7 @@ void stateZero()
         {        
           useID[i-5] = rf_block_response[i];
         }
+        useID[3] = '\0';
         Serial.println(useID);
         turnOn();
         Serial.println(F("Stop"));
@@ -280,8 +281,9 @@ void stateOne(void)
         {        
           tempID[i-5] = rf_block_response[i];
         } 
+        tempID[3] = '\0';
         
-        if(tempID == useID)
+        if(strcmp(tempID,useID) == 0)
         {
           turnOff();
           strcpy(useID,"");

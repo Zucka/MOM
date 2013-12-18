@@ -527,7 +527,7 @@
 		}
 
 	}
-	function addPointsToProfile($profileId, $points)
+		function addPointsToProfile($profileId, $points)
 	{
 		$db = new MySQLHelper();
 		if(isProfileActive($profileId)!=true)
@@ -573,7 +573,6 @@
 			return sqlErrorMessage($resultValue[1]);
 		}
 	}
-	
 	
 	/* This will connect a Chore to a Profile*/
 	function addChoreToProfile($choreId, $profileId, $points= null)

@@ -395,7 +395,7 @@
 		$db= new MySQLHelper();
 		$rules=getRulesFromPId($profileId);
 		$timeNow =strtotime( $db->executeSQL("SELECT now() as time")->fetch_assoc()['time']);
-		$istrue= true;
+		$isActive= true;
 		if($rules != null)
 		{foreach($rules as $rule)
 		{
@@ -409,14 +409,18 @@
 						{
 							if(timeperiodIsValidNowInRule($rule) )
 							{
-								$istrue = false;
+								$isActive = false;
 							}
+						}
+						elseif($cond['name'] == 'True')
+						{
+							$isActive=false;
 						}
 					}
 				}
 			}
 		}}
-		return $istrue;
+		return $isActive;
 	}
 	
 	/* returns true if the tag is currently active and false otherwise*/
@@ -655,11 +659,12 @@ weekNumber: 23
 	// 	}
 	// 	return $returnArray;
 	// }
-	function getUsageByPId($PId, $type='device') {
+	function getUsageByPId($id, $type) {
 		$db= new MySQLHelper();
 		global $theTables;
 		global $theColumns;
-		$profile = getProfileByProfileId($PId);
+		switch ($type) {
+			case 'useStatistics': {
 		$selectValue =  "subSelect1.TSerieNo,
 					    subSelect1.CSerieNo,
 					    subSelect1.CSId,
@@ -671,32 +676,110 @@ weekNumber: 23
 					    subSelect1.point,
 					    (subSelect1.point / (subSelect.totalPoints / 100)) AS percentage,
 					    subSelect.totalPoints";
-		$from = "(SELECT 
-			        SUM((FLOOR((UNIX_TIMESTAMP(cubt.endtime) - UNIX_TIMESTAMP(cubt.starttime)) / 60)) * con.cost) AS totalPoints
-			    FROM
-			        controller_used_by_tag cubt
-			    LEFT JOIN controller con ON con.CSerieNo = cubt.CSerieNo
-			    WHERE
-			        cubt.TSerieNo = ".$profile['TSerieNo']."
-			            AND (UNIX_TIMESTAMP(cubt.endtime) - UNIX_TIMESTAMP(cubt.starttime) >= 59)
-			    GROUP BY cubt.TSerieNo) AS subSelect,
-			    (SELECT 
-			        cubt1.TSerieNo,
-		            cubt1.CSerieNo,
-		            con1.CSId,
-		            con1.name,
-		            con1.location,
-		            con1.status,
-		            con1.cost,
-		            cubt1.starttime,
-		            SUM((FLOOR((UNIX_TIMESTAMP(cubt1.endtime) - UNIX_TIMESTAMP(cubt1.starttime)) / 60)) * con1.cost) AS point
-			    FROM
-			        controller_used_by_tag cubt1
-			    LEFT JOIN controller con1 ON con1.CSerieNo = cubt1.CSerieNo
-			    WHERE
-			        cubt1.TSerieNo = ".$profile['TSerieNo']."
-			            AND (UNIX_TIMESTAMP(cubt1.endtime) - UNIX_TIMESTAMP(cubt1.starttime) >= 59)
-			    GROUP BY con1.CSerieNo) AS subSelect1";
+				$profile = getProfileByProfileId($id);
+				$from = "(SELECT 
+					        SUM((FLOOR((UNIX_TIMESTAMP(cubt.endtime) - UNIX_TIMESTAMP(cubt.starttime)) / 60)) * con.cost) AS totalPoints
+					    FROM
+					        controller_used_by_tag cubt
+					    LEFT JOIN controller con ON con.CSerieNo = cubt.CSerieNo
+					    WHERE
+					        cubt.TSerieNo = ".$profile['TSerieNo']."
+					            AND (UNIX_TIMESTAMP(cubt.endtime) - UNIX_TIMESTAMP(cubt.starttime) >= 59)
+					    GROUP BY cubt.TSerieNo) AS subSelect,
+					    (SELECT 
+					        cubt1.TSerieNo,
+				            cubt1.CSerieNo,
+				            con1.CSId,
+				            con1.name,
+				            con1.location,
+				            con1.status,
+				            con1.cost,
+				            cubt1.starttime,
+				            SUM((FLOOR((UNIX_TIMESTAMP(cubt1.endtime) - UNIX_TIMESTAMP(cubt1.starttime)) / 60)) * con1.cost) AS point
+					    FROM
+					        controller_used_by_tag cubt1
+					    LEFT JOIN controller con1 ON con1.CSerieNo = cubt1.CSerieNo
+					    WHERE
+					        cubt1.TSerieNo = ".$profile['TSerieNo']."
+					            AND (UNIX_TIMESTAMP(cubt1.endtime) - UNIX_TIMESTAMP(cubt1.starttime) >= 59)
+					    GROUP BY con1.CSerieNo) AS subSelect1";
+			}	break;
+			case 'systemUsage': {
+		$selectValue =  "subSelect1.TSerieNo,
+					    subSelect1.CSerieNo,
+					    subSelect1.CSId,
+					    subSelect1.name,
+					    subSelect1.location,
+					    subSelect1.status,
+					    subSelect1.cost,
+					    subSelect1.starttime,
+					    subSelect1.point,
+					    (subSelect1.point / (subSelect.totalPoints / 100)) AS percentage,
+					    subSelect.totalPoints";
+				$from = "(SELECT 
+						        SUM((FLOOR((UNIX_TIMESTAMP(cubt.endtime) - UNIX_TIMESTAMP(cubt.starttime)) / 60)) * con.cost) AS totalPoints
+						    FROM
+						        controller_used_by_tag cubt
+						    LEFT JOIN controller con ON con.CSerieNo = cubt.CSerieNo
+						    WHERE
+						        con.CSId = '".$id."'
+						            AND (UNIX_TIMESTAMP(cubt.endtime) - UNIX_TIMESTAMP(cubt.starttime) >= 59)
+						    GROUP BY con.CSId) AS subSelect,
+						    (SELECT 
+						        cubt1.TSerieNo,
+						            cubt1.CSerieNo,
+						            con1.CSId,
+						            con1.name,
+						            con1.location,
+						            con1.status,
+						            con1.cost,
+						            cubt1.starttime,
+						            SUM((FLOOR((UNIX_TIMESTAMP(cubt1.endtime) - UNIX_TIMESTAMP(cubt1.starttime)) / 60)) * con1.cost) AS point
+						    FROM
+						        controller_used_by_tag cubt1
+						    LEFT JOIN controller con1 ON con1.CSerieNo = cubt1.CSerieNo
+						    WHERE
+						        con1.CSId = '".$id."'
+						            AND (UNIX_TIMESTAMP(cubt1.endtime) - UNIX_TIMESTAMP(cubt1.starttime) >= 59)
+						    GROUP BY con1.CSerieNo) AS subSelect1";
+			}	break;
+			case 'totalPoints': {
+				$selectValue =  "cubt1.TSerieNo,
+				DATE(cubt1.endtime) AS date,
+				SUM((FLOOR((UNIX_TIMESTAMP(cubt1.endtime) - UNIX_TIMESTAMP(cubt1.starttime)) / 60)) * con1.cost) AS point";
+				$from = "controller_used_by_tag cubt1
+					LEFT JOIN controller con1 ON con1.CSerieNo = cubt1.CSerieNo
+				WHERE
+					con1.CSId = '".$id."'
+				AND (UNIX_TIMESTAMP(cubt1.endtime) - UNIX_TIMESTAMP(cubt1.starttime) > 59) AND
+					cubt1.endtime BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()  
+				GROUP BY DATE(cubt1.endtime)";
+			}	break;
+			case 'userOverview': {
+				$selectValue =  "p.name,
+				SUM((FLOOR((UNIX_TIMESTAMP(cubt1.endtime) - UNIX_TIMESTAMP(cubt1.starttime)) / 60)) * con1.cost) AS point";
+				$profile = getProfileByProfileId($id);
+				$from = "controller_used_by_tag cubt1
+					LEFT JOIN controller con1 ON con1.CSerieNo = cubt1.CSerieNo
+					LEFT JOIN tag t ON t.TSerieNo = cubt1.TSerieNo
+					LEFT JOIN profile p ON p.PId = t.profileId
+				WHERE
+					con1.CSId = '".$id."'
+						AND (UNIX_TIMESTAMP(cubt1.endtime) - UNIX_TIMESTAMP(cubt1.starttime) > 59) 
+				GROUP BY cubt1.TSerieNo";
+			}	break;
+			case 'pointPrDay': {
+				$selectValue =  "DAYNAME(cubt1.endtime) AS day,
+				SUM((FLOOR((UNIX_TIMESTAMP(cubt1.endtime) - UNIX_TIMESTAMP(cubt1.starttime)) / 60)) * con1.cost) AS point";
+				$from = "controller_used_by_tag cubt1
+					LEFT JOIN controller con1 ON con1.CSerieNo = cubt1.CSerieNo
+				WHERE
+					con1.CSId = '".$id."'
+						AND (UNIX_TIMESTAMP(cubt1.endtime) - UNIX_TIMESTAMP(cubt1.starttime) > 59) 
+				GROUP BY DAYNAME(cubt1.endtime)
+				ORDER BY WEEKDAY(cubt1.endtime)";
+			}	break;
+		}
 		$result = $db->query($selectValue, $from);
 		$returnArray = null;
 		while($row = mysqli_fetch_assoc($result))
@@ -705,5 +788,4 @@ weekNumber: 23
 		}
 		return $returnArray;
 	}
-
 ?>

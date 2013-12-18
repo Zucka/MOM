@@ -16,16 +16,16 @@
     <script type="text/javascript">
 		$(document).ready(function() { 
 			$.ajax({
-				url: 'ajax/json-charts.php?chart=pointPrDay',
+				url: 'ajax/json-charts1.php?chart=pointPrDay&PId=<?php echo $_SESSION['CSid'] ?>',
 				success: function(data) {
 					var $graph = data;
 					var obj = $.parseJSON($graph);
 					Morris.Bar({
 						element: 'pointPrDayBar',
 						data: obj,
-						xkey: 'device',
-						ykeys: ['geekbench'],
-						labels: ['Geekbench'],
+						xkey: 'day',
+						ykeys: ['point'],
+						labels: ['Points'],
 						barRatio: 0.4,
 						xLabelAngle: 35,
 						hideHover: 'auto'
@@ -33,7 +33,7 @@
 				}
 			});
 			$.ajax({
-				url: 'ajax/json-charts1.php?chart=useStatistics&PId=1',
+				url: 'ajax/json-charts1.php?chart=systemUsage&PId=<?php echo $_SESSION['CSid'] ?>',
 				success: function(data) {
 					var $graph = data;
 					var obj = $.parseJSON($graph);
@@ -41,6 +41,43 @@
 					  element: 'morris-chart-donut',
 					  data: obj,
 					  formatter: function (y) { return y + "%" ;}
+					});
+				}
+			});
+			$.ajax({
+				url: 'ajax/json-charts1.php?chart=totalPoints&PId=<?php echo $_SESSION['CSid'] ?>',
+				success: function(data) {
+					var $graph = data;
+					var obj = $.parseJSON($graph);
+					Morris.Area({
+					  element: 'morris-chart-line',
+					  data: obj,
+					  // The name of the data record attribute that contains x-visitss.
+					  xkey: 'd',
+					  // A list of names of data record attributes that contain y-visitss.
+					  ykeys: ['point'],
+					  // Labels for the ykeys -- will be displayed when you hover over the
+					  // chart.
+					  labels: ['Points'],
+					  // Disables line smoothing
+					  smooth: false,
+					});
+				}
+			});
+			$.ajax({
+				url: 'ajax/json-charts1.php?chart=userOverview&PId=<?php echo $_SESSION['CSid'] ?>',
+				success: function(data) {
+					var $graph = data;
+					var obj = $.parseJSON($graph);
+					Morris.Bar({
+						element: 'userOverview',
+						data: obj,
+						xkey: 'label',
+						ykeys: ['point'],
+						labels: ['Points'],
+						barRatio: 0.4,
+						xLabelAngle: 35,
+						hideHover: 'auto'
 					});
 				}
 			});
@@ -58,7 +95,7 @@
 						<h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Points spent pr. day</h3>
 					</div>
 					<div class="panel-body">
-						<div id="pointPrDayBar"></div>
+						<div id="morris-chart-line"></div>
 					</div>
 				</div>
 			</div>
@@ -73,7 +110,6 @@
 					<div class="panel-body">
 						<div id="morris-chart-donut"></div>
 						<div class="text-right">
-							<a href="#">View Details <i class="fa fa-arrow-circle-right"></i></a>
 						</div>
 					</div>
 				</div>
@@ -81,12 +117,11 @@
 			<div class="col-lg-4">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-						<h3 class="panel-title"><i class="fa fa-long-arrow-right"></i> Total points spent</h3>
+						<h3 class="panel-title"><i class="fa fa-long-arrow-right"></i> Points spent pr. weekday</h3>
 					</div>
 					<div class="panel-body">
-						<div id="morris-chart-line"></div>
+						<div id="pointPrDayBar"></div>
 						<div class="text-right">
-							<a href="#">View Details <i class="fa fa-arrow-circle-right"></i></a>
 						</div>
 					</div>
 				</div>
@@ -97,9 +132,8 @@
 						<h3 class="panel-title"><i class="fa fa-long-arrow-right"></i> Points spent pr. user</h3>
 					</div>
 					<div class="panel-body">
-						<div id="morris-chart-bar"></div>
+						<div id="userOverview"></div>
 						<div class="text-right">
-							<a href="#">View Details <i class="fa fa-arrow-circle-right"></i></a>
 						</div>
 					</div>
 				</div>
@@ -108,6 +142,4 @@
       </div><!-- /#page-wrapper -->
     </div> <!-- /container -->
 </body>
-
-    <script src="assets/js/chart-data.js"></script>	
 </html>
