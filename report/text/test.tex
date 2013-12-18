@@ -118,7 +118,7 @@ Before presenting the results from the test cases it needs to be pointed out tha
 		\parbox{0.10\textwidth}{WS001} & The tag could not activate controller even though it should have access & critical & fixed \\ \hline
 		WS002 & Find out how to block a user using a true condition & moderate & unsolved\\ \hline
 		WS002 & Adding a rule to block a profile with a true condition, failed & severe & fixed\\ \hline
-		WS003 & It was not possible to create a rule to ensure that the media TV is turned on before the media Playstation is able to turn on. In the website there are a form to fill which suggest it can be done, but when saving it an error occurs and it is blaming the user.  & severe & unsolved\\ \hline
+		WS003 & It was not possible to create a rule to ensure that the media TV is turned on before the media Playstation is able to turn on. In the website there is a form to fill which suggest it can be done, but when saving it an error occurs and it is blaming the user.  & severe & unsolved\\ \hline
 		AT001A &  After a user had logged in and out of a controller, this controller would try to log-in again not waiting for a user to swap his tag. & Critical & fixed.\\ \hline
 		AT003A & The controller seemed to freeze during the first run of this test but it did not repeat & moderate/minor & unsolved \\ \hline
 		AT003C & If a permission has granted access to a media and the parent then deletes this permission then the controller should have cut the power to the media upon next status call to the API, but this did not happen. & moderate & fixed   \\
@@ -135,7 +135,7 @@ A larger description of the test cases and the results can be found in Appendix 
 
 
 \subsubsection{Consistency}
-There are several consistency problems on the website which could cause confusion and irritation for the user. The errors in it self is only a minor problem but due to the number of errors and their occurrence it is a moderate problem.   
+There are several consistency problems on the website which could cause confusion and irritation for the user. The errors in itself is only a minor problem but due to the number of errors and their occurrence it is a moderate problem.   
 
 The first example is the add button on the different pages that has different coloring and placement compared to the table in which it will be shown. The problem is shown in figure \ref{fig:consistencyButton}.
 
@@ -147,7 +147,7 @@ The first example is the add button on the different pages that has different co
 \end{figure}
 
 
-Another example is the feedback representation from the system if the user did something wrong, a confirmation message or just a alert for the user. As is shown in figure \ref{fig:afteraddConsistency} there is inconsistencies in where and how the message is provided to the user and feedback after adding something to the system. There are also inconsistencies in where the website redirect the user after adding.
+Another example is the feedback representation from the system if the user did something wrong, a confirmation message or just an alert for the user. As is shown in figure \ref{fig:afteraddConsistency} there is inconsistencies in where and how the message is provided to the user and feedback after adding something to the system. There are also inconsistencies in where the website redirect the user after adding.
 
 \begin{figure}
 	\centering
@@ -156,7 +156,7 @@ Another example is the feedback representation from the system if the user did s
 	\label{fig:afteraddConsistency}
 \end{figure}
 
-The last example that will be shown is the inconsistency of how the user is guided to fill in the forms when adding something to the system. One method is to indicate it with a \* at the end of the form, which is shown in figure \ref{fig:consistencyAddControllerUser} to the right. The other method is to wait until the user try to save information and then give him an error that he has not filled in the required fields, as shown to the left in the figure. The first alternative is the better to use.
+The last example that will be shown is the inconsistency of how the user is guided to fill in the forms when adding something to the system. One method is to indicate it with a * at the end of the form, which is shown in figure \ref{fig:consistencyAddControllerUser} to the right. The other method is to wait until the user try to save information and then give him an error that he has not filled in the required fields, as shown to the left in the figure. The first alternative is the better to use, according to Heuristic norms.
 
 \begin{figure}
 	\centering
@@ -167,12 +167,13 @@ The last example that will be shown is the inconsistency of how the user is guid
 
  
 \subsection{Control}
-The control is relative good on the website. The user is in control of making the permissions, rules and chores which will affect the profiles and their media consumption. Permissions is clear that it give the user permission to use a media. In chores the user can increase the point of a profile when he has done a house chore. Rules create a rule which should be applied to the user. 
+The control is relatively good on the website. The user is in control of making the permissions, rules and chores which will affect the profiles and their media consumption. Permissions is clear that it gives the user permission to use a media. In chores the user can increase the point of a profile when he has done a house chore. Rules create a rule which should be applied to the user. 
 
-However, it is not clear what happen if two rules or a permission and a rule conflicts. This can be a irritation point for the user because they expect that their child do not have access in a time period but in actuality they have access. It is a severe problem since the user can experience a loss of functionality.     
+However, it is not clear what happens if two rules or a permission and a rule conflicts, for the user at least, see section \vref{sec:permissionAndRulesPrecedence}. 
+This can be an irritation point for the user because they expect that their child do not have access in a time period but in actuality they have access. It is a severe problem since the user can experience a loss of functionality.     
 
 \subsubsection{Visibility and Feedback}
-Currently there is a visibility and feedback problem in what the controller is doing. When a user is trying to log-in the reader do not symbolize that the tag has been read. Also if a user have been granted access or not is currently not clearly indicated. The only indication is whether the power has been directed to the media in our case an LED. It would be an improvement to add lights, sound or a display to inform the user that is happening in the system. This is a moderate error since it does not cause any system errors, but before a user should try this system some sort of feedback is needed.
+Currently there is a visibility and feedback problem in what the controller is doing. When a user is trying to log-in the reader do not symbolize that the tag has been read. Also if a user have been granted access or not is currently not clearly indicated. The only indication is whether the power has been directed to the media in our case an LED. It would be an improvement to add lights, sound or a display to inform the user what is happening in the system. This is a moderate error since it does not cause any system errors, but before a user should try this system some sort of feedback is needed.
 
 The problem with feedback consistency was also mentioned in consistency.    
 
