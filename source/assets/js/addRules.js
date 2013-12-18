@@ -18,8 +18,8 @@ function actionNameSelect () {
 			case 'Cannot access any controller':{   setVisibility (0, 0, 0, 0, 1, 1); }break;
 			case 'Access controller':{  			setVisibility (0, 1, 0, 0, 1, 1); }break;
 			case 'Cannot access controller':{   	setVisibility (0, 1, 0, 0, 1, 1); }break;
-			case 'Access controller if':{  			setVisibility (0, 1, 0, 1, 0, 0); }break;
-			case 'Cannot access controller if':{   	setVisibility (0, 1, 0, 1, 0, 0); }break;
+			case 'Access controller if':{  			setVisibility (0, 1, 0, 1, 1, 0); }break;
+			case 'Cannot access controller if':{   	setVisibility (0, 1, 0, 1, 1, 0); }break;
 			default: break;
 		}
 	});
