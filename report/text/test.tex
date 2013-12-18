@@ -1,5 +1,5 @@
 \chapter{Testing of MOM}
-There are different ways to evaluate the web interface e.g. an expert or user-based evaluation could be made. We would have preferred to make a user-based evaluation because this gives a valuable input from a person who might use the system. However, to make such a sufficient user evaluation then we should find at least people with children which is between 3-12 years old and that would take too much time.\fixme{We could talk about how we tried to get test-users in the beginning of the project.} A user-based evaluation of the entire MOM system would be optimal if the user and his/hers family could try it for a week or two before we interview them about the system. Also a log for our benefit could be made during this time to see how they use it of course with the test persons permission. Therefore we can only evaluate the web interface. For this we use an expert evaluation called Heuristic evaluation. 
+There are different ways to evaluate the web interface e.g. an expert or user-based evaluation could be made. A user-based evaluation would be preferred because this gives a valuable input from a person who might use the system. A user-based evaluation with a family using the MOM system for a week or two before a interview session would be optimal. Also a log for our benefit could be made during this time to see how they use it of course with the test persons permission. However, to make a sufficient user evaluation are several families of parents with children which is between 4-12 years old to be found. Through multiple contact attempts was this not possible to find. Test of the MOM therefore executing an expert evaluation called Heuristic evaluation. 
 
 \section{Heuristic evaluation in Theory}
 In a Heuristic evaluation the test persons look for errors and potential usability errors which can be categorized in 12 item and divided into 3 groups\citep{DIEB}, which is shortly described below:
@@ -33,19 +33,20 @@ Typically the test is done by 1-3 test persons\citep{HeuristicEvaluation}. The t
 
 
 \section{Heuristic Evaluation of Media-Online Management}
-Before performing a Heuristic evaluation we need to determine what is needed before the evaluation is done and how the results should be presented\citep{HeuristicEvaluationGuide}.
+Before performing a Heuristic evaluation shall there be determined, what is needed, before the evaluation is done, and how the results should be presented\citep{HeuristicEvaluationGuide}.
 
 \subsection{Planning the Evaluation}
 When planing the evaluation some test persons are needed. They need to get a small description of the user and some test cases. They should also get a list of the heuristics from which the system need to be evaluated from. This should all be made prior to the evaluation. \\
 
 The evaluation of Media-online Management system is being done by test persons in the group which have been highly involved in the development of the system. This is not optimal in this test where the test persons should be an usability expert from outside the development group\citep{DIEB}.\\
 
-The test persons also need to know the user. So the test persons need a general description of the user and their technology capabilities. The users of MOM are parents and children. The children is only in contact with the controller and the parents are both using the controller and the website. The parents has a general experience with the internet, but they are not experts. However it is expected they are able to at least set up an e-mail account with Google or Hotmail. The children has fewer technology skills but we expect our target group to be able to turn on a normal television. \\
+The test persons also need to know the user. So the test persons need a general description of the user and their technology capabilities. The users of MOM are parents and children. The children is only in contact with the controller and the parents are both using the controller and the website. The parents has a general experience with the internet, but they are not experts. However it is expected they are able to at least set up an e-mail account with Google or Hotmail. The children has fewer technology skills but is expected at the target group be able to turn on a television. \\
 
 Before the test is conducted some test cases should be made by the development team. This should cover several cases in the system such that the test persons is presented to every aspect of the system. The test cases of MOM can be found in section \vref{sec:testcase}.\\ 
 
 
 We want to primarily be validated on Visibility, Consistency, Control and Feedback which we find to be the more important for the Media online Management system.
+\fixme{Større forklaring hvorfor lige disse område er vigtigst at blive valideret. samt fjern we}
 
 \subsection{Presenting the Results}
 When presenting the results from the test cases it will be separated in two parts. First the errors and irregularities of the program is presented. Then the Heuristic errors will be presented.\\
@@ -63,6 +64,7 @@ This ranking can then help priorities and identify the problems that should be c
 %testcases
 \section{Testcases}
 \label{sec:testcase}
+\fixme{Referance bliver ikke fundet.}
 Shown in \autoref{tab:testcase} is one of the test cases that was made for testing the entire Media-Online Management. In the test case both a part of the Website and a controller are tested. The changes being done in the web site should affect the controller.\\ 
  All test cases can be found in appendix \vref{appen:testSuite}.
 \begin{table}[h]
@@ -102,9 +104,9 @@ Shown in \autoref{tab:testcase} is one of the test cases that was made for testi
 \end{table}
 
 
-\section{Collected Results of the Heuristic Evaluation}
+\section{Results of the Heuristic Evaluation}
 \label{sec:resultHE}
-In this section we present the errors discovered in connection with the test. The errors have been grouped in to three categories program errors, Heuristic error and other errors and missing functionality.
+This section presents the errors discovered in connection with the test. The errors have been grouped in to three categories program errors, Heuristic error and other errors and missing functionality.
 
 \subsection{Program Error from Testcases}
 Before presenting the results from the test cases it needs to be pointed out that during the test some critical errors was discovered and fixed such that the test was able to be completed. The most critical was an error in the validation of whether a valid tag could log-in from a valid controller. Some other error with another severity have also been fixed and they were retested to confirm it. These errors is mentioned in the result and marked as fixed. 
@@ -119,7 +121,7 @@ Before presenting the results from the test cases it needs to be pointed out tha
 		WS002 & Find out how to block a user using a true condition & moderate & unsolved\\ \hline
 		WS002 & Adding a rule to block a profile with a true condition, failed & severe & fixed\\ \hline
 		WS003 & It was not possible to create a rule to ensure that the media TV is turned on before the media Playstation is able to turn on. In the website there is a form to fill which suggest it can be done, but when saving it an error occurs and it is blaming the user.  & severe & unsolved\\ \hline
-		AT001A &  After a user had logged in and out of a controller, this controller would try to log-in again not waiting for a user to swap his tag. & Critical & fixed.\\ \hline
+		AT001A &  After a user had logged in and out of a controller, this controller would try to log-in again not waiting for a user to swap his tag. & Critical & fixed\\ \hline
 		AT003A & The controller seemed to freeze during the first run of this test but it did not repeat & moderate/minor & unsolved \\ \hline
 		AT003C & If a permission has granted access to a media and the parent then deletes this permission then the controller should have cut the power to the media upon next status call to the API, but this did not happen. & moderate & fixed   \\
 		\hline
@@ -131,7 +133,7 @@ Before presenting the results from the test cases it needs to be pointed out tha
 A larger description of the test cases and the results can be found in Appendix \ref{appen:testSuite}.
 
 \subsection{Heuristic Errors}
- Apart from the functionalities tested in the described test cases, all pages in the website have been visited and their functionality tested. When doing this some Heuristic errors has been discovered. As mentioned earlier we prioritize Control, Consistency, Visibility and feedback.
+ Apart from the functionalities tested in the described test cases, all pages in the website have been visited and their functionality tested. When doing this some Heuristic errors has been discovered. As mentioned earlier is Control, Consistency, Visibility and feedback prioritize.
 
 
 \subsubsection{Consistency}
