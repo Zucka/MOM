@@ -47,6 +47,7 @@ The command messages needed that is needed to allow logging in with a tag are:
 \end{itemize}
 
 As an example \autoref{RBCE} is the code run when sending the Read Block Command to the SM130.
+\vspace{-20pt}
 \begin{lstlisting} [frame=single, label=RBCE, language=C, caption=Example of the Read Block Command from the code point of view.]
 void read_block_RFID(void)
 {
@@ -60,12 +61,10 @@ void read_block_RFID(void)
   delay(10); 
 }													
 \end{lstlisting}
-
-
 On being given a command the SM130 will send a response from which you can tell if the command has been successfully performed or not.
 In the code this information is saved on a char array by the parse method seen in \autoref{arduinoparse}. 
 On `Seek' and `Read Block' the success is determined by reading the slot containing the length of the Message, while on the Authenticate command the Data slot is read to determine success.
-
+\vspace{-20pt}
 \begin{lstlisting} [frame=single, label=arduinoparse, language=C, caption=The method used to read the SM130's response.]
 void parse_response(char PH[], int length)
 {
