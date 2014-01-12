@@ -1,9 +1,9 @@
 <?php
-	include_once "configDB.php";
-	include_once "classes.php";
-	include_once "sqlHelper.php";
-	include_once "errorMessageSQL.php";
-	include_once "getDataFromDBFunctions.php";
+	require_once "configDB.php";
+	require_once "classes.php";
+	require_once "sqlHelper.php";
+	require_once "errorMessageSQL.php";
+	require_once "getDataFromDBFunctions.php";
 	
 	function bool_to_String($boolValue)
 	{
