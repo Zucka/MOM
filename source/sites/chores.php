@@ -1,5 +1,5 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/db_points.php');
+// require_once($_SERVER['DOCUMENT_ROOT'].'/spc/source/database/db_points.php');
 	
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 
