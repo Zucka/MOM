@@ -4,6 +4,9 @@
 	require_once "sqlHelper.php";
 	require_once "errorMessageSQL.php";
 	require_once "getDataFromDBFunctions.php";
+	require_once "db_rules.php";
+	require_once "db_points.php";
+	require_once "db_device.php";
 	
 	function bool_to_String($boolValue)
 	{
