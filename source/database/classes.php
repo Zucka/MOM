@@ -6,7 +6,7 @@ class Control_system
 	public $street;
 	public $phoneNo;
 	public $postcode;
-	function __construct($CSId = null,$name= nul , $street = null,$postcode = null , $phoneNo = null) 
+	function __construct($CSId = null,$name= null , $street = null,$postcode = null , $phoneNo = null) 
 		{
 			$this->name = $name;
 			$this->CSId= $CSId;
