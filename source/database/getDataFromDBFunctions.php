@@ -752,7 +752,7 @@ weekNumber: 23
 				WHERE
 					con1.CSId = '".$id."'
 				AND (UNIX_TIMESTAMP(cubt1.endtime) - UNIX_TIMESTAMP(cubt1.starttime) > 59) AND
-					cubt1.endtime BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()  
+					cubt1.endtime BETWEEN NOW() - INTERVAL 100 DAY AND NOW()  
 				GROUP BY DATE(cubt1.endtime)";
 			}	break;
 			case 'userOverview': {
